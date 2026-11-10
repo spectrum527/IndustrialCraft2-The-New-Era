@@ -23,7 +23,7 @@
 | A15 | 对外表述 | README / 项目页统一写"**受 IndustrialCraft 2 启发的独立项目**"，**不提**授权与原开发团队；"IndustrialCraft 2"只在这句描述性语境出现，不作为名称、标识或宣传语 |
 | A16 | Orchestrator | **由 Agent 担任**；每次合并 PR、每次修改本文件均需负责人审批 |
 | A17 | 文档约定 | 新文档放 `rebuild/docs/`；任务卡中 `common/` `neoforge/` `datagen/` `test/` 等路径一律相对 `rebuild/src/`；文件所有权以 `AGENTS.md` 为准；计划文档里的 `ic2-reforged/` 即 `rebuild/` |
-| A18 | 托管与流程 | GitHub 账号 `spectrum527`：主仓库 https://github.com/spectrum527/ia2 （对应 `rebuild/`，remote `origin`）、素材仓库 https://github.com/spectrum527/ia2-legacy-assets （本地 `../ia2-legacy-assets/`），均为 Private（2026-11-10 建立并接入）+ GitHub Projects 看板（状态值沿用 `plan/README.md`）+ GitHub Actions CI |
+| A18 | 托管与流程 | GitHub 账号 `spectrum527`：主仓库 https://github.com/spectrum527/ia2 （对应 `rebuild/`，remote `origin`）、素材仓库 https://github.com/spectrum527/ia2-legacy-assets （本地 `../ia2-legacy-assets/`）、独立计划仓库 https://github.com/spectrum527/ia2-plan （本地 `../plan/`，负责人于 2026-11-11 选定），均为 Private。计划仓库保留 Spec 任务卡的私有资料索引，不随主仓库转 Public。GitHub Projects 看板（状态值沿用 `plan/README.md`）+ GitHub Actions CI |
 | A19 | 构建插件 | **ModDevGradle**（含多版本子模块，满足 A5 双版本编译） |
 | A20 | MVP 与参考实例 | MVP 清单（≤40 项）由 Orchestrator Agent 起草；1.19.2 参考实例由 QA Agent 搭建：**ForgeGradle 1.19.2 开发环境 + 原 jar 作为 mod 加载**，离线开发用户名，首次联网下载依赖需负责人批准；实例放在私有的上层目录 `../reference-env/`，`rebuild/parity/` 只放场景脚本与期望值。负责人在 **G0 评审**时一并确认 |
 | A21 | 新作素材协议 | 重绘后的贴图/模型/音效/GUI 采用 **CC BY-SA 4.0**（`LICENSE-ASSETS`）；外包与社区投稿须同意以该协议授权。私有阶段复用的原版素材不适用此协议 |
@@ -66,3 +66,4 @@
 
 - 2026-11-10：负责人问答闭合全部争议点——确认 A2（净室重写）、A5（26.1 时机）、A10；修订 A3（包名定稿）、A7（转 Public 前全量重绘）；新增 A11–A22。
 - 2026-11-10：A12/A18 由"GitHub 组织"改为 `spectrum527` 账号下的两个 Private 仓库；`rebuild/` 已接入 `origin`（跟踪 `origin/main`），`ia2-legacy-assets` 已克隆到 `../ia2-legacy-assets/`。
+- 2026-11-11：负责人选择将现有 `plan/` 建为独立私有仓库 `spectrum527/ia2-plan`；A18 登记该选择，任务卡仍保留既有目录约定与逐 PR 审批流程。
