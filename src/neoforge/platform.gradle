@@ -50,5 +50,6 @@ tasks.named('processResources') {
 tasks.named('jar') {
     from project(':common').sourceSets.main.output
     from(rootProject.file('LICENSE'))
+    from(rootProject.file('COPYING'))
     from(rootProject.file('LICENSE-ASSETS'))
 }

@@ -36,6 +36,7 @@ class BuildContractTest {
                                         + "]\""));
                 assertTrue(!text.contains("${"));
                 assertNotNull(jar.getJarEntry("LICENSE"));
+                assertNotNull(jar.getJarEntry("COPYING"));
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));
             }
         }
