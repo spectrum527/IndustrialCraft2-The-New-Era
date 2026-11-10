@@ -1,0 +1,28 @@
+plugins {
+    id 'base'
+    id 'net.neoforged.moddev' apply false
+    id 'com.diffplug.spotless' version '8.0.0'
+}
+allprojects {
+    group = 'com.industrialage.ia2'
+    version = rootProject.property('mod_version')
+    repositories { mavenCentral() }
+}
+subprojects {
+    plugins.withId('java') {
+        java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+        tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+        tasks.withType(AbstractArchiveTask).configureEach {
+            preserveFileTimestamps = false
+            reproducibleFileOrder = true
+        }
+    }
+}
+spotless {
+    java {
+        target 'src/**/src/**/*.java'
+        googleJavaFormat('1.28.0').aosp()
+    }
+}
+apply from: 'gradle/checks.gradle'
+tasks.named('build') { dependsOn subprojects.collect { it.tasks.matching { it.name == 'build' } } }

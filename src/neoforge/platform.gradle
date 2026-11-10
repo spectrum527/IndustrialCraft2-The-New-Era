@@ -1,0 +1,54 @@
+java.toolchain.languageVersion = JavaLanguageVersion.of(platformJava)
+base.archivesName = "ia2-neoforge-$minecraftVersion"
+dependencies { implementation project(':common') }
+neoForge {
+    enable {
+        version = neoForgeVersion
+        disableRecompilation = true
+    }
+    runs {
+        client { client() }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        data {
+            if (platformJava == 21) { data() } else { clientData() }
+            programArguments.addAll '--mod', 'ia2', '--all', '--output', file('src/generated/resources').absolutePath
+        }
+    }
+    mods {
+        ia2 {
+            sourceSet sourceSets.main
+            sourceSet project(':common').sourceSets.main
+        }
+    }
+}
+def legacy = providers.gradleProperty('ia2.legacyAssetsDir').map { rootProject.file(it) }
+if (legacy.isPresent() && (!legacy.get().isDirectory()
+        || legacy.get().canonicalFile == rootProject.projectDir.canonicalFile
+        || legacy.get().canonicalPath.startsWith(rootProject.projectDir.canonicalPath + File.separator))) {
+    throw new GradleException('ia2.legacyAssetsDir must name an existing directory outside this repository')
+}
+tasks.named('processResources') {
+    inputs.properties(version: project.version, neoForgeVersion: neoForgeVersion, minecraftVersion: minecraftVersion)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    includeEmptyDirs = false
+    doFirst { delete destinationDir }
+    from(rootProject.file('assets')) {
+        into 'assets'
+        exclude '**/*.md', '**/.git*', '**/.DS_Store'
+    }
+    if (legacy.isPresent()) {
+        from(legacy) { exclude '**/.git*/**', '**/*.md', '**/.DS_Store' }
+    }
+    from('../metadata') {
+        expand version: project.version, neoForgeVersion: neoForgeVersion,
+                minecraftVersion: minecraftVersion, loaderMetadata: loaderMetadata
+    }
+}
+tasks.named('jar') {
+    from project(':common').sourceSets.main.output
+    from(rootProject.file('LICENSE'))
+    from(rootProject.file('LICENSE-ASSETS'))
+}

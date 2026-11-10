@@ -1,0 +1,11 @@
+pluginManagement {
+    repositories {
+        maven { url = 'https://maven.neoforged.net/releases' }
+        gradlePluginPortal()
+    }
+    plugins { id 'net.neoforged.moddev' version providers.gradleProperty('moddev_version').get() }
+}
+rootProject.name = 'industrial-age-2'
+include 'common', 'neoforge:1.21.1', 'neoforge:26.1', 'datagen', 'test'
+['common', 'neoforge', 'datagen', 'test'].each { project(":$it").projectDir = file("src/$it") }
+['1.21.1', '26.1'].each { project(":neoforge:$it").projectDir = file("src/neoforge/$it") }
