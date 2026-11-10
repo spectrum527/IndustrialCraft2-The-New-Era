@@ -1,0 +1,33 @@
+# ---- Clean-room: decompiled reference is never committed (decisions.md A8) ----
+reference/*
+!reference/INDEX.md
+
+# ---- Original assets live only in the private ia2-legacy-assets repo (A22) ----
+/ia2-legacy-assets/
+*.jar
+*.i64
+*.id0
+*.id1
+*.id2
+*.nam
+*.til
+
+# ---- Build / IDE ----
+build/
+.gradle/
+out/
+run/
+runs/
+logs/
+*.log
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+bin/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db

@@ -1,0 +1,30 @@
+# Reference 索引（净室规则：仅 Spec 角色可读）
+
+`rebuild/reference/` **不拷贝**反编译产物（decisions.md A8），本索引指向唯一事实源。迁移工作区到其他机器时，先按下表恢复 `../analysis/` 再工作。
+
+## 基线与完整性
+
+| 对象 | 路径 | SHA-256 |
+|---|---|---|
+| Forge 原始 jar | `../../industrialcraft-2-2.9.40+ex119-1.19.2-forge.jar` | `5d06ca9146041043132a72bad9b5612e260e77a84a2f3773a3da9b0167ea1d3d` |
+| Fabric 原始 jar | `../../industrialcraft-2-2.9.40+ex119-1.19.2-fabric.jar` | `09787119172eda213f51fc5785d8a91a88bbcc18124e66d1b0cb384b5a42b154` |
+| Forge 反编译源码 | `../../analysis/src/`（901 .java，Vineflower 1.10.1，SRG 名） | 复现：`java -jar analysis/tools/vineflower.jar -dgs=1 -rsy=1 -ind="    " analysis/extracted analysis/src` |
+| Fabric 反编译源码 | `../../analysis/src-fabric/`（895 .java，intermediary 名） | 同上，对 fabric 解包目录 |
+| Forge 解包资源 | `../../analysis/extracted/`（assets 2,069 JSON + 1,541 PNG + 125 OGG；data 16 类配方） | unzip 原始 jar |
+| Fabric 解包资源 | `../../analysis/extracted-fabric/` | 同上 |
+
+复现全流程见《拆解指南》§17.3；SRG 名→官方名对照查 MCPConfig joined.tsrg + Mojang client.txt（机制文档头部已带常用对照表）。
+
+## Spec 角色的典型查法
+
+| 要查什么 | 去哪 |
+|---|---|
+| 某机器的行为公式 | `docs/mechanisms/<对应文档>.md` 先看（已核对过源码），再回源码验证行号 |
+| 注册 ID/数值表 | `../data-workspace/01-registry/`、`03-machines/` 等 CSV（带 source 列可直接跳源码） |
+| 配方 JSON | `../../analysis/extracted/data/ic2/recipes/`（44 CSV 是它的视图） |
+| 配置键 | `../data-workspace/12-reference/config_keys_full.csv`（91 键含 consumer 行号） |
+| 贴图/音效映射 | `../data-workspace/10-art/inventory.csv`、`texture_mapping.csv` |
+
+## 素材复用（decisions.md A7）
+
+原版素材已获授权，私有阶段可复用（转 Public 前须全部替换，decisions.md A7）。复用时**拷贝**到独立私有仓库 `../../ia2-legacy-assets/`（保持 jar 内相对路径，**不得进入 rebuild 主仓库历史**，A22），并在 `../assets/SOURCES.md` 登记为 `legacy`。禁止原地修改 `analysis/extracted/` 下任何文件。
