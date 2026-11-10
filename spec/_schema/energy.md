@@ -6,7 +6,7 @@
 | 字段 | 说明 |
 |---|---|
 | id / scope / evidence | `ia2:` 场景/设备 ID、适用网络、核验版本及静态/实测/设计/待确认状态 |
-| inputs / ports | 供/受能方向、tier、EU/包、包数/t、EU/t 上限（无须明确）、注册/移除时点 |
+| inputs / ports | 供/受能方向、tier、EU/包、包数/t、EU/t 上限（没有独立上限也须明示）、注册/移除时点 |
 | storage / demand | 容量 EU、初始 EU、需求/拒收/余量规则、存档与升级缩容处理 |
 | transfer / loss | 同步 tick 时序、分配/公平性、损耗 EU/路径、取整与能量守恒式 |
 | outputs / config | 实收/扣款/损耗/可见信号；活键、默认值及关闭保护后的行为 |
