@@ -11,8 +11,11 @@
 
 ## 模板
 
-- [`_schema/machine.md`](_schema/machine.md) —— 机器/设备规格页（含示例：打粉机骨架）
-- 其余模板（block / item / recipe / gui / energy / crop / reactor / sound）在 P1-T1 产出，均以本模板为母版裁剪。
+- [`_schema/machine.md`](_schema/machine.md) —— 母版：机器行为、升级与自动化
+- [`_schema/block.md`](_schema/block.md) / [`_schema/item.md`](_schema/item.md) —— 方块与物品
+- [`_schema/recipe.md`](_schema/recipe.md) / [`_schema/gui.md`](_schema/gui.md) / [`_schema/energy.md`](_schema/energy.md) —— 配方、界面与能量
+- 完整静态核验样板：[`machines/macerator.md`](machines/macerator.md)；未运行参考实例，待 PR 审批。
+- crop / reactor / sound 模板留待对应任务，P1-T1 不扩展可选模板；这些规格不是 MVP/G0 范围批准。
 
 ## 状态
 
