@@ -1,0 +1,32 @@
+{
+  "record_format": "ia2.reference-observation.v1",
+  "data_version": "M08-unexecuted-v1",
+  "scenario_id": "macerator-M08",
+  "source_role": "reference",
+  "execution": {
+    "state": "blocked",
+    "reason": "manual_desktop_unlock_required"
+  },
+  "planned_setup": {
+    "world_seed": 7,
+    "machine": "ia2:macerator",
+    "position": [0, 64, 0],
+    "stored_eu": 1200,
+    "progress_tick": 0,
+    "upgrade_count": 0,
+    "external_supply": false,
+    "input": [{"item": "minecraft:coal", "count": 2}],
+    "output": []
+  },
+  "ticks": 600,
+  "sample_at": [0, 1, 299, 300, 599, 600],
+  "metrics": {
+    "stored_eu": "EU",
+    "progress_tick": "tick",
+    "input_count": "item",
+    "output_count": "item",
+    "active": "boolean"
+  },
+  "assessment": "observation_only",
+  "results": []
+}
