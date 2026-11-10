@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ia2:parity:scenario:1",
+  "title": "Industrial Age 2 parity record",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "data_version", "scenario", "results"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "data_version": {"$ref": "#/$defs/text"},
+    "scenario": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "ticks", "seed", "setup", "samples"],
+      "properties": {
+        "id": {"$ref": "#/$defs/text"}, "ticks": {"$ref": "#/$defs/tick"}, "seed": {"type": "integer"},
+        "setup": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/placement"}},
+        "samples": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sample"}}
+      }
+    },
+    "results": {"type": "array", "items": {"$ref": "#/$defs/result"}}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "tick": {"type": "integer", "minimum": 0},
+    "position": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "integer"}},
+    "placement": {
+      "type": "object", "additionalProperties": false, "required": ["position", "block", "initial_state"],
+      "properties": {
+        "position": {"$ref": "#/$defs/position"},
+        "block": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*:[a-z0-9_/.-]+$"},
+        "initial_state": {"type": "object", "additionalProperties": {"type": ["string", "number", "boolean"]}},
+        "inventory": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false, "required": ["slot", "item", "count"],
+          "properties": {"slot": {"type": "integer", "minimum": 0}, "item": {"$ref": "#/$defs/text"},
+            "count": {"type": "integer", "minimum": 1}}
+        }}
+      }
+    },
+    "stack": {
+      "type": "object", "additionalProperties": false, "required": ["item", "count", "weight", "byproduct"],
+      "properties": {"item": {"$ref": "#/$defs/text"}, "count": {"type": "integer", "minimum": 0},
+        "weight": {"type": "number", "minimum": 0}, "byproduct": {"type": "boolean"}}
+    },
+    "control": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "x", "y"],
+      "properties": {"kind": {"$ref": "#/$defs/text"}, "x": {"type": "integer"}, "y": {"type": "integer"}}
+    },
+    "bucket": {
+      "type": "object", "additionalProperties": false, "required": ["label", "count"],
+      "properties": {"label": {"$ref": "#/$defs/text"}, "count": {"type": "integer", "minimum": 0}}
+    },
+    "value": {"oneOf": [
+      {"type": "number"},
+      {"type": "array", "items": {"$ref": "#/$defs/stack"}},
+      {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/control"}},
+      {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/bucket"}}
+    ]},
+    "result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sample_id", "at_tick", "reference", "candidate"],
+      "properties": {"sample_id": {"$ref": "#/$defs/text"}, "at_tick": {"$ref": "#/$defs/tick"},
+        "reference": {"$ref": "#/$defs/value"}, "candidate": {"$ref": "#/$defs/value"},
+        "statistic": {"type": "number"}, "p_value": {"type": "number", "minimum": 0, "maximum": 1}}
+    },
+    "sample": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "target", "at_ticks", "metric", "unit", "tolerance"],
+      "properties": {"id": {"$ref": "#/$defs/text"}, "target": {"$ref": "#/$defs/position"},
+        "at_ticks": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/tick"}},
+        "metric": {"type": "string"}, "unit": {"type": "string"}, "tolerance": {"type": "object"}},
+      "oneOf": [
+        {"properties": {"metric": {"enum": ["energy_transfer", "machine_energy"]},
+          "unit": {"const": "EU/t"}, "tolerance": {"$ref": "#/$defs/one_percent"}}},
+        {"properties": {"metric": {"const": "energy_loss"},
+          "unit": {"enum": ["EU", "EU/t"]}, "tolerance": {"$ref": "#/$defs/one_percent"}}},
+        {"properties": {"metric": {"const": "energy_breakdown"},
+          "unit": {"const": "EU"}, "tolerance": {"$ref": "#/$defs/one_percent"}}},
+        {"properties": {"metric": {"const": "machine_duration"},
+          "unit": {"const": "tick"}, "tolerance": {"const": {"type": "absolute", "value": 1}}}},
+        {"properties": {"metric": {"enum": ["machine_outputs", "recipe_outputs"]},
+          "unit": {"const": "items"}, "tolerance": {"const": {"type": "exact"}}}},
+        {"properties": {"metric": {"enum": ["reactor_heat", "reactor_explosion_threshold"]},
+          "unit": {"const": "heat"}, "tolerance": {"$ref": "#/$defs/two_percent"}}},
+        {"properties": {"metric": {"const": "reactor_generation"},
+          "unit": {"const": "EU/t"}, "tolerance": {"$ref": "#/$defs/two_percent"}}},
+        {"properties": {"metric": {"enum": ["crop_stage_distribution", "crop_genetic_probability"]},
+          "unit": {"const": "counts"}, "tolerance": {"$ref": "#/$defs/statistical"}}},
+        {"properties": {"metric": {"const": "gui_structure"},
+          "unit": {"const": "layout"}, "tolerance": {"const": {"type": "structural"}}}}
+      ]
+    },
+    "one_percent": {"const": {"type": "relative", "value": 0.01}},
+    "two_percent": {"const": {"type": "relative", "value": 0.02}},
+    "statistical": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "method", "sample_size", "alpha", "gate"],
+      "properties": {"type": {"const": "statistical"}, "method": {"$ref": "#/$defs/text"},
+        "sample_size": {"type": "integer", "minimum": 1},
+        "alpha": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1}, "gate": {"const": false}}
+    }
+  }
+}
