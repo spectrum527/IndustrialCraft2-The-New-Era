@@ -20,7 +20,7 @@ subprojects {
 }
 spotless {
     java {
-        target 'src/**/src/**/*.java'
+        target subprojects.collect { it.fileTree('src') { include '**/*.java' } }
         googleJavaFormat('1.28.0').aosp()
     }
 }

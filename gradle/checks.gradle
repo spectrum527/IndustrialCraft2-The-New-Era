@@ -1,7 +1,8 @@
+def commonJavaSources = fileTree('src/common/src') { include '**/*.java' }
 def commonImports = tasks.register('checkCommonImports') {
-    inputs.files(fileTree('src/common') { include '**/*.java' })
+    inputs.files(commonJavaSources)
     doLast {
-        fileTree('src/common').matching { include '**/*.java' }.each {
+        commonJavaSources.each {
             if (it.text =~ /(?m)^\s*import\s+(static\s+)?(?:net\.neoforged|net\.minecraftforge|net\.fabricmc)\./) {
                 throw new GradleException("Platform import in common: $it")
             }
