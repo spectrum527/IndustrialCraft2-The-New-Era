@@ -104,7 +104,8 @@ def run(argv=None):
     try:
         parser = Parser(description=__doc__)
         parser.add_argument("--candidate", required=True)
-        parser.add_argument("--reference")
+        parser.add_argument("--reference", action="append",
+                            help="reference tree; repeat to compare against several decompiled versions")
         args = parser.parse_args(argv)
         candidate = directory(args.candidate)
         if args.reference is None:
@@ -113,12 +114,17 @@ def run(argv=None):
                 report["warnings"].append("reference omitted in CI; gate was NOT evaluated")
                 return report, 3
             raise ValueError("--reference is required outside CI")
-        reference = directory(args.reference)
+        roots = [directory(value) for value in args.reference]
         candidates = inventory(candidate)
         report["scanned"]["candidate"] = len(candidates)
-        references = inventory(reference)
-        report["scanned"]["reference"] = len(references)
-        reference_files = load(reference, references)
+        reference_files = []
+        for index, root in enumerate(roots):
+            loaded = load(root, inventory(root))
+            if len(roots) > 1:
+                for item in loaded:
+                    item["path"] = "ref%d:%s" % (index + 1, item["path"])
+            reference_files.extend(loaded)
+        report["scanned"]["reference"] = len(reference_files)
         for item in load(candidate, candidates):
             report["files"].append(compare(item, reference_files))
             report["scanned"]["comparisons"] += len(reference_files)
