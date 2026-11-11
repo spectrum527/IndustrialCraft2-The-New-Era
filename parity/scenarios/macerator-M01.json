@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "data_version": "M01-plan-v1",
+  "scenario": {
+    "id": "macerator-M01",
+    "ticks": 300,
+    "seed": 7,
+    "setup": [
+      {
+        "position": [0, 63, 0],
+        "block": "minecraft:smooth_stone",
+        "initial_state": {}
+      },
+      {
+        "position": [0, 64, 0],
+        "block": "ia2:macerator",
+        "initial_state": {
+          "stored_eu": 600,
+          "progress_tick": 0,
+          "upgrade_count": 0,
+          "external_supply": false
+        },
+        "inventory": [{"slot": 0, "item": "minecraft:coal", "count": 1}]
+      }
+    ],
+    "samples": [
+      {
+        "id": "duration",
+        "target": [0, 64, 0],
+        "at_ticks": [300],
+        "metric": "machine_duration",
+        "unit": "tick",
+        "tolerance": {"type": "absolute", "value": 1}
+      },
+      {
+        "id": "working_energy_rate",
+        "target": [0, 64, 0],
+        "at_ticks": [1, 299, 300],
+        "metric": "machine_energy",
+        "unit": "EU/t",
+        "tolerance": {"type": "relative", "value": 0.01}
+      },
+      {
+        "id": "outputs",
+        "target": [0, 64, 0],
+        "at_ticks": [0, 299, 300],
+        "metric": "machine_outputs",
+        "unit": "items",
+        "tolerance": {"type": "exact"}
+      }
+    ]
+  },
+  "results": []
+}
