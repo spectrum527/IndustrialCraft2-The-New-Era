@@ -1,27 +1,27 @@
 # 平台与构建记录（P0-T3）
 
-本记录落实 `decisions.md` A5、A6、A17、A19、A20、A22，不改变既有平台决定。当前是供评审的设计记录；P0-T4 骨架构建和 G0 尚未通过。
+本记录落实 `decisions.md` A5、A6、A17、A19、A20、A22，不改变既有平台决定。本轮已取得 P0-T4 本地与 Linux CI 双版本构建证据；负责人审批见 [P0-T4 PR](https://github.com/spectrum527/ia2/pull/10)，G0 尚未通过。
 
 ## 平台与版本
 
 | 用途 | 目标 | 工具链与验收 |
 |---|---|---|
 | 主基线 | Minecraft 1.21.1 / NeoForge | JDK 21；MVP 与 G5 在此验收 |
-| 同步移植 | Minecraft 26.1 / NeoForge | 从第一天双版本编译；运行验收从 P6 纳入 |
+| 同步移植 | Minecraft 26.1 / NeoForge | JDK 25；从第一天双版本编译，运行验收从 P6 纳入 |
 | 行为参考 | Minecraft 1.19.2 / Forge | JDK 17；仅用于参考实例和 parity 采样，不是当前发布目标 |
 
 - 构建插件：**ModDevGradle**（A19）。
-- 1.21.1 对应的具体 NeoForge 版本号：**TODO(P0-T4 锁定)**。
-- 26.1 对应的具体 NeoForge 版本号：**TODO(P0-T4 锁定)**。
-- ModDevGradle / Gradle Wrapper 的具体版本与兼容组合：**TODO(P0-T4 锁定)**。
-- 26.1 适配模块的 JDK 要求需在 P0-T4 按所选平台版本核实；不能把主基线的 JDK 21 要求直接套用到该模块。
+- 本轮锁定：1.21.1 使用 NeoForge **21.1.265**；26.1 使用 NeoForge **26.1.0.19-beta**；ModDevGradle **2.0.148**；Gradle Wrapper **9.2.1**。构建值写入 `gradle.properties` 和 Wrapper 配置，升级另行验证，不使用动态版本。
+- 版本已按 [NeoForge 官方元数据](https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml)、[26.1 官方 MDK](https://github.com/NeoForgeMDKs/MDK-26.1-ModDevGradle/blob/main/gradle.properties) 和 [ModDevGradle 官方元数据](https://maven.neoforged.net/releases/net/neoforged/moddev/net.neoforged.moddev.gradle.plugin/maven-metadata.xml) 核对；这些是本轮固定值，不宣称始终为最新版。
+- 26.1 的 JDK 25 与 Gradle 不低于 9.1 的要求见 [官方发布说明](https://neoforged.net/news/26.1release/)。本轮使用已安装的 JDK 21 / 25 分别编译两个适配模块，共用层保持 Java 21。
+- 26.1 所选构建仍为 beta；不能静默以其他 Minecraft 补丁版本替换该目标，后续升级须重新验证。
 - Fabric 在 v1.0 后按需求评估；当前 MVP 至 v1.0 仅发布 NeoForge（A6）。
 
 ## 选择理由
 
 主基线固定在 1.21.1，使 MVP 的构建、客户端、专用服务器和 G5 验收有统一目标。26.1 同步编译可尽早暴露版本耦合，但其运行门禁按既定阶段逐步加入。1.19.2 独立作为行为参照，避免把旧环境的二进制兼容要求带入重建架构。
 
-ModDevGradle 是已批准的构建方案；P0-T4 负责证明其在两个版本子模块中的可用性，并固定依赖版本。这里不以选型记录代替构建证据。
+ModDevGradle 是已批准的构建方案；P0-T4 已对上述组合执行本地双版本构建，并记录 Wrapper 与依赖校验和。选型记录、编译证据、运行证据和 CI 结果分别保留。
 
 ## 双版本子模块结构
 
@@ -45,7 +45,7 @@ src/
 
 | 风险 | 处理及验收责任 |
 |---|---|
-| 平台、插件和 JDK 的兼容组合尚未锁定 | Platform 在 P0-T4 查证并固定版本，首次下载依赖前取得负责人批准 |
+| 平台组合、beta 目标与升级兼容性 | 保持固定版本和校验值；升级后重跑双版本编译及对应运行门禁 |
 | 版本专属类型渗入核心层 | 双版本编译并检查 common 的导入；发现耦合时收敛到能力接口 |
 | 两个目标的客户端、网络或存档行为分歧 | 分开记录各目标结果；从 P6 起加入 26.1 运行验收 |
 | 仅编译通过，实际无法加载 | P0/P2 分别保留构建证据与客户端、专用服务器加载证据 |
@@ -59,6 +59,8 @@ src/
 
 ## 当前验证与交接
 
-本轮 `/usr/libexec/java_home -V` 已列出 JDK 17、21、25；“本机没有 JDK”的旧环境说明已不符合现场状态。此发现不代表 Gradle 已选用正确工具链，也不代表依赖已下载或空工程已构建通过。
+`/usr/libexec/java_home -V` 已列出 JDK 17、21、25。本轮 P0-T4 在 JDK 21 / 25 下分别完成主基线与同步目标的真实 `clean build`，JAR 契约测试核对入口、元数据、字节码版本及完整许可文件；有/无外部素材及新作覆盖的自造资源回归也已执行。
 
-P0-T4 后续需要锁定兼容组合、配置各模块工具链并提交双版本构建及 CI 证据；P0-T5 仍需批准首次联网下载，再验证进入世界、放置机器和打开 GUI。P2 Core 工作须同时等待 P0-T4 构建通过和负责人批准 G0。
+主线专用服务器曾实际记录入口加载及 `Done`，随后人工停止并保存世界；该停止命令的非零退出码不冒充成功构建。未执行 26.1 运行验收、客户端功能或 GameTest；相似度缺私有输入时仍明确跳过。
+
+负责人已批准 P0-T4 / P0-T5 首次依赖下载。P0-T5 已完成进入世界、放置机器、打开 GUI、退出重启后重入，以及 M01 / M08 的单边参考采样，见 [参考实例 PR](https://github.com/spectrum527/ia2/pull/13)；额外扣电的修复目标已由负责人批准，见 [B#41 决策与规格 PR](https://github.com/spectrum527/ia2/pull/14)；候选实现、回归与双边比较仍未完成。P2 Core 须等待 P0-T4 的完整验收与负责人批准 G0；构建和采样证据不代替合规存档或门禁批准。
