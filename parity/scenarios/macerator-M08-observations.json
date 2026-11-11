@@ -1,11 +1,11 @@
 {
   "record_format": "ia2.reference-observation.v1",
-  "data_version": "M08-unexecuted-v1",
+  "data_version": "M08-reference-2026-11-11-v1",
   "scenario_id": "macerator-M08",
   "source_role": "reference",
   "execution": {
-    "state": "blocked",
-    "reason": "manual_desktop_unlock_required"
+    "state": "observed",
+    "captured_states": 601
   },
   "planned_setup": {
     "world_seed": 7,
@@ -28,5 +28,66 @@
     "active": "boolean"
   },
   "assessment": "observation_only",
-  "results": []
+  "results": [
+    {
+      "elapsed_tick": 0,
+      "stored_eu": 1200.0,
+      "progress_tick": 0,
+      "input_item": "minecraft:coal",
+      "input_count": 2,
+      "output_item": null,
+      "output_count": 0,
+      "active": false
+    },
+    {
+      "elapsed_tick": 1,
+      "stored_eu": 1198.0,
+      "progress_tick": 1,
+      "input_item": "minecraft:coal",
+      "input_count": 2,
+      "output_item": null,
+      "output_count": 0,
+      "active": true
+    },
+    {
+      "elapsed_tick": 299,
+      "stored_eu": 602.0,
+      "progress_tick": 299,
+      "input_item": "minecraft:coal",
+      "input_count": 2,
+      "output_item": null,
+      "output_count": 0,
+      "active": true
+    },
+    {
+      "elapsed_tick": 300,
+      "stored_eu": 598.0,
+      "progress_tick": 0,
+      "input_item": "minecraft:coal",
+      "input_count": 1,
+      "output_item": "ia2:coal_dust",
+      "output_count": 1,
+      "active": true
+    },
+    {
+      "elapsed_tick": 599,
+      "stored_eu": 0.0,
+      "progress_tick": 299,
+      "input_item": "minecraft:coal",
+      "input_count": 1,
+      "output_item": "ia2:coal_dust",
+      "output_count": 1,
+      "active": true
+    },
+    {
+      "elapsed_tick": 600,
+      "stored_eu": 0.0,
+      "progress_tick": 299,
+      "input_item": "minecraft:coal",
+      "input_count": 1,
+      "output_item": "ia2:coal_dust",
+      "output_count": 1,
+      "active": false
+    }
+  ]
 }
