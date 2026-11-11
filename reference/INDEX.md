@@ -1,6 +1,8 @@
 # Reference 索引（净室规则：仅 Spec 角色可读）
 
-`rebuild/reference/` **不拷贝**反编译产物（decisions.md A8），本索引指向唯一事实源。迁移工作区到其他机器时，先按下表恢复 `../analysis/` 再工作。
+`rebuild/reference/` **不拷贝**反编译产物（decisions.md A8），本索引指向唯一事实源。迁移工作区到其他机器时，先按下表恢复 `../analysis/` 与 `../analysis-1122/` 再工作。
+
+**版本基线（decisions.md A23）**：2.9.40 为行为基线；2.8.222 只用于 C-MF 范围的缺失功能与交叉验证，两版不一致时登记 B 表"待裁决"项。
 
 ## 基线与完整性
 
@@ -12,6 +14,10 @@
 | Fabric 反编译源码 | `../../analysis/src-fabric/`（895 .java，intermediary 名） | 同上，对 fabric 解包目录 |
 | Forge 解包资源 | `../../analysis/extracted/`（assets 2,069 JSON + 1,541 PNG + 125 OGG；data 16 类配方） | unzip 原始 jar |
 | Fabric 解包资源 | `../../analysis/extracted-fabric/` | 同上 |
+| 1.12.2 原始 jar（2.8.222，A23 交叉验证与 C-MF 缺失功能底稿） | `../../industrialcraft-2-2.8.222-ex112.jar` | `f96b1886b6d060b308fb811029d5c5cc76deb17b835aa368dcb6071f2de290d4` |
+| 1.12.2 反编译源码 | `../../analysis-1122/src/`（1,162 .java，Vineflower；SRG `func_`/`field_` 名，对照 MCP 1.12 映射） | 复现：同上 Vineflower 命令，对 `analysis-1122/extracted` 输出到 `analysis-1122/src`；日志 `analysis-1122/decompile.log` |
+| 1.12.2 解包资源 | `../../analysis-1122/extracted/` | unzip 原始 jar |
+| 1.12.2 缺失功能普查 | `../../missing-features/`（README + 4 份子系统报告 + 类/注册表 diff，含源码位置） | 仅 Spec 角色可读 |
 
 复现全流程见《拆解指南》§17.3；SRG 名→官方名对照查 MCPConfig joined.tsrg + Mojang client.txt（机制文档头部已带常用对照表）。
 
@@ -23,8 +29,9 @@
 | 注册 ID/数值表 | `../data-workspace/01-registry/`、`03-machines/` 等 CSV（带 source 列可直接跳源码） |
 | 配方 JSON | `../../analysis/extracted/data/ic2/recipes/`（44 CSV 是它的视图） |
 | 配置键 | `../data-workspace/12-reference/config_keys_full.csv`（91 键含 consumer 行号） |
+| 1.12.2 独有功能 | `../../missing-features/README.md` 先看，再进对应子系统报告与 `analysis-1122/src/` |
 | 贴图/音效映射 | `../data-workspace/10-art/inventory.csv`、`texture_mapping.csv` |
 
 ## 素材复用（decisions.md A7）
 
-原版素材已获授权，私有阶段可复用（转 Public 前须全部替换，decisions.md A7）。复用时**拷贝**到独立私有仓库 `../../ia2-legacy-assets/`（保持 jar 内相对路径，**不得进入 rebuild 主仓库历史**，A22），并在 `../assets/SOURCES.md` 登记为 `legacy`。禁止原地修改 `analysis/extracted/` 下任何文件。
+原版素材已获授权，私有阶段可复用（转 Public 前须全部替换，decisions.md A7）。复用时**拷贝**到独立私有仓库 `../../ia2-legacy-assets/`（保持 jar 内相对路径，**不得进入 rebuild 主仓库历史**，A22），并在 `../assets/SOURCES.md` 登记为 `legacy`。禁止原地修改 `analysis/extracted/`、`analysis-1122/extracted/` 下任何文件。1.12.2 素材同样适用（A24）。

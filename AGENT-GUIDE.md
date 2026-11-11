@@ -42,7 +42,7 @@
 | 8 | 原版素材文件（贴图/模型/音效/GUI）**永不提交进本仓库**，只能放私有仓库 `ia2-legacy-assets`（decisions.md A22） | PR 拒收，需清洗历史 |
 | 9 | 所有 PR 合并、`decisions.md` 的任何改动都需负责人审批（A16）；Agent 不得自行合并 | 回滚 |
 
-### 1.2 已定案的项目事实（2026-11-10）
+### 1.2 已定案的项目事实（2026-11-11 更新）
 
 | 项 | 结论 |
 |---|---|
@@ -55,6 +55,9 @@
 | 对外表述 | "受 IndustrialCraft 2 启发的独立项目"，不提授权与原团队（A15） |
 | 构建 | ModDevGradle（A19）；CI 为 GitHub Actions，看板为 GitHub Projects（A18） |
 | 配置 | 只建 58 个活键，无旧键兼容层；只出迁移文档（A10） |
+| 版本基线 | 2.9.40 行为为基线；另一个旧版本只作为缺失功能与交叉验证的规格来源，差异由负责人逐条裁决（A23）。实现角色只看 spec，不需要关心规格出自哪个版本 |
+| 范围扩展 | v0.5 新增焦炉链、流体管道 + 泵盖板、泡沫喷枪；v1.0 新增背包供电装备、交易终端与内容池；Profile 双内容线不做（decisions.md C-MF1–10） |
+| 工具链 | 主线 JDK 21、26.1 模块 JDK 25；NeoForge / ModDevGradle / Gradle 版本以 `docs/02-platform.md` 锁定值为准 |
 
 ---
 
@@ -215,25 +218,22 @@ P?-T?
 
 ---
 
-## 6. 当前可领的任务（2026-11-10 状态）
+## 6. 当前可领的任务（2026-11-11 状态）
 
-仓库还没有任何提交，`src/`、`parity/` 为空。按顺序：
+P0 已完成章程、平台记录、法律骨架、MVP 候选、spec 模板与打粉机样板、QA 工具；以下按依赖排序：
 
 | 顺序 | 任务 | 角色 | 依赖 | 验收 |
 |---:|---|---|---|---|
-| 1 | 补 `.gitignore`（`.DS_Store`、`build/`、`.gradle/`、`run/`、`*.i64`、`*.jar`，保留现有忽略规则）+ `LICENSE`（LGPL-3.0）+ `LICENSE-ASSETS`（CC BY-SA 4.0）+ 首次提交；推送到 GitHub **私有**仓库（spectrum527 账号） | Orchestrator | — | `git log` 有首个提交；负责人审批 |
-| 2 | `docs/01-legal.md` 骨架（授权方、日期、范围、排除项、可否再授权） | Orchestrator | **负责人提供授权原文** | 负责人填写并脱敏 |
-| 3 | P0-T1 章程 `docs/00-charter.md`（含 MVP ≤ 40 项草案） | Orchestrator | — | 见 `plan/tasks/P0-T1.yaml`；G0 时负责人确认 |
-| 4 | P0-T3 `docs/02-platform.md` | Orchestrator | P0-T1 | 理由 / 风险 / 回退 |
-| 5 | P0-T4 ModDevGradle 骨架 + GitHub Actions + PR 模板 | Platform | P0-T3、**本机 JDK 21** | `./gradlew build` 绿（双版本编译） |
-| 6 | P0-T5 参考实例 `../reference-env/` | QA | 负责人批准联网 | 能进世界、放机器、开 GUI |
-| 7 | 建 `ia2-legacy-assets` 私有仓库 + `assets/SOURCES.md` 表头 | Artist | P0-T4 | 构建在有/无 legacy 目录时都能通过 |
-| 8 | P1-T1 补齐 spec 模板 | Spec Lead | P0-T1 | 见 `plan/tasks/P1-T1.yaml` |
-| 9 | P1-T2～T13 拆卡 | Orchestrator | P1-T1 | 每卡含可执行 acceptance |
-| 10 | 相似度检查脚本 + parity 场景格式 | QA | P0-T4 | 脚本能在 CI 跑通 |
+| 1 | 待审批 PR 按序合并：agent-protocol → asset-ledger → build-skeleton → platform-locks → reference-instance → macerator-accounting（B#41）→ C-MF 决策 PR | 负责人审批 / Orchestrator 处理冲突 | — | main 上双版本 `./gradlew build` 绿 |
+| 2 | 能量 spec 与打粉机 spec 的旧版本交叉核对（A23），差异登记为 B 表待裁决项 | Spec | 1 | 交叉核对报告 + 负责人裁决后再合并 energy-spec |
+| 3 | G0 评审：MVP 39 项确认、`docs/01-legal.md` 由负责人填写（含版本范围，A24） | 负责人 | 1 | G0 记录 |
+| 4 | P1-T2～T13 MVP 范围 spec（已有任务卡） | Spec | P1-T1 | G1 覆盖率 ≥ 90% |
+| 5 | P0-T9 旧版本参考实例（JDK 8，A25） | QA | 负责人批准联网 | 进世界、放机器、开 GUI；须在 P1-T14 前完成 |
+| 6 | P2 核心骨架（平台接口、生命周期、网络、配置） | Core + Platform | G0 | 见 P2 任务卡 |
+| 7 | P1-T14～T17 新增范围 spec（焦炉 / 管道 / 装备 / 音频与命令） | Spec | G5（MVP）后 | 每页四要素齐全 |
 
 > [!NOTE]
-> 截至 2026-11-10，负责人已通过问答闭合全部争议点（decisions.md A11–A22，见变更记录 D）。唯一仍需负责人**提供**（而非决定）的输入是授权原文。新出现的争议一律按 §7 停手上报，不要自行拍板。
+> 截至 2026-11-11，全部决策已闭合（decisions.md A1–A25、B、C-MF1–10、C-MF8a）。新出现的争议一律按 §7 停手上报。
 
 ---
 

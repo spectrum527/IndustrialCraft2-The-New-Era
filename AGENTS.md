@@ -8,14 +8,15 @@
 
 | 角色 | 可读 | 禁止 |
 |---|---|---|
-| **Spec 角色**（Spec Lead / Spec Agent） | `reference/INDEX.md` 指向的全部反编译源码与资源、`../docs/`、`../data-workspace/` | 把反编译代码片段（>5 行）、SRG 名、行号写进 `spec/`（规格只描述行为） |
-| **实现角色**（Core/Platform/Content/Client/QA） | `spec/`、`decisions.md`、公开 API 文档、测试与 parity 期望值 | 读 `reference/`、`../analysis/`、`../docs/mechanisms/`、`../data-workspace/`；在上下文中出现这些路径 |
+| **Spec 角色**（Spec Lead / Spec Agent） | `reference/INDEX.md` 指向的全部反编译源码与资源（2.9.40 与 2.8.222 两版）、`../docs/`、`../data-workspace/`、`../missing-features/` | 把反编译代码片段（>5 行）、SRG 名、行号写进 `spec/`（规格只描述行为） |
+| **实现角色**（Core/Platform/Content/Client/QA） | `spec/`、`decisions.md`、公开 API 文档、测试与 parity 期望值 | 读 `reference/`、`../analysis/`、`../analysis-1122/`、`../missing-features/`、`../docs/mechanisms/`、`../data-workspace/`；在上下文中出现这些路径 |
 | **资产角色**（Artist/Audio） | `assets/` 登记表、原版素材（经 `reference/INDEX.md` 定位，仅用于复用/重绘） | — |
 
 补充：
 
 - 任务卡只引用 `spec/` 章节号；PR 描述必须填"依据的 spec 章节"。
-- CI 对 `src/` vs `reference/` 跑 5-gram Jaccard 相似度：单文件 >25% 失败、>15% 警告、连续 8 行相同直接失败。
+- 版本基线（decisions.md A23）：2.9.40 为行为基线，2.8.222 只用于缺失功能与交叉验证；两版不一致时 Spec 角色登记为 B 表"待裁决"项，不得自行取舍。
+- 相似度检查同时对照**两版**反编译源码（`--reference` 传两次）；CI 对 `src/` vs `reference/` 跑 5-gram Jaccard 相似度：单文件 >25% 失败、>15% 警告、连续 8 行相同直接失败。
 - 例外：**素材与数值**。原版贴图/音效/模型私有阶段按 decisions.md A7 复用，但存放于独立私有仓库 `ia2-legacy-assets`、不进本仓库历史（A22），登记于 `assets/SOURCES.md`；转 Public 前须全部替换为新作（CC BY-SA 4.0，A21）。数值与公式是事实，spec 里照抄。
 
 ## 2. 文件所有权
