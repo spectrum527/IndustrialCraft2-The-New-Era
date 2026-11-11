@@ -80,6 +80,20 @@ class SimilarityTests(unittest.TestCase):
         self.assertIn("eight_identical_lines", report["files"][0]["reasons"])
         self.assertEqual(report["files"][0]["exact_line_matches"][0]["candidate_line"], 1)
 
+    def test_multiple_references_are_all_checked(self):
+        second = self.root / "reference2"
+        second.mkdir()
+        (self.reference / "New.java").write_text(
+            "public class New { void run() { System.exit(0); } }", encoding="utf-8")
+        source = "\n".join("int field%d = %d;" % (i, i) for i in range(12))
+        (second / "Old.java").write_text(source, encoding="utf-8")
+        (self.candidate / "A.java").write_text(source, encoding="utf-8")
+        report, code = check.run(self.args + ["--reference", str(second)])
+        self.assertEqual(code, 1)
+        self.assertEqual(report["scanned"]["reference"], 2)
+        self.assertEqual(report["files"][0]["match"], "ref2:Old.java")
+        self.assertIn("eight_identical_lines", report["files"][0]["reasons"])
+
     def test_short_empty_and_empty_directory_are_errors(self):
         for source in ("", "// comment", "a b c d"):
             report, code = self.pair(source, "class B { int y = 2; }")
