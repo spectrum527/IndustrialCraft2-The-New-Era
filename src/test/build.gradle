@@ -1,0 +1,14 @@
+plugins { id 'java-library' }
+dependencies {
+    testImplementation project(':common')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+}
+def targets = providers.gradleProperty('ia2.testTarget').map { [it] }.getOrElse(['1.21.1', '26.1'])
+tasks.named('test') {
+    useJUnitPlatform()
+    dependsOn targets.collect { ":neoforge:$it:jar" }
+    systemProperty 'ia2.jars', targets.collect {
+        rootProject.project(":neoforge:$it").tasks.named('jar').get().archiveFile.get().asFile.absolutePath
+    }.join(File.pathSeparator)
+}

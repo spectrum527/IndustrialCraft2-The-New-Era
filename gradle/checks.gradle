@@ -1,0 +1,33 @@
+def commonJavaSources = fileTree('src/common/src') { include '**/*.java' }
+def commonImports = tasks.register('checkCommonImports') {
+    inputs.files(commonJavaSources)
+    doLast {
+        commonJavaSources.each {
+            if (it.text =~ /(?m)^\s*import\s+(static\s+)?(?:net\.neoforged|net\.minecraftforge|net\.fabricmc)\./) {
+                throw new GradleException("Platform import in common: $it")
+            }
+        }
+    }
+}
+def assetIsolation = tasks.register('checkAssetIsolation') {
+    doLast {
+        def tracked = providers.exec { commandLine 'git', 'ls-files', '-z' }.standardOutput.asText.get().split('\u0000')
+        def registry = file('assets/SOURCES.md')
+        def resources = tracked.findAll { (it.startsWith('assets/') && !(it ==~ /.*(?:\.md|\.gitkeep)/))
+                || it ==~ /.*\.(png|ogg|wav|jpg|jpeg|webp|obj|glb|gltf)/
+                || it ==~ /.*\/(textures|models|sounds|blockstates)\/.*\.json/ }
+        if (resources.empty && !registry.exists()) {
+            logger.warn('Asset registry pending; no production assets are tracked.')
+        }
+        resources.each { path ->
+            def registered = path.startsWith('assets/') && registry.exists() && registry.readLines().any { line ->
+                def cells = line.split('\\|').collect { it.trim().replace('`', '') }.findAll { !it.empty }
+                cells.size() > 1 && cells[0] == path && cells[1] == 'new'
+            }
+            if (!path.startsWith('assets/') || !registered) {
+                throw new GradleException("Unregistered new asset or isolated asset tracked: $path")
+            }
+        }
+    }
+}
+tasks.named('check') { dependsOn commonImports, assetIsolation, 'spotlessCheck' }

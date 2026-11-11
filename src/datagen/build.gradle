@@ -1,0 +1,5 @@
+plugins { id 'java-library' }
+dependencies { implementation project(':common') }
+tasks.register('runData') {
+    dependsOn ':neoforge:1.21.1:runData', ':neoforge:26.1:runData'
+}
