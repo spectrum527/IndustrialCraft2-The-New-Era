@@ -31,3 +31,8 @@ bin/
 # ---- OS ----
 .DS_Store
 Thumbs.db
+
+# ---- Bootstrap and local task fixtures ----
+!gradle/wrapper/gradle-wrapper.jar
+.task-context/
+__pycache__/

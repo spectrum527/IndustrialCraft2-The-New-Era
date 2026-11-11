@@ -1,0 +1,6 @@
+plugins { id 'net.neoforged.moddev' }
+ext.minecraftVersion = '26.1'
+ext.neoForgeVersion = providers.gradleProperty('neoforge_261').get()
+ext.platformJava = 25
+ext.loaderMetadata = ''
+apply from: '../platform.gradle'
