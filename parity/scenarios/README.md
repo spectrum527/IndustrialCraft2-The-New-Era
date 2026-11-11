@@ -9,7 +9,7 @@
 | M01 | 煤 1 个、600 EU、进度 0 | 采集 0–300 tick 共 301 个状态。每 tick 储能下降 2 EU。第 299 tick 余 2 EU、煤 1 个、输出为空。第 300 tick 储能归零，输入为空，输出煤粉 1 个，进度归零。 |
 | M08 | 煤 2 个、1200 EU、进度 0 | 采集 0–600 tick 共 601 个状态。第 299 至 300 tick 储能由 602 降至 598 EU，输出煤粉 1 个。第 599 tick 储能归零，进度为 299，`active=true`。第 600 tick 保留煤和煤粉各 1 个、进度 299，`active=false`。 |
 
-`macerator-M01.json` 保留依据规格编制的配对计划，`results=[]` 表示双边比较未执行，不能据此宣称验收通过。M01 和 M08 的 `*-observations.json` 使用单边记录格式 `ia2.reference-observation.v1`，`source_role=reference` 表明数据来自参考端。M08 仅记录观测，连续计费行为交由负责人评审。
+`macerator-M01.json` 保留依据规格编制的配对计划，`results=[]` 表示双边比较未执行，不能据此宣称验收通过。M01 和 M08 的 `*-observations.json` 使用单边记录格式 `ia2.reference-observation.v1`，`source_role=reference` 表明数据来自参考端。负责人已批准在重建中取消完成 tick 的额外扣电，B#41 决策与规格正在独立 PR 中落地。M08 为参考端实测，候选修复与双边比较尚未执行。
 
 机器下方平台位于 y=63，x=-4..4、z=-4..5。两次运行的第 0 tick 均确认输出、升级槽和放电槽为空，周围布置无外部供能。夹具重置机器时掉落的旧物品留在平台上，采样读取机器内部输入和输出槽。
 
