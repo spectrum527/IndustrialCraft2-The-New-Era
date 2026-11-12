@@ -14,6 +14,7 @@ def junit = tasks.named('test', Test) {
     doFirst { delete reports.junitXml.outputLocation }
     finalizedBy 'requireJUnitExecution'
     dependsOn targets.collect { ":neoforge:$it:jar" }
+    systemProperty 'ia2.testClassesDirs', testClassesDirs.asPath
     systemProperty 'ia2.jars', targets.collect {
         rootProject.project(":neoforge:$it").tasks.named('jar').get().archiveFile.get().asFile.absolutePath
     }.join(File.pathSeparator)

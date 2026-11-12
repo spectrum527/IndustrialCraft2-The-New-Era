@@ -7,7 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import org.junit.jupiter.api.Test;
@@ -46,6 +51,7 @@ class BuildContractTest {
 
     @Test
     void productionJarsExcludeDevelopmentTests() throws Exception {
+        var compiledTests = compiledTestEntries();
         for (String path : System.getProperty("ia2.jars").split(File.pathSeparator)) {
             try (var jar = new JarFile(path)) {
                 var testEntries =
@@ -55,8 +61,7 @@ class BuildContractTest {
                                         name ->
                                                 name.startsWith("com/industrialage/ia2/gametest/")
                                                         || name.startsWith("data/ia2_gametest/")
-                                                        || name.equals(
-                                                                "com/industrialage/ia2/BuildContractTest.class")
+                                                        || compiledTests.contains(name)
                                                         || name.startsWith("org/junit/")
                                                         || name.startsWith("org/opentest4j/")
                                                         || name.startsWith("org/apiguardian/"))
@@ -74,5 +79,27 @@ class BuildContractTest {
                 }
             }
         }
+    }
+
+    private static Set<String> compiledTestEntries() throws IOException {
+        var classDirectories = System.getProperty("ia2.testClassesDirs");
+        assertNotNull(classDirectories, "Gradle did not provide the JUnit class directories");
+        var entries = new HashSet<String>();
+        for (String directory : classDirectories.split(File.pathSeparator)) {
+            var root = Path.of(directory);
+            if (!Files.isDirectory(root)) {
+                continue;
+            }
+            try (var paths = Files.walk(root)) {
+                paths.filter(Files::isRegularFile)
+                        .filter(path -> path.getFileName().toString().endsWith(".class"))
+                        .map(root::relativize)
+                        .map(path -> path.toString().replace(File.separatorChar, '/'))
+                        .forEach(entries::add);
+            }
+        }
+        assertFalse(
+                entries.isEmpty(), "No compiled JUnit classes were available for isolation checks");
+        return entries;
     }
 }
