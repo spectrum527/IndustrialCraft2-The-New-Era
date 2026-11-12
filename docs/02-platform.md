@@ -1,6 +1,6 @@
 # 平台与构建记录（P0-T3）
 
-本记录落实 `decisions.md` A5、A6、A17、A19、A20、A22，不改变既有平台决定。本轮已取得 P0-T4 本地与 Linux CI 双版本构建证据；负责人审批见 [P0-T4 PR](https://github.com/spectrum527/ia2/pull/10)，G0 尚未通过。
+本记录落实 `decisions.md` A5、A6、A17、A19、A20、A22，不改变既有平台决定。本轮已取得 P0-T4 本地与 Linux CI 双版本构建证据；负责人审批见 [P0-T4 PR](https://github.com/spectrum527/ia2/pull/10)。负责人于 2026-11-12 确认 G0 通过，见 [G0 记录](gates/G0.md)。
 
 ## 平台与版本
 
@@ -8,7 +8,8 @@
 |---|---|---|
 | 主基线 | Minecraft 1.21.1 / NeoForge | JDK 21；MVP 与 G5 在此验收 |
 | 同步移植 | Minecraft 26.1 / NeoForge | JDK 25；从第一天双版本编译，运行验收从 P6 纳入 |
-| 行为参考 | Minecraft 1.19.2 / Forge | JDK 17；仅用于参考实例和 parity 采样，不是当前发布目标 |
+| 行为参考 | Minecraft 1.19.2 / Forge | JDK 17；2.9.40 为行为基线，不是发布目标 |
+| 补充参考 | Minecraft 1.12.2 / Forge | A25 要求 JDK 8；P0-T9 待执行，用于已批准缺失功能与交叉核对，不阻塞本次 G0 |
 
 - 构建插件：**ModDevGradle**（A19）。
 - 本轮锁定：1.21.1 使用 NeoForge **21.1.265**；26.1 使用 NeoForge **26.1.0.19-beta**；ModDevGradle **2.0.148**；Gradle Wrapper **9.2.1**。构建值写入 `gradle.properties` 和 Wrapper 配置，升级另行验证，不使用动态版本。
@@ -63,4 +64,4 @@ src/
 
 主线专用服务器曾实际记录入口加载及 `Done`，随后人工停止并保存世界；该停止命令的非零退出码不冒充成功构建。未执行 26.1 运行验收、客户端功能或 GameTest；相似度缺私有输入时仍明确跳过。
 
-负责人已批准 P0-T4 / P0-T5 首次依赖下载。P0-T5 已完成进入世界、放置机器、打开 GUI、退出重启后重入，以及 M01 / M08 的单边参考采样，见 [参考实例 PR](https://github.com/spectrum527/ia2/pull/13)；额外扣电的修复目标已由负责人批准，见 [B#41 决策与规格 PR](https://github.com/spectrum527/ia2/pull/14)；候选实现、回归与双边比较仍未完成。P2 Core 须等待 P0-T4 的完整验收与负责人批准 G0；构建和采样证据不代替合规存档或门禁批准。
+负责人已批准 P0-T4 / P0-T5 首次依赖下载。P0-T5 已完成进入世界、放置机器、打开 GUI、退出重启后重入，以及 M01 / M08 的单边参考采样，见 [参考实例 PR](https://github.com/spectrum527/ia2/pull/13)；额外扣电的修复目标已由负责人批准，见 [B#41 决策与规格 PR](https://github.com/spectrum527/ia2/pull/14)；候选实现、回归与双边比较仍未完成。负责人现已确认 G0 通过，P2 可按任务依赖开工；授权原件继续后补，P2 的注册、生命周期、网络、配置与客户端功能仍须分别验收。
