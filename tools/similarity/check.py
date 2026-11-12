@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Conservative Java token similarity check; Python standard library only."""
 import argparse
+import hashlib
+import io
 import json
 import os
 import re
@@ -56,17 +58,56 @@ def inventory(root):
     return paths
 
 
-def load(root, paths):
+def unique_policy_entries(pairs):
+    entries = {}
+    for path, digest in pairs:
+        if path in entries:
+            raise ValueError("duplicate boilerplate policy path: " + repr(path))
+        entries[path] = digest
+    return entries
+
+
+def load_policy(file):
+    try:
+        entries = json.loads(Path(file).read_text(encoding="utf-8"),
+                             object_pairs_hook=unique_policy_entries)
+    except (json.JSONDecodeError, RecursionError) as error:
+        raise ValueError("invalid boilerplate policy JSON: " + str(error)) from error
+    if not isinstance(entries, dict):
+        raise ValueError("boilerplate policy must be a JSON object")
+    for path, digest in entries.items():
+        if ("\\" in path or "\0" in path or re.match(r"^[A-Za-z]:", path)
+                or any(part in ("", ".", "..") for part in path.split("/"))):
+            raise ValueError("invalid boilerplate policy path: " + repr(path))
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ValueError("invalid boilerplate policy SHA-256 for " + repr(path))
+    return entries
+
+
+def load(root, paths, policy=None):
     files = []
     for path in paths:
-        source = path.read_text(encoding="utf-8")
+        relative = path.relative_to(root)
+        expected = policy.get(relative.as_posix()) if policy is not None else None
+        matched = False
+        if expected is None:
+            source = path.read_text(encoding="utf-8")
+        else:
+            contents = path.read_bytes()
+            matched = hashlib.sha256(contents).hexdigest() == expected
+            # Use the same bytes and universal newline handling as read_text.
+            with io.TextIOWrapper(io.BytesIO(contents), encoding="utf-8") as text:
+                source = text.read()
         tokens = tokenize(source)
         if len(tokens) < 5:
             raise ValueError("insufficient tokens (need 5): " + str(path))
         lines = source.splitlines()
-        files.append({"path": str(path.relative_to(root)),
-                      "grams": {tuple(tokens[i:i + 5]) for i in range(len(tokens) - 4)},
-                      "lines": {tuple(lines[i:i + 8]): i + 1 for i in range(len(lines) - 7)}})
+        item = {"path": str(relative),
+                "grams": {tuple(tokens[i:i + 5]) for i in range(len(tokens) - 4)},
+                "lines": {tuple(lines[i:i + 8]): i + 1 for i in range(len(lines) - 7)}}
+        if policy is not None:
+            item["boilerplate_matched"] = matched
+        files.append(item)
     return files
 
 
@@ -88,9 +129,17 @@ def compare(candidate, references):
         reasons.append("jaccard_above_15_percent")
     if exact:
         reasons.append("eight_identical_lines")
-    return {"candidate": candidate["path"], "match": matched, "score": score,
-            "status": classify(score, bool(exact)), "reasons": reasons,
-            "exact_line_matches": exact}
+    result = {"candidate": candidate["path"], "match": matched, "score": score,
+              "status": classify(score, bool(exact)), "reasons": reasons,
+              "exact_line_matches": exact}
+    if "boilerplate_matched" in candidate:
+        matched_policy = candidate["boilerplate_matched"]
+        applied = matched_policy and not exact and result["status"] != "pass"
+        result.update(raw_status=result["status"], boilerplate_matched=matched_policy,
+                      boilerplate_applied=applied)
+        if applied:
+            result["status"] = "pass"
+    return result
 
 
 class Parser(argparse.ArgumentParser):
@@ -106,8 +155,11 @@ def run(argv=None):
         parser.add_argument("--candidate", required=True)
         parser.add_argument("--reference", action="append",
                             help="reference tree; repeat to compare against several decompiled versions")
+        parser.add_argument("--boilerplate-policy",
+                            help="JSON map of approved relative paths to raw SHA-256 digests")
         args = parser.parse_args(argv)
         candidate = directory(args.candidate)
+        policy = load_policy(args.boilerplate_policy) if args.boilerplate_policy is not None else None
         if args.reference is None:
             if os.environ.get("CI", "").lower() not in ("", "0", "false", "no"):
                 report["status"] = "skipped"
@@ -125,7 +177,7 @@ def run(argv=None):
                     item["path"] = "ref%d:%s" % (index + 1, item["path"])
             reference_files.extend(loaded)
         report["scanned"]["reference"] = len(reference_files)
-        for item in load(candidate, candidates):
+        for item in load(candidate, candidates, policy):
             report["files"].append(compare(item, reference_files))
             report["scanned"]["comparisons"] += len(reference_files)
         statuses = {item["status"] for item in report["files"]}

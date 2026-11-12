@@ -1,4 +1,5 @@
 """All Java fixtures are authored here; no project/reference inputs are read."""
+import hashlib
 import json
 import os
 import re
@@ -21,12 +22,17 @@ class SimilarityTests(unittest.TestCase):
         self.candidate.mkdir()
         self.reference.mkdir()
         self.args = ["--candidate", str(self.candidate), "--reference", str(self.reference)]
+        self.policy_file = self.root / "boilerplate.json"
 
     def pair(self, left, right):
         (self.candidate / "A.java").write_text(left, encoding="utf-8")
         (self.reference / "B.java").write_text(right, encoding="utf-8")
         with patch.dict(os.environ, {"CI": "false"}):
             return check.run(self.args)
+
+    def policy_args(self, entries):
+        self.policy_file.write_text(json.dumps(entries), encoding="utf-8")
+        return self.args + ["--boilerplate-policy", str(self.policy_file)]
 
     def test_independent_and_recursive_best_match(self):
         source = "public class A { int sum(int a, int b) { return a + b; } }"
@@ -119,6 +125,115 @@ class SimilarityTests(unittest.TestCase):
         completed = subprocess.run(command, capture_output=True, text=True, check=False)
         self.assertEqual(completed.returncode, 2)
         self.assertEqual(json.loads(completed.stdout)["status"], "error")
+
+    def test_policy_waives_both_score_thresholds_for_matching_relative_path(self):
+        source = b"class A { int x = 1; }"
+        nested = self.candidate / "nested"
+        nested.mkdir()
+        (nested / "A.java").write_bytes(source)
+        args = self.policy_args({"nested/A.java": hashlib.sha256(source).hexdigest()})
+        for right, score, status in [(source, 1.0, "fail"), (b"class B { int y = 2; }", 0.25, "warn")]:
+            with self.subTest(raw_status=status):
+                (self.reference / "B.java").write_bytes(right)
+                raw, _ = check.run(self.args)
+                report, code = check.run(args)
+                result = report["files"][0]
+                self.assertEqual((code, report["status"], result["status"]), (0, "pass", "pass"))
+                self.assertEqual((result["score"], result["raw_status"]), (score, status))
+                self.assertEqual(result["match"], "B.java")
+                self.assertEqual(result["reasons"], raw["files"][0]["reasons"])
+                self.assertIs(result["boilerplate_matched"], True)
+                self.assertIs(result["boilerplate_applied"], True)
+
+    def test_policy_hashes_raw_bytes_without_changing_newline_normalization(self):
+        source = b'class A {\r\nString text = """\r\nfirst\rsecond\r\n""";\r\n}'
+        normalized = source.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+        candidate = self.candidate / "A.java"
+        candidate.write_bytes(source)
+        (self.reference / "B.java").write_bytes(normalized)
+        args = self.policy_args({"A.java": hashlib.sha256(source).hexdigest()})
+        strict, code = check.run(self.args)
+        self.assertEqual((code, strict["files"][0]["score"]), (1, 1.0))
+        self.assertNotIn("boilerplate_applied", strict["files"][0])
+        report, code = check.run(args)
+        self.assertEqual((code, report["files"][0]["score"]), (0, 1.0))
+        candidate.write_bytes(normalized)
+        report, code = check.run(args)
+        result = report["files"][0]
+        self.assertEqual((code, result["score"], result["status"]), (1, 1.0, "fail"))
+        self.assertIs(result["boilerplate_matched"], False)
+        self.assertIs(result["boilerplate_applied"], False)
+
+    def test_unlisted_and_moved_candidates_still_gate_the_report(self):
+        source = "class A { int x = 1; }"
+        self.pair(source, source)
+        args = self.policy_args({"A.java": hashlib.sha256(source.encode()).hexdigest()})
+        (self.candidate / "Other.java").write_text(source, encoding="utf-8")
+        report, code = check.run(args)
+        self.assertEqual((code, report["status"]), (1, "fail"))
+        states = {item["candidate"]: item["status"] for item in report["files"]}
+        self.assertEqual(states, {"A.java": "pass", "Other.java": "fail"})
+        (self.candidate / "A.java").rename(self.candidate / "Moved.java")
+        report, code = check.run(args)
+        self.assertEqual((code, report["status"]), (1, "fail"))
+        self.assertTrue(all(not item["boilerplate_matched"] for item in report["files"]))
+        self.assertTrue(all(item["status"] == "fail" for item in report["files"]))
+
+    def test_policy_cannot_waive_eight_lines_in_either_baseline(self):
+        shared = "\n".join("// authored line " + str(i) for i in range(8)) + "\n"
+        source = "class A { int x = 1; }"
+        candidate = (shared + source).encode()
+        (self.candidate / "A.java").write_bytes(candidate)
+        (self.reference / "B.java").write_text(shared + "enum B { X, Y; }", encoding="utf-8")
+        second = self.root / "second"
+        second.mkdir()
+        (second / "Best.java").write_text(source, encoding="utf-8")
+        digest = hashlib.sha256(candidate).hexdigest()
+        args = self.policy_args({"A.java": digest}) + ["--reference", str(second)]
+        report, code = check.run(args)
+        result = report["files"][0]
+        self.assertEqual((code, result["status"], result["raw_status"]), (1, "fail", "fail"))
+        self.assertEqual((result["score"], result["match"]), (1.0, "ref2:Best.java"))
+        self.assertEqual(result["exact_line_matches"], [
+            {"reference": "ref1:B.java", "candidate_line": 1, "reference_line": 1}
+        ])
+        self.assertIs(result["boilerplate_matched"], True)
+        self.assertIs(result["boilerplate_applied"], False)
+
+    def test_missing_and_malformed_policies_error(self):
+        args = self.args + ["--boilerplate-policy", str(self.policy_file)]
+        report, code = check.run(args)
+        self.assertEqual((code, report["status"]), (2, "error"))
+        digest = "a" * 64
+        duplicate = '{"A.java":"%s", "A.java":"%s"}' % (digest, digest)
+        invalid_digests = (None, 0, digest[:-1], digest.upper(), "g" * 64)
+        malformed = ["{", "[]", duplicate]
+        malformed.extend(json.dumps({"A.java": value}) for value in invalid_digests)
+        for invalid in malformed:
+            with self.subTest(policy=invalid):
+                self.policy_file.write_text(invalid, encoding="utf-8")
+                report, code = check.run(args)
+                self.assertEqual((code, report["status"]), (2, "error"))
+                self.assertFalse(report["files"])
+
+    def test_noncanonical_policy_paths_error(self):
+        for name in ("", "/A.java", "../A.java", "nested/../A.java", "./A.java", "nested/./A.java",
+                     "nested//A.java", "A.java/", "nested\\A.java", "C:/A.java", "C:A.java", "A\0.java"):
+            with self.subTest(path=name):
+                report, code = check.run(self.policy_args({name: "a" * 64}))
+                self.assertEqual((code, report["status"]), (2, "error"))
+                self.assertIn("invalid boilerplate policy path", report["errors"][0])
+
+    def test_ci_skips_missing_baselines_only_with_valid_policy(self):
+        self.policy_args({"missing.java": "a" * 64})
+        args = self.args[:2] + ["--boilerplate-policy", str(self.policy_file)]
+        with patch.dict(os.environ, {"CI": "true"}):
+            report, code = check.run(args)
+            self.assertEqual((code, report["status"]), (3, "skipped"))
+            self.assertEqual(report["scanned"]["comparisons"], 0)
+            self.policy_file.write_text("{} garbage", encoding="utf-8")
+            report, code = check.run(args)
+            self.assertEqual((code, report["status"]), (2, "error"))
 
 
 if __name__ == "__main__":
