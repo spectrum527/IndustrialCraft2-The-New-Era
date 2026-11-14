@@ -31,7 +31,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python3 tools/similarity/check.py --candidate src > similarity.json
+          python3 tools/similarity/check.py --candidate src --boilerplate-policy tools/similarity/boilerplate.json > similarity.json
           result=$?
           set -e
           cat similarity.json
