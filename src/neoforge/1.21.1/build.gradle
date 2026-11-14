@@ -4,3 +4,4 @@ ext.neoForgeVersion = providers.gradleProperty('neoforge_1211').get()
 ext.platformJava = 21
 ext.loaderMetadata = 'modLoader="javafml"\nloaderVersion="[4,)"'
 apply from: '../platform.gradle'
+apply from: rootProject.file('src/test/game-test.gradle')

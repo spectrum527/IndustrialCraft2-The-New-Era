@@ -1,0 +1,88 @@
+import groovy.json.JsonOutput
+import groovy.xml.XmlSlurper
+import java.time.Duration
+
+def fixtures = rootProject.layout.projectDirectory.dir('src/test/src/gameTest')
+def gameTestDir = layout.buildDirectory.dir('run/gameTest')
+def smokeId = 'harnesssmoke'
+
+sourceSets {
+    gameTest {
+        java.setSrcDirs([fixtures.dir('java')])
+        resources.setSrcDirs([fixtures.dir('resources')])
+    }
+}
+neoForge.addModdingDependenciesTo(sourceSets.gameTest)
+
+def productionMod = neoForge.mods.named('ia2').get()
+def fixturesMod = neoForge.mods.create('ia2_gametest') {
+    sourceSet sourceSets.gameTest
+}
+neoForge.runs.configureEach { run ->
+    run.loadedMods.set([productionMod])
+}
+neoForge.runs.create('gameTest') {
+    type.set('gameTestServer')
+    sourceSet.set(sourceSets.gameTest)
+    loadedMods.set([productionMod, fixturesMod])
+    gameDirectory.set(gameTestDir)
+    systemProperty 'neoforge.enabledGameTestNamespaces', 'ia2_gametest'
+}
+
+def gameTestRun = tasks.named('runGameTest', JavaExec)
+def reportGameTest = tasks.register('reportGameTest') {
+    doLast {
+        def run = gameTestRun.get()
+        def exitCode = run.executionResult.orNull?.exitValue
+        def directory = gameTestDir.get().asFile
+        def xml = new File(directory, 'game-test.xml')
+        def cases = null
+        def problem = null
+        if (exitCode == null || !xml.isFile()) {
+            problem = run.state.failure?.cause?.message ?: 'GameTest did not produce a completed report.'
+        } else {
+            try {
+                cases = new XmlSlurper().parse(xml).depthFirst().findAll { it.name() == 'testcase' }
+            } catch (IOException | org.xml.sax.SAXException error) {
+                problem = "Could not read GameTest report: ${error.message}"
+            }
+        }
+        def requiredFailure = { it.failure.size() > 0 || it.error.size() > 0 }
+        // The native reporter represents a failed optional GameTest as <skipped>.
+        def failed = { requiredFailure(it) || it.skipped.size() > 0 }
+        def smoke = cases?.find { it.@name.text() == smokeId }
+        def smokeStatus = smoke == null ? 'not-executed' : (failed(smoke) ? 'failed' : 'passed')
+        def result = [smokeId: smokeId, smokeStatus: smokeStatus, tests: cases?.size(),
+                      passed: cases?.count { !failed(it) }, failures: cases?.count(failed),
+                      requiredFailures: cases?.count(requiredFailure), exitCode: exitCode]
+        if (problem == null) {
+            if (cases.empty) {
+                problem = 'GameTest completed without executing any cases.'
+            } else if (smokeStatus == 'not-executed') {
+                problem = "Required smoke did not execute: ${smokeId}."
+            } else if (smokeStatus == 'failed' || result.requiredFailures != 0) {
+                problem = 'Required GameTest cases failed.'
+            } else if (exitCode != 0) {
+                problem = "GameTest server exited with status ${exitCode}."
+            }
+        }
+        result.problem = problem
+        directory.mkdirs()
+        new File(directory, 'result.json').text = JsonOutput.prettyPrint(JsonOutput.toJson(result)) + '\n'
+        logger.lifecycle("GameTest: ${JsonOutput.toJson(result)}")
+        if (problem != null) {
+            throw new GradleException("${problem} See ${directory}/result.json and logs/.")
+        }
+    }
+}
+gameTestRun.configure {
+    timeout.set(Duration.ofMinutes(5))
+    ignoreExitValue = true
+    doFirst {
+        delete gameTestDir
+        def directory = gameTestDir.get().asFile
+        directory.mkdirs()
+        new File(directory, 'server.properties').text = ''
+    }
+    finalizedBy reportGameTest
+}

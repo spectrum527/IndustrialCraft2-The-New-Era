@@ -22,6 +22,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Build target and verify JAR contract
         run: ./gradlew :neoforge:${{ matrix.target }}:build :test:test -Pia2.testTarget=${{ matrix.target }} check
+      - name: Run 1.21.1 GameTests
+        if: matrix.target == '1.21.1'
+        timeout-minutes: 10
+        shell: bash
+        run: ./gradlew :test:runGameTest 2>&1 | tee game-test-ci.log
       - name: Resource overlay regression
         if: matrix.target == '1.21.1'
         run: python3 src/test/resource_overlay.py
@@ -46,5 +51,10 @@ jobs:
           name: verification-${{ matrix.target }}
           path: |
             similarity.json
+            game-test-ci.log
             src/test/build/reports/tests/
+            src/test/build/test-results/
             src/neoforge/${{ matrix.target }}/build/libs/
+            src/neoforge/${{ matrix.target }}/build/run/gameTest/game-test.xml
+            src/neoforge/${{ matrix.target }}/build/run/gameTest/result.json
+            src/neoforge/${{ matrix.target }}/build/run/gameTest/logs/latest.log

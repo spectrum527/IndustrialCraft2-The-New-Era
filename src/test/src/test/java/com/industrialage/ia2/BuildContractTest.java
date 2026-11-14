@@ -1,12 +1,19 @@
 package com.industrialage.ia2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +47,59 @@ class BuildContractTest {
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));
             }
         }
+    }
+
+    @Test
+    void productionJarsExcludeDevelopmentTests() throws Exception {
+        var compiledTests = compiledTestEntries();
+        for (String path : System.getProperty("ia2.jars").split(File.pathSeparator)) {
+            try (var jar = new JarFile(path)) {
+                var testEntries =
+                        jar.stream()
+                                .map(JarEntry::getName)
+                                .filter(
+                                        name ->
+                                                name.startsWith("com/industrialage/ia2/gametest/")
+                                                        || name.startsWith("data/ia2_gametest/")
+                                                        || compiledTests.contains(name)
+                                                        || name.startsWith("org/junit/")
+                                                        || name.startsWith("org/opentest4j/")
+                                                        || name.startsWith("org/apiguardian/"))
+                                .toList();
+                assertTrue(
+                        testEntries.isEmpty(),
+                        () -> path + " contains test fixtures: " + testEntries);
+                var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
+                assertNotNull(metadata);
+                try (var stream = jar.getInputStream(metadata)) {
+                    assertFalse(
+                            new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                                    .contains("ia2_gametest"),
+                            path);
+                }
+            }
+        }
+    }
+
+    private static Set<String> compiledTestEntries() throws IOException {
+        var classDirectories = System.getProperty("ia2.testClassesDirs");
+        assertNotNull(classDirectories, "Gradle did not provide the JUnit class directories");
+        var entries = new HashSet<String>();
+        for (String directory : classDirectories.split(File.pathSeparator)) {
+            var root = Path.of(directory);
+            if (!Files.isDirectory(root)) {
+                continue;
+            }
+            try (var paths = Files.walk(root)) {
+                paths.filter(Files::isRegularFile)
+                        .filter(path -> path.getFileName().toString().endsWith(".class"))
+                        .map(root::relativize)
+                        .map(path -> path.toString().replace(File.separatorChar, '/'))
+                        .forEach(entries::add);
+            }
+        }
+        assertFalse(
+                entries.isEmpty(), "No compiled JUnit classes were available for isolation checks");
+        return entries;
     }
 }
