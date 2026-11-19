@@ -1,0 +1,37 @@
+import groovy.xml.XmlSlurper
+
+sourceSets {
+    hostContract {
+        java.setSrcDirs([rootProject.file('src/test/src/hostContract/java')])
+    }
+}
+neoForge.addModdingDependenciesTo(sourceSets.hostContract)
+dependencies {
+    hostContractImplementation sourceSets.main.output
+    hostContractImplementation project(':common')
+    hostContractImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    hostContractRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+}
+def hostTests = tasks.register('platformHostTest', Test) {
+    group = 'verification'
+    description = 'Runs independent component contracts against the 1.21.1 host adapters.'
+    testClassesDirs = sourceSets.hostContract.output.classesDirs
+    classpath = sourceSets.hostContract.runtimeClasspath
+    useJUnitPlatform()
+    outputs.upToDateWhen { false }
+    outputs.doNotCacheIf('Require current host assertions') { true }
+    doFirst { delete reports.junitXml.outputLocation }
+    finalizedBy 'requirePlatformHostExecution'
+}
+tasks.register('requirePlatformHostExecution') {
+    doLast {
+        def testTask = hostTests.get()
+        def reports = fileTree(testTask.reports.junitXml.outputLocation) { include 'TEST-*.xml' }
+        if (!testTask.state.didWork || !reports.any { file ->
+            def suite = new XmlSlurper().parse(file)
+            suite.@tests.toInteger() > suite.@skipped.toInteger()
+        }) {
+            throw new GradleException('No host adapter contracts executed during this run.')
+        }
+    }
+}
