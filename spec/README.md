@@ -17,7 +17,7 @@
 - 打粉机规格与 M01/M08 参考观测见[打粉机样板](machines/macerator.md)；候选机器需运行 M09。
 - crop / reactor / sound 模板留待对应任务，P1-T1 不扩展可选模板；这些规格不是 MVP/G0 范围批准。
 
-首发物流的容量、方向、真实传输与存盘样本见[物品管、流体管与泵盖](logistics/pipes.md)。后续 P1-T15 追加路由边界。
+首发物流的管段容量和配方见[物品管、流体管与泵盖](logistics/pipes.md)。直管每刻到货量、出口分配、满仓重试及跨区块重连见[路由与恢复样本](logistics/routing.md)。
 
 ## 状态
 
