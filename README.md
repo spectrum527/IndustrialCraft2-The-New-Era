@@ -4,9 +4,9 @@
 
 ## 当前进度
 
-G0 已通过。主线已交付注册、事件、网络、能力四个中立接口、JUnit 和 1.21.1 专服 GameTest。接下来补客户端与配置接口、平台组装和实际适配，再接入发电、线缆、储电和加工。G1、G2 和可玩闭环 G5 待验收。
+G0 与 G2 已通过。两个 NeoForge 版本均已编译，1.21.1 已在独立客户端和专服验证注册、方位能力、配置重载、双向消息及同一存档的重启读回。能量网和机器框架可以接入这些服务。G1 的全量规格和 G5 的可玩切片仍待验收。[G2 结果与复跑命令](docs/gates/G2.md)
 
-首个玩家版本以修复版 1.19.2 的生存与工业玩法为对照。八种物品管、八种流体管和两档泵盖在内部切片可用，首发验收全部八条参考产线。实现与 QA 各自依据规格独立编写。[物流行为规格](spec/logistics/pipes.md)
+首个玩家版本以修复版 1.19.2 的生存与工业玩法为对照。G5 计划交付八种物品管、八种流体管和两档泵盖，首发验收全部八条参考产线。[物流行为规格](spec/logistics/pipes.md)
 
 机器、物品、线缆及管道的纹理全部重绘。首批围绕发电机、BatBox、打粉机、铜缆与电池制作。新图放在 `assets/`，逐项登记作者、来源与许可。制作规则和当前任务见[纹理规格](spec/assets/textures.md)与[接续队列](AGENT-GUIDE.md#6-当前工作2026-11-19)。
 
@@ -25,6 +25,7 @@ G0 已通过。主线已交付注册、事件、网络、能力四个中立接�
 ```sh
 ./gradlew build
 ./gradlew :test:runGameTest
+./gradlew :test:runPlatformHostTest :test:runPlatformWorldTest
 python3 src/test/resource_overlay.py
 ```
 
