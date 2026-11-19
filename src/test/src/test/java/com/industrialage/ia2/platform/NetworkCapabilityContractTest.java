@@ -27,7 +27,7 @@ class NetworkCapabilityContractTest {
 
     @Test
     void messageTypeAcceptsValidIdsAndZeroLimit() {
-        for (String id : List.of("ia2:a", "ia2:0", "ia2:machines/ore._-9")) {
+        for (String id : List.of("ic2:a", "ic2:0", "ic2:machines/ore._-9")) {
             var type = new MessageType<>(id, CODEC, 0, Direction.CLIENT_TO_SERVER);
             assertEquals(id, type.id());
             assertSame(CODEC, type.codec());
@@ -37,7 +37,7 @@ class NetworkCapabilityContractTest {
         }
         assertEquals(
                 Integer.MAX_VALUE,
-                new MessageType<>("ia2:a", CODEC, Integer.MAX_VALUE, Direction.SERVER_TO_CLIENT)
+                new MessageType<>("ic2:a", CODEC, Integer.MAX_VALUE, Direction.SERVER_TO_CLIENT)
                         .maxFrameBytes());
     }
 
@@ -45,8 +45,8 @@ class NetworkCapabilityContractTest {
     void messageTypeRejectsInvalidIds() {
         for (String id :
                 List.of(
-                        "", "ia2:", "other:a", "IA2:a", "ia2:A", "ia2:a b", "ia2:a:b", "ia2:é",
-                        "ia2:a\n")) {
+                        "", "ic2:", "ia2:a", "IC2:a", "ic2:A", "ic2:a b", "ic2:a:b", "ic2:é",
+                        "ic2:a\n")) {
             assertThrows(
                     IllegalArgumentException.class,
                     () -> new MessageType<>(id, CODEC, 1, Direction.CLIENT_TO_SERVER),
@@ -60,11 +60,11 @@ class NetworkCapabilityContractTest {
         assertThrows(
                 NullPointerException.class, () -> new MessageType<>(null, CODEC, 1, direction));
         assertThrows(
-                NullPointerException.class, () -> new MessageType<>("ia2:a", null, 1, direction));
-        assertThrows(NullPointerException.class, () -> new MessageType<>("ia2:a", CODEC, 1, null));
+                NullPointerException.class, () -> new MessageType<>("ic2:a", null, 1, direction));
+        assertThrows(NullPointerException.class, () -> new MessageType<>("ic2:a", CODEC, 1, null));
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new MessageType<>("ia2:a", CODEC, -1, direction));
+                () -> new MessageType<>("ic2:a", CODEC, -1, direction));
     }
 
     @Test
@@ -100,7 +100,7 @@ class NetworkCapabilityContractTest {
             NetworkFacade.Peer peer,
             CapabilityFacade.Target target) {
         MessageType<String> type =
-                new MessageType<>("ia2:text", CODEC, 10, Direction.CLIENT_TO_SERVER);
+                new MessageType<>("ic2:text", CODEC, 10, Direction.CLIENT_TO_SERVER);
         network.register(type);
         network.bindReceiver(type, (Object message, Object source) -> {});
         network.sendToServer(type, "message");

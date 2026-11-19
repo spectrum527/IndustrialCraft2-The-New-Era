@@ -14,8 +14,8 @@ sourceSets {
 }
 neoForge.addModdingDependenciesTo(sourceSets.gameTest)
 
-def productionMod = neoForge.mods.named('ia2').get()
-def fixturesMod = neoForge.mods.create('ia2_gametest') {
+def productionMod = neoForge.mods.named('ic2').get()
+def fixturesMod = neoForge.mods.create('ic2_gametest') {
     sourceSet sourceSets.gameTest
 }
 neoForge.runs.configureEach { run ->
@@ -26,7 +26,7 @@ neoForge.runs.create('gameTest') {
     sourceSet.set(sourceSets.gameTest)
     loadedMods.set([productionMod, fixturesMod])
     gameDirectory.set(gameTestDir)
-    systemProperty 'neoforge.enabledGameTestNamespaces', 'ia2_gametest'
+    systemProperty 'neoforge.enabledGameTestNamespaces', 'ic2_gametest'
 }
 
 def gameTestRun = tasks.named('runGameTest', JavaExec)

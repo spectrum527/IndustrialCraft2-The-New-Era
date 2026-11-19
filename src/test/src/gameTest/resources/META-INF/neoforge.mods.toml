@@ -3,7 +3,7 @@ loaderVersion = "[4,)"
 license = "LGPL-3.0-only"
 
 [[mods]]
-modId = "ia2_gametest"
+modId = "ic2_gametest"
 version = "1"
-displayName = "Industrial Age 2 GameTest Fixtures"
-description = "Development fixtures for the Industrial Age 2 GameTest server."
+displayName = "IndustrialCraft 2 GameTest Fixtures"
+description = "Development fixtures for the IndustrialCraft 2 GameTest server."

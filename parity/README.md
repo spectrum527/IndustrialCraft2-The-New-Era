@@ -24,8 +24,8 @@ Schema 检查结构与已批准容差，后续比较器还必须检查：场景/
   "schema_version": "1.0", "data_version": "synthetic-format-example",
   "scenario": {
     "id": "format-only", "ticks": 21, "seed": 7,
-    "setup": [{"position": [0, 0, 0], "block": "ia2:example_machine",
-      "initial_state": {"stored_eu": 0}, "inventory": [{"slot": 0, "item": "ia2:example_input", "count": 1}]}],
+    "setup": [{"position": [0, 0, 0], "block": "ic2:example_machine",
+      "initial_state": {"stored_eu": 0}, "inventory": [{"slot": 0, "item": "ic2:example_input", "count": 1}]}],
     "samples": [{"id": "duration", "target": [0, 0, 0], "at_ticks": [21],
       "metric": "machine_duration", "unit": "tick", "tolerance": {"type": "absolute", "value": 1}}]
   },

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:ia2:parity:scenario:1",
-  "title": "Industrial Age 2 parity record",
+  "title": "IndustrialCraft 2 parity record",
   "type": "object", "additionalProperties": false,
   "required": ["schema_version", "data_version", "scenario", "results"],
   "properties": {

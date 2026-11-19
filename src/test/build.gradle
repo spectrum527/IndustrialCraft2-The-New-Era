@@ -6,7 +6,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
 }
-def targets = providers.gradleProperty('ia2.testTarget').map { [it] }.getOrElse(['1.21.1', '26.1'])
+def targets = providers.gradleProperty('ic2.testTarget')
+        .orElse(providers.gradleProperty('ia2.testTarget')).map { [it] }.getOrElse(['1.21.1', '26.1'])
 def junit = tasks.named('test', Test) {
     useJUnitPlatform()
     outputs.upToDateWhen { false }

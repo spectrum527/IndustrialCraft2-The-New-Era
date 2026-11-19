@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "data_version": "M01-plan-v1",
+  "data_version": "M01-plan-v2",
   "scenario": {
     "id": "macerator-M01",
     "ticks": 300,
@@ -13,7 +13,7 @@
       },
       {
         "position": [0, 64, 0],
-        "block": "ia2:macerator",
+        "block": "ic2:macerator",
         "initial_state": {
           "stored_eu": 600,
           "progress_tick": 0,

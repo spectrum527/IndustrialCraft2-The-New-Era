@@ -35,7 +35,10 @@ class BuildContractTest {
                         new String(
                                 jar.getInputStream(metadata).readAllBytes(),
                                 StandardCharsets.UTF_8);
-                assertTrue(text.contains("modId=\"ia2\""));
+                assertTrue(text.contains("modId=\"ic2\""));
+                assertTrue(text.contains("displayName=\"IndustrialCraft 2\""));
+                assertTrue(text.contains("[[dependencies.ic2]]"));
+                assertFalse(text.contains("modId=\"ia2\""));
                 assertTrue(
                         text.contains(
                                 "versionRange=\"["
@@ -50,31 +53,34 @@ class BuildContractTest {
     }
 
     @Test
-    void productionJarsExcludeDevelopmentTests() throws Exception {
+    void productionJarsExcludeFixturesAndOldResources() throws Exception {
         var compiledTests = compiledTestEntries();
         for (String path : System.getProperty("ia2.jars").split(File.pathSeparator)) {
             try (var jar = new JarFile(path)) {
-                var testEntries =
+                var unexpectedEntries =
                         jar.stream()
                                 .map(JarEntry::getName)
                                 .filter(
                                         name ->
                                                 name.startsWith("com/industrialage/ia2/gametest/")
+                                                        || name.startsWith("data/ic2_gametest/")
                                                         || name.startsWith("data/ia2_gametest/")
+                                                        || name.startsWith("assets/ia2/")
+                                                        || name.startsWith("data/ia2/")
                                                         || compiledTests.contains(name)
                                                         || name.startsWith("org/junit/")
                                                         || name.startsWith("org/opentest4j/")
                                                         || name.startsWith("org/apiguardian/"))
                                 .toList();
                 assertTrue(
-                        testEntries.isEmpty(),
-                        () -> path + " contains test fixtures: " + testEntries);
+                        unexpectedEntries.isEmpty(),
+                        () -> path + " contains unexpected entries: " + unexpectedEntries);
                 var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
                 assertNotNull(metadata);
                 try (var stream = jar.getInputStream(metadata)) {
                     assertFalse(
                             new String(stream.readAllBytes(), StandardCharsets.UTF_8)
-                                    .contains("ia2_gametest"),
+                                    .contains("ic2_gametest"),
                             path);
                 }
             }
