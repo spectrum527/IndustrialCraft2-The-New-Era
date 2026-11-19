@@ -16,6 +16,7 @@ def junit = tasks.named('test', Test) {
     finalizedBy 'requireJUnitExecution'
     dependsOn targets.collect { ":neoforge:$it:jar" }
     systemProperty 'ia2.testClassesDirs', testClassesDirs.asPath
+    systemProperty 'ic2.activeKeysTable', rootProject.file('spec/config/active-keys.tsv').absolutePath
     systemProperty 'ia2.jars', targets.collect {
         rootProject.project(":neoforge:$it").tasks.named('jar').get().archiveFile.get().asFile.absolutePath
     }.join(File.pathSeparator)
