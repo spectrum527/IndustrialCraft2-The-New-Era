@@ -1,5 +1,6 @@
 java.toolchain.languageVersion = JavaLanguageVersion.of(platformJava)
 base.archivesName = "ic2-neoforge-$minecraftVersion"
+sourceSets.main.java.srcDir('../shared/src/main/java')
 dependencies { implementation project(':common') }
 neoForge {
     enable {

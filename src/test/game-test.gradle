@@ -13,6 +13,10 @@ sourceSets {
     }
 }
 neoForge.addModdingDependenciesTo(sourceSets.gameTest)
+dependencies {
+    gameTestCompileOnly sourceSets.main.output
+    gameTestCompileOnly project(':common')
+}
 
 def productionMod = neoForge.mods.named('ic2').get()
 def fixturesMod = neoForge.mods.create('ic2_gametest') {
