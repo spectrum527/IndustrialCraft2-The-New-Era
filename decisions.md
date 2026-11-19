@@ -8,7 +8,7 @@
 |---|---|---|
 | A1 | 来源与命名依据 | 源码、素材及覆盖版本沿用 A24 记录。2026-11-19 负责人明确恢复 IC2 项目名称，名称的工程使用按 A3。签署原件及其具体条款由 A14 单独存档。 |
 | A2 | 重建策略 | **坚持净室三角色隔离**——作为工程纪律（架构质量、可维护性），不再是法律必需；相似度检查保留为质量门禁 |
-| A3 | 项目命名与兼容 | 游戏显示名 **IndustrialCraft 2**，简称 **IC2**，mod id 与游戏命名空间 **`ic2`**。注册和资源沿用 2.9.40 已有路径，在 P1-T2 逐项核对。现有内部 Java 包及 Maven group `com.industrialage.ia2` 继续使用，A18 的 GitHub 地址保留。附属 API、持久化数据和跨游戏版本存档在相应阶段分别验证。 |
+| A3 | 项目命名与兼容 | 游戏显示名 **IndustrialCraft 2**，简称 **IC2**，mod id 与游戏命名空间 **`ic2`**。注册和资源沿用 2.9.40 已有路径，在 P1-T2 逐项核对。现有内部 Java 包及 Maven group `com.industrialage.ia2` 继续使用，三个 GitHub 仓库的现名和地址见 A18。附属 API、持久化数据和跨游戏版本存档在相应阶段分别验证。 |
 | A4 | 工作区 | `IC2/rebuild/` 子目录（本目录），与 analysis/、docs/ 并列互引用 |
 | A5 | 目标平台 | **NeoForge 1.21.1 为主基线**（MVP/G5 门禁在此验收）+ **NeoForge 26.1 同步移植目标**；common 层自第一天起抽象版本差异 |
 | A6 | Fabric | v1.0 后按社区需求评估；MVP～v1.0 只发 NeoForge |
@@ -23,13 +23,13 @@
 | A15 | 项目表述 | README、模组列表和计划统一使用 IndustrialCraft 2（IC2）。名称决策仅涉及命名。新作标识另行创作，授权细节按 A14 存档。 |
 | A16 | 工作安排 | 负责人已于 2026-11-19 指示直接准备 IC2 工作区和重绘计划。已定范围内的命名、资源规则、任务拆分、实现准备和本地验证由 Orchestrator 推进，无须逐项请示。代码评审、质量门禁及发布流程继续执行。 |
 | A17 | 文档约定 | 新文档放 `rebuild/docs/`；任务卡中 `common/` `neoforge/` `datagen/` `test/` 等路径一律相对 `rebuild/src/`；文件所有权以 `AGENTS.md` 为准；计划文档里的 `ic2-reforged/` 即 `rebuild/` |
-| A18 | 托管与流程 | GitHub 账号 `spectrum527`：主仓库 https://github.com/spectrum527/ia2 （对应 `rebuild/`，remote `origin`）、素材仓库 https://github.com/spectrum527/ia2-legacy-assets （本地 `../ia2-legacy-assets/`）、独立计划仓库 https://github.com/spectrum527/ia2-plan （本地 `../plan/`，负责人于 2026-11-11 选定），均为 Private。计划仓库保留 Spec 任务卡的私有资料索引，不随主仓库转 Public。GitHub Projects 看板（状态值沿用 `plan/README.md`）+ GitHub Actions CI |
+| A18 | 托管与流程 | GitHub 账号 `spectrum527`：主仓库 https://github.com/spectrum527/ic2 （对应 `rebuild/`，remote `origin`）、素材仓库 https://github.com/spectrum527/ic2-legacy-assets （本地 `../ic2-legacy-assets/`）、独立计划仓库 https://github.com/spectrum527/ic2-plan （本地 `../plan/`，负责人于 2026-11-11 选定），均为 Private。计划仓库保留 Spec 任务卡的私有资料索引，不随主仓库转 Public。GitHub Projects 看板（状态值沿用 `plan/README.md`）+ GitHub Actions CI |
 | A19 | 构建插件 | **ModDevGradle**（含多版本子模块，满足 A5 双版本编译） |
 | A20 | MVP 与参考实例 | MVP 清单（≤40 项）由 Orchestrator Agent 起草；1.19.2 参考实例由 QA Agent 搭建：**ForgeGradle 1.19.2 开发环境 + 原 jar 作为 mod 加载**，离线开发用户名，依赖按已选工具链获取；实例放在私有的上层目录 `../reference-env/`，`rebuild/parity/` 只放场景脚本与期望值。负责人在 **G0 评审**时一并确认 |
 | A21 | 新作素材协议 | 重绘后的贴图/模型/音效/GUI 采用 **CC BY-SA 4.0**（`LICENSE-ASSETS`）；外包与社区投稿须同意以该协议授权。私有阶段复用的原版素材不适用此协议 |
-| A22 | 素材隔离与打包 | 原版文件只在独立私有仓库 `ia2-legacy-assets` 保存。主仓库 `assets/<namespace>/` 只接收登记后的新作。可选外部目录使用 `ic2.legacyAssetsDir`（兼容旧属性 `ia2.legacyAssetsDir`）。外部目录可载入模型与音效等资源。机器 GUI、穿戴层及动态渲染也使用 PNG，因此构建只从新作目录打包图像和动画元数据。公开包独立构建并验证全量资源。 |
+| A22 | 素材隔离与打包 | 原版文件只在独立私有仓库 `ic2-legacy-assets` 保存。主仓库 `assets/<namespace>/` 只接收登记后的新作。可选外部目录使用 `ic2.legacyAssetsDir`（兼容旧属性 `ia2.legacyAssetsDir`）。外部目录可载入模型与音效等资源。机器 GUI、穿戴层及动态渲染也使用 PNG，因此构建只从新作目录打包图像和动画元数据。公开包独立构建并验证全量资源。 |
 | A23 | 版本基线（2026-11-11） | **2.9.40（1.19.2）为行为基线**；2.8.222（1.12.2）只用于 ① C-MF 范围内的缺失功能 ② 对 2.9.40 规格的交叉验证。两版行为或数值不一致时，**登记为 B 表"待裁决"项**，由负责人逐条裁决，裁决前按 2.9.40 写 spec |
-| A24 | 授权覆盖版本（2026-11-11） | 负责人确认书面授权**覆盖 IC2 全部版本**（含 2.8.222 的源码与素材）；`docs/01-legal.md` 须写明版本范围。1.12.2 素材同样遵守 A7 / A22（只进 `ia2-legacy-assets`，转 Public 前替换） |
+| A24 | 授权覆盖版本（2026-11-11） | 负责人确认书面授权**覆盖 IC2 全部版本**（含 2.8.222 的源码与素材）；`docs/01-legal.md` 须写明版本范围。1.12.2 素材同样遵守 A7 / A22（只进 `ic2-legacy-assets`，转 Public 前替换） |
 | A25 | 1.12.2 参考实例（2026-11-11） | QA 搭建 **JDK 8 + Forge 1.12.2** 参考实例，加载 2.8.222 原 jar，放私有目录 `../reference-env-1122/`；须在 P1-T14 之前完成（新任务 P0-T9），按锁定工具链取得依赖。用于 C-MF 新功能的 parity 采样与 A23 交叉验证 |
 | A26 | 原样骨架相似度例外（2026-11-12） | 负责人批准仅对已合入的包声明和两版空入口共 3 个文件，按候选相对路径与原始文件 SHA-256 双重匹配，豁免 5-gram 分数判定；原始分数仍报告，任何路径或内容修改立即失效。连续 8 行门禁与其他文件的 >15% 警告 / >25% 失败阈值不变。固定条目见 `tools/similarity/boilerplate.json`，判据见 `spec/quality/similarity.md`；新增或更新例外仍须负责人审批 |
 
@@ -97,3 +97,4 @@
 - 2026-11-12：负责人确认 G0 通过并授权 P2 开工。双基线相似度实测发现三个与 P2 前基线逐字节相同的骨架文件超阈值；负责人批准 A26 的精确路径与哈希例外，不放宽其他文件阈值或连续 8 行门禁。
 
 - 2026-11-19：依负责人指示更新 A1、A3、A7、A15、A16、A22，恢复 IndustrialCraft 2 / `ic2`。将三类纹理的交付提前至各内容波次，从本轮执行中移除重复授权步骤。A26 继续使用原清单，变更后的入口按普通文件检查。
+- 2026-11-19：按负责人指示在原 GitHub 仓库上将 `ia2`、`ia2-plan`、`ia2-legacy-assets` 分别改名为 `ic2`、`ic2-plan`、`ic2-legacy-assets`。三个本地检出重新绑定 `origin`，素材目录同步更名。

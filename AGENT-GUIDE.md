@@ -39,7 +39,7 @@
 | 5 | 网络层不用反射序列化，不从网络数据加载类 | 安全门禁失败 |
 | 6 | 只写自己所有权内的目录；跨目录先找 Orchestrator | PR 拒收 |
 | 7 | 新逻辑必须有单测或 parity 场景；挂在本任务下的 decisions.md B 表修复项必须有回归测试 | PR 拒收 |
-| 8 | 原版素材文件（贴图/模型/音效/GUI）**永不提交进本仓库**，只能放私有仓库 `ia2-legacy-assets`（decisions.md A22） | PR 拒收，需清洗历史 |
+| 8 | 原版素材文件（贴图/模型/音效/GUI）**永不提交进本仓库**，只能放私有仓库 `ic2-legacy-assets`（decisions.md A22） | PR 拒收，需清洗历史 |
 | 9 | 已定范围由 Orchestrator 直接推进，按既有门禁评审（A16） | 补齐交接或验收记录 |
 
 ### 1.2 已定案的项目事实（2026-11-19 更新）
@@ -82,7 +82,7 @@ rebuild/                     ← 未来的开源仓库根
 
 仓库之外（私有，不随本仓库发布）：
 
-- `../ia2-legacy-assets/`：原版素材私有仓库，Gradle 属性 `ic2.legacyAssetsDir` 引入，缺省可构建。
+- `../ic2-legacy-assets/`：原版素材私有仓库，Gradle 属性 `ic2.legacyAssetsDir` 引入，缺省可构建。
 - `../reference-env/`：1.19.2 参考实例（ForgeGradle 开发环境 + 原 jar），QA 用来采集期望值。
 
 - 任务卡里写的 `common/...`、`neoforge/...`、`test/...` **一律相对于 `rebuild/src/`**。
@@ -212,7 +212,7 @@ P?-T?
 
 ### Artist / Audio Agent（`assets/`）
 
-- 本仓库 `assets/` **只收新作**（CC BY-SA 4.0）。三类纹理从空白画布重绘，私有参考存放在独立仓库 `ia2-legacy-assets`，不进本仓库（A22）。
+- 本仓库 `assets/` **只收新作**（CC BY-SA 4.0）。三类纹理从空白画布重绘，私有参考存放在独立仓库 `ic2-legacy-assets`，不进本仓库（A22）。
 - 每个资源在 `assets/SOURCES.md` 登记状态 `legacy` / `new`、作者、协议；转 Public 的门禁是 `legacy` = 0（A7）。
 - 新作署名及 CC BY-SA 4.0 登记见 `assets/SOURCES.md`。纹理路径、状态、制作与验收见 `spec/assets/textures.md`。
 

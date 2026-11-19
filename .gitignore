@@ -2,7 +2,8 @@
 reference/*
 !reference/INDEX.md
 
-# ---- Original assets live only in the private ia2-legacy-assets repo (A22) ----
+# ---- Original assets live only in the private ic2-legacy-assets repo (A22) ----
+/ic2-legacy-assets/
 /ia2-legacy-assets/
 *.jar
 *.i64
