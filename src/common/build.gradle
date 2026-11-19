@@ -1,1 +1,7 @@
 plugins { id 'java-library' }
+
+tasks.named('processResources') {
+    from(rootProject.file('spec/config/active-keys.tsv')) {
+        into 'com/industrialage/ia2/config'
+    }
+}
