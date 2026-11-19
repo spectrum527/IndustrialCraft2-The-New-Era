@@ -90,4 +90,5 @@ gameTestRun.configure {
     }
     finalizedBy reportGameTest
 }
+apply from: rootProject.file('src/test/platform-world.gradle')
 apply from: rootProject.file('src/test/host-contracts.gradle')

@@ -7,6 +7,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GlobalTestReporter;
 import net.minecraft.gametest.framework.JUnitLikeTestReporter;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.gametest.GameTestHolder;
@@ -18,8 +19,12 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class GameTestFixtures {
     /** Installs the native per-case reporter in the isolated run directory. */
-    public GameTestFixtures() throws ParserConfigurationException {
+    public GameTestFixtures(IEventBus modBus) throws ParserConfigurationException {
         GlobalTestReporter.replaceWith(new JUnitLikeTestReporter(new File("game-test.xml")));
+        String phase = System.getProperty("ic2.qa.worldPhase");
+        if (phase != null) {
+            new PlatformWorldFixture(phase, modBus);
+        }
     }
 
     /** Checks that the live test world loads the template and keeps a block placed by the test. */
