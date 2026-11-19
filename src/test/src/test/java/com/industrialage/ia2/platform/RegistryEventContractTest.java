@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 class RegistryEventContractTest {
     @Test
     void acceptsCompleteIdsAndPreservesValueSemantics() {
-        for (String value : List.of("ia2:a", "ia2:0", "ia2:machines/ore._-9")) {
+        for (String value : List.of("ic2:a", "ic2:0", "ic2:machines/ore._-9")) {
             var id = new RegistryFacade.Id(value);
             assertEquals(value, id.value());
             assertEquals(id, new RegistryFacade.Id(value));
             assertEquals(id.hashCode(), new RegistryFacade.Id(value).hashCode());
         }
-        assertNotEquals(new RegistryFacade.Id("ia2:a"), new RegistryFacade.Id("ia2:b"));
+        assertNotEquals(new RegistryFacade.Id("ic2:a"), new RegistryFacade.Id("ic2:b"));
     }
 
     @Test
@@ -23,15 +23,15 @@ class RegistryEventContractTest {
         for (String value :
                 List.of(
                         "",
-                        "ia2:",
-                        "other:a",
-                        "IA2:a",
-                        "ia2:A",
-                        "ia2:a b",
-                        "ia2:a:b",
-                        "ia2:é",
-                        "ia2:a\n",
-                        "prefixia2:a")) {
+                        "ic2:",
+                        "ia2:a",
+                        "IC2:a",
+                        "ic2:A",
+                        "ic2:a b",
+                        "ic2:a:b",
+                        "ic2:é",
+                        "ic2:a\n",
+                        "prefixic2:a")) {
             assertThrows(IllegalArgumentException.class, () -> new RegistryFacade.Id(value), value);
         }
         assertThrows(NullPointerException.class, () -> new RegistryFacade.Id(null));
@@ -70,7 +70,7 @@ class RegistryEventContractTest {
     private static void typeContracts(RegistryFacade registry, EventFacade events) {
         RegistryFacade.Kind<Number> kind = new RegistryFacade.Kind<>("number", Number.class);
         RegistryFacade.Handle<Number> handle =
-                registry.register(kind, new RegistryFacade.Id("ia2:n"), () -> 1);
+                registry.register(kind, new RegistryFacade.Id("ic2:n"), () -> 1);
         Number value = handle.get();
         EventFacade.Subscription subscription =
                 events.subscribe(Number.class, (Object event) -> {});

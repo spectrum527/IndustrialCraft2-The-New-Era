@@ -62,14 +62,14 @@ public interface NetworkFacade {
     /**
      * The declaration for one kind of message.
      *
-     * @param id full ID matching {@code ia2:[a-z0-9/._-]+}
+     * @param id full ID matching {@code ic2:[a-z0-9/._-]+}
      * @param codec explicit codec for this message
      * @param maxFrameBytes maximum encoded frame length in bytes, including zero
      * @param direction fixed logical direction
      * @param <M> message type
      */
     record MessageType<M>(String id, Codec<M> codec, int maxFrameBytes, Direction direction) {
-        private static final Pattern VALID_ID = Pattern.compile("ia2:[a-z0-9/._-]+");
+        private static final Pattern VALID_ID = Pattern.compile("ic2:[a-z0-9/._-]+");
 
         /**
          * Validates the message declaration.
@@ -82,7 +82,7 @@ public interface NetworkFacade {
             Objects.requireNonNull(codec, "codec");
             Objects.requireNonNull(direction, "direction");
             if (!VALID_ID.matcher(id).matches()) {
-                throw new IllegalArgumentException("Invalid IA2 message ID: " + id);
+                throw new IllegalArgumentException("Invalid IC2 message ID: " + id);
             }
             if (maxFrameBytes < 0) {
                 throw new IllegalArgumentException("Negative frame byte limit: " + maxFrameBytes);

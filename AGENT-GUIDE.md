@@ -1,4 +1,4 @@
-# Agent 重建指南（Industrial Age 2）
+# Agent 重建指南（IndustrialCraft 2）
 
 > 读者：参与 `rebuild/` 的所有 Agent（Orchestrator / Core / Platform / Content / Client / QA / Artist / Docs / Spec）
 > 优先级：[`AGENTS.md`](./AGENTS.md)（硬约束）＞ [`decisions.md`](./decisions.md)（决策）＞ 任务卡 ＞ 本指南。本指南与前两者冲突时，以前两者为准，并报告 Orchestrator。
@@ -26,33 +26,33 @@
 
 ## 1. 项目一句话
 
-把一个停更的工业模组按**行为规格净室重写**为 **Industrial Age 2**（mod id `ia2`），主基线 **NeoForge 1.21.1 / Java 21**，同步 **NeoForge 26.1**，作为开源项目发布。目标是核心行为一致（同样的输入、能耗、产出），**不要求 1:1 复刻**。
+把一个停更的工业模组按**行为规格净室重写**为 **IndustrialCraft 2**（mod id `ic2`），主基线 **NeoForge 1.21.1 / Java 21**，同步 **NeoForge 26.1**，作为开源项目发布。目标是核心行为一致（同样的输入、能耗、产出），**不要求 1:1 复刻**。
 
-### 1.1 七条红线
+### 1.1 工作规则
 
 | # | 红线 | 违反后果 |
 |---|---|---|
 | 1 | 实现角色只依据 `spec/` 工作，不读、不引用、不索要参考源码 | PR 拒收 |
-| 2 | 代码、资源路径、文案、注释中不得出现 `ic2`、`IndustrialCraft`、`IC2` | PR 拒收（商标不在授权内） |
+| 2 | 注册、网络和资源使用 `ic2`，路径核对 2.9.40 基线 | 核对 A3 与注册规格 |
 | 3 | 没有 spec 的行为不实现；spec 缺失或含糊 → 报 Spec Lead，不要猜 | 返工 |
 | 4 | `common` 层不得 import `net.neoforged.*` 或任何版本专属 API | CI 失败 |
 | 5 | 网络层不用反射序列化，不从网络数据加载类 | 安全门禁失败 |
 | 6 | 只写自己所有权内的目录；跨目录先找 Orchestrator | PR 拒收 |
 | 7 | 新逻辑必须有单测或 parity 场景；挂在本任务下的 decisions.md B 表修复项必须有回归测试 | PR 拒收 |
 | 8 | 原版素材文件（贴图/模型/音效/GUI）**永不提交进本仓库**，只能放私有仓库 `ia2-legacy-assets`（decisions.md A22） | PR 拒收，需清洗历史 |
-| 9 | 所有 PR 合并、`decisions.md` 的任何改动都需负责人审批（A16）；Agent 不得自行合并 | 回滚 |
+| 9 | 已定范围由 Orchestrator 直接推进，按既有门禁评审（A16） | 补齐交接或验收记录 |
 
-### 1.2 已定案的项目事实（2026-11-11 更新）
+### 1.2 已定案的项目事实（2026-11-19 更新）
 
 | 项 | 结论 |
 |---|---|
 | 路线 | 净室重写，三角色隔离（A2） |
 | 平台 | NeoForge 1.21.1 主基线；26.1 从第一天双版本编译，运行验收从 P6 开始（A5） |
-| 包名 / group | `com.industrialage.ia2`，不再更改（A3） |
+| 包名 / group | `com.industrialage.ia2` 为既有内部坐标（A3） |
 | 协议 | 代码 LGPL-3.0（A11）；新作素材 CC BY-SA 4.0（A21） |
 | 可见性 | GitHub 私有仓库（spectrum527 账号），素材全部重绘后才转 Public（A12） |
 | 发布 | 转 Public 前只做邀请制封闭测试，不上 Modrinth / CurseForge（A13） |
-| 对外表述 | "受 IndustrialCraft 2 启发的独立项目"，不提授权与原团队（A15） |
+| 对外表述 | IndustrialCraft 2（IC2），按 A15 使用 |
 | 构建 | ModDevGradle（A19）；CI 为 GitHub Actions，看板为 GitHub Projects（A18） |
 | 配置 | 只建 58 个活键，无旧键兼容层；只出迁移文档（A10） |
 | 版本基线 | 2.9.40 行为为基线；另一个旧版本只作为缺失功能与交叉验证的规格来源，差异由负责人逐条裁决（A23）。实现角色只看 spec，不需要关心规格出自哪个版本 |
@@ -82,7 +82,7 @@ rebuild/                     ← 未来的开源仓库根
 
 仓库之外（私有，不随本仓库发布）：
 
-- `../ia2-legacy-assets/`：原版素材私有仓库，Gradle 属性 `ia2.legacyAssetsDir` 引入，缺省可构建。
+- `../ia2-legacy-assets/`：原版素材私有仓库，Gradle 属性 `ic2.legacyAssetsDir` 引入，缺省可构建。
 - `../reference-env/`：1.19.2 参考实例（ForgeGradle 开发环境 + 原 jar），QA 用来采集期望值。
 
 - 任务卡里写的 `common/...`、`neoforge/...`、`test/...` **一律相对于 `rebuild/src/`**。
@@ -155,8 +155,8 @@ P?-T?
 
 ```bash
 ./gradlew build
-./gradlew :neoforge:runClient
-./gradlew :neoforge:runServer
+./gradlew :neoforge:1.21.1:runClient
+./gradlew :neoforge:1.21.1:runServer
 ./gradlew :datagen:runData
 ./gradlew :test:test
 ./gradlew :test:runGameTest
@@ -169,8 +169,8 @@ P?-T?
 
 ### Orchestrator
 
-- `decisions.md` 唯一写入者（每次改动需负责人审批）；负责拆卡、排依赖、按门禁推进；PR 经负责人审批后合并（A16）。
-- 当前最优先：**P2 首批平台契约与测试框架**（见 §6）。
+- `decisions.md` 唯一写入者；负责拆卡、排依赖、按门禁推进；按 A16 执行与评审。
+- 当前最优先：**P2-T2C、注册键核对与首批纹理**（见 §6）。
 - 写任务卡时：只引用 `spec/` 章节；每卡 ≤ 2 个 spec、≤ 5 个源码文件；`acceptance` 必须是可执行命令或可量化指标。
 - 给实现角色派卡时，确保卡里、对话里不出现参考源码路径。
 - MVP 清单（≤ 40 项）由你起草，负责人在 G0 评审时确认（A20）。
@@ -188,7 +188,7 @@ P?-T?
 
 ### Platform Agent（`src/neoforge/`）
 
-- P0-T4/P2-T1：**ModDevGradle** 多模块（A19），锁定 NeoForge 版本号写进 `gradle.properties`；支持可选属性 `ia2.legacyAssetsDir` 作为额外资源目录（缺省时跳过，A22），`rebuild/assets/` 同路径优先。
+- P0-T4/P2-T1：**ModDevGradle** 多模块（A19），锁定 NeoForge 版本号写进 `gradle.properties`；支持可选属性 `ic2.legacyAssetsDir` 作为额外资源目录（缺省时跳过，A22），`rebuild/assets/` 同路径优先。
 - 1.21.1 与 26.1 的差异只能出现在 neoforge 的版本子模块；每个 PR 双版本编译（26.1 的运行验收从 P6 起）。
 - CI（GitHub Actions）加两条检查：`common` 下 grep `import net.neoforged` 必须为空；仓库内不得出现 legacy 素材（对照 `assets/SOURCES.md`）。
 - 仓库根放 `LICENSE`（LGPL-3.0）与 `LICENSE-ASSETS`（CC BY-SA 4.0）。
@@ -196,7 +196,7 @@ P?-T?
 ### Content Agent（`src/common/content/`）
 
 - 只填定义数据 + 少量特殊逻辑；数值全部来自 spec 参数卡。
-- 注册 ID 一律 `ia2:<id>`；外部互通的标签用 `c:`（必要时加 `forge:`，如 B 表的蒸汽标签）。
+- 注册 ID 一律 `ic2:<id>`；外部互通的标签用 `c:`（必要时加 `forge:`，如 B 表的蒸汽标签）。
 
 ### Client Agent（`src/client/`、`src/compat/`）
 
@@ -208,30 +208,27 @@ P?-T?
 - P1：parity 场景格式 + 采集脚本；相似度检查脚本（5-gram Jaccard：单文件 > 25% 失败、> 15% 警告、连续 8 行相同失败）。
 - 容差：能量 ±1%；机器 ±1 tick / ±1%；配方精确；反应堆 ±2%；作物用统计检验；GUI 结构一致。
 - 只看期望值，不看参考源码。
-- P0-T5：在仓库外的 `../reference-env/` 搭 ForgeGradle 1.19.2 开发环境，把原 jar 作为 mod 加载，离线开发用户名运行；**首次联网下载依赖前先请负责人批准**（A20）。该目录永不提交进本仓库。
+- P0-T5：在仓库外的 `../reference-env/` 搭 ForgeGradle 1.19.2 开发环境，把原 jar 作为 mod 加载，离线开发用户名运行；依赖按锁定工具链获取（A20）。该目录永不提交进本仓库。
 
 ### Artist / Audio Agent（`assets/`）
 
-- 本仓库 `assets/` **只收新作**（CC BY-SA 4.0）。私有阶段需要的原版素材拷进私有仓库 `ia2-legacy-assets`，不进本仓库（A22）。
+- 本仓库 `assets/` **只收新作**（CC BY-SA 4.0）。三类纹理从空白画布重绘，私有参考存放在独立仓库 `ia2-legacy-assets`，不进本仓库（A22）。
 - 每个资源在 `assets/SOURCES.md` 登记状态 `legacy` / `new`、作者、协议；转 Public 的门禁是 `legacy` = 0（A7）。
-- 外包与社区投稿须同意 CC BY-SA 4.0；新作不得出现 "IndustrialCraft" / "IC2" 字样或 logo。
+- 新作署名及 CC BY-SA 4.0 登记见 `assets/SOURCES.md`。纹理路径、状态、制作与验收见 `spec/assets/textures.md`。
 
 ---
 
-## 6. 当前可领的任务（2026-11-12 状态）
+## 6. 当前工作（2026-11-19）
 
-负责人已确认 G0 通过并授权 P2 开工；上一轮 PR 及新增范围决策已合并。当前主线 6e64a07，门禁证据与后补项见 `docs/gates/G0.md`。未来 PR 仍逐次审批。
+G0 已通过，P2-T2A、T2B、T8、T8-SIM 已合入 `0363b6e`。本地工作区以 IndustrialCraft 2（`ic2`）接续。
 
-| 顺序 | 任务 | 角色 | 依赖 | 验收 |
-|---:|---|---|---|---|
-| 1 | P2-T1：复用已合入的多模块骨架，核对集成主线构建 | Platform | G0 已通过 | 双版本 build、JUnit、公共层导入检查 |
-| 2 | P2-T2：先补平台契约规格，再分组实现小 Facade | Spec + Core；测试由 QA | P2-T1；规格经 Orchestrator 核查 | 构造注入、失败边界、无平台类型、契约测试 |
-| 3 | P2-T8：JUnit、主基线 GameTest 与 CI | QA；必要构建桥接经 Orchestrator 授权 | P2-T1 | 实际执行 GameTest，测试内容不进生产 JAR |
-| 4 | P2-T3～T7：适配器、生命周期、配置、网络、客户端入口 | Core + Platform | P2-T2 合入及各自规格齐备 | 见对应卡，不以接口声明代替运行验收 |
-| 5 | P1 MVP 规格与已有规格交叉核对 | Spec | 各任务卡前置 | 未确认分支继续登记；不因 G0 通过自动获得结论 |
-| 6 | P0-T9 补充参考实例 | QA | 首次联网批准，按 A25 | 在依赖它的后续新增范围规格前完成；不阻塞当前 G0 |
+| 可开始的工作 | 输入 | 交付 |
+|---|---|---|
+| Core 与 QA 执行 P2-T2C | `spec/platform/services.md` §1、§6–8 | ClientFacade、ConfigFacade、Platform 及独立契约测试 |
+| Spec 执行 P1-T2，补适配与生命周期规格 | G0 章程、已合入的接口规格 | 39 项原注册路径及覆盖表，P2-T3/T4 的适配依据 |
+| Artist 执行 P8-T3 首批样张 | `spec/assets/textures.md`、资产角色领取的路径清单 | 打粉机/发电机的工作面、电池电量各档、铜缆和 BatBox |
 
-授权原件和 P0-T7 私有基线快照文档继续跟进；不会在记录中伪标完成。B#41/M09 目标已批准，代码修复仍由 P4-T4 在对应门禁后执行。新增范围按 A23–A25、C-MF1–10 和 C-MF8a 及任务卡执行，不提前进入本轮 P2。
+G1/G2/G5、机器 M09 回归及客户端素材验收各有独立证据。接续顺序见私有计划仓库的 `task_plan.md`，原始参考观测保持归档。
 
 ---
 

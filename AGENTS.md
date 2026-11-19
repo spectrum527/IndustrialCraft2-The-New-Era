@@ -1,4 +1,4 @@
-# Agent 工作规则（Industrial Age 2 净室重建）
+# Agent 工作规则（IndustrialCraft 2 净室重建）
 
 > 本文件是所有参与 rebuild/ 的 Agent 的硬约束。任务卡可以细化，但不得与本文件冲突。
 
@@ -18,7 +18,7 @@
 - 版本基线（decisions.md A23）：2.9.40 为行为基线，2.8.222 只用于缺失功能与交叉验证；两版不一致时 Spec 角色登记为 B 表"待裁决"项，不得自行取舍。
 - 相似度检查同时对照**两版**反编译源码（`--reference` 传两次）；CI 对 `src/` vs `reference/` 跑 5-gram Jaccard 相似度：单文件 >25% 失败、>15% 警告、连续 8 行相同直接失败。
 - 质量门禁唯一骨架例外见 decisions.md A26：只有固定表中路径与 SHA-256 均匹配的原样文件可豁免 5-gram 分数判定；仍报告分数，连续 8 行检查照常，任何修改即失效。其他文件阈值不变。
-- 例外：**素材与数值**。原版贴图/音效/模型私有阶段按 decisions.md A7 复用，但存放于独立私有仓库 `ia2-legacy-assets`、不进本仓库历史（A22），登记于 `assets/SOURCES.md`；转 Public 前须全部替换为新作（CC BY-SA 4.0，A21）。数值与公式是事实，spec 里照抄。
+- 例外：**素材与数值**。机器、物品、线缆的所有纹理按 A7 重绘。私有参考存放于独立仓库 `ia2-legacy-assets`、不进本仓库历史（A22），登记于 `assets/SOURCES.md`；转 Public 前须全部替换为新作（CC BY-SA 4.0，A21）。数值与公式是事实，spec 里照抄。
 
 ## 2. 文件所有权
 
@@ -34,9 +34,9 @@
 | `assets/` | Artist/Audio Agent |
 | `parity/` | QA Agent |
 | `docs/` | Docs Agent（`00-charter.md`、`01-legal.md`、`02-platform.md` 归 Orchestrator） |
-| `decisions.md` | Orchestrator（唯一写入者；每次改动需负责人审批，decisions.md A16） |
+| `decisions.md` | Orchestrator（唯一写入者；本轮按 decisions.md A16 直接维护） |
 
-路径约定（decisions.md A17）：任务卡中的 `common/`、`neoforge/`、`datagen/`、`test/` 等一律相对 `rebuild/src/`。所有 PR 合并需负责人审批（A16）。
+路径约定（decisions.md A17）：任务卡中的 `common/`、`neoforge/`、`datagen/`、`test/` 等一律相对 `rebuild/src/`。PR 按 A16 和质量门禁评审。
 
 跨目录修改需 Orchestrator 批准。`decisions.md` 是唯一决策事实源，发现任务与决策冲突时：停手 → 报 Orchestrator → 改决策或改任务。
 

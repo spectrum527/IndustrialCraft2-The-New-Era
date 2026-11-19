@@ -25,7 +25,7 @@ P1-T8 的验收责任人为 Spec Lead；parity 的实际写入由 QA 的独立�
 1. **任务卡**：Orchestrator 拆分并确认依赖。卡片写明 ID、阶段、负责人、依赖、输入、输出、验收与约束；规格只引用 `spec/` 章节，每卡最多引用两份规格文件、涉及最多五个源码文件。验收应为可执行命令或可量化指标。无适用规格时如实注明；规格不足时向 Spec Lead 报缺口。
 2. **所有权检查**：领卡前确认角色、可写范围和验收。跨目录修改须先获 Orchestrator 批准；任务与决策冲突时停手上报。任务卡中的 `common/`、`neoforge/`、`datagen/` 和 `test/` 路径相对 `rebuild/src/`。
 3. **PR 与交接三件套**：提交 PR，包含适用的代码、测试和依据的 spec 章节；文档任务如无适用章节须明确写明。留下交接说明，列出做了什么、没做什么、验证命令及结果、下游依赖和相关修复项回归情况；更新[任务板](https://github.com/spectrum527/ia2-plan/issues/1)状态。三件缺一不合并。
-4. **评审与合并**：按所有权安排评审，所有 PR 合并均须负责人审批，Agent 不得自行合并。`decisions.md` 仅由 Orchestrator 提出和写入，每次修改须负责人批准。
+4. **评审与合并**：按所有权安排评审，按 A16 执行代码评审和质量门禁。`decisions.md` 仅由 Orchestrator 提出和写入，本轮已定事项可按 A16 直接更新。
 
 ## 写入所有权
 
@@ -40,7 +40,7 @@ P1-T8 的验收责任人为 Spec Lead；parity 的实际写入由 QA 的独立�
 | `src/test/`、`parity/` | QA |
 | `assets/` | Artist / Audio |
 | `docs/` | Docs；`00-charter.md`、`01-legal.md`、`02-platform.md` 由 Orchestrator 负责 |
-| `decisions.md` | Orchestrator，修改须负责人批准 |
+| `decisions.md` | Orchestrator，按 A16 维护 |
 
 ## 阶段状态
 

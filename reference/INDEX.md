@@ -34,4 +34,4 @@
 
 ## 素材复用（decisions.md A7）
 
-原版素材已获授权，私有阶段可复用（转 Public 前须全部替换，decisions.md A7）。复用时**拷贝**到独立私有仓库 `../../ia2-legacy-assets/`（保持 jar 内相对路径，**不得进入 rebuild 主仓库历史**，A22），并在 `../assets/SOURCES.md` 登记为 `legacy`。禁止原地修改 `analysis/extracted/`、`analysis-1122/extracted/` 下任何文件。1.12.2 素材同样适用（A24）。
+A7 要求所有机器、物品、线缆纹理独立重绘。原样文件留作私有参考，其他素材的私有预览按 A22 执行。复用时**拷贝**到独立私有仓库 `../../ia2-legacy-assets/`（保持 jar 内相对路径，**不得进入 rebuild 主仓库历史**，A22），并在 `../assets/SOURCES.md` 登记为 `legacy`。禁止原地修改 `analysis/extracted/`、`analysis-1122/extracted/` 下任何文件。1.12.2 素材同样适用（A24）。

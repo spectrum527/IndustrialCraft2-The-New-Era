@@ -1,10 +1,10 @@
-# Industrial Age 2 项目章程（P0-T1）
+# IndustrialCraft 2 项目章程（P0-T1）
 
 > **负责人于 2026-11-12 确认 G0 通过，以下 39 项作为 MVP 范围基线**（A20）。评审与后补项见 [G0 记录](gates/G0.md)；G1、G2、G5 仍分别验收。
 
 ## 目标与交付边界
 
-建立从采集材料、制作基础零件，到发电、输电、储电和机器加工的可玩工业闭环。mod id 为 `ia2`，包根与 Maven group 为 `com.industrialage.ia2`。核心行为依据已评审的规格净室实现；不承诺逐项 1:1 复刻。
+建立从采集材料、制作基础零件，到发电、输电、储电和机器加工的可玩工业闭环。mod id 为 `ic2`，包根与 Maven group 为 `com.industrialage.ia2`。核心行为依据已评审的规格净室实现；不承诺逐项 1:1 复刻。
 
 以 NeoForge 1.21.1 为主基线，同时维护 NeoForge 26.1 编译目标；MVP / G5 在主基线验收，同步目标从 P6 纳入运行验收（A5）。本次确认不扩大 MVP 清单；新增内容仍按后续阶段与规格评审执行。
 
@@ -24,45 +24,45 @@
 
 | # | 注册 ID | 类别 | MVP 用途 |
 |---|---|---|---|
-| 1 | `ia2:rubber_log` | 方块 | 橡胶树树干与树脂来源 |
-| 2 | `ia2:rubber_leaves` | 方块 | 树冠及再生来源 |
-| 3 | `ia2:rubber_sapling` | 方块 | 种植橡胶树 |
-| 4 | `ia2:tin_ore` | 方块 | 锡矿来源 |
-| 5 | `ia2:deepslate_tin_ore` | 方块 | 深层锡矿来源 |
-| 6 | `ia2:raw_tin` | 物品 | 锡矿掉落与加工输入 |
-| 7 | `ia2:tin_ingot` | 物品 | 锡制零件原料 |
-| 8 | `ia2:resin` | 物品 | 橡胶前体 |
-| 9 | `ia2:rubber` | 物品 | 导线绝缘材料 |
-| 10 | `ia2:treetap` | 物品 | 无电采集树脂 |
-| 11 | `ia2:forge_hammer` | 物品 | 无电制板与外壳 |
-| 12 | `ia2:cutter` | 物品 | 无电制线 |
-| 13 | `ia2:iron_plate` | 物品 | 外壳与电路材料 |
-| 14 | `ia2:copper_plate` | 物品 | 铜线材料 |
-| 15 | `ia2:tin_plate` | 物品 | 锡线与锡外壳材料 |
-| 16 | `ia2:tin_casing` | 物品 | 电池零件 |
-| 17 | `ia2:copper_cable` | 方块 | 裸铜线 |
-| 18 | `ia2:insulated_copper_cable` | 方块 | 1 级输电与电路材料 |
-| 19 | `ia2:tin_cable` | 方块 | 裸锡线 |
-| 20 | `ia2:insulated_tin_cable` | 方块 | 1 级输电与电池材料 |
-| 21 | `ia2:circuit` | 物品 | 基础机器电路 |
-| 22 | `ia2:machine` | 方块 | 基础机器外壳 |
-| 23 | `ia2:re_battery` | 物品 | 电池及供电设备零件 |
-| 24 | `ia2:iron_furnace` | 机器 | 熔炼与电炉前置 |
-| 25 | `ia2:generator` | 机器 | 燃料发电 |
-| 26 | `ia2:batbox` | 机器 | 低压储电与输出 |
-| 27 | `ia2:macerator` | 机器 | 矿物打粉 |
-| 28 | `ia2:electric_furnace` | 机器 | 电力熔炼 |
-| 29 | `ia2:compressor` | 机器 | 基础压缩加工 |
-| 30 | `ia2:extractor` | 机器 | 提取橡胶 |
-| 31 | `ia2:crushed_tin` | 物品 | 锡粉碎产物 |
-| 32 | `ia2:crushed_copper` | 物品 | 铜粉碎产物 |
-| 33 | `ia2:bronze_dust` | 物品 | 青铜混合粉 |
-| 34 | `ia2:bronze_ingot` | 物品 | 装备材料 |
-| 35 | `ia2:bronze_pickaxe` | 物品 | 基础采矿工具 |
-| 36 | `ia2:bronze_helmet` | 物品 | 头部防护 |
-| 37 | `ia2:bronze_chestplate` | 物品 | 躯干防护 |
-| 38 | `ia2:bronze_leggings` | 物品 | 腿部防护 |
-| 39 | `ia2:bronze_boots` | 物品 | 足部防护 |
+| 1 | `ic2:rubber_log` | 方块 | 橡胶树树干与树脂来源 |
+| 2 | `ic2:rubber_leaves` | 方块 | 树冠及再生来源 |
+| 3 | `ic2:rubber_sapling` | 方块 | 种植橡胶树 |
+| 4 | `ic2:tin_ore` | 方块 | 锡矿来源 |
+| 5 | `ic2:deepslate_tin_ore` | 方块 | 深层锡矿来源 |
+| 6 | `ic2:raw_tin` | 物品 | 锡矿掉落与加工输入 |
+| 7 | `ic2:tin_ingot` | 物品 | 锡制零件原料 |
+| 8 | `ic2:resin` | 物品 | 橡胶前体 |
+| 9 | `ic2:rubber` | 物品 | 导线绝缘材料 |
+| 10 | `ic2:treetap` | 物品 | 无电采集树脂 |
+| 11 | `ic2:forge_hammer` | 物品 | 无电制板与外壳 |
+| 12 | `ic2:cutter` | 物品 | 无电制线 |
+| 13 | `ic2:iron_plate` | 物品 | 外壳与电路材料 |
+| 14 | `ic2:copper_plate` | 物品 | 铜线材料 |
+| 15 | `ic2:tin_plate` | 物品 | 锡线与锡外壳材料 |
+| 16 | `ic2:tin_casing` | 物品 | 电池零件 |
+| 17 | `ic2:copper_cable` | 方块 | 裸铜线 |
+| 18 | `ic2:insulated_copper_cable` | 方块 | 1 级输电与电路材料 |
+| 19 | `ic2:tin_cable` | 方块 | 裸锡线 |
+| 20 | `ic2:insulated_tin_cable` | 方块 | 1 级输电与电池材料 |
+| 21 | `ic2:circuit` | 物品 | 基础机器电路 |
+| 22 | `ic2:machine` | 方块 | 基础机器外壳 |
+| 23 | `ic2:re_battery` | 物品 | 电池及供电设备零件 |
+| 24 | `ic2:iron_furnace` | 机器 | 熔炼与电炉前置 |
+| 25 | `ic2:generator` | 机器 | 燃料发电 |
+| 26 | `ic2:batbox` | 机器 | 低压储电与输出 |
+| 27 | `ic2:macerator` | 机器 | 矿物打粉 |
+| 28 | `ic2:electric_furnace` | 机器 | 电力熔炼 |
+| 29 | `ic2:compressor` | 机器 | 基础压缩加工 |
+| 30 | `ic2:extractor` | 机器 | 提取橡胶 |
+| 31 | `ic2:crushed_tin` | 物品 | 锡粉碎产物 |
+| 32 | `ic2:crushed_copper` | 物品 | 铜粉碎产物 |
+| 33 | `ic2:bronze_dust` | 物品 | 青铜混合粉 |
+| 34 | `ic2:bronze_ingot` | 物品 | 装备材料 |
+| 35 | `ic2:bronze_pickaxe` | 物品 | 基础采矿工具 |
+| 36 | `ic2:bronze_helmet` | 物品 | 头部防护 |
+| 37 | `ic2:bronze_chestplate` | 物品 | 躯干防护 |
+| 38 | `ic2:bronze_leggings` | 物品 | 腿部防护 |
+| 39 | `ic2:bronze_boots` | 物品 | 足部防护 |
 
 候选链路：无电制橡胶、板材和导线 → 电池与发电机 → 线缆及 BatBox → 打粉、熔炼、提取和压缩 → 基础装备。打粉机处理锡与原版铜材料，粉碎产物混合为青铜粉后熔炼；压缩机首批候选为 4 个原版雪球加工成 1 个原版雪块，不额外引入 ID。具体掉落、配方、耗能、升级和边界必须经 P1 规格评审，静态依赖闭合不等于实机通过。
 

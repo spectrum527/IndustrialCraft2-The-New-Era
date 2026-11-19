@@ -5,7 +5,7 @@
 ## 1. 字段说明与必填项
 | 字段 | 说明 |
 |---|---|
-| id / type / evidence | `ia2:` 配方 ID、配方类型、核验版本与静态/实测/设计/待确认状态 |
+| id / type / evidence | `ic2:` 配方 ID、配方类型、核验版本与静态/实测/设计/待确认状态 |
 | inputs / matching | 物品或标签、数量 个/次、流体 mB/次或 mB/t；有序性、数据匹配与不足量行为 |
 | conditions / config | 工具/温度/模式门槛、活键与默认值；多条同时匹配时的选择规则 |
 | outputs / remainders | 每次精确产物、余物去向、概率/权重含义；非物品数值产出须标其单位 |
@@ -19,8 +19,8 @@
 数据包重载和冲突策略若尚未决定，应阻塞该分支，不能由实现者自行挑第一条。
 
 ## 3. 示例（真实配方经静态核验，尚未运行参考实例）
-配方 `ia2:macerator/coal_to_coal_dust`，类型 `ia2:macerator`：输入 `minecraft:coal` 1 个，输出 `ia2:coal_dust` 1 个，概率 100%，无余物。
-本项目 ID 已换为 `ia2:`；输入是外部物品。时长/能耗归 [`打粉机`](../machines/macerator.md) §2、§3：默认 300 tick/次、2 EU/t。
+配方 `ic2:macerator/coal_to_coal_dust`，类型 `ic2:macerator`：输入 `minecraft:coal` 1 个，输出 `ic2:coal_dust` 1 个，概率 100%，无余物。
+本项目 ID 已换为 `ic2:`；输入是外部物品。时长/能耗归 [`打粉机`](../machines/macerator.md) §2、§3：默认 300 tick/次、2 EU/t。
 边界：原料在成功完成时扣除；输出不足 1 个空间时不开始；失败模式：无效输入或原料不足不扣物、不推进。
 parity：空输出、仅 1 个煤、600 EU、无外部供能与升级；第 299 tick 无产出，第 300 tick 输出 1 个煤粉、输入清空、电量 0 EU；时间 ±1 tick，物品精确，能量 ±1%。
 其余配方、冲突/重载策略等待 P1-T5 与 P4 配方/机器框架规格；不可把本例当成已交付的完整数据包。

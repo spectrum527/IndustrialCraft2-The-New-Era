@@ -13,8 +13,8 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /** Registers the report writer and smoke test for the 1.21.1 development server. */
-@Mod("ia2_gametest")
-@GameTestHolder("ia2_gametest")
+@Mod("ic2_gametest")
+@GameTestHolder("ic2_gametest")
 @PrefixGameTestTemplate(false)
 public final class GameTestFixtures {
     /** Installs the native per-case reporter in the isolated run directory. */
@@ -25,7 +25,7 @@ public final class GameTestFixtures {
     /** Checks that the live test world loads the template and keeps a block placed by the test. */
     @GameTest(template = "smoke", required = true, timeoutTicks = 20)
     public static void harnessSmoke(GameTestHelper helper) {
-        helper.assertTrue(ModList.get().isLoaded("ia2"), "The production mod was not loaded");
+        helper.assertTrue(ModList.get().isLoaded("ic2"), "The production mod was not loaded");
         // The template starts one block above the structure block used as the origin.
         helper.assertBlockPresent(Blocks.GOLD_BLOCK, 0, 1, 0);
         helper.setBlock(0, 2, 0, Blocks.IRON_BLOCK);

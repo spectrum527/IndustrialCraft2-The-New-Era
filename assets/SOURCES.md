@@ -1,6 +1,6 @@
 # 素材来源登记
 
-每项生产素材登记一行。`resource_path` 是相对于游戏资源根目录的包内路径；同一路径存在新作时，新作优先。例如，`assets/ia2/textures/...` 对应本仓库的 `assets/ia2/textures/...` 和外部 legacy 资源根下的 `assets/ia2/textures/...`。新作打包到 `assets` 前缀，无须 `assets/assets` 双层目录。
+每项生产素材登记一行。`resource_path` 为成品中的完整路径，例如 `assets/ic2/textures/blocks/machine/processing/basic/macerator_front.png`。机器、物品、线缆的投产纹理一律登记为 `new`。共享材质按唯一包内路径登记，多个使用者列入批次交接。
 
 - `status` 只能为 `legacy` 或 `new`；`date` 填写登记日期。
 - `legacy` 素材只能存放于独立私有素材仓库，永不进入主仓库 Git 历史；新作素材协议不适用于它们。

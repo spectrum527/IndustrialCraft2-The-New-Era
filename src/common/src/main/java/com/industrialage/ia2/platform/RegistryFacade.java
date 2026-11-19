@@ -53,23 +53,23 @@ public interface RegistryFacade {
     }
 
     /**
-     * The namespaced ID of an Industrial Age 2 registry entry.
+     * The namespaced ID of an IndustrialCraft 2 registry entry.
      *
      * @param value complete entry ID
      */
     record Id(String value) {
-        private static final Pattern VALID_ID = Pattern.compile("ia2:[a-z0-9/._-]+");
+        private static final Pattern VALID_ID = Pattern.compile("ic2:[a-z0-9/._-]+");
 
         /**
-         * Creates an ID with the {@code ia2:} namespace and a nonempty resource path.
+         * Creates an ID with the {@code ic2:} namespace and a nonempty resource path.
          *
-         * @param value full ID matching {@code ia2:[a-z0-9/._-]+}
+         * @param value full ID matching {@code ic2:[a-z0-9/._-]+}
          * @throws NullPointerException if the value is null
          * @throws IllegalArgumentException if the value does not match the required format
          */
         public Id {
             if (!VALID_ID.matcher(Objects.requireNonNull(value, "value")).matches()) {
-                throw new IllegalArgumentException("Invalid IA2 registry ID: " + value);
+                throw new IllegalArgumentException("Invalid IC2 registry ID: " + value);
             }
         }
     }

@@ -21,7 +21,7 @@ jobs:
         run: sha256sum -c gradle/wrapper/gradle-wrapper.jar.sha256
       - uses: gradle/actions/setup-gradle@v4
       - name: Build target and verify JAR contract
-        run: ./gradlew :neoforge:${{ matrix.target }}:build :test:test -Pia2.testTarget=${{ matrix.target }} check
+        run: ./gradlew :neoforge:${{ matrix.target }}:build :test:test -Pic2.testTarget=${{ matrix.target }} check
       - name: Run 1.21.1 GameTests
         if: matrix.target == '1.21.1'
         timeout-minutes: 10

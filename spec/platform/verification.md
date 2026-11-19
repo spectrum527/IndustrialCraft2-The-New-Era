@@ -21,7 +21,7 @@
 ## §3 1.21.1 开发专服 GameTest（P2-T8）
 
 - **输入**：JDK 21、锁定的 1.21.1 运行环境、当前提交的开发 mod 和独立测试类及资源。运行在隔离目录，仅在本次测试运行中载入测试内容；测试资源含可定位的结构模板，启动不依赖客户端、登录会话、私有素材或已有世界。专服启动前置条件须在该目录满足。
-- **运行入口**：ModDevGradle 提供 `gameTestServer` 运行类型，且锁定的 1.21.1 NeoForge 依赖声明了对应开发专服运行。为本次运行选定测试命名空间（`neoforge.enabledGameTestNamespaces`）。`./gradlew :test:runGameTest` 是本任务交付的目标入口，目前未实现；它须实际启动上述运行，而非转到普通 `runServer`。
+- **运行入口**：ModDevGradle 提供 `gameTestServer` 运行类型，且锁定的 1.21.1 NeoForge 依赖声明了对应开发专服运行。为本次运行选定测试命名空间（`neoforge.enabledGameTestNamespaces`）。`./gradlew :test:runGameTest` 已在 P2-T8 交付，直接启动独立的 1.21.1 GameTest 专服。
 - **最小场景**：注册一个必跑的 smoke。在测试结构中放置并读回一个方块，断言状态后结束用例。场景不依赖后续内容任务；保留能定位该 smoke 标识与结果的本次运行证据。
 - **输出**：成功须同时满足专服正常退出、至少执行一个用例、指定 smoke 通过且必跑用例无失败。有限超时后结束进程并保存日志；非零退出码阻断验收。零退出、启动日志或发现测试均不能单独证明执行。
 
