@@ -1,0 +1,27 @@
+def productionJar = tasks.named('jar', Jar)
+def verifier = rootProject.file('src/test/verify_runtime_jar.py')
+def artifactReport = layout.buildDirectory.file('reports/platform-jar/result.json')
+
+ext.verifyDevelopmentJar = { File report, File previous = null ->
+    def roots = sourceSets.main.output.files + project(':common').sourceSets.main.output.files
+    def args = ['python3', verifier.absolutePath, '--jar',
+                productionJar.get().archiveFile.get().asFile.absolutePath, '--report', report.absolutePath]
+    roots.each { path -> args.addAll(['--output', path.absolutePath]) }
+    if (previous != null) {
+        args.addAll(['--match', previous.absolutePath])
+    }
+    def run = providers.exec {
+        commandLine args
+        ignoreExitValue = true
+    }
+    if (run.result.get().exitValue != 0) {
+        throw new GradleException("Production JAR validation failed: ${run.standardError.asText.get()}")
+    }
+    logger.lifecycle(run.standardOutput.asText.get().trim())
+}
+tasks.register('verifyDevelopmentJar') {
+    group = 'verification'
+    description = 'Checks all production mod classes and resources against the built JAR.'
+    dependsOn productionJar
+    doLast { verifyDevelopmentJar(artifactReport.get().asFile) }
+}
