@@ -1,0 +1,114 @@
+import groovy.json.JsonOutput
+import org.slf4j.event.Level
+
+def output = layout.buildDirectory.dir('platform-client-acceptance')
+def runs = [:]
+['client', 'server'].each { side ->
+    def name = 'platformPlay' + side.capitalize()
+    def directory = layout.buildDirectory.dir('run/platform-client-acceptance/standalone-' + side)
+    neoForge.runs.create(name) {
+        type.set(side)
+        sourceSet.set(sourceSets.gameTest)
+        loadedMods.set([neoForge.mods.named('ic2').get(), neoForge.mods.named('ic2_gametest').get()])
+        gameDirectory.set(directory)
+        systemProperty 'ic2.qa.clientAcceptance', 'true'
+        logLevel.set(Level.DEBUG)
+        if (side == 'client') {
+            programArguments.addAll '--username', 'P2Tester'
+        } else {
+            programArgument '--nogui'
+        }
+    }
+    def task = tasks.named('run' + name.capitalize(), JavaExec)
+    if (side == 'server') {
+        task.configure {
+            doFirst {
+                def config = directory.get().file('server.properties').asFile
+                if (!config.exists()) {
+                    config.parentFile.mkdirs()
+                    config.text = 'server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\n'
+                }
+            }
+        }
+    }
+    runs[side] = task
+}
+
+def registrarSource = file('src/main/java/com/industrialage/ia2/platform/NeoForgeVersion.java')
+def protocolSource = rootProject.file(
+        'src/common/src/main/java/com/industrialage/ia2/network/EchoProtocol.java')
+def mismatchProtocol = '2'
+def productionProtocol = {
+    def declaration = protocolSource.getText('UTF-8') =~ /public static final String VERSION\s*=\s*"([^"]+)";/
+    if (!declaration.find()) {
+        throw new GradleException('Could not read the production IC2 protocol version')
+    }
+    declaration.group(1)
+}
+def mismatchSource = output.map { it.file('variant-source/NeoForgeVersion.java') }
+def generateMismatch = tasks.register('generatePlatformPlayMismatch') {
+    inputs.file(registrarSource)
+    inputs.property('mismatchProtocol', mismatchProtocol)
+    outputs.file(mismatchSource)
+    doLast {
+        def source = registrarSource.getText('UTF-8')
+        def declaration = 'event.registrar(EchoProtocol.VERSION)'
+        if (source.count(declaration) != 1) {
+            throw new GradleException('Expected one IC2 payload registrar in the test input')
+        }
+        def generated = mismatchSource.get().asFile
+        generated.parentFile.mkdirs()
+        generated.setText(source.replace(declaration, 'event.registrar("' + mismatchProtocol + '")'), 'UTF-8')
+    }
+}
+def compileMismatch = tasks.register('compilePlatformPlayMismatch', JavaCompile) {
+    dependsOn generateMismatch, tasks.named('classes')
+    source(mismatchSource)
+    classpath = sourceSets.main.compileClasspath + sourceSets.main.output
+    javaCompiler.set(tasks.named('compileJava', JavaCompile).flatMap { it.javaCompiler })
+    destinationDirectory.set(output.map { it.dir('variant-registrar-classes') })
+}
+def stageMismatch = tasks.register('stagePlatformPlayMismatch', Sync) {
+    from(compileMismatch.flatMap { it.destinationDirectory })
+    from(sourceSets.main.output.classesDirs)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    into output.map { it.dir('mismatch-client') }
+}
+
+tasks.register('preparePlatformPlay') {
+    group = 'verification'
+    description = 'Exports the real development client and dedicated server launch parameters.'
+    dependsOn stageMismatch, tasks.named('gameTestClasses'), ':common:classes'
+    dependsOn tasks.named('verifyDevelopmentJar')
+    dependsOn {
+        runs.values().collectMany { provider ->
+            def run = provider.get()
+            run.taskDependencies.getDependencies(run).toList()
+        }
+    }
+    def manifest = output.map { it.file('launch.json') }
+    outputs.file(manifest)
+    outputs.upToDateWhen { false }
+    doLast {
+        def launch = runs.collectEntries { side, provider ->
+            def run = provider.get()
+            [(side): [
+                    java: run.javaLauncher.get().executablePath.asFile.absolutePath,
+                    jvmArgs: run.allJvmArgs,
+                    classpath: files(run.classpath, run.classpathProvider).asPath,
+                    mainClass: run.mainClass.get(),
+                    args: run.args + run.argumentProviders.collectMany { it.asArguments().toList() },
+                    environment: run.environmentProperty.get().findAll { key, value -> key == 'MOD_CLASSES' }
+            ]]
+        }
+        launch.productionClasses = sourceSets.main.output.classesDirs.singleFile.absolutePath
+        launch.productionJar = tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
+        launch.productionOutputs = (sourceSets.main.output.files + project(':common').sourceSets.main.output.files)
+                .collect { it.absolutePath }
+        launch.verifiedJar = layout.buildDirectory.file('reports/platform-jar/result.json').get().asFile.absolutePath
+        launch.mismatchClasses = stageMismatch.get().destinationDir.absolutePath
+        launch.registrarClass = 'com/industrialage/ia2/platform/NeoForgeVersion.class'
+        launch.protocols = [production: productionProtocol(), mismatch: mismatchProtocol]
+        manifest.get().asFile.setText(JsonOutput.prettyPrint(JsonOutput.toJson(launch)) + '\n', 'UTF-8')
+    }
+}
