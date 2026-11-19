@@ -1,0 +1,9 @@
+{
+    "key.ic2.open_status": "Open IC2 Status",
+    "screen.ic2.status": "IC2 Status",
+    "screen.ic2.resource_unavailable": "Client status resource unavailable.",
+    "screen.ic2.test_connection": "Test connection",
+    "screen.ic2.echo_none": "No echo reply for this connection.",
+    "screen.ic2.echo_reply": "Last echo reply %s",
+    "screen.ic2.echo_unavailable": "The IC2 connection test is unavailable."
+}

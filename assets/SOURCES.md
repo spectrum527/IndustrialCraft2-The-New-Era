@@ -10,3 +10,6 @@
 
 | resource_path | status | author | license | source | date |
 |---|---|---|---|---|---|
+| `assets/ic2/lang/en_us.json` | new | IC2 项目 | CC BY-SA 4.0 | P2-T7 客户端状态页英文文案 | 2026-11-19 |
+| `assets/ic2/lang/zh_cn.json` | new | IC2 项目 | CC BY-SA 4.0 | P2-T7 客户端状态页中文文案 | 2026-11-19 |
+| `assets/ic2/status/client.json` | new | IC2 项目 | CC BY-SA 4.0 | P2-T7 客户端状态资源默认文案 | 2026-11-19 |
