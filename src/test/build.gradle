@@ -38,6 +38,11 @@ tasks.register('runGameTest') {
     description = 'Runs the 1.21.1 development GameTest server.'
     dependsOn ':neoforge:1.21.1:runGameTest'
 }
+tasks.register('runPlatformWorldTest') {
+    group = 'verification'
+    description = 'Verifies platform services across two 1.21.1 dedicated server processes.'
+    dependsOn ':neoforge:1.21.1:runPlatformRead'
+}
 tasks.register('runPlatformHostTest') {
     group = 'verification'
     dependsOn ':neoforge:1.21.1:platformHostTest'

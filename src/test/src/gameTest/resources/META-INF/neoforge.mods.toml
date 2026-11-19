@@ -7,3 +7,10 @@ modId = "ic2_gametest"
 version = "1"
 displayName = "IndustrialCraft 2 GameTest Fixtures"
 description = "Development fixtures for the IndustrialCraft 2 GameTest server."
+
+[[dependencies.ic2_gametest]]
+modId = "ic2"
+type = "required"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

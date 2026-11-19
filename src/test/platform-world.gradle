@@ -1,0 +1,125 @@
+import groovy.json.JsonOutput
+import java.time.Duration
+
+def runDirectory = layout.buildDirectory.dir('run/platformWorld')
+def phases = ['write', 'read']
+def required = [write: ['observed-block-registration','placed-24','placed-28','destroy-action',
+                        'removed-provider','chunk-unloaded-before','chunk-unloaded-after','event-forwarded-once',
+                        'external-block-tag','external-item-tag','removed-is-air','retained-axis-x'],
+                read: ['reloaded-world','reloaded-run','reloaded-dimension','reloaded-removed','reloaded-retained',
+                       'external-block-tag','external-item-tag','removed-is-air','retained-axis-x']]
+def readReport = { File directory, String phase ->
+    def file = new File(directory, "${phase}.properties")
+    if (!file.isFile()) {
+        def failure = new File(directory, "${phase}-failure.txt")
+        if (failure.isFile()) {
+            throw new GradleException(failure.text)
+        }
+        throw new GradleException("Missing ${phase} assertions: ${file}")
+    }
+    def result = new Properties()
+    file.withReader('UTF-8') { result.load(it) }
+    def checks = result.getProperty('assertions', '').tokenize(',')
+    if (result.phase != phase || result.status != 'passed' || !result.pid ||
+            result.failedChecks != '0' || result.passedChecks != checks.size().toString() ||
+            checks.toSet().size() != checks.size() || !checks.containsAll(required[phase]) ||
+            result.run != new File(directory, 'run-id').text.trim()) {
+        throw new GradleException("Incomplete ${phase} assertions: ${result}")
+    }
+    result
+}
+phases.each { phase ->
+    def name = "platform${phase.capitalize()}"
+    neoForge.runs.create(name) {
+        server()
+        programArgument '--nogui'
+        sourceSet.set(sourceSets.gameTest)
+        loadedMods.set([neoForge.mods.named('ic2').get(), neoForge.mods.named('ic2_gametest').get()])
+        gameDirectory.set(runDirectory)
+        systemProperty 'ic2.qa.worldPhase', phase
+    }
+    def runTask = tasks.named("run${name.capitalize()}", JavaExec)
+    def capture = tasks.register("record${name.capitalize()}Exit") {
+        onlyIf { runTask.get().state.executed }
+        doLast {
+            def dir = runDirectory.get().asFile
+            def process = runTask.get()
+            if (!dir.isDirectory()) { return }
+            def latest = new File(dir, 'logs/latest.log')
+            if (latest.isFile()) {
+                copy { from latest; into dir; rename { "${phase}-server.log" } }
+            }
+            def result = [phase: phase, exit: process.executionResult.orNull?.exitValue,
+                          failure: process.state.failure?.message]
+            new File(dir, "${phase}-exit.json").text = JsonOutput.toJson(result) + '\n'
+        }
+    }
+    runTask.configure {
+        timeout.set(Duration.ofMinutes(5))
+        dependsOn 'jar'
+        finalizedBy capture
+        if (phase == 'read') {
+            dependsOn 'runPlatformWrite', 'recordPlatformWriteExit'
+        }
+        doFirst {
+            def dir = runDirectory.get().asFile
+            if (phase == 'write') {
+                delete dir
+                dir.mkdirs()
+                new File(dir, 'run-id').text = UUID.randomUUID().toString()
+                def pack = new File(dir, 'world/datapacks/ic2-platform-qa')
+                pack.mkdirs()
+                new File(pack, 'pack.mcmeta').text = '{"pack":{"pack_format":48,"description":"External platform registry check"}}'
+                [block: 'platform_blocks', item: 'platform_items'].each { type, tag ->
+                    def tags = new File(pack, "data/ic2_qa/tags/${type}")
+                    tags.mkdirs()
+                    new File(tags, "${tag}.json").text = '{"values":["ic2:qa_platform_pillar"]}'
+                }
+                new File(dir, 'server.properties').text = '''server-ip=127.0.0.1
+server-port=0
+online-mode=false
+level-name=world
+level-type=minecraft:flat
+level-seed=7541
+generate-structures=false
+spawn-protection=0
+view-distance=2
+simulation-distance=2
+'''
+            } else {
+                readReport(dir, 'write')
+                if (!new File(dir, 'world/level.dat').isFile() ||
+                        fileTree(new File(dir, 'world/region')).matching { include '*.mca' }.isEmpty()) {
+                    throw new GradleException("First server did not save a world in ${dir}")
+                }
+            }
+            verifyDevelopmentJar(new File(dir, "${phase}-jar-start.json"),
+                    phase == 'read' ? new File(dir, 'write-jar-end.json') : null)
+        }
+        doLast {
+            def dir = runDirectory.get().asFile
+            def result = readReport(dir, phase)
+            def lifecycle = new File(dir, "lifecycle-${phase}.txt")
+            if (!lifecycle.isFile() || lifecycle.readLines().last() != 'stop') {
+                throw new GradleException("No completed host lifecycle trace for ${phase}")
+            }
+            def config = new File(dir, "config-${phase}.txt")
+            def expectedConfig = phase == 'write' ?
+                    ['58 generated defaults and snapshot values','reloaded 0.25/5000',
+                     'rejected-candidate 0.25/5000','recovered 0.5/6000'] : ['reopened 0.5/6000']
+            if (!config.isFile() || !config.readLines().containsAll(expectedConfig)) {
+                throw new GradleException("No completed configuration check for ${phase}")
+            }
+            def capability = new File(dir, "capability-${phase}.txt")
+            if (!capability.isFile() || capability.readLines() !=
+                    ['before world unload = EAST', 'after world unload = absent']) {
+                throw new GradleException("No completed capability check during world unload for ${phase}")
+            }
+            if (phase == 'read' && result.pid == readReport(dir, 'write').pid) {
+                throw new GradleException('The second verification must run in another process.')
+            }
+            verifyDevelopmentJar(new File(dir, "${phase}-jar-end.json"), new File(dir, "${phase}-jar-start.json"))
+            logger.lifecycle("Platform world ${phase}: pid=${result.pid}, ${result.assertions}")
+        }
+    }
+}
