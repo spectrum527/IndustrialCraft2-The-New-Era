@@ -1,0 +1,59 @@
+path	type	default_json	scope	domain	meaning
+protection/wrenchLogging	Bool	true	SERVER	bool	记录扳手拆机操作
+protection/nukeExplosionPowerLimit	Float32	60.0	SERVER	finite32	核装置爆炸威力上限（原版 TNT 为 4）
+protection/reactorExplosionPowerLimit	Float32	45.0	SERVER	finite32	反应堆爆炸威力上限，非正值关闭相应过热破坏
+protection/enableNuke	Bool	true	SERVER	bool	核装置启用开关
+balance/minerDischargeTier	Int32	1	SERVER	int32	采矿机可用放电物品的档位
+balance/teleporterUseInventoryWeight	Bool	true	SERVER	bool	传送能耗计入玩家背包重量
+balance/energyRetainedInStorageBlockDrops	Float64	0.8	SERVER	0..1	符合条件的储电方块拆取后保留的电量比例
+balance/massFabricatorTier	Int32	3	SERVER	int32	质量制造机的用电档位
+balance/matterFabricatorTier	Int32	3	SERVER	int32	物质制造机的用电档位
+balance/uuEnergyFactor	Float32	1.0	SERVER	finite32	UU 生产能耗倍率
+balance/recyclerBlacklist	List<String>	["minecraft:glass_pane","minecraft:stick","minecraft:snowball","minecraft:snow","minecraft:snow_block","ic2:wooden_scaffold"]	SERVER	recipe_inputs	回收排除项，白名单为空时使用
+balance/recyclerWhitelist	List<String>	[]	SERVER	recipe_inputs	回收允许项，非空时只接受匹配项
+balance/watermillAutomation	Bool	false	SERVER	bool	水力发电机水槽可由自动化操作
+balance/euPerChunk	Float32	1.0	SERVER	finite32	区块加载器维持每个区块的 EU/t
+balance/energy/generator/generator	Float32	1.0	SERVER	finite32	基础火力发电产出倍率
+balance/energy/generator/geothermal	Float32	1.0	SERVER	finite32	地热发电产出倍率
+balance/energy/generator/water	Float64	1.0	SERVER	finite64	水力发电产出倍率
+balance/energy/generator/solar	Float64	1.0	SERVER	finite64	太阳能发电产出倍率
+balance/energy/generator/wind	Float64	1.0	SERVER	finite64	风力发电产出倍率
+balance/energy/generator/nuclear	Float32	1.0	SERVER	finite32	核电产出倍率，非正值不满足红石启堆条件
+balance/energy/generator/semiFluidBiogas	Float32	1.0	SERVER	finite32	沼气发电倍率，非正值停用该燃料项
+balance/energy/generator/Stirling	Float32	1.0	SERVER	finite32	斯特林发电的热电转换倍率
+balance/energy/generator/Kinetic	Float32	1.0	SERVER	finite32	动能转换为电能的倍率
+balance/energy/generator/radioisotope	Float32	1.0	SERVER	finite32	放射性同位素发电倍率
+balance/energy/heatgenerator/semiFluidBiogas	Float32	1.0	SERVER	finite32	沼气制热倍率，非正值停用该燃料项
+balance/energy/heatgenerator/solid	Float32	1.0	SERVER	finite32	固体燃料制热倍率
+balance/energy/heatgenerator/radioisotope	Float32	1.0	SERVER	finite32	放射性同位素制热倍率
+balance/energy/heatgenerator/electric	Float32	1.0	SERVER	finite32	电热转换倍率
+balance/energy/kineticgenerator/water	Float32	1.0	SERVER	finite32	水动能产出倍率
+balance/energy/kineticgenerator/wind	Float32	1.0	SERVER	finite32	风动能产出倍率
+balance/energy/kineticgenerator/manual	Float32	1.0	SERVER	finite32	手动动能产出倍率
+balance/energy/kineticgenerator/steam	Float32	1.0	SERVER	finite32	蒸汽动能产出倍率
+balance/energy/kineticgenerator/electric	Float32	1.0	SERVER	finite32	电动动能产出倍率
+balance/energy/fluidconversion/heatExchangerLava	Float32	1.0	SERVER	finite32	熔岩换热的 HU/mB 相对倍率
+balance/energy/fluidconversion/heatExchangerHotCoolant	Float32	1.0	SERVER	finite32	冷却液换热的 HU/mB 相对倍率
+balance/energy/fluidconversion/heatExchangerWater	Float32	1.0	SERVER	finite32	水换热的 HU/mB 相对倍率
+balance/energy/FluidReactor/outputModifier	Float32	1.0	SERVER	finite32	流体反应堆热输出倍率
+balance/steamRepressurizer/steamPerSteam	Int32	16	SERVER	int32	消耗 10 mB 普通 IC2 蒸汽的标准蒸汽产量（mB）
+balance/steamRepressurizer/steamPerSuperSteam	Int32	32	SERVER	int32	消耗 10 mB 过热 IC2 蒸汽的标准蒸汽产量（mB）
+balance/fermenter/need_amount_biomass_per_run	Int32	20	SERVER	int32	每轮发酵消耗的生物质（mB）
+balance/fermenter/output_amount_biogas_per_run	Int32	400	SERVER	int32	每轮发酵产出的沼气（mB）
+balance/fermenter/hU_per_run	Int32	4000	SERVER	int32	每轮发酵消耗的热量（HU）
+balance/fermenter/biomass_per_fertilizier	Int32	500	SERVER	int32	累计产出一份肥料所需处理的生物质（mB）
+balance/uu-values/predefined/ic2:iridium_ore	Float64	12000.0	SERVER	finite64	每件铱矿的初始相对 UU 价值（圆石为 1）
+balance/uu-values/predefined/ic2:iridium_shard	Float64	1333.0	SERVER	finite64	每件铱碎片的初始相对 UU 价值（圆石为 1）
+recipes/ignoreInvalidRecipes	Bool	false	SERVER	bool	处理不合法配方时允许跳过
+misc/hideSecretRecipes	Bool	true	SERVER	bool	隐藏带保密标记的配方
+misc/allowBurningScrap	Bool	true	SERVER	bool	废料可以用作燃料
+misc/useLinearTransferModel	Bool	false	SERVER	bool	选用线性的能量传输模型
+misc/roundEnetLoss	Bool	true	SERVER	bool	对能量网传输损耗向下取整
+misc/enableEnetExplosions	Bool	true	SERVER	bool	允许过压受能设备爆炸
+misc/enableEnetCableMeltdown	Bool	true	SERVER	bool	允许线缆因过载熔毁
+debug/logEmptyWrenchDrops	Bool	true	SERVER	bool	记录扳手拆机时无掉落物的情况
+debug/logGridUpdateIssues	Bool	true	SERVER	bool	记录电网拓扑更新异常
+debug/logEnetApiAccesses	Bool	false	SERVER	bool	记录能量网 API 的变更操作
+debug/logEnetApiAccessTraces	Bool	false	SERVER	bool	记录能量网变更操作的调用跟踪
+debug/logGridUpdatesVerbose	Bool	false	SERVER	bool	详细记录电网拓扑更新
+debug/logGridCalculationIssues	Bool	true	SERVER	bool	记录电网计算异常
