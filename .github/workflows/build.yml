@@ -27,9 +27,17 @@ jobs:
         timeout-minutes: 10
         shell: bash
         run: ./gradlew :test:runGameTest 2>&1 | tee game-test-ci.log
+      - name: Run host contracts and restart the 1.21.1 dedicated world
+        if: matrix.target == '1.21.1'
+        timeout-minutes: 15
+        shell: bash
+        run: ./gradlew :test:runPlatformHostTest :test:runPlatformWorldTest --console=plain 2>&1 | tee platform-world-ci.log
       - name: Resource overlay regression
         if: matrix.target == '1.21.1'
         run: python3 src/test/resource_overlay.py
+      - name: Test the production JAR comparison
+        if: matrix.target == '1.21.1'
+        run: python3 -m unittest discover -s src/test -p test_runtime_jar.py
       - name: Similarity tool tests
         run: python3 -m unittest discover -s tools/similarity -p 'test_*.py'
       - name: Similarity gate without private comparison input
@@ -52,9 +60,18 @@ jobs:
           path: |
             similarity.json
             game-test-ci.log
+            platform-world-ci.log
             src/test/build/reports/tests/
             src/test/build/test-results/
             src/neoforge/${{ matrix.target }}/build/libs/
+            src/neoforge/${{ matrix.target }}/build/reports/platform-jar/
+            src/neoforge/${{ matrix.target }}/build/test-results/platformHostTest/
+            src/neoforge/${{ matrix.target }}/build/run/platformWorld/*.properties
+            src/neoforge/${{ matrix.target }}/build/run/platformWorld/*.json
+            src/neoforge/${{ matrix.target }}/build/run/platformWorld/*.txt
+            src/neoforge/${{ matrix.target }}/build/run/platformWorld/*.log
+            src/neoforge/${{ matrix.target }}/build/run/platformWorld/logs/latest.log
+            src/neoforge/${{ matrix.target }}/build/run/platformWorld/crash-reports/*.txt
             src/neoforge/${{ matrix.target }}/build/run/gameTest/game-test.xml
             src/neoforge/${{ matrix.target }}/build/run/gameTest/result.json
             src/neoforge/${{ matrix.target }}/build/run/gameTest/logs/latest.log
