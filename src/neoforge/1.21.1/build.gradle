@@ -5,3 +5,4 @@ ext.platformJava = 21
 ext.loaderMetadata = 'modLoader="javafml"\nloaderVersion="[4,)"'
 apply from: '../platform.gradle'
 apply from: rootProject.file('src/test/game-test.gradle')
+apply from: rootProject.file('src/test/platform-client.gradle')
