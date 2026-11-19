@@ -60,3 +60,4 @@ tasks.named('jar') {
     from(rootProject.file('COPYING'))
     from(rootProject.file('LICENSE-ASSETS'))
 }
+apply from: rootProject.file('src/test/platform-jar.gradle')
