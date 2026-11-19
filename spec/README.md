@@ -14,10 +14,12 @@
 - [`_schema/machine.md`](_schema/machine.md) —— 母版：机器行为、升级与自动化
 - [`_schema/block.md`](_schema/block.md) / [`_schema/item.md`](_schema/item.md) —— 方块与物品
 - [`_schema/recipe.md`](_schema/recipe.md) / [`_schema/gui.md`](_schema/gui.md) / [`_schema/energy.md`](_schema/energy.md) —— 配方、界面与能量
-- 完整静态核验样板：[`machines/macerator.md`](machines/macerator.md)；未运行参考实例，待 PR 审批。
+- 打粉机规格与 M01/M08 参考观测见[打粉机样板](machines/macerator.md)；候选机器需运行 M09。
 - crop / reactor / sound 模板留待对应任务，P1-T1 不扩展可选模板；这些规格不是 MVP/G0 范围批准。
+
+首发物流的容量、方向、真实传输与存盘样本见[物品管、流体管与泵盖](logistics/pipes.md)。后续 P1-T15 追加路由边界。
 
 ## 状态
 
-- [ ] P1-T1 补齐全部模板
+- [x] P1-T1 六类模板和打粉机样板已交付
 - [ ] 9 份机制文档 → spec/（映射表：《净室重建分期计划》§10.4）

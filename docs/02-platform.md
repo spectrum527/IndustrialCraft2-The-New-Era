@@ -8,7 +8,7 @@
 |---|---|---|
 | 主基线 | Minecraft 1.21.1 / NeoForge | JDK 21；MVP 与 G5 在此验收 |
 | 同步移植 | Minecraft 26.1 / NeoForge | JDK 25；从第一天双版本编译，运行验收从 P6 纳入 |
-| 行为参考 | Minecraft 1.19.2 / Forge | JDK 17；2.9.40 为行为基线，不是发布目标 |
+| 行为参考 | Minecraft 1.19.2 / Forge | JDK 17；修复发布版 1.2.0-port.20261119 给首发玩法基准，2.9.40 提供未覆盖行为的原始对照 |
 | 补充参考 | Minecraft 1.12.2 / Forge | A25 要求 JDK 8；P0-T9 待执行，用于已批准缺失功能与交叉核对，不阻塞本次 G0 |
 
 - 构建插件：**ModDevGradle**（A19）。

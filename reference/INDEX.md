@@ -2,12 +2,13 @@
 
 `rebuild/reference/` **不拷贝**反编译产物（decisions.md A8），本索引指向唯一事实源。迁移工作区到其他机器时，先按下表恢复 `../analysis/` 与 `../analysis-1122/` 再工作。
 
-**版本基线（decisions.md A23）**：2.9.40 为行为基线；2.8.222 只用于 C-MF 范围的缺失功能与交叉验证，两版不一致时登记 B 表"待裁决"项。
+首发以修复版 `1.2.0-port.20261119` 的玩家行为、产出和失败场景为对照；原版 2.9.40 补未覆盖行为，2.8.222 交叉核对。原始观测与重建目标分别保存（A23/A27）。修复目录仅向 Spec 开放；由隔离环境运行源码相似度比较，向实现与 QA 提供行为规格和脱敏结果。
 
 ## 基线与完整性
 
 | 对象 | 路径 | SHA-256 |
 |---|---|---|
+| 1.19.2 修复正式包与同目录发行验收记录 | `../../../IC2 Repair copy/deliverable/release-2026-11-19.2/industrialcraft-2-1.19.2-port.20261119.2.jar` | `dc1b803b24101d6372f3cbf7ffb633fed21f5339efb16e455e5a4ed5cbe0ccab` |
 | Forge 原始 jar | `../../industrialcraft-2-2.9.40+ex119-1.19.2-forge.jar` | `5d06ca9146041043132a72bad9b5612e260e77a84a2f3773a3da9b0167ea1d3d` |
 | Fabric 原始 jar | `../../industrialcraft-2-2.9.40+ex119-1.19.2-fabric.jar` | `09787119172eda213f51fc5785d8a91a88bbcc18124e66d1b0cb384b5a42b154` |
 | Forge 反编译源码 | `../../analysis/src/`（901 .java，Vineflower 1.10.1，SRG 名） | 复现：`java -jar analysis/tools/vineflower.jar -dgs=1 -rsy=1 -ind="    " analysis/extracted analysis/src` |

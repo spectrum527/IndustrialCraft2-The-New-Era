@@ -9,14 +9,14 @@
 | 角色 | 可读 | 禁止 |
 |---|---|---|
 | **Spec 角色**（Spec Lead / Spec Agent） | `reference/INDEX.md` 指向的全部反编译源码与资源（2.9.40 与 2.8.222 两版）、`../docs/`、`../data-workspace/`、`../missing-features/` | 把反编译代码片段（>5 行）、SRG 名、行号写进 `spec/`（规格只描述行为） |
-| **实现角色**（Core/Platform/Content/Client/QA） | `spec/`、`decisions.md`、公开 API 文档、测试与 parity 期望值 | 读 `reference/`、`../analysis/`、`../analysis-1122/`、`../missing-features/`、`../docs/mechanisms/`、`../data-workspace/`；在上下文中出现这些路径 |
+| **实现角色**（Core/Platform/Content/Client/QA） | `spec/`、`decisions.md`、公开 API 文档、测试与 parity 期望值 | 读原版或修复版生产源码、补丁和测试实现，或读 `reference/`、`../analysis/`、`../analysis-1122/`、`../missing-features/`、`../docs/mechanisms/`、`../data-workspace/`；在上下文中出现这些路径 |
 | **资产角色**（Artist/Audio） | `assets/` 登记表、原版素材（经 `reference/INDEX.md` 定位，仅用于复用/重绘） | — |
 
 补充：
 
 - 任务卡只引用 `spec/` 章节号；PR 描述必须填"依据的 spec 章节"。
-- 版本基线（decisions.md A23）：2.9.40 为行为基线，2.8.222 只用于缺失功能与交叉验证；两版不一致时 Spec 角色登记为 B 表"待裁决"项，不得自行取舍。
-- 相似度检查同时对照**两版**反编译源码（`--reference` 传两次）；CI 对 `src/` vs `reference/` 跑 5-gram Jaccard 相似度：单文件 >25% 失败、>15% 警告、连续 8 行相同直接失败。
+- A23/A27 规定首发以修复版可观察的玩法与故障复测为对照；2.9.40 补未覆盖行为，2.8.222 交叉核对。原版、修复版和目标端的证据按版本分存。
+- 由 Spec 根据输入、输出、边界和失败现象写规格。实现与 QA 不读或搬运参考实现和探针，独立设计代码、数据与断言。隔离的 Spec 侧保留双原版对照，首发额外纳入修复版生产源码作第三份相似度参照；QA 接收脱敏统计。单文件 5-gram >15% 警告、>25% 失败、连续 8 行相同直接失败。
 - 质量门禁唯一骨架例外见 decisions.md A26：只有固定表中路径与 SHA-256 均匹配的原样文件可豁免 5-gram 分数判定；仍报告分数，连续 8 行检查照常，任何修改即失效。其他文件阈值不变。
 - 例外：**素材与数值**。机器、物品、线缆的所有纹理按 A7 重绘。私有参考存放于独立仓库 `ic2-legacy-assets`、不进本仓库历史（A22），登记于 `assets/SOURCES.md`；转 Public 前须全部替换为新作（CC BY-SA 4.0，A21）。数值与公式是事实，spec 里照抄。
 
@@ -42,7 +42,7 @@
 
 ## 3. 平台与版本（decisions.md A5）
 
-- 主基线 **NeoForge 1.21.1**（Java 21）：MVP/G5 门禁在此验收。
+- 主基线 **NeoForge 1.21.1**（Java 21）：G5 内部切片和 G10 首发在此验收。
 - 同步目标 **NeoForge 26.1**：common 层不得 import 版本专属 API；版本差异收敛在 `src/neoforge/` 的版本子模块中。
 - 1.19.2 只是 parity 参考环境（跑原版 jar 采期望值），**不是发布目标**。
 
