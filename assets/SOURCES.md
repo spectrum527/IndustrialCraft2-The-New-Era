@@ -1767,3 +1767,6 @@
 | `assets/ic2/gui/power-layouts.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 根据作者专用 GUI 图稿、游戏公开槽位和像素测量重新编写的玩家界面布局 | 2026-11-20 |
 | `assets/qa/first-playable-0.1.0/processing-comparison.png` | new | IC2 重建项目 | 验收文档图；作者纹理及游戏元素保留原许可 | 回交原稿与实际游戏中成形机、洗矿机的并列验证图，仅供文档使用 | 2026-11-20 |
 | `assets/qa/first-playable-0.1.0/workbench-comparison.png` | new | IC2 重建项目 | 验收文档图；作者纹理及游戏元素保留原许可 | 修复版与重建版各自独立运行的工业工作台实拍对照图，仅供文档使用 | 2026-11-20 |
+| `assets/qa/gameplay-fixes/electrolyzer_running.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.21.1 最终候选原始游戏截图，电解机通电后显示入水与五个输出窗口 | 2026-11-21 |
+| `assets/qa/gameplay-fixes/canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.21.1 最终候选原始游戏截图，流体/固体装罐机封装完成，容器、原料与产品使用作者布局 | 2026-11-21 |
+| `assets/qa/gameplay-fixes/solid_canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.21.1 最终候选原始游戏截图，独立固体装罐机的原料、容器和成品槽 | 2026-11-21 |
