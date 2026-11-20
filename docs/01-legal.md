@@ -1,52 +1,18 @@
-# 授权存档（待负责人填写）
+# 授权与许可 · Authorization and licenses
 
-本页是 A14 要求的存档骨架，不是授权证明或授权条款。所有事实字段由负责人依据签署原件填写；空白字段不得据此推定许可。项目决策以 `decisions.md` 为准。
+**截至 2026-11-21，本项目尚未取得 IndustrialCraft² 原作权利方的书面授权。** 项目负责人在首次正式公开发行时确认了这一事实。早期决策和预发布资料中声称授权覆盖原作版本、源码或素材的说法已在本次更正。项目名称用于识别这项独立的社区重建工作，原作及第三方享有的权利归其各自权利人。
 
-## 授权方
+**As of November 21, 2026, the project has received no written authorization from the rights holders of the original IndustrialCraft².** The maintainer confirmed this status for the first public release. This statement corrects earlier development records that described permission as covering the original versions, source or assets. The project uses its name to identify this independent community reimplementation. Rights in the original work and other third-party works remain with their respective holders.
 
-- 授权方名称及身份：TODO(负责人)
-- 权利归属及签署人权限依据：TODO(负责人)
-- 被授权方：TODO(负责人)
+| 内容 / Material | 权利与使用 / Terms |
+| --- | --- |
+| 项目编写的源代码 / Project source | GNU Lesser General Public License, version 3 only (LGPL-3.0-only). [LICENSE](../LICENSE) · [COPYING](../COPYING) |
+| 作者重绘的游戏美术、登记的原创模型与音频 / Redrawn game artwork and registered original models and sounds | 作者确认以 CC BY-SA 4.0 公开其重绘。具体来源和署名逐项记录。The author releases the redraws under CC BY-SA 4.0. Individual credits identify the source of each asset. [LICENSE-ASSETS](../LICENSE-ASSETS) · [SOURCES](../assets/SOURCES.md) |
+| 项目图标与封面 / Icon and cover | 作者仅许可用于标识本项目。The author permits use solely to identify this project. [标识条款 / Brand terms](branding.md) |
+| 游戏画面、外部 API 与依赖 / Screenshots, external APIs and dependencies | 截图用于记录实际运行。原作、Minecraft、加载器、可选模组及其可见元素各自保有其权利。Game screenshots document actual runs. The original game, Minecraft, loaders, optional mods and their visible elements retain their respective rights and licenses. |
 
-## 签署日期
+机器公式与配方资料来源为 MC 百科（mcmod.cn），版本差异结合实际游戏核验。项目代码按洁净室流程独立实现。The project credits MC百科 for the published machine formulas and recipes and checks version-specific behavior against running games. The source code was written independently. [MC 百科 · 工业时代 2](https://www.mcmod.cn/class/2.html) · [打粉机配方条目](https://www.mcmod.cn/item/241.html)
 
-- 签署日期：TODO(负责人)
-- 生效日期及有效期：TODO(负责人)
+维护团队承诺项目保持开源、非营利，官方发行包免费下载。下游使用者享有各项许可证授予的自由。The maintainers commit to open-source development and non-profit operation. Official downloads are free. Each applicable license governs downstream use.
 
-## 授权范围（源码 / 素材）
-
-项目决策 A24 记录负责人确认授权覆盖全部版本，包括 2.8.222 与 2.9.40 的源码和素材。此处仅追记负责人确认的版本范围；签署原件、条款和以下事实字段仍按负责人安排后补。
-
-- 源码范围、版本及允许的行为：TODO(负责人)
-- 素材范围（贴图 / 模型 / 音效 / GUI）及允许的行为：TODO(负责人)
-- 发布方式、地域及其他限制：TODO(负责人)
-
-## 名称决策与原件条款
-
-2026-11-19 负责人指定项目名称为 IndustrialCraft 2（IC2），工程使用记录见 A3 / A15。
-
-- 名称、商标及其他标识在签署原件中的具体条款：TODO(负责人)
-- 其他排除项或限制：TODO(负责人)
-
-## 是否允许再授权
-
-- 是否允许再授权及适用条件：TODO(负责人)
-- 与项目代码、新作素材许可的关系：TODO(负责人)
-
-## 原件存放位置
-
-- 私有原件位置与访问方式：TODO(负责人)
-- 原件标识、完整性校验及保管人：TODO(负责人)
-
-## 脱敏说明
-
-- 已脱敏字段及理由：TODO(负责人)
-- 对照原件的复核人、复核日期及结果：TODO(负责人)
-
-## 转 Public 前复核项（A14 / A15）
-
-- [ ] A14：对照签署原件核实全部事实字段，复核记录：TODO(负责人)
-- [ ] A14：决定保留本页还是进一步脱敏，处理结论：TODO(负责人)
-- [ ] A15：核对本页与批准的对外表述一致，避免暴露授权细节或原团队信息，复核结果：TODO(负责人)
-- [ ] A7 / A22：确认原版素材未进入主仓库历史，且已全部替换为新作，证据位置：TODO(负责人)
-- [ ] 本页公开范围及最终批准记录：TODO(负责人)
+[发行包内的双语声明 / Notice shipped with the JARs](../NOTICE.md) · [ChatGPT 署名自审 / Signed project self-review](self-review-1.0.0.md) · [GNU LGPL v3](https://www.gnu.org/licenses/lgpl-3.0.html) · [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)

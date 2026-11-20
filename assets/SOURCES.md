@@ -4,9 +4,9 @@
 
 - `status` 只能为 `legacy` 或 `new`；`date` 填写登记日期。
 - `legacy` 素材只能存放于独立私有素材仓库，永不进入主仓库 Git 历史；新作素材协议不适用于它们。
-- `new` 素材采用 CC BY-SA 4.0，须记录作者和来源；外包及社区投稿须同意该协议。
+- 游戏美术及登记的原创模型、声音按 CC BY-SA 4.0 记录作者与来源。品牌图、验收截图分别依相应条目的许可和用途登记。
 - 构建测试自造的临时资源不是生产素材，不得列入本表或混入成品。
-- 转为公开项目之前，必须确认 `legacy` 为零，并核验完整生产资源清单。空表本身不能证明替换完成或通过发布门禁。
+- 正式发行以生产 JAR 核对清单，公开项目的美术来源与比对结果见[首发自审](../docs/self-review-1.0.0.md)。
 
 | resource_path | status | author | license | source | date |
 |---|---|---|---|---|---|
@@ -16,323 +16,323 @@
 
 ## 基础切片重绘纹理（2026-11-20）
 
-用户回交 `回交纹理.zip` 当前 SHA-256：`2ac848f7874700311f1e887a1717c5d5a83c9a0a3f8d72eb20d0daf36eb87cba`。具体包内源路径和每份成品的 SHA-256 见 [PRODUCTION-TEXTURES.csv](PRODUCTION-TEXTURES.csv)。回交说明确认重绘，但未单列作者及 CC 授权原文；以下许可为项目约定，公开前仍需核验授权。青铜穿戴层按游戏目标格式另存于项目自有命名空间。
+用户回交 `回交纹理.zip` 当前 SHA-256：`2ac848f7874700311f1e887a1717c5d5a83c9a0a3f8d72eb20d0daf36eb87cba`。具体包内源路径和每份成品的 SHA-256 见 [PRODUCTION-TEXTURES.csv](PRODUCTION-TEXTURES.csv)。项目作者于 2026-11-21 确认该重绘作品采用 CC BY-SA 4.0。原作权利方的授权状态另见[授权说明](../docs/01-legal.md)。青铜穿戴层按游戏目标格式另存于项目自有命名空间。
 
 | resource_path | status | author | license | source | date |
 |---|---|---|---|---|---|
-| `assets/ic2/textures/blocks/general/machine_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/general/machine_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/general/machine_side.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/general/machine_side.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/generator/electric/generator_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/generator/electric/generator_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/generator/electric/generator_front_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_front_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/generator/electric/generator_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/generator/electric/generator_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_top.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/compressor_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/compressor_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/compressor_front_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_front_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/compressor_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/compressor_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_top.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_top.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/extractor_back.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_back.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/extractor_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/extractor_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/extractor_front_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_front_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/extractor_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_top.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_top.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/macerator_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/macerator_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/macerator_front_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_front_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/macerator_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/macerator_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_top.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/processing/basic/macerator_top_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_top_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/machine.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/machine.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/ore/deepslate_tin_ore.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/ore/deepslate_tin_ore.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/ore/tin_ore.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/ore/tin_ore.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_leaves.png` | new | IC2 项目（本轮像素绘制） | CC BY-SA 4.0（项目约定；授权待核） | 空白画布新绘 | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_sapling.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_sapling.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_bottomtop.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_bottomtop.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_dry_bottomtop.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_dry_bottomtop.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_dry_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_dry_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_dry_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_dry_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_sides.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_sides.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_wet_bottomtop.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_wet_bottomtop.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_wet_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_wet_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/resource/rubber_wood_wet_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_wet_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_black.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_black.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_blue.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_blue.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_brown.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_brown.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_cyan.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_cyan.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_gray.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_gray.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_green.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_green.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_blue.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_blue.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_gray.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_gray.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_lime.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_lime.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_magenta.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_magenta.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_orange.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_orange.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_pink.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_pink.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_purple.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_purple.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_red.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_red.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_white.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_white.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_yellow.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_yellow.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_black.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_black.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_blue.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_blue.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_brown.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_brown.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_cyan.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_cyan.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_gray.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_gray.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_green.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_green.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_blue.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_blue.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_gray.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_gray.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_lime.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_lime.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_magenta.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_magenta.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_orange.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_orange.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_pink.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_pink.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_purple.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_purple.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_red.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_red.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_white.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_white.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_yellow.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_yellow.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/batbox_back.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_back.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/batbox_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/batbox_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/batbox_leftright.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_leftright.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/batbox_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_top.png` | 2026-11-20 |
-| `assets/ic2/textures/entity/equipment/humanoid/bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_1.png` | 2026-11-20 |
-| `assets/ic2/textures/entity/equipment/humanoid_leggings/bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_2.png` | 2026-11-20 |
-| `assets/ic2/textures/items/armor/bronze_boots.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_boots.png` | 2026-11-20 |
-| `assets/ic2/textures/items/armor/bronze_chestplate.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_chestplate.png` | 2026-11-20 |
-| `assets/ic2/textures/items/armor/bronze_helmet.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_helmet.png` | 2026-11-20 |
-| `assets/ic2/textures/items/armor/bronze_leggings.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_leggings.png` | 2026-11-20 |
-| `assets/ic2/textures/items/battery/re_battery_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_0.png` | 2026-11-20 |
-| `assets/ic2/textures/items/battery/re_battery_1.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_1.png` | 2026-11-20 |
-| `assets/ic2/textures/items/battery/re_battery_2.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_2.png` | 2026-11-20 |
-| `assets/ic2/textures/items/battery/re_battery_3.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_3.png` | 2026-11-20 |
-| `assets/ic2/textures/items/battery/re_battery_4.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_4.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/copper_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/copper_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/copper_cable_1.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/copper_cable_1.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/tin_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/tin_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/tin_cable_1.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/tin_cable_1.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/circuit.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/circuit.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/rubber.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/rubber.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/casing/tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/crushed/copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/crushed/tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/bronze.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/coal.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/coal.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/bronze.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/raw/tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/raw/tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/resin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/resin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/bronze_pickaxe.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/tool/bronze_pickaxe.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/cutter.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/tool/cutter.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/forge_hammer.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/tool/forge_hammer.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/treetap.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/tool/treetap.png` | 2026-11-20 |
-| `assets/ic2/textures/models/armor/bronze_layer_1.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_1.png` | 2026-11-20 |
-| `assets/ic2/textures/models/armor/bronze_layer_2.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_2.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/general/machine_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/general/machine_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/general/machine_side.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/general/machine_side.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/generator/electric/generator_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/generator/electric/generator_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/generator/electric/generator_front_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_front_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/generator/electric/generator_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/generator/electric/generator_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/generator/electric/generator_top.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/compressor_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/compressor_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/compressor_front_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_front_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/compressor_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/compressor_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/compressor_top.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_front_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/electric_furnace_top.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/extractor_back.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_back.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/extractor_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/extractor_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/extractor_front_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_front_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_leftright_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/extractor_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/extractor_top.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_front_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/iron_furnace_top.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/macerator_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/macerator_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/macerator_front_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_front_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/macerator_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/macerator_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_top.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/processing/basic/macerator_top_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/machine/processing/basic/macerator_top_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/machine.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/machine.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/ore/deepslate_tin_ore.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/ore/deepslate_tin_ore.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/ore/tin_ore.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/ore/tin_ore.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_leaves.png` | new | IC2 项目（本轮像素绘制） | CC BY-SA 4.0 | 空白画布新绘 | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_sapling.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_sapling.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_bottomtop.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_bottomtop.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_dry_bottomtop.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_dry_bottomtop.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_dry_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_dry_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_dry_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_dry_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_sides.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_sides.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_wet_bottomtop.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_wet_bottomtop.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_wet_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_wet_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/resource/rubber_wood_wet_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/resource/rubber_wood_wet_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_black.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_black.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_blue.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_blue.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_brown.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_brown.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_cyan.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_cyan.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_gray.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_gray.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_green.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_green.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_blue.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_blue.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_gray.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_light_gray.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_lime.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_lime.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_magenta.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_magenta.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_orange.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_orange.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_pink.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_pink.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_purple.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_purple.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_red.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_red.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_white.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_white.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/copper_cable_1_yellow.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/copper_cable_1_yellow.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_black.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_black.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_blue.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_blue.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_brown.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_brown.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_cyan.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_cyan.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_gray.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_gray.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_green.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_green.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_blue.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_blue.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_gray.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_light_gray.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_lime.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_lime.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_magenta.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_magenta.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_orange.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_orange.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_pink.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_pink.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_purple.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_purple.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_red.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_red.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_white.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_white.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/tin_cable_1_yellow.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/tin_cable_1_yellow.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/batbox_back.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_back.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/batbox_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/batbox_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/batbox_leftright.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_leftright.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/batbox_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/batbox_top.png` | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_1.png` | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid_leggings/bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_2.png` | 2026-11-20 |
+| `assets/ic2/textures/items/armor/bronze_boots.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_boots.png` | 2026-11-20 |
+| `assets/ic2/textures/items/armor/bronze_chestplate.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_chestplate.png` | 2026-11-20 |
+| `assets/ic2/textures/items/armor/bronze_helmet.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_helmet.png` | 2026-11-20 |
+| `assets/ic2/textures/items/armor/bronze_leggings.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/armor/bronze_leggings.png` | 2026-11-20 |
+| `assets/ic2/textures/items/battery/re_battery_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_0.png` | 2026-11-20 |
+| `assets/ic2/textures/items/battery/re_battery_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_1.png` | 2026-11-20 |
+| `assets/ic2/textures/items/battery/re_battery_2.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_2.png` | 2026-11-20 |
+| `assets/ic2/textures/items/battery/re_battery_3.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_3.png` | 2026-11-20 |
+| `assets/ic2/textures/items/battery/re_battery_4.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/battery/re_battery_4.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/copper_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/copper_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/copper_cable_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/copper_cable_1.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/tin_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/tin_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/tin_cable_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/tin_cable_1.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/circuit.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/circuit.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/rubber.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/rubber.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/casing/tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/crushed/copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/crushed/tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/bronze.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/coal.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/coal.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/bronze.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/raw/tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/raw/tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/resin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/resin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/tool/bronze_pickaxe.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/bronze_pickaxe.png` | 2026-11-20 |
+| `assets/ic2/textures/items/tool/cutter.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/cutter.png` | 2026-11-20 |
+| `assets/ic2/textures/items/tool/forge_hammer.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/forge_hammer.png` | 2026-11-20 |
+| `assets/ic2/textures/items/tool/treetap.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/treetap.png` | 2026-11-20 |
+| `assets/ic2/textures/models/armor/bronze_layer_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_1.png` | 2026-11-20 |
+| `assets/ic2/textures/models/armor/bronze_layer_2.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_2.png` | 2026-11-20 |
 
 ## 运输与储罐批次（2026-11-20）
 
-颜色派生图按回交素材的运行时着色台账逐像素相乘，保留透明度；原始重绘 PNG 仍以旧资源键保留。授权原文仍待核验。
+颜色派生图按回交素材的运行时着色台账逐像素相乘，保留透明度；作者重绘 PNG 使用原有资源键，颜色派生沿用其 CC BY-SA 4.0 许可。
 
 | resource_path | status | author | license | source | date |
 |---|---|---|---|---|---|
-| `assets/ic2/textures/blocks/bronze_tank_cap.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/bronze_tank_cap.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/bronze_tank_side.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/bronze_tank_side.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/fluid/tank_bottom.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/machine/fluid/tank_bottom.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/fluid/tank_side.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/machine/fluid/tank_side.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/machine/fluid/tank_top.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/machine/fluid/tank_top.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/bronze/pipe_large.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_large.png，逐像素乘色 #AE5111` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/bronze/pipe_medium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_medium.png，逐像素乘色 #AE5111` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/bronze/pipe_side.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_side.png，逐像素乘色 #AE5111` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/bronze/pipe_small.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_small.png，逐像素乘色 #AE5111` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/bronze/pipe_tiny.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_tiny.png，逐像素乘色 #AE5111` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/pipe_large.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_large.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/pipe_medium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_medium.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/pipe_side.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_side.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/pipe_small.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_small.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/pipe_tiny.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_tiny.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/steel/pipe_large.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_large.png，逐像素乘色 #808080` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/steel/pipe_medium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_medium.png，逐像素乘色 #808080` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/steel/pipe_side.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_side.png，逐像素乘色 #808080` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/steel/pipe_small.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_small.png，逐像素乘色 #808080` | 2026-11-20 |
-| `assets/ic2/textures/blocks/transport/steel/pipe_tiny.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/blocks/transport/pipe_tiny.png，逐像素乘色 #808080` | 2026-11-20 |
-| `assets/ic2/textures/items/cover/pump_background.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/cover/pump_background.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cover/pump_foreground.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/cover/pump_foreground.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cover/pump_foreground_lv.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/cover/pump_foreground.png，逐像素乘色 #00FF00` | 2026-11-20 |
-| `assets/ic2/textures/items/cover/pump_foreground_mv.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/cover/pump_foreground.png，逐像素乘色 #FFFF00` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/casing/bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/resource/casing/bronze.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/casing/gold.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/resource/casing/gold.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/casing/steel.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/resource/casing/steel.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/steel.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/resource/ingot/steel.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/resource/plate/bronze.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/gold.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/resource/plate/gold.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/steel.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/resource/plate/steel.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/crowbar.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/tool/crowbar.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/wrench.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | `assets/ic2/textures/items/tool/wrench.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/bronze_tank_cap.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/bronze_tank_cap.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/bronze_tank_side.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/bronze_tank_side.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/fluid/tank_bottom.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/machine/fluid/tank_bottom.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/fluid/tank_side.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/machine/fluid/tank_side.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/machine/fluid/tank_top.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/machine/fluid/tank_top.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/bronze/pipe_large.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_large.png，逐像素乘色 #AE5111` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/bronze/pipe_medium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_medium.png，逐像素乘色 #AE5111` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/bronze/pipe_side.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_side.png，逐像素乘色 #AE5111` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/bronze/pipe_small.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_small.png，逐像素乘色 #AE5111` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/bronze/pipe_tiny.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_tiny.png，逐像素乘色 #AE5111` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/pipe_large.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_large.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/pipe_medium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_medium.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/pipe_side.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_side.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/pipe_small.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_small.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/pipe_tiny.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_tiny.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/steel/pipe_large.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_large.png，逐像素乘色 #808080` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/steel/pipe_medium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_medium.png，逐像素乘色 #808080` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/steel/pipe_side.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_side.png，逐像素乘色 #808080` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/steel/pipe_small.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_small.png，逐像素乘色 #808080` | 2026-11-20 |
+| `assets/ic2/textures/blocks/transport/steel/pipe_tiny.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/blocks/transport/pipe_tiny.png，逐像素乘色 #808080` | 2026-11-20 |
+| `assets/ic2/textures/items/cover/pump_background.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/cover/pump_background.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cover/pump_foreground.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/cover/pump_foreground.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cover/pump_foreground_lv.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/cover/pump_foreground.png，逐像素乘色 #00FF00` | 2026-11-20 |
+| `assets/ic2/textures/items/cover/pump_foreground_mv.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/cover/pump_foreground.png，逐像素乘色 #FFFF00` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/casing/bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/resource/casing/bronze.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/casing/gold.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/resource/casing/gold.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/casing/steel.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/resource/casing/steel.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/steel.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/resource/ingot/steel.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/resource/plate/bronze.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/gold.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/resource/plate/gold.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/steel.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/resource/plate/steel.png` | 2026-11-20 |
+| `assets/ic2/textures/items/tool/crowbar.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/tool/crowbar.png` | 2026-11-20 |
+| `assets/ic2/textures/items/tool/wrench.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | `assets/ic2/textures/items/tool/wrench.png` | 2026-11-20 |
 
 ## 扩展储电和电缆批次（2026-11-20）
 
 | resource_path | status | author | license | source | date |
 |---|---|---|---|---|---|
-| `assets/ic2/textures/blocks/wiring/cable/detector_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/detector_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/detector_cable_0_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/detector_cable_0_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/glass_cable_0_white.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/glass_cable_0_white.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/gold_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/gold_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/gold_cable_1_black.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/gold_cable_1_black.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/gold_cable_2_black.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/gold_cable_2_black.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/iron_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/iron_cable_1_black.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_1_black.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/iron_cable_2_black.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_2_black.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/iron_cable_3_black.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_3_black.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/splitter_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/splitter_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/cable/splitter_cable_0_active.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/splitter_cable_0_active.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/cesu_back.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_back.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/cesu_bottomtop.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_bottomtop.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/cesu_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/cesu_leftright.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_leftright.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/mfe_back.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_back.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/mfe_bottomtop.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_bottomtop.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/mfe_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/mfe_leftright.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_leftright.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/mfsu_bottomtop.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfsu_bottomtop.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/mfsu_front.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfsu_front.png` | 2026-11-20 |
-| `assets/ic2/textures/blocks/wiring/storage/mfsu_leftrightback.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfsu_leftrightback.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/detector_cable.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/detector_cable.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/glass_cable.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/glass_cable.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/gold_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/gold_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/gold_cable_1.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/gold_cable_1.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/gold_cable_2.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/gold_cable_2.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/iron_cable_0.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_0.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/iron_cable_1.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_1.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/iron_cable_2.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_2.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/iron_cable_3.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_3.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cable/splitter_cable.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cable/splitter_cable.png` | 2026-11-20 |
-| `assets/ic2/textures/items/cell/empty_cell.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/cell/empty_cell.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/detector_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/detector_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/detector_cable_0_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/detector_cable_0_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/glass_cable_0_white.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/glass_cable_0_white.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/gold_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/gold_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/gold_cable_1_black.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/gold_cable_1_black.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/gold_cable_2_black.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/gold_cable_2_black.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/iron_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/iron_cable_1_black.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_1_black.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/iron_cable_2_black.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_2_black.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/iron_cable_3_black.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/iron_cable_3_black.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/splitter_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/splitter_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/cable/splitter_cable_0_active.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/cable/splitter_cable_0_active.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/cesu_back.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_back.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/cesu_bottomtop.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_bottomtop.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/cesu_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/cesu_leftright.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/cesu_leftright.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/mfe_back.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_back.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/mfe_bottomtop.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_bottomtop.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/mfe_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/mfe_leftright.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfe_leftright.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/mfsu_bottomtop.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfsu_bottomtop.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/mfsu_front.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfsu_front.png` | 2026-11-20 |
+| `assets/ic2/textures/blocks/wiring/storage/mfsu_leftrightback.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/blocks/wiring/storage/mfsu_leftrightback.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/detector_cable.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/detector_cable.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/glass_cable.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/glass_cable.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/gold_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/gold_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/gold_cable_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/gold_cable_1.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/gold_cable_2.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/gold_cable_2.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/iron_cable_0.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_0.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/iron_cable_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_1.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/iron_cable_2.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_2.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/iron_cable_3.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/iron_cable_3.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cable/splitter_cable.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cable/splitter_cable.png` | 2026-11-20 |
+| `assets/ic2/textures/items/cell/empty_cell.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/cell/empty_cell.png` | 2026-11-20 |
 
 ## 被动加工材料批次（2026-11-20）
 
 | resource_path | status | author | license | source | date |
 |---|---|---|---|---|---|
-| `assets/ic2/textures/items/crafting/advanced_circuit.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/advanced_circuit.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/alloy.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/alloy.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ashes.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ashes.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/bio_chaff.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/bio_chaff.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/carbon_fibre.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/carbon_fibre.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/carbon_mesh.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/carbon_mesh.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/carbon_plate.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/carbon_plate.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/cf_powder.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/cf_powder.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/clay.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/clay.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/coal_ball.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coal_ball.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/coal_block.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coal_block.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/coal_chunk.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coal_chunk.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/coal_fuel.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/coal_fuel.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/coil.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coil.png` | 2026-11-20 |
-| `assets/ic2/textures/items/coin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/coin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/coke.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/coke.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/compressed_hydrated_coal.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/compressed_hydrated_coal.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/compressed_plants.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/compressed_plants.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/copper_boiler.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/copper_boiler.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/casing/copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/crushed/gold.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/gold.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/crushed/iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/crushed/lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/crushed/silver.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/silver.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/crushed/uranium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/uranium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_bronze.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_gold.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_gold.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_lapis.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_lapis.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_obsidian.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_obsidian.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_steel.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_steel.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/dense_tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/diamond.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/diamond.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/electric_motor.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/electric_motor.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/emerald.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/emerald.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/ender_pearl.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/ender_pearl.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/energium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/energium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/gold.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/gold.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/heat_conductor.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/heat_conductor.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/tin_hydrated.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/tin_hydrated.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/industrial_diamond.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/industrial_diamond.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/iridium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/iridium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/iridium_ore.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/iridium_ore.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/iridium_shard.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/iridium_shard.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/casing/iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/lapis.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/lapis.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/lapis.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/lapis.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/casing/lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/lithium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/lithium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/mixed_metal.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/mixed_metal.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/mox.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/mox.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/mox_pellet.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/mox_pellet.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/netherrack.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/netherrack.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/obsidian.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/obsidian.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/plate/obsidian.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/obsidian.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/pellet.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/pellet.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/plant_ball.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/plant_ball.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/plutonium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/plutonium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/power_unit.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/power_unit.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/purified/copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/purified/gold.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/gold.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/purified/iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/purified/lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/purified/silver.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/silver.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/purified/tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/purified/uranium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/uranium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/raw/lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/raw/lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/raw/uranium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/raw/uranium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/refined_iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/refined_iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/scrap.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/scrap.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/silicon_dioxide.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/silicon_dioxide.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/silver.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/silver.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/silver.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/silver.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/slag.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/slag.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_bronze.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_bronze.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_copper.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_copper.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_diamond.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_diamond.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_emerald.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_emerald.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_gold.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_gold.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_iron.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_iron.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_lapis.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_lapis.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_lead.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_lead.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_lithium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_lithium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_obsidian.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_obsidian.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/small_plutonium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/small_plutonium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/crafting/small_power_unit.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/crafting/small_power_unit.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_silver.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_silver.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_sulfur.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_sulfur.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/small_tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/small_uranium_235.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/small_uranium_235.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/small_uranium_238.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/small_uranium_238.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/stone.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/stone.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/sulfur.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/sulfur.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/dust/tin.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/tin.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/uranium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/uranium_235.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium_235.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/uranium_238.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium_238.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/ingot/uranium.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/uranium.png` | 2026-11-20 |
-| `assets/ic2/textures/items/resource/nuclear/uranium_pellet.png` | new | IC2 重绘项目（用户回交，作者未单列） | CC BY-SA 4.0（项目约定；授权待核） | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium_pellet.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/advanced_circuit.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/advanced_circuit.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/alloy.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/alloy.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ashes.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ashes.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/bio_chaff.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/bio_chaff.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/carbon_fibre.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/carbon_fibre.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/carbon_mesh.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/carbon_mesh.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/carbon_plate.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/carbon_plate.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/cf_powder.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/cf_powder.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/clay.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/clay.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/coal_ball.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coal_ball.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/coal_block.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coal_block.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/coal_chunk.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coal_chunk.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/coal_fuel.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/coal_fuel.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/coil.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/coil.png` | 2026-11-20 |
+| `assets/ic2/textures/items/coin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/coin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/coke.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/coke.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/compressed_hydrated_coal.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/compressed_hydrated_coal.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/compressed_plants.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/compressed_plants.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/copper_boiler.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/copper_boiler.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/casing/copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/crushed/gold.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/gold.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/crushed/iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/crushed/lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/crushed/silver.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/silver.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/crushed/uranium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/crushed/uranium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_bronze.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_gold.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_gold.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_lapis.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_lapis.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_obsidian.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_obsidian.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_steel.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_steel.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/dense_tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/dense_tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/diamond.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/diamond.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/electric_motor.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/electric_motor.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/emerald.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/emerald.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/ender_pearl.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/ender_pearl.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/energium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/energium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/gold.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/gold.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/heat_conductor.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/heat_conductor.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/tin_hydrated.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/tin_hydrated.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/industrial_diamond.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/industrial_diamond.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/iridium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/iridium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/iridium_ore.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/iridium_ore.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/iridium_shard.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/iridium_shard.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/casing/iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/lapis.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/lapis.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/lapis.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/lapis.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/casing/lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/casing/lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/lithium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/lithium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/mixed_metal.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/mixed_metal.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/mox.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/mox.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/mox_pellet.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/mox_pellet.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/netherrack.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/netherrack.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/obsidian.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/obsidian.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/plate/obsidian.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/plate/obsidian.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/pellet.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/pellet.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/plant_ball.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/plant_ball.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/plutonium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/plutonium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/power_unit.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/power_unit.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/purified/copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/purified/gold.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/gold.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/purified/iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/purified/lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/purified/silver.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/silver.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/purified/tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/purified/uranium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/purified/uranium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/raw/lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/raw/lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/raw/uranium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/raw/uranium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/refined_iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/refined_iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/scrap.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/scrap.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/silicon_dioxide.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/silicon_dioxide.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/silver.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/silver.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/silver.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/silver.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/slag.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/slag.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_bronze.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_bronze.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_copper.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_copper.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_diamond.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_diamond.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_emerald.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_emerald.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_gold.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_gold.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_iron.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_iron.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_lapis.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_lapis.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_lead.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_lead.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_lithium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_lithium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_obsidian.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_obsidian.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/small_plutonium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/small_plutonium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/crafting/small_power_unit.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/crafting/small_power_unit.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_silver.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_silver.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_sulfur.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_sulfur.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/small_tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/small_tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/small_uranium_235.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/small_uranium_235.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/small_uranium_238.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/small_uranium_238.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/stone.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/stone.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/sulfur.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/sulfur.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/dust/tin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/dust/tin.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/uranium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/uranium_235.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium_235.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/uranium_238.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium_238.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/ingot/uranium.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/ingot/uranium.png` | 2026-11-20 |
+| `assets/ic2/textures/items/resource/nuclear/uranium_pellet.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/nuclear/uranium_pellet.png` | 2026-11-20 |
 | `assets/ic2/textures/armor/jetpack_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/bcTrigger/capacitor_empty.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/bcTrigger/capacitor_full.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
@@ -634,33 +634,33 @@
 | `assets/ic2/textures/blocks/explosive/nuke_top.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/fence_iron.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/coolant_flow.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/coolant_flow.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/coolant_flow.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/coolant_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/coolant_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/coolant_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/fluid_2_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/fluid_2_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/fluid_2_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/fluid_3_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/fluid_3_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/fluid_3_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/fluid_flow.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/fluid_flow.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/fluid_flow.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/fluid_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/fluid_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/fluid_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/fluid_water_flow.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/fluid_water_flow.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/fluid_water_flow.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/fluid_water_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/fluid_water_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/fluid_water_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/hot_coolant_flow.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/hot_coolant_flow.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/hot_coolant_flow.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/hot_coolant_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/hot_coolant_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/hot_coolant_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/pahoehoe_lava_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/pahoehoe_lava_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/pahoehoe_lava_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/uu_matter_flow.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/uu_matter_flow.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/uu_matter_flow.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/uu_matter_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/uu_matter_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/uu_matter_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/fluid/weed_ex_still.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/blocks/fluid/weed_ex_still.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/blocks/fluid/weed_ex_still.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/blocks/general/machine_top.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/generator/electric/creative_generator_bottom.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/generator/electric/creative_generator_side.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
@@ -1571,7 +1571,7 @@
 | `assets/ic2/textures/items/tool/electric/obscurator.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/tool/electric/obscurator_mask.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/tool/electric/plasma_launcher.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/tool/electric/plasma_launcher.png.mcmeta` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 重绘帧序列的播放参数，按游戏资源元数据核对 | 2026-11-20 |
+| `assets/ic2/textures/items/tool/electric/plasma_launcher.png.mcmeta` | new | 项目整理 | CC BY-SA 4.0（项目登记） | 按对应纹理的游戏播放参数编制帧序和帧时 | 2026-11-20 |
 | `assets/ic2/textures/items/tool/electric/scanner.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/tool/electric/wind_meter.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/tool/foam_sprayer.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
@@ -1751,3 +1751,12 @@
 | `assets/qa/gameplay-fixes/electrolyzer_running.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.19.2 最终候选原始游戏截图，电解机通电后显示入水与五个输出窗口 | 2026-11-21 |
 | `assets/qa/gameplay-fixes/canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.19.2 最终候选原始游戏截图，流体/固体装罐机封装完成，容器、原料与产品使用作者布局 | 2026-11-21 |
 | `assets/qa/gameplay-fixes/solid_canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.19.2 最终候选原始游戏截图，独立固体装罐机的原料、容器和成品槽 | 2026-11-21 |
+
+## 项目标识（2026-11-21）
+
+两份原始 JPEG 由作者提供，限用于标识本项目。GitHub README 直接引用这两张图。 [使用条款](../docs/branding.md)
+
+| resource_path | status | author | license | source | date |
+| --- | --- | --- | --- | --- | --- |
+| `assets/brand/icon.jpg` | new | 项目作者 | 仅供本项目标识使用 | 用户提供的图标原图，SHA-256 `1339c4e395cc5a62207c869df3eb6b197e630dc9b97da2b63e099f8ad0668d44` | 2026-11-21 |
+| `assets/brand/cover.jpg` | new | 项目作者 | 仅供本项目标识使用 | 用户提供的封面原图，SHA-256 `3629f33b96d0caff04a18e1721af7d2a9d4a63fdbef7d444980a96bb4c2d3059` | 2026-11-21 |

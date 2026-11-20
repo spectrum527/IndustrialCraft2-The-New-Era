@@ -1,0 +1,16 @@
+name: 共创申请 / Collaborate
+description: 提议长期参与项目，或一起完成一项改进。 / Propose an ongoing role or a specific contribution.
+title: "[共创 / Collaboration] "
+body:
+  - type: textarea
+    id: contribution
+    attributes:
+      label: 想参与的方向 / What would you like to work on?
+      description: 例如机器玩法、移植、重绘、文档或测试。 / For example, gameplay, ports, artwork, documentation or testing.
+    validations:
+      required: true
+  - type: textarea
+    id: starting-point
+    attributes:
+      label: 你的想法或作品链接 / Ideas or examples
+      description: 可选。请只分享可以公开的内容。 / Optional. Please share only material suitable for a public issue.

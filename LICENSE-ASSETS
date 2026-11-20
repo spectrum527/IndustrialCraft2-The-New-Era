@@ -1,7 +1,15 @@
-Scope: this license applies to the original artwork, models, sounds and GUI
-textures created for this IndustrialCraft 2 (IC2) rebuild and stored under assets/ in this
-repository (see assets/SOURCES.md). Source code is licensed under LGPL-3.0
-(see LICENSE and COPYING).
+IndustrialCraft²: The New Era — game asset license
+
+The project author licenses the redrawn game artwork under Creative Commons
+Attribution-ShareAlike 4.0 International. Project-original models, sound and
+other resources marked CC BY-SA 4.0 in assets/SOURCES.md use the same license.
+Credit the creator listed for the asset and indicate any modifications.
+
+The project icon and cover in assets/brand/ have separate identification-only
+terms in docs/branding.md. For game screenshots and their visible elements,
+consult the attribution in assets/SOURCES.md. Project source code is under
+LGPL-3.0-only (LICENSE and COPYING). See NOTICE.md for the upstream authorization
+status and the distinction between the project and the original rights holders.
 
 ----------------------------------------------------------------------
 
