@@ -1,0 +1,629 @@
+{
+  "items": {
+    "fertilizer": {},
+    "hydration_cell": {},
+    "weed_ex_cell": {},
+    "hops": {},
+    "bobs_yer_uncle_ranks_berry": {},
+    "coffee_beans": {},
+    "coffee_powder": {},
+    "grin_powder": {},
+    "milk_wart": {},
+    "oil_berry": {},
+    "terra_wart": {},
+    "weed": {},
+    "empty_mug": {},
+    "cold_coffee_mug": {},
+    "dark_coffee_mug": {},
+    "coffee_mug": {},
+    "crop_seed_bag": {},
+    "cropnalyzer": {},
+    "scanner": {},
+    "advanced_scanner": {},
+    "cf_pack": {},
+    "black_painter": {
+      "handheld": true
+    },
+    "blank_tfbp": {},
+    "blue_painter": {
+      "handheld": true
+    },
+    "brown_painter": {
+      "handheld": true
+    },
+    "chilling_tfbp": {},
+    "cultivation_tfbp": {},
+    "cyan_painter": {
+      "handheld": true
+    },
+    "desertification_tfbp": {},
+    "flatification_tfbp": {},
+    "gray_painter": {
+      "handheld": true
+    },
+    "green_painter": {
+      "handheld": true
+    },
+    "irrigation_tfbp": {},
+    "light_blue_painter": {
+      "handheld": true
+    },
+    "light_gray_painter": {
+      "handheld": true
+    },
+    "lime_painter": {
+      "handheld": true
+    },
+    "magenta_painter": {
+      "handheld": true
+    },
+    "mushroom_tfbp": {},
+    "orange_painter": {
+      "handheld": true
+    },
+    "painter": {
+      "handheld": true
+    },
+    "pink_painter": {
+      "handheld": true
+    },
+    "purple_painter": {
+      "handheld": true
+    },
+    "red_painter": {
+      "handheld": true
+    },
+    "white_painter": {
+      "handheld": true
+    },
+    "yellow_painter": {
+      "handheld": true
+    },
+    "foam_sprayer": {
+      "texture": "items/tool/foam_sprayer",
+      "handheld": true
+    },
+    "raw_lead": {
+      "customModel": true
+    },
+    "raw_tin": {
+      "customModel": true
+    },
+    "raw_uranium": {
+      "customModel": true
+    },
+    "lead_ingot": {
+      "customModel": true
+    },
+    "tin_ingot": {
+      "customModel": true
+    },
+    "bronze_ingot": {
+      "customModel": true
+    },
+    "steel_ingot": {
+      "customModel": true
+    },
+    "silver_ingot": {
+      "customModel": true
+    },
+    "uranium_238": {
+      "customModel": true
+    },
+    "uranium_ingot": {
+      "customModel": true
+    },
+    "obscurator": {
+      "handheld": true
+    },
+    "water_sheet": {
+      "customModel": true
+    },
+    "lava_sheet": {
+      "customModel": true
+    }
+  },
+  "blocks": {
+    "acacia_sapling_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "aurelia_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "beetroots_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "birch_sapling_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "blackthorn_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "blazereed_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "bobs_yer_uncle_ranks_berries_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "brown_mushroom_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "carrots_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "cocoa_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "coffee_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "corium_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "corpse_plant_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "creeper_weed_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "crop_stick": {
+      "customModel": true
+    },
+    "cyazint_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "cyprium_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "dandelion_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "dark_oak_sapling_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "diareed_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "eating_plant_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "egg_plant_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "ender_blossom_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "ferru_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "flax_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "hops_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "jungle_sapling_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "meat_rose_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "melon_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "milk_wart_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "nether_wart_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "oak_sapling_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "oil_berries_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "plumbiscus_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "poppy_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "potato_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "pumpkin_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "red_mushroom_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "red_wheat_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "reed_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "shining_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "slime_plant_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "spidernip_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "spruce_sapling_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "stagnium_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "sticky_reed_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "tearstalks_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "terra_wart_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "tulip_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "venomilia_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "weed_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "wheat_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "withereed_crop": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "lead_ore": {
+      "customModel": true
+    },
+    "deepslate_lead_ore": {
+      "customModel": true
+    },
+    "uranium_ore": {
+      "customModel": true
+    },
+    "deepslate_uranium_ore": {
+      "customModel": true
+    },
+    "iron_fence": {
+      "customModel": true
+    },
+    "reinforced_door": {
+      "customModel": true
+    },
+    "reinforced_glass": {
+      "customModel": true
+    },
+    "rubber_wood": {
+      "customModel": true
+    },
+    "stripped_rubber_wood": {
+      "customModel": true
+    },
+    "stripped_rubber_log": {
+      "customModel": true
+    },
+    "rubber_slab": {
+      "customModel": true
+    },
+    "rubber_stairs": {
+      "customModel": true
+    },
+    "rubber_fence": {
+      "customModel": true
+    },
+    "rubber_fence_gate": {
+      "customModel": true
+    },
+    "rubber_button": {
+      "customModel": true
+    },
+    "rubber_pressure_plate": {
+      "customModel": true
+    },
+    "rubber_door": {
+      "customModel": true
+    },
+    "rubber_trapdoor": {
+      "customModel": true
+    },
+    "resin_sheet": {
+      "customModel": true
+    },
+    "rubber_sheet": {
+      "customModel": true
+    },
+    "wool_sheet": {
+      "customModel": true
+    },
+    "wooden_scaffold": {
+      "customModel": true
+    },
+    "reinforced_wooden_scaffold": {
+      "customModel": true
+    },
+    "iron_scaffold": {
+      "customModel": true
+    },
+    "reinforced_iron_scaffold": {
+      "customModel": true
+    },
+    "foam": {
+      "customModel": true
+    },
+    "mining_pipe": {
+      "customModel": true
+    },
+    "mining_pipe_tip": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "black_wall": {
+      "customModel": true
+    },
+    "blue_wall": {
+      "customModel": true
+    },
+    "brown_wall": {
+      "customModel": true
+    },
+    "copper_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "cyan_wall": {
+      "customModel": true
+    },
+    "detector_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "double_insulated_gold_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "double_insulated_iron_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "glass_fibre_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "gold_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "gray_wall": {
+      "customModel": true
+    },
+    "green_wall": {
+      "customModel": true
+    },
+    "insulated_copper_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "insulated_gold_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "insulated_iron_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "insulated_tin_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "iron_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "light_blue_wall": {
+      "customModel": true
+    },
+    "light_gray_wall": {
+      "customModel": true
+    },
+    "lime_wall": {
+      "customModel": true
+    },
+    "magenta_wall": {
+      "customModel": true
+    },
+    "obscured_wall": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "orange_wall": {
+      "customModel": true
+    },
+    "pink_wall": {
+      "customModel": true
+    },
+    "purple_wall": {
+      "customModel": true
+    },
+    "red_wall": {
+      "customModel": true
+    },
+    "splitter_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "tin_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "triple_insulated_iron_foam_cable": {
+      "customModel": true,
+      "worldBlockOnly": true
+    },
+    "white_wall": {
+      "customModel": true
+    },
+    "yellow_wall": {
+      "customModel": true
+    },
+    "bronze_block": {
+      "texture": "blocks/resource/bronze_block"
+    },
+    "tin_block": {
+      "texture": "blocks/resource/tin_block"
+    },
+    "lead_block": {
+      "texture": "blocks/resource/lead_block"
+    },
+    "silver_block": {
+      "texture": "blocks/resource/silver_block"
+    },
+    "steel_block": {
+      "texture": "blocks/resource/steel_block"
+    },
+    "raw_tin_block": {
+      "texture": "blocks/resource/ore/raw_tin_block"
+    },
+    "raw_uranium_block": {
+      "texture": "blocks/resource/ore/raw_uranium_block"
+    },
+    "raw_lead_block": {
+      "texture": "blocks/resource/ore/raw_lead_block"
+    },
+    "basalt": {
+      "texture": "blocks/resource/basalt"
+    },
+    "refractory_bricks": {
+      "texture": "blocks/steam/refractory_bricks"
+    },
+    "reinforced_stone": {
+      "texture": "blocks/resource/reinforced_stone"
+    },
+    "rubber_planks": {
+      "texture": "blocks/resource/rubber/planks"
+    },
+    "uranium_block": {
+      "faces": {
+        "north": "blocks/resource/uranium_block_sides",
+        "east": "blocks/resource/uranium_block_sides",
+        "south": "blocks/resource/uranium_block_sides",
+        "west": "blocks/resource/uranium_block_sides",
+        "up": "blocks/resource/uranium_block_bottomtop",
+        "down": "blocks/resource/uranium_block_bottomtop"
+      }
+    },
+    "crop_harvester": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "cropmatron": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "classic_cropmatron": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "miner": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "advanced_miner": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "terraformer": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "batch_crafter": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "item_buffer": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "sorting_machine": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "weighted_item_distributor": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "chunk_loader": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "rubber_sign": {
+      "customModel": true
+    },
+    "rubber_wall_sign": {
+      "customModel": true,
+      "worldBlockOnly": true
+    }
+  }
+}

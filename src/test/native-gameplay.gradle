@@ -1,0 +1,108 @@
+import java.time.Duration
+import java.nio.file.Files
+
+def fixture = rootProject.layout.projectDirectory.dir('src/test/src/nativeGameplay')
+sourceSets {
+    nativeGameplay {
+        java.setSrcDirs([fixture.dir('java')])
+        java.srcDir(fixture.dir(platformJava == 21 ? '1.21.1' : '26.x'))
+        resources.setSrcDirs([fixture.dir('resources')])
+    }
+}
+neoForge.addModdingDependenciesTo(sourceSets.nativeGameplay)
+dependencies {
+    nativeGameplayCompileOnly sourceSets.main.output
+    nativeGameplayCompileOnly project(':common')
+}
+tasks.named('processNativeGameplayResources') {
+    from(rootProject.file('spec/registry/classic-playable-recipes.json')) { rename { 'classic-recipes.json' } }
+    from(rootProject.file('spec/registry/repair-1.2.4.json')) { rename { 'reference-registries.json' } }
+    inputs.property('loaderMetadata', loaderMetadata)
+    filesMatching('META-INF/neoforge.mods.toml') { expand(loaderMetadata: loaderMetadata) }
+}
+def verification = neoForge.mods.create('ic2_native_gameplay') { sourceSet sourceSets.nativeGameplay }
+def productionJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
+def loadChecks = { File file ->
+    if (!file.isFile()) { throw new GradleException("Missing native gameplay evidence: ${file}") }
+    def checks = new Properties()
+    file.withReader('UTF-8') { checks.load(it) }
+    checks
+}
+['write', 'read', 'natural', 'workshop', 'powerWrite', 'powerRead', 'worldProgram', 'worldCold', 'worldDetails', 'worldDetailsCold'].each { phase ->
+    def target = [natural: 'run/native-worldgen', workshop: 'run/native-workshop', powerWrite: 'run/native-power', powerRead: 'run/native-power', worldProgram: 'run/native-world-program', worldCold: 'run/native-world-program', worldDetails: 'run/native-world-details', worldDetailsCold: 'run/native-world-details']
+    def path = target.getOrDefault(phase, 'run/native-gameplay')
+    def alternate = providers.gradleProperty('ic2.native.runRoot').map {
+        rootProject.file(it).toPath().resolve(minecraftVersion).resolve(path).toFile()
+    }
+    def directory = layout.dir(alternate).orElse(layout.buildDirectory.dir(path))
+    def runName = "nativeGameplay${phase.capitalize()}"
+    neoForge.runs.create(runName) {
+        server()
+        programArgument '--nogui'
+        sourceSet.set(sourceSets.nativeGameplay)
+        loadedMods.set([verification])
+        gameDirectory.set(directory)
+        systemProperty 'ic2.native.phase', phase
+    }
+    tasks.named("run${runName.capitalize()}", JavaExec) {
+        timeout.set(Duration.ofMinutes(5))
+        dependsOn 'jar'
+        if (phase == 'read') { dependsOn 'runNativeGameplayWrite' }
+        if (phase == 'powerRead') { dependsOn 'runNativeGameplayPowerWrite' }
+        if (phase == 'worldCold') { dependsOn 'runNativeGameplayWorldProgram' }
+        if (phase == 'worldDetailsCold') { dependsOn 'runNativeGameplayWorldDetails' }
+        doFirst {
+            def dir = directory.get().asFile
+            def artifact = productionJar.get().asFile
+            if (!(phase in ['read','powerRead','worldCold','worldDetailsCold'])) {
+                delete dir
+                dir.mkdirs()
+                copy { from artifact; into new File(dir, 'mods') }
+                new File(dir, 'eula.txt').text = 'eula=true\n'
+                new File(dir, 'server.properties').text = '''server-ip=127.0.0.1
+server-port=0
+online-mode=false
+level-name=world
+level-seed=20261120
+generate-structures=false
+spawn-protection=0
+view-distance=2
+simulation-distance=2
+'''
+                if (phase != 'natural') {
+                    new File(dir, 'server.properties').append('level-type=minecraft:flat\n' +
+                            'generator-settings={"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:dirt","height":2},{"block":"minecraft:grass_block","height":1}],"biome":"minecraft:plains","structure_overrides":[]}\n')
+                }
+            }
+            def installed = new File(dir, "mods/${artifact.name}")
+            if (!installed.isFile() || Files.mismatch(installed.toPath(), artifact.toPath()) != -1) {
+                throw new GradleException('Native gameplay must load the exact packaged mod JAR')
+            }
+        }
+        doLast {
+            def dir = directory.get().asFile
+            def result = loadChecks(new File(dir, "${phase}.properties"))
+            if (result.status != 'passed' || result.artifact != productionJar.get().asFile.name) {
+                throw new GradleException("Native gameplay ${phase} failed: ${result.problem}")
+            }
+            if (!new File(dir, 'world/level.dat').isFile()) {
+                throw new GradleException('No native gameplay world save')
+            }
+            if (phase == 'read' && result.pid == loadChecks(new File(dir, 'write.properties')).pid) {
+                throw new GradleException('Native gameplay restart reused its process')
+            }
+            if (phase == 'worldCold' && result.pid == loadChecks(new File(dir, 'worldProgram.properties')).pid) {
+                throw new GradleException('Native world upgrade restart reused its process')
+            }
+            if (phase == 'worldDetailsCold' && result.pid == loadChecks(new File(dir, 'worldDetails.properties')).pid) {
+                throw new GradleException('Native cable dye restart reused its process')
+            }
+            logger.lifecycle("IC2 ${minecraftVersion} native gameplay ${phase}: ${result}")
+        }
+    }
+}
+tasks.register('nativeGameplayTest') {
+    group = 'verification'
+    description = 'Runs the production IC2 supply chain on a dedicated server across a real save and restart.'
+    dependsOn 'runNativeGameplayRead', 'runNativeGameplayNatural', 'runNativeGameplayWorkshop', 'runNativeGameplayPowerRead', 'runNativeGameplayWorldCold', 'runNativeGameplayWorldDetailsCold'
+}

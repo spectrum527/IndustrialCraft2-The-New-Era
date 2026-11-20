@@ -1,0 +1,713 @@
+{
+  "reference": "1.2.4-port.20261120",
+  "layout": "Three isolated BatBox source-to-sink rows with a single detector, unpowered splitter, or powered splitter at the middle. After sample 50 remove the detector source and reverse the splitter redstone inputs. Redstone wire reads signal next to the detector.",
+  "samples": [
+    {
+      "t": 1,
+      "detector": 0.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 0.0
+    },
+    {
+      "t": 2,
+      "detector": 0.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 0.0
+    },
+    {
+      "t": 3,
+      "detector": 32.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 32.0
+    },
+    {
+      "t": 4,
+      "detector": 64.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 64.0
+    },
+    {
+      "t": 5,
+      "detector": 96.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 96.0
+    },
+    {
+      "t": 6,
+      "detector": 128.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 128.0
+    },
+    {
+      "t": 7,
+      "detector": 160.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 160.0
+    },
+    {
+      "t": 8,
+      "detector": 192.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 192.0
+    },
+    {
+      "t": 9,
+      "detector": 224.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 224.0
+    },
+    {
+      "t": 10,
+      "detector": 256.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 256.0
+    },
+    {
+      "t": 11,
+      "detector": 288.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 288.0
+    },
+    {
+      "t": 12,
+      "detector": 320.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 320.0
+    },
+    {
+      "t": 13,
+      "detector": 352.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 352.0
+    },
+    {
+      "t": 14,
+      "detector": 384.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 384.0
+    },
+    {
+      "t": 15,
+      "detector": 416.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 416.0
+    },
+    {
+      "t": 16,
+      "detector": 448.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 448.0
+    },
+    {
+      "t": 17,
+      "detector": 480.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 480.0
+    },
+    {
+      "t": 18,
+      "detector": 512.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 512.0
+    },
+    {
+      "t": 19,
+      "detector": 544.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 544.0
+    },
+    {
+      "t": 20,
+      "detector": 576.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 576.0
+    },
+    {
+      "t": 21,
+      "detector": 608.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 608.0
+    },
+    {
+      "t": 22,
+      "detector": 640.0,
+      "signal": 0,
+      "off": 0.0,
+      "on": 640.0
+    },
+    {
+      "t": 23,
+      "detector": 672.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 672.0
+    },
+    {
+      "t": 24,
+      "detector": 704.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 704.0
+    },
+    {
+      "t": 25,
+      "detector": 736.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 736.0
+    },
+    {
+      "t": 26,
+      "detector": 768.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 768.0
+    },
+    {
+      "t": 27,
+      "detector": 800.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 800.0
+    },
+    {
+      "t": 28,
+      "detector": 832.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 832.0
+    },
+    {
+      "t": 29,
+      "detector": 864.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 864.0
+    },
+    {
+      "t": 30,
+      "detector": 896.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 896.0
+    },
+    {
+      "t": 31,
+      "detector": 928.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 928.0
+    },
+    {
+      "t": 32,
+      "detector": 960.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 960.0
+    },
+    {
+      "t": 33,
+      "detector": 992.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 992.0
+    },
+    {
+      "t": 34,
+      "detector": 1024.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1024.0
+    },
+    {
+      "t": 35,
+      "detector": 1056.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1056.0
+    },
+    {
+      "t": 36,
+      "detector": 1088.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1088.0
+    },
+    {
+      "t": 37,
+      "detector": 1120.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1120.0
+    },
+    {
+      "t": 38,
+      "detector": 1152.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1152.0
+    },
+    {
+      "t": 39,
+      "detector": 1184.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1184.0
+    },
+    {
+      "t": 40,
+      "detector": 1216.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1216.0
+    },
+    {
+      "t": 41,
+      "detector": 1248.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1248.0
+    },
+    {
+      "t": 42,
+      "detector": 1280.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1280.0
+    },
+    {
+      "t": 43,
+      "detector": 1312.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1312.0
+    },
+    {
+      "t": 44,
+      "detector": 1344.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1344.0
+    },
+    {
+      "t": 45,
+      "detector": 1376.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1376.0
+    },
+    {
+      "t": 46,
+      "detector": 1408.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1408.0
+    },
+    {
+      "t": 47,
+      "detector": 1440.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1440.0
+    },
+    {
+      "t": 48,
+      "detector": 1472.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1472.0
+    },
+    {
+      "t": 49,
+      "detector": 1504.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1504.0
+    },
+    {
+      "t": 50,
+      "detector": 1536.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1536.0
+    },
+    {
+      "t": 51,
+      "detector": 1536.0,
+      "signal": 15,
+      "off": 0.0,
+      "on": 1568.0
+    },
+    {
+      "t": 52,
+      "detector": 1536.0,
+      "signal": 15,
+      "off": 32.0,
+      "on": 1568.0
+    },
+    {
+      "t": 53,
+      "detector": 1536.0,
+      "signal": 15,
+      "off": 64.0,
+      "on": 1568.0
+    },
+    {
+      "t": 54,
+      "detector": 1536.0,
+      "signal": 15,
+      "off": 96.0,
+      "on": 1568.0
+    },
+    {
+      "t": 55,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 128.0,
+      "on": 1568.0
+    },
+    {
+      "t": 56,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 160.0,
+      "on": 1568.0
+    },
+    {
+      "t": 57,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 192.0,
+      "on": 1568.0
+    },
+    {
+      "t": 58,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 224.0,
+      "on": 1568.0
+    },
+    {
+      "t": 59,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 256.0,
+      "on": 1568.0
+    },
+    {
+      "t": 60,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 288.0,
+      "on": 1568.0
+    },
+    {
+      "t": 61,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 320.0,
+      "on": 1568.0
+    },
+    {
+      "t": 62,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 352.0,
+      "on": 1568.0
+    },
+    {
+      "t": 63,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 384.0,
+      "on": 1568.0
+    },
+    {
+      "t": 64,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 416.0,
+      "on": 1568.0
+    },
+    {
+      "t": 65,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 448.0,
+      "on": 1568.0
+    },
+    {
+      "t": 66,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 480.0,
+      "on": 1568.0
+    },
+    {
+      "t": 67,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 512.0,
+      "on": 1568.0
+    },
+    {
+      "t": 68,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 544.0,
+      "on": 1568.0
+    },
+    {
+      "t": 69,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 576.0,
+      "on": 1568.0
+    },
+    {
+      "t": 70,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 608.0,
+      "on": 1568.0
+    },
+    {
+      "t": 71,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 640.0,
+      "on": 1568.0
+    },
+    {
+      "t": 72,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 672.0,
+      "on": 1568.0
+    },
+    {
+      "t": 73,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 704.0,
+      "on": 1568.0
+    },
+    {
+      "t": 74,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 736.0,
+      "on": 1568.0
+    },
+    {
+      "t": 75,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 768.0,
+      "on": 1568.0
+    },
+    {
+      "t": 76,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 800.0,
+      "on": 1568.0
+    },
+    {
+      "t": 77,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 832.0,
+      "on": 1568.0
+    },
+    {
+      "t": 78,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 864.0,
+      "on": 1568.0
+    },
+    {
+      "t": 79,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 896.0,
+      "on": 1568.0
+    },
+    {
+      "t": 80,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 928.0,
+      "on": 1568.0
+    },
+    {
+      "t": 81,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 960.0,
+      "on": 1568.0
+    },
+    {
+      "t": 82,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 992.0,
+      "on": 1568.0
+    },
+    {
+      "t": 83,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1024.0,
+      "on": 1568.0
+    },
+    {
+      "t": 84,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1056.0,
+      "on": 1568.0
+    },
+    {
+      "t": 85,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1088.0,
+      "on": 1568.0
+    },
+    {
+      "t": 86,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1120.0,
+      "on": 1568.0
+    },
+    {
+      "t": 87,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1152.0,
+      "on": 1568.0
+    },
+    {
+      "t": 88,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1184.0,
+      "on": 1568.0
+    },
+    {
+      "t": 89,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1216.0,
+      "on": 1568.0
+    },
+    {
+      "t": 90,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1248.0,
+      "on": 1568.0
+    },
+    {
+      "t": 91,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1280.0,
+      "on": 1568.0
+    },
+    {
+      "t": 92,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1312.0,
+      "on": 1568.0
+    },
+    {
+      "t": 93,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1344.0,
+      "on": 1568.0
+    },
+    {
+      "t": 94,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1376.0,
+      "on": 1568.0
+    },
+    {
+      "t": 95,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1408.0,
+      "on": 1568.0
+    },
+    {
+      "t": 96,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1440.0,
+      "on": 1568.0
+    },
+    {
+      "t": 97,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1472.0,
+      "on": 1568.0
+    },
+    {
+      "t": 98,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1504.0,
+      "on": 1568.0
+    },
+    {
+      "t": 99,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1536.0,
+      "on": 1568.0
+    },
+    {
+      "t": 100,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1568.0,
+      "on": 1568.0
+    },
+    {
+      "t": 101,
+      "detector": 1536.0,
+      "signal": 0,
+      "off": 1600.0,
+      "on": 1568.0
+    }
+  ]
+}

@@ -1,0 +1,1093 @@
+{
+  "nuclear_reactor": {
+    "texture": "guinuclearreactor",
+    "style": "painted",
+    "width": 212,
+    "height": 242,
+    "inventory": [
+      26,
+      161,
+      219
+    ],
+    "slots": {
+      "0": [
+        26,
+        25
+      ],
+      "1": [
+        44,
+        25
+      ],
+      "2": [
+        62,
+        25
+      ],
+      "3": [
+        80,
+        25
+      ],
+      "4": [
+        98,
+        25
+      ],
+      "5": [
+        116,
+        25
+      ],
+      "6": [
+        134,
+        25
+      ],
+      "7": [
+        152,
+        25
+      ],
+      "8": [
+        170,
+        25
+      ],
+      "9": [
+        26,
+        43
+      ],
+      "10": [
+        44,
+        43
+      ],
+      "11": [
+        62,
+        43
+      ],
+      "12": [
+        80,
+        43
+      ],
+      "13": [
+        98,
+        43
+      ],
+      "14": [
+        116,
+        43
+      ],
+      "15": [
+        134,
+        43
+      ],
+      "16": [
+        152,
+        43
+      ],
+      "17": [
+        170,
+        43
+      ],
+      "18": [
+        26,
+        61
+      ],
+      "19": [
+        44,
+        61
+      ],
+      "20": [
+        62,
+        61
+      ],
+      "21": [
+        80,
+        61
+      ],
+      "22": [
+        98,
+        61
+      ],
+      "23": [
+        116,
+        61
+      ],
+      "24": [
+        134,
+        61
+      ],
+      "25": [
+        152,
+        61
+      ],
+      "26": [
+        170,
+        61
+      ],
+      "27": [
+        26,
+        79
+      ],
+      "28": [
+        44,
+        79
+      ],
+      "29": [
+        62,
+        79
+      ],
+      "30": [
+        80,
+        79
+      ],
+      "31": [
+        98,
+        79
+      ],
+      "32": [
+        116,
+        79
+      ],
+      "33": [
+        134,
+        79
+      ],
+      "34": [
+        152,
+        79
+      ],
+      "35": [
+        170,
+        79
+      ],
+      "36": [
+        26,
+        97
+      ],
+      "37": [
+        44,
+        97
+      ],
+      "38": [
+        62,
+        97
+      ],
+      "39": [
+        80,
+        97
+      ],
+      "40": [
+        98,
+        97
+      ],
+      "41": [
+        116,
+        97
+      ],
+      "42": [
+        134,
+        97
+      ],
+      "43": [
+        152,
+        97
+      ],
+      "44": [
+        170,
+        97
+      ],
+      "45": [
+        26,
+        115
+      ],
+      "46": [
+        44,
+        115
+      ],
+      "47": [
+        62,
+        115
+      ],
+      "48": [
+        80,
+        115
+      ],
+      "49": [
+        98,
+        115
+      ],
+      "50": [
+        116,
+        115
+      ],
+      "51": [
+        134,
+        115
+      ],
+      "52": [
+        152,
+        115
+      ],
+      "53": [
+        170,
+        115
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "nuclear_reactor_fluid": {
+    "texture": "guinuclearreactorfluid",
+    "style": "painted",
+    "width": 212,
+    "height": 242,
+    "inventory": [
+      26,
+      161,
+      219
+    ],
+    "slots": {
+      "0": [
+        26,
+        25
+      ],
+      "1": [
+        44,
+        25
+      ],
+      "2": [
+        62,
+        25
+      ],
+      "3": [
+        80,
+        25
+      ],
+      "4": [
+        98,
+        25
+      ],
+      "5": [
+        116,
+        25
+      ],
+      "6": [
+        134,
+        25
+      ],
+      "7": [
+        152,
+        25
+      ],
+      "8": [
+        170,
+        25
+      ],
+      "9": [
+        26,
+        43
+      ],
+      "10": [
+        44,
+        43
+      ],
+      "11": [
+        62,
+        43
+      ],
+      "12": [
+        80,
+        43
+      ],
+      "13": [
+        98,
+        43
+      ],
+      "14": [
+        116,
+        43
+      ],
+      "15": [
+        134,
+        43
+      ],
+      "16": [
+        152,
+        43
+      ],
+      "17": [
+        170,
+        43
+      ],
+      "18": [
+        26,
+        61
+      ],
+      "19": [
+        44,
+        61
+      ],
+      "20": [
+        62,
+        61
+      ],
+      "21": [
+        80,
+        61
+      ],
+      "22": [
+        98,
+        61
+      ],
+      "23": [
+        116,
+        61
+      ],
+      "24": [
+        134,
+        61
+      ],
+      "25": [
+        152,
+        61
+      ],
+      "26": [
+        170,
+        61
+      ],
+      "27": [
+        26,
+        79
+      ],
+      "28": [
+        44,
+        79
+      ],
+      "29": [
+        62,
+        79
+      ],
+      "30": [
+        80,
+        79
+      ],
+      "31": [
+        98,
+        79
+      ],
+      "32": [
+        116,
+        79
+      ],
+      "33": [
+        134,
+        79
+      ],
+      "34": [
+        152,
+        79
+      ],
+      "35": [
+        170,
+        79
+      ],
+      "36": [
+        26,
+        97
+      ],
+      "37": [
+        44,
+        97
+      ],
+      "38": [
+        62,
+        97
+      ],
+      "39": [
+        80,
+        97
+      ],
+      "40": [
+        98,
+        97
+      ],
+      "41": [
+        116,
+        97
+      ],
+      "42": [
+        134,
+        97
+      ],
+      "43": [
+        152,
+        97
+      ],
+      "44": [
+        170,
+        97
+      ],
+      "45": [
+        26,
+        115
+      ],
+      "46": [
+        44,
+        115
+      ],
+      "47": [
+        62,
+        115
+      ],
+      "48": [
+        80,
+        115
+      ],
+      "49": [
+        98,
+        115
+      ],
+      "50": [
+        116,
+        115
+      ],
+      "51": [
+        134,
+        115
+      ],
+      "52": [
+        152,
+        115
+      ],
+      "53": [
+        170,
+        115
+      ],
+      "54": [
+        7,
+        25
+      ],
+      "55": [
+        7,
+        115
+      ],
+      "56": [
+        189,
+        25
+      ],
+      "57": [
+        189,
+        115
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "reactor_fluid_port": {
+    "texture": "guireactorfluidport",
+    "style": "painted",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        80,
+        43
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "nuke": {
+    "texture": "guinuke",
+    "style": "painted",
+    "width": 176,
+    "height": 219,
+    "inventory": [
+      8,
+      137,
+      195
+    ],
+    "slots": {
+      "0": [
+        79,
+        62
+      ],
+      "1": [
+        52,
+        8
+      ],
+      "2": [
+        106,
+        8
+      ],
+      "3": [
+        26,
+        35
+      ],
+      "4": [
+        133,
+        35
+      ],
+      "5": [
+        26,
+        89
+      ],
+      "6": [
+        133,
+        89
+      ],
+      "7": [
+        52,
+        116
+      ],
+      "8": [
+        106,
+        116
+      ]
+    },
+    "basis": "author atlas and published nine control anchors"
+  },
+  "lv_transformer": {
+    "texture": "guitransfomer",
+    "style": "painted",
+    "width": 176,
+    "height": 219,
+    "inventory": [
+      8,
+      137,
+      195
+    ],
+    "slots": {},
+    "basis": "author-produced dedicated atlas"
+  },
+  "mv_transformer": {
+    "texture": "guitransfomer",
+    "style": "painted",
+    "width": 176,
+    "height": 219,
+    "inventory": [
+      8,
+      137,
+      195
+    ],
+    "slots": {},
+    "basis": "author-produced dedicated atlas"
+  },
+  "hv_transformer": {
+    "texture": "guitransfomer",
+    "style": "painted",
+    "width": 176,
+    "height": 219,
+    "inventory": [
+      8,
+      137,
+      195
+    ],
+    "slots": {},
+    "basis": "author-produced dedicated atlas"
+  },
+  "ev_transformer": {
+    "texture": "guitransfomer",
+    "style": "painted",
+    "width": 176,
+    "height": 219,
+    "inventory": [
+      8,
+      137,
+      195
+    ],
+    "slots": {},
+    "basis": "author-produced dedicated atlas"
+  },
+  "classic_mfe": {
+    "texture": "guielectricblock",
+    "style": "painted",
+    "width": 176,
+    "height": 196,
+    "inventory": [
+      8,
+      114,
+      172
+    ],
+    "slots": {
+      "0": [
+        56,
+        17
+      ],
+      "1": [
+        56,
+        53
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "classic_mfsu": {
+    "texture": "guielectricblock",
+    "style": "painted",
+    "width": 176,
+    "height": 196,
+    "inventory": [
+      8,
+      114,
+      172
+    ],
+    "slots": {
+      "0": [
+        56,
+        17
+      ],
+      "1": [
+        56,
+        53
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "geo_generator": {
+    "texture": "guifluidgenerator",
+    "style": "painted",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        27,
+        21
+      ],
+      "1": [
+        27,
+        54
+      ],
+      "2": [
+        117,
+        49
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "magnetizer": {
+    "texture": "guimagnetizer",
+    "style": "painted",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        45,
+        26
+      ],
+      "1": [
+        8,
+        44
+      ],
+      "2": [
+        152,
+        8
+      ],
+      "3": [
+        152,
+        26
+      ],
+      "4": [
+        152,
+        44
+      ],
+      "5": [
+        152,
+        62
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "trade_o_mat": {
+    "texture": "guitradeomatopen",
+    "style": "painted",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        50,
+        19
+      ],
+      "1": [
+        50,
+        53
+      ],
+      "2": [
+        80,
+        19
+      ],
+      "3": [
+        80,
+        53
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "trade_o_mat_guest": {
+    "texture": "guitradeomatclosed",
+    "style": "painted",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "2": [
+        143,
+        17
+      ],
+      "3": [
+        143,
+        53
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "energy_o_mat": {
+    "texture": "guienergyomatopen",
+    "style": "painted",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        24,
+        17
+      ],
+      "2": [
+        60,
+        17
+      ],
+      "3": [
+        60,
+        53
+      ],
+      "4": [
+        24,
+        53
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "energy_o_mat_guest": {
+    "texture": "guienergyomatclosed",
+    "style": "painted",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "2": [
+        143,
+        17
+      ],
+      "3": [
+        143,
+        53
+      ]
+    },
+    "basis": "author-produced dedicated atlas"
+  },
+  "solar_generator": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        81,
+        25
+      ]
+    },
+    "basis": "common IC2 chrome with author solar_sun overlay"
+  },
+  "wind_generator": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        81,
+        27
+      ]
+    },
+    "basis": "published wind-generator anchor and user common chrome"
+  },
+  "water_generator": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        81,
+        54
+      ],
+      "1": [
+        108,
+        54
+      ],
+      "2": [
+        81,
+        18
+      ]
+    },
+    "basis": "published input and charge anchors plus returned-container well"
+  },
+  "rt_generator": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        31,
+        26
+      ],
+      "1": [
+        49,
+        26
+      ],
+      "2": [
+        67,
+        26
+      ],
+      "3": [
+        31,
+        44
+      ],
+      "4": [
+        49,
+        44
+      ],
+      "5": [
+        67,
+        44
+      ],
+      "6": [
+        119,
+        52
+      ]
+    },
+    "basis": "published two-row fuel bank plus charging slot"
+  },
+  "rci_rsh": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        62,
+        17
+      ],
+      "1": [
+        80,
+        17
+      ],
+      "2": [
+        98,
+        17
+      ],
+      "3": [
+        62,
+        35
+      ],
+      "4": [
+        80,
+        35
+      ],
+      "5": [
+        98,
+        35
+      ],
+      "6": [
+        62,
+        53
+      ],
+      "7": [
+        80,
+        53
+      ],
+      "8": [
+        98,
+        53
+      ],
+      "9": [
+        8,
+        58
+      ],
+      "10": [
+        152,
+        8
+      ],
+      "11": [
+        152,
+        26
+      ],
+      "12": [
+        152,
+        44
+      ],
+      "13": [
+        152,
+        62
+      ]
+    },
+    "basis": "published cooling injector input grid and four upgrade anchors"
+  },
+  "rci_lzh": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {
+      "0": [
+        62,
+        17
+      ],
+      "1": [
+        80,
+        17
+      ],
+      "2": [
+        98,
+        17
+      ],
+      "3": [
+        62,
+        35
+      ],
+      "4": [
+        80,
+        35
+      ],
+      "5": [
+        98,
+        35
+      ],
+      "6": [
+        62,
+        53
+      ],
+      "7": [
+        80,
+        53
+      ],
+      "8": [
+        98,
+        53
+      ],
+      "9": [
+        8,
+        58
+      ],
+      "10": [
+        152,
+        8
+      ],
+      "11": [
+        152,
+        26
+      ],
+      "12": [
+        152,
+        44
+      ],
+      "13": [
+        152,
+        62
+      ]
+    },
+    "basis": "published cooling injector input grid and four upgrade anchors"
+  },
+  "tesla_coil": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {},
+    "basis": "no dedicated texture in author pack; common IC2 chrome for the synchronized device readout"
+  },
+  "teleporter": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {},
+    "basis": "no dedicated texture in author pack; common IC2 chrome for the synchronized device readout"
+  },
+  "creative_generator": {
+    "texture": "common",
+    "style": "assembled",
+    "width": 176,
+    "height": 166,
+    "inventory": [
+      8,
+      84,
+      142
+    ],
+    "slots": {},
+    "basis": "no dedicated texture in author pack; common IC2 chrome for the synchronized device readout"
+  }
+}

@@ -28,6 +28,7 @@ public final class FuelGenerator implements BlockEntityBase.Component {
     private final IntSupplier fuelBurnTime;
     private final Runnable consumeFuel;
     private int fuelTicks;
+    private int fuelCapacity;
     private double storedEnergy;
     private boolean active;
 
@@ -59,6 +60,7 @@ public final class FuelGenerator implements BlockEntityBase.Component {
             }
             consumeFuel.run();
             fuelTicks = workingTicks;
+            fuelCapacity = workingTicks;
         }
         fuelTicks--;
         storedEnergy = Math.min(CAPACITY, storedEnergy + energyPerTick);
@@ -74,10 +76,18 @@ public final class FuelGenerator implements BlockEntityBase.Component {
 
     /** Debits one lossless packet for a finite, nonnegative request. The host controls cadence. */
     public double extractEnergy(double requested) {
+        if (!Double.isFinite(requested)) {
+            throw new IllegalArgumentException("Invalid generator output request");
+        }
+        return extractLocalEnergy(Math.min(requested, OUTPUT_PACKET_LIMIT));
+    }
+
+    /** Debits a local item charge. The charging slot enforces the item's transfer limit. */
+    public double extractLocalEnergy(double requested) {
         if (!Double.isFinite(requested) || requested < 0) {
             throw new IllegalArgumentException("Invalid generator output request");
         }
-        double sent = Math.min(storedEnergy, Math.min(requested, OUTPUT_PACKET_LIMIT));
+        double sent = Math.min(storedEnergy, requested);
         storedEnergy -= sent;
         return sent;
     }
@@ -95,7 +105,18 @@ public final class FuelGenerator implements BlockEntityBase.Component {
     /** Restores host-persisted state. Activity resumes on a subsequent loaded server tick. */
     public void restore(Snapshot snapshot) {
         fuelTicks = snapshot.fuelTicks();
+        fuelCapacity = fuelTicks;
         storedEnergy = snapshot.storedEnergy();
         active = false;
+    }
+
+    /** Initial duration of the current fuel, for the native flame gauge. */
+    public int fuelCapacity() {
+        return fuelTicks == 0 ? 0 : fuelCapacity;
+    }
+
+    /** Restores the fuel gauge reference duration from an optional saved field. */
+    public void restoreFuelCapacity(int capacity) {
+        fuelCapacity = Math.max(fuelTicks, capacity);
     }
 }

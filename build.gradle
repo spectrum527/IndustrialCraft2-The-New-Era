@@ -21,7 +21,8 @@ subprojects {
 spotless {
     java {
         target subprojects.collect { it.fileTree('src') { include '**/*.java' } } +
-                [fileTree('src/neoforge/shared/src') { include '**/*.java' }]
+                ['shared', '26.x', 'pre-26.2'].collect { fileTree("src/neoforge/$it/src") { include '**/*.java' } } +
+                [fileTree('src/minecraft/shared/src') { include '**/*.java' }]
         googleJavaFormat('1.28.0').aosp()
     }
 }

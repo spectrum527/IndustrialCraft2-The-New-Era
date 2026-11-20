@@ -6,6 +6,8 @@ pluginManagement {
     plugins { id 'net.neoforged.moddev' version providers.gradleProperty('moddev_version').get() }
 }
 rootProject.name = 'industrialcraft-2'
-include 'common', 'neoforge:1.21.1', 'neoforge:26.1', 'datagen', 'test'
+def minecraftTargets = ['1.21.1', '26.1.2', '26.2']
+include 'common', 'datagen', 'test'
+minecraftTargets.each { include "neoforge:$it" }
 ['common', 'neoforge', 'datagen', 'test'].each { project(":$it").projectDir = file("src/$it") }
-['1.21.1', '26.1'].each { project(":neoforge:$it").projectDir = file("src/neoforge/$it") }
+minecraftTargets.each { project(":neoforge:$it").projectDir = file("src/neoforge/$it") }

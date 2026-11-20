@@ -1,0 +1,980 @@
+{
+  "1.21.1": {
+    "en_us": {
+      "nuclear_reactor": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      },
+      "nuclear_reactor_fluid": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      },
+      "reactor_fluid_port": {
+        "localInkHorizontalBounds": [
+          42,
+          133
+        ],
+        "nativeFontWidth": 93,
+        "panelWidth": 176,
+        "title": "Reactor Fluid Port",
+        "color": "#263340"
+      },
+      "lv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "LV-Transformer",
+        "color": "#263340"
+      },
+      "lv_transformer_step_down": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "LV-Transformer",
+        "color": "#263340"
+      },
+      "mv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "MV-Transformer",
+        "color": "#263340"
+      },
+      "hv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "HV-Transformer",
+        "color": "#263340"
+      },
+      "ev_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "EV-Transformer",
+        "color": "#263340"
+      },
+      "classic_mfe": {
+        "localInkHorizontalBounds": [
+          79,
+          163
+        ],
+        "nativeFontWidth": 18,
+        "panelWidth": 176,
+        "title": "MFE",
+        "color": "#263340"
+      },
+      "classic_mfsu": {
+        "localInkHorizontalBounds": [
+          76,
+          163
+        ],
+        "nativeFontWidth": 24,
+        "panelWidth": 176,
+        "title": "MFSU",
+        "color": "#263340"
+      },
+      "geo_generator": {
+        "localInkHorizontalBounds": [
+          33,
+          142
+        ],
+        "nativeFontWidth": 111,
+        "panelWidth": 176,
+        "title": "Geothermal Generator",
+        "color": "#263340"
+      },
+      "magnetizer": {
+        "localInkHorizontalBounds": [
+          61,
+          113
+        ],
+        "nativeFontWidth": 54,
+        "panelWidth": 176,
+        "title": "Magnetizer",
+        "color": "#263340"
+      },
+      "trade_o_mat": {
+        "localInkHorizontalBounds": [
+          56,
+          118
+        ],
+        "nativeFontWidth": 64,
+        "panelWidth": 176,
+        "title": "Trade-O-Mat",
+        "color": "#263340"
+      },
+      "trade_o_mat_guest": {
+        "localInkHorizontalBounds": [
+          56,
+          118
+        ],
+        "nativeFontWidth": 64,
+        "panelWidth": 176,
+        "title": "Trade-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat_5000": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat_guest": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "solar_generator": {
+        "localInkHorizontalBounds": [
+          59,
+          115
+        ],
+        "nativeFontWidth": 58,
+        "panelWidth": 176,
+        "title": "Solar Panel",
+        "color": "#263340"
+      },
+      "wind_generator": {
+        "localInkHorizontalBounds": [
+          69,
+          105
+        ],
+        "nativeFontWidth": 38,
+        "panelWidth": 176,
+        "title": "Wind Mill",
+        "color": "#263340"
+      },
+      "water_generator": {
+        "localInkHorizontalBounds": [
+          65,
+          109
+        ],
+        "nativeFontWidth": 46,
+        "panelWidth": 176,
+        "title": "Water Mill",
+        "color": "#263340"
+      },
+      "rt_generator": {
+        "localInkHorizontalBounds": [
+          8,
+          166
+        ],
+        "nativeFontWidth": 197,
+        "panelWidth": 176,
+        "title": "Radioisotope Thermoelectric Generator",
+        "color": "#263340"
+      },
+      "rci_rsh": {
+        "localInkHorizontalBounds": [
+          9,
+          166
+        ],
+        "nativeFontWidth": 159,
+        "panelWidth": 176,
+        "title": "Reactor Coolant Injector (RSH)",
+        "color": "#263340"
+      },
+      "rci_lzh": {
+        "localInkHorizontalBounds": [
+          9,
+          166
+        ],
+        "nativeFontWidth": 159,
+        "panelWidth": 176,
+        "title": "Reactor Coolant Injector (LZH)",
+        "color": "#263340"
+      },
+      "tesla_coil": {
+        "localInkHorizontalBounds": [
+          64,
+          110
+        ],
+        "nativeFontWidth": 48,
+        "panelWidth": 176,
+        "title": "Tesla Coil",
+        "color": "#263340"
+      },
+      "teleporter": {
+        "localInkHorizontalBounds": [
+          61,
+          114
+        ],
+        "nativeFontWidth": 55,
+        "panelWidth": 176,
+        "title": "Teleporter",
+        "color": "#263340"
+      },
+      "creative_generator": {
+        "localInkHorizontalBounds": [
+          39,
+          135
+        ],
+        "nativeFontWidth": 98,
+        "panelWidth": 176,
+        "title": "Creative Generator",
+        "color": "#263340"
+      },
+      "nuclear_reactor_six_chambers": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      }
+    },
+    "zh_cn": {
+      "classic_mfe": {
+        "localInkHorizontalBounds": [
+          66,
+          163
+        ],
+        "nativeFontWidth": 45,
+        "panelWidth": 176,
+        "title": "MFE储电箱",
+        "color": "#263340"
+      },
+      "water_generator": {
+        "localInkHorizontalBounds": [
+          66,
+          107
+        ],
+        "nativeFontWidth": 45,
+        "panelWidth": 176,
+        "title": "水力发电机",
+        "color": "#263340"
+      },
+      "rt_generator": {
+        "localInkHorizontalBounds": [
+          39,
+          134
+        ],
+        "nativeFontWidth": 99,
+        "panelWidth": 176,
+        "title": "放射性同位素温差发电机",
+        "color": "#263340"
+      },
+      "rci_lzh": {
+        "localInkHorizontalBounds": [
+          35,
+          140
+        ],
+        "nativeFontWidth": 107,
+        "panelWidth": 176,
+        "title": "反应堆冷却液注入器(LZH)",
+        "color": "#263340"
+      },
+      "nuclear_reactor_six_chambers": {
+        "localInkHorizontalBounds": [
+          88,
+          121
+        ],
+        "nativeFontWidth": 36,
+        "panelWidth": 212,
+        "title": "核反应堆",
+        "color": "#263340"
+      }
+    }
+  },
+  "26.1.2": {
+    "en_us": {
+      "nuclear_reactor": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      },
+      "nuclear_reactor_fluid": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      },
+      "reactor_fluid_port": {
+        "localInkHorizontalBounds": [
+          42,
+          133
+        ],
+        "nativeFontWidth": 93,
+        "panelWidth": 176,
+        "title": "Reactor Fluid Port",
+        "color": "#263340"
+      },
+      "lv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "LV-Transformer",
+        "color": "#263340"
+      },
+      "lv_transformer_step_down": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "LV-Transformer",
+        "color": "#263340"
+      },
+      "mv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "MV-Transformer",
+        "color": "#263340"
+      },
+      "hv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "HV-Transformer",
+        "color": "#263340"
+      },
+      "ev_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "EV-Transformer",
+        "color": "#263340"
+      },
+      "classic_mfe": {
+        "localInkHorizontalBounds": [
+          79,
+          163
+        ],
+        "nativeFontWidth": 18,
+        "panelWidth": 176,
+        "title": "MFE",
+        "color": "#263340"
+      },
+      "classic_mfsu": {
+        "localInkHorizontalBounds": [
+          76,
+          163
+        ],
+        "nativeFontWidth": 24,
+        "panelWidth": 176,
+        "title": "MFSU",
+        "color": "#263340"
+      },
+      "geo_generator": {
+        "localInkHorizontalBounds": [
+          33,
+          142
+        ],
+        "nativeFontWidth": 111,
+        "panelWidth": 176,
+        "title": "Geothermal Generator",
+        "color": "#263340"
+      },
+      "magnetizer": {
+        "localInkHorizontalBounds": [
+          61,
+          113
+        ],
+        "nativeFontWidth": 54,
+        "panelWidth": 176,
+        "title": "Magnetizer",
+        "color": "#263340"
+      },
+      "trade_o_mat": {
+        "localInkHorizontalBounds": [
+          56,
+          118
+        ],
+        "nativeFontWidth": 64,
+        "panelWidth": 176,
+        "title": "Trade-O-Mat",
+        "color": "#263340"
+      },
+      "trade_o_mat_guest": {
+        "localInkHorizontalBounds": [
+          56,
+          118
+        ],
+        "nativeFontWidth": 64,
+        "panelWidth": 176,
+        "title": "Trade-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat_5000": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat_guest": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "solar_generator": {
+        "localInkHorizontalBounds": [
+          59,
+          115
+        ],
+        "nativeFontWidth": 58,
+        "panelWidth": 176,
+        "title": "Solar Panel",
+        "color": "#263340"
+      },
+      "wind_generator": {
+        "localInkHorizontalBounds": [
+          69,
+          105
+        ],
+        "nativeFontWidth": 38,
+        "panelWidth": 176,
+        "title": "Wind Mill",
+        "color": "#263340"
+      },
+      "water_generator": {
+        "localInkHorizontalBounds": [
+          65,
+          109
+        ],
+        "nativeFontWidth": 46,
+        "panelWidth": 176,
+        "title": "Water Mill",
+        "color": "#263340"
+      },
+      "rt_generator": {
+        "localInkHorizontalBounds": [
+          8,
+          166
+        ],
+        "nativeFontWidth": 197,
+        "panelWidth": 176,
+        "title": "Radioisotope Thermoelectric Generator",
+        "color": "#263340"
+      },
+      "rci_rsh": {
+        "localInkHorizontalBounds": [
+          9,
+          166
+        ],
+        "nativeFontWidth": 159,
+        "panelWidth": 176,
+        "title": "Reactor Coolant Injector (RSH)",
+        "color": "#263340"
+      },
+      "rci_lzh": {
+        "localInkHorizontalBounds": [
+          9,
+          166
+        ],
+        "nativeFontWidth": 159,
+        "panelWidth": 176,
+        "title": "Reactor Coolant Injector (LZH)",
+        "color": "#263340"
+      },
+      "tesla_coil": {
+        "localInkHorizontalBounds": [
+          64,
+          110
+        ],
+        "nativeFontWidth": 48,
+        "panelWidth": 176,
+        "title": "Tesla Coil",
+        "color": "#263340"
+      },
+      "teleporter": {
+        "localInkHorizontalBounds": [
+          61,
+          114
+        ],
+        "nativeFontWidth": 55,
+        "panelWidth": 176,
+        "title": "Teleporter",
+        "color": "#263340"
+      },
+      "creative_generator": {
+        "localInkHorizontalBounds": [
+          39,
+          135
+        ],
+        "nativeFontWidth": 98,
+        "panelWidth": 176,
+        "title": "Creative Generator",
+        "color": "#263340"
+      },
+      "nuclear_reactor_six_chambers": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      }
+    },
+    "zh_cn": {
+      "classic_mfe": {
+        "localInkHorizontalBounds": [
+          66,
+          163
+        ],
+        "nativeFontWidth": 45,
+        "panelWidth": 176,
+        "title": "MFE储电箱",
+        "color": "#263340"
+      },
+      "water_generator": {
+        "localInkHorizontalBounds": [
+          66,
+          107
+        ],
+        "nativeFontWidth": 45,
+        "panelWidth": 176,
+        "title": "水力发电机",
+        "color": "#263340"
+      },
+      "rt_generator": {
+        "localInkHorizontalBounds": [
+          39,
+          134
+        ],
+        "nativeFontWidth": 99,
+        "panelWidth": 176,
+        "title": "放射性同位素温差发电机",
+        "color": "#263340"
+      },
+      "rci_lzh": {
+        "localInkHorizontalBounds": [
+          35,
+          140
+        ],
+        "nativeFontWidth": 107,
+        "panelWidth": 176,
+        "title": "反应堆冷却液注入器(LZH)",
+        "color": "#263340"
+      },
+      "nuclear_reactor_six_chambers": {
+        "localInkHorizontalBounds": [
+          88,
+          121
+        ],
+        "nativeFontWidth": 36,
+        "panelWidth": 212,
+        "title": "核反应堆",
+        "color": "#263340"
+      }
+    }
+  },
+  "26.2": {
+    "en_us": {
+      "nuclear_reactor": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      },
+      "nuclear_reactor_fluid": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      },
+      "reactor_fluid_port": {
+        "localInkHorizontalBounds": [
+          42,
+          133
+        ],
+        "nativeFontWidth": 93,
+        "panelWidth": 176,
+        "title": "Reactor Fluid Port",
+        "color": "#263340"
+      },
+      "lv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "LV-Transformer",
+        "color": "#263340"
+      },
+      "lv_transformer_step_down": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "LV-Transformer",
+        "color": "#263340"
+      },
+      "mv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "MV-Transformer",
+        "color": "#263340"
+      },
+      "hv_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "HV-Transformer",
+        "color": "#263340"
+      },
+      "ev_transformer": {
+        "localInkHorizontalBounds": [
+          47,
+          128
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 176,
+        "title": "EV-Transformer",
+        "color": "#263340"
+      },
+      "classic_mfe": {
+        "localInkHorizontalBounds": [
+          79,
+          163
+        ],
+        "nativeFontWidth": 18,
+        "panelWidth": 176,
+        "title": "MFE",
+        "color": "#263340"
+      },
+      "classic_mfsu": {
+        "localInkHorizontalBounds": [
+          76,
+          163
+        ],
+        "nativeFontWidth": 24,
+        "panelWidth": 176,
+        "title": "MFSU",
+        "color": "#263340"
+      },
+      "geo_generator": {
+        "localInkHorizontalBounds": [
+          33,
+          142
+        ],
+        "nativeFontWidth": 111,
+        "panelWidth": 176,
+        "title": "Geothermal Generator",
+        "color": "#263340"
+      },
+      "magnetizer": {
+        "localInkHorizontalBounds": [
+          61,
+          113
+        ],
+        "nativeFontWidth": 54,
+        "panelWidth": 176,
+        "title": "Magnetizer",
+        "color": "#263340"
+      },
+      "trade_o_mat": {
+        "localInkHorizontalBounds": [
+          56,
+          118
+        ],
+        "nativeFontWidth": 64,
+        "panelWidth": 176,
+        "title": "Trade-O-Mat",
+        "color": "#263340"
+      },
+      "trade_o_mat_guest": {
+        "localInkHorizontalBounds": [
+          56,
+          118
+        ],
+        "nativeFontWidth": 64,
+        "panelWidth": 176,
+        "title": "Trade-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat_5000": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "energy_o_mat_guest": {
+        "localInkHorizontalBounds": [
+          53,
+          121
+        ],
+        "nativeFontWidth": 70,
+        "panelWidth": 176,
+        "title": "Energy-O-Mat",
+        "color": "#263340"
+      },
+      "solar_generator": {
+        "localInkHorizontalBounds": [
+          59,
+          115
+        ],
+        "nativeFontWidth": 58,
+        "panelWidth": 176,
+        "title": "Solar Panel",
+        "color": "#263340"
+      },
+      "wind_generator": {
+        "localInkHorizontalBounds": [
+          69,
+          105
+        ],
+        "nativeFontWidth": 38,
+        "panelWidth": 176,
+        "title": "Wind Mill",
+        "color": "#263340"
+      },
+      "water_generator": {
+        "localInkHorizontalBounds": [
+          65,
+          109
+        ],
+        "nativeFontWidth": 46,
+        "panelWidth": 176,
+        "title": "Water Mill",
+        "color": "#263340"
+      },
+      "rt_generator": {
+        "localInkHorizontalBounds": [
+          8,
+          166
+        ],
+        "nativeFontWidth": 197,
+        "panelWidth": 176,
+        "title": "Radioisotope Thermoelectric Generator",
+        "color": "#263340"
+      },
+      "rci_rsh": {
+        "localInkHorizontalBounds": [
+          9,
+          166
+        ],
+        "nativeFontWidth": 159,
+        "panelWidth": 176,
+        "title": "Reactor Coolant Injector (RSH)",
+        "color": "#263340"
+      },
+      "rci_lzh": {
+        "localInkHorizontalBounds": [
+          9,
+          166
+        ],
+        "nativeFontWidth": 159,
+        "panelWidth": 176,
+        "title": "Reactor Coolant Injector (LZH)",
+        "color": "#263340"
+      },
+      "tesla_coil": {
+        "localInkHorizontalBounds": [
+          64,
+          110
+        ],
+        "nativeFontWidth": 48,
+        "panelWidth": 176,
+        "title": "Tesla Coil",
+        "color": "#263340"
+      },
+      "teleporter": {
+        "localInkHorizontalBounds": [
+          61,
+          114
+        ],
+        "nativeFontWidth": 55,
+        "panelWidth": 176,
+        "title": "Teleporter",
+        "color": "#263340"
+      },
+      "creative_generator": {
+        "localInkHorizontalBounds": [
+          39,
+          135
+        ],
+        "nativeFontWidth": 98,
+        "panelWidth": 176,
+        "title": "Creative Generator",
+        "color": "#263340"
+      },
+      "nuclear_reactor_six_chambers": {
+        "localInkHorizontalBounds": [
+          65,
+          146
+        ],
+        "nativeFontWidth": 83,
+        "panelWidth": 212,
+        "title": "Nuclear Reactor",
+        "color": "#263340"
+      }
+    },
+    "zh_cn": {
+      "classic_mfe": {
+        "localInkHorizontalBounds": [
+          66,
+          163
+        ],
+        "nativeFontWidth": 45,
+        "panelWidth": 176,
+        "title": "MFE储电箱",
+        "color": "#263340"
+      },
+      "water_generator": {
+        "localInkHorizontalBounds": [
+          66,
+          107
+        ],
+        "nativeFontWidth": 45,
+        "panelWidth": 176,
+        "title": "水力发电机",
+        "color": "#263340"
+      },
+      "rt_generator": {
+        "localInkHorizontalBounds": [
+          39,
+          134
+        ],
+        "nativeFontWidth": 99,
+        "panelWidth": 176,
+        "title": "放射性同位素温差发电机",
+        "color": "#263340"
+      },
+      "rci_lzh": {
+        "localInkHorizontalBounds": [
+          35,
+          140
+        ],
+        "nativeFontWidth": 107,
+        "panelWidth": 176,
+        "title": "反应堆冷却液注入器(LZH)",
+        "color": "#263340"
+      },
+      "nuclear_reactor_six_chambers": {
+        "localInkHorizontalBounds": [
+          88,
+          121
+        ],
+        "nativeFontWidth": 36,
+        "panelWidth": 212,
+        "title": "核反应堆",
+        "color": "#263340"
+      }
+    }
+  }
+}

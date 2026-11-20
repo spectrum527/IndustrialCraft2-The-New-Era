@@ -1,0 +1,118 @@
+import groovy.json.JsonOutput
+import java.time.Duration
+import java.util.regex.Pattern
+
+def fixture = rootProject.layout.projectDirectory.dir('src/test/src/modernSmoke')
+def directory = layout.buildDirectory.dir('run/modern-server-smoke')
+sourceSets {
+    modernSmoke {
+        java.setSrcDirs([fixture.dir('java')])
+        resources.setSrcDirs([fixture.dir('resources')])
+    }
+}
+neoForge.addModdingDependenciesTo(sourceSets.modernSmoke)
+dependencies {
+    modernSmokeCompileOnly sourceSets.main.output
+    modernSmokeCompileOnly project(':common')
+}
+def productionMod = neoForge.mods.named('ic2').get()
+def fixtureMod = neoForge.mods.create('ic2_modern_smoke') { sourceSet sourceSets.modernSmoke }
+neoForge.runs.configureEach { run -> run.loadedMods.set([productionMod]) }
+neoForge.runs.create('modernServerSmoke') {
+    server()
+    programArgument '--nogui'
+    sourceSet.set(sourceSets.modernSmoke)
+    loadedMods.set([productionMod, fixtureMod])
+    gameDirectory.set(directory)
+    systemProperty 'ic2.smoke.minecraft', project.ext.minecraftVersion
+    systemProperty 'ic2.smoke.neoforge', project.ext.neoForgeVersion
+}
+def serverRun = tasks.named('runModernServerSmoke', JavaExec)
+def report = tasks.register('reportModernServerSmoke') {
+    onlyIf { serverRun.get().state.executed }
+    doLast {
+        def run = serverRun.get()
+        def dir = directory.get().asFile
+        dir.mkdirs()
+        def result = [status: 'failed', minecraft: minecraftVersion, neoforge: neoForgeVersion,
+                      exitCode: run.executionResult.orNull?.exitValue]
+        try {
+            if (run.state.failure || result.exitCode != 0) {
+                throw new GradleException("Server did not exit normally: ${run.state.failure ?: result.exitCode}")
+            }
+            def ready = new File(dir, 'ready.properties')
+            def failure = new File(dir, 'failure.txt')
+            if (!ready.isFile() || failure.exists()) {
+                throw new GradleException(failure.isFile() ? failure.text : 'Missing fixture report')
+            }
+            def evidence = new Properties()
+            ready.withReader('UTF-8') { evidence.load(it) }
+            def checks = ['ic2-loaded', 'lava-rejected', 'coal-4000-eu', 'native-codec', 'packet-32', 'world-save']
+            def actualChecks = evidence.getProperty('checks', '').tokenize(',')
+            if (evidence.status != 'passed' || evidence.runId != new File(dir, 'run-id').text.trim() ||
+                    evidence.minecraft != minecraftVersion || evidence.neoforge != neoForgeVersion ||
+                    evidence.ic2Version != project.version.toString() || !evidence.pid ||
+                    evidence.finalEnergy != '3968' || evidence.codecBeforeSave != '363 ticks, 370 EU' ||
+                    actualChecks.size() != checks.size() || actualChecks.toSet() != checks.toSet()) {
+                throw new GradleException("Invalid fixture report: ${evidence}")
+            }
+            def log = new File(dir, 'logs/latest.log')
+            if (!log.isFile() || !(log.text =~ /Done\s*\(/).find() || !log.text.contains('Stopping server')) {
+                throw new GradleException('Missing server startup or normal stop log')
+            }
+            def world = new File(dir, 'world')
+            if (!new File(world, 'level.dat').isFile() ||
+                    fileTree(new File(world, 'dimensions/minecraft/overworld/region')).matching { include '*.mca' }.isEmpty()) {
+                throw new GradleException('Missing saved overworld data')
+            }
+            verifyDevelopmentJar(new File(dir, 'jar-end.json'), new File(dir, 'jar-start.json'))
+            result.status = 'passed'
+            result.runId = evidence.runId
+            result.checks = actualChecks
+        } catch (Exception error) {
+            result.problem = error.message
+        }
+        new File(dir, 'result.json').text = JsonOutput.prettyPrint(JsonOutput.toJson(result)) + '\n'
+        if (result.status != 'passed') {
+            throw new GradleException("Modern server smoke failed: ${result.problem}; see ${dir}")
+        }
+        logger.lifecycle("Modern server smoke: ${JsonOutput.toJson(result)}")
+    }
+}
+serverRun.configure {
+    timeout.set(Duration.ofMinutes(5))
+    ignoreExitValue = true
+    outputs.upToDateWhen { false }
+    dependsOn 'jar'
+    finalizedBy report
+    doFirst {
+        delete directory
+        def dir = directory.get().asFile
+        dir.mkdirs()
+        new File(dir, 'eula.txt').text = 'eula=true\n'
+        new File(dir, 'server.properties').text = 'server-ip=127.0.0.1\nserver-port=0\nonline-mode=false\nlevel-name=world\nview-distance=2\nsimulation-distance=2\n'
+        def runId = UUID.randomUUID().toString()
+        new File(dir, 'run-id').text = runId
+        systemProperty 'ic2.smoke.runId', runId
+        def declared = allJvmArgs.findAll { it.startsWith('-Dfml.modFolders=') }
+                .collect { it.substring('-Dfml.modFolders='.length()) }
+        if (environmentProperty.get().containsKey('MOD_CLASSES')) {
+            declared.add(environmentProperty.get().get('MOD_CLASSES'))
+        }
+        if (declared.empty) { throw new GradleException('Missing ModDev mod folders') }
+        def expected = [ic2: sourceSets.main.output.files + project(':common').sourceSets.main.output.files,
+                        ic2_modern_smoke: sourceSets.modernSmoke.output.files]
+        declared.each { folders ->
+            def entries = folders.split(Pattern.quote(File.pathSeparator))
+            expected.each { mod, paths ->
+                def prefix = "${mod}%%"
+                def actual = entries.findAll { it.startsWith(prefix) }
+                        .collect { file(it.substring(prefix.length())).canonicalFile }
+                if (actual.size() != paths.size() || actual.toSet() != paths.collect { it.canonicalFile }.toSet()) {
+                    throw new GradleException("Unexpected ${mod} mod folders: ${actual}")
+                }
+            }
+        }
+        verifyDevelopmentJar(new File(dir, 'jar-start.json'))
+    }
+}

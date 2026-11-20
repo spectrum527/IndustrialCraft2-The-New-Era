@@ -9,9 +9,10 @@ from zipfile import BadZipFile, ZipFile
 
 PACKAGING = {"META-INF/MANIFEST.MF", "LICENSE", "COPYING", "LICENSE-ASSETS"}
 TEST_SOURCE = Path(__file__).resolve().parent / "src"
-FIXTURE_MARKERS = (b"ic2_gametest", b"ic2:qa_platform_pillar", b"ic2:qa_fuel_generator", b"ic2:qa_side",
+FIXTURE_MARKERS = (b"ic2_gametest", b"ic2_modern_smoke", b"ic2:qa_platform_pillar", b"ic2:qa_fuel_generator", b"ic2:qa_side",
                    b"ic2_qa:platform_blocks", b"ic2_qa:platform_items", b"ic2accept")
-TEST_PREFIXES = ("com/industrialage/ia2/gametest/", "data/ic2_gametest/", "assets/ic2_qa/",
+TEST_PREFIXES = ("com/industrialage/ia2/gametest/", "com/industrialage/ia2/modernsmoke/",
+                 "data/ic2_gametest/", "assets/ic2_modern_smoke/", "data/ic2_modern_smoke/", "assets/ic2_qa/",
                  "data/ic2_qa/", "org/junit/", "org/opentest4j/", "org/apiguardian/")
 
 

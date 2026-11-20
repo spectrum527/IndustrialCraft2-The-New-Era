@@ -1,0 +1,26 @@
+{
+  "1.21.1": {
+    "status": "passed",
+    "assertions": 74,
+    "artifact": "ic2-neoforge-1.21.1-0.1.0.jar",
+    "sha256": "8e5f0dfee559e26d71d86d82218520991284e62d9c600e3cf90e51274f05ab0f",
+    "report": "neo-1.21.1-worldProgram.properties",
+    "run": "fresh flat dedicated-server world, loaded the packaged mod JAR, 320 game ticks"
+  },
+  "26.1.2": {
+    "status": "passed",
+    "assertions": 74,
+    "artifact": "ic2-neoforge-26.1.2-0.1.0.jar",
+    "sha256": "c4fa7c503e86c0f78fad137c422b5a51fedb9e9b0c6cbf0ae83167827d3dc24c",
+    "report": "neo-26.1.2-worldProgram.properties",
+    "run": "fresh flat dedicated-server world, loaded the packaged mod JAR, 320 game ticks"
+  },
+  "26.2": {
+    "status": "passed",
+    "assertions": 74,
+    "artifact": "ic2-neoforge-26.2-0.1.0.jar",
+    "sha256": "295fb0f6ed17f460d03b42a849f7200e1ecd80c281b536c8bdd9724b8bd0e9d4",
+    "report": "neo-26.2-worldProgram.properties",
+    "run": "fresh flat dedicated-server world, loaded the packaged mod JAR, 320 game ticks"
+  }
+}

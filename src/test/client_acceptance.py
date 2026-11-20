@@ -132,14 +132,14 @@ def _port():
         return listener.getsockname()[1]
 
 
-def _setup(directory, port):
+def _setup(directory, port, language):
     directory.mkdir(parents=True, exist_ok=False)
     client = directory / "client"
     server = directory / "server"
     client.mkdir()
     server.mkdir()
     (client / "options.txt").write_text(
-        "onboardAccessibility:false\nlang:en_us\nfullscreen:false\n"
+        f"onboardAccessibility:false\nlang:{language}\nfullscreen:false\ntutorialStep:none\n"
         "overrideWidth:960\noverrideHeight:540\nrenderDistance:4\n",
         encoding="utf-8",
     )
@@ -147,7 +147,7 @@ def _setup(directory, port):
         "\n".join(
             [f"server-ip={HOST}", f"server-port={port}", "online-mode=false",
              "level-name=world", "level-type=minecraft:flat", "level-seed=7541",
-             "generate-structures=false", "spawn-protection=0", "view-distance=3",
+             "generate-structures=false", "spawn-protection=0", "view-distance=3", "difficulty=peaceful",
              "simulation-distance=3", ""]
         ),
         encoding="utf-8",
@@ -203,7 +203,7 @@ class AcceptanceRun:
 
 
 @contextmanager
-def launch(directory=None, mode="normal", prepared=False, startup_timeout=120):
+def launch(directory=None, mode="normal", prepared=False, startup_timeout=120, language="en_us"):
     """Yield the real processes after starting the server, and stop both on exit."""
     if mode not in ("normal", "bad"):
         raise ValueError(f"Unknown protocol mode {mode}")
@@ -221,7 +221,7 @@ def launch(directory=None, mode="normal", prepared=False, startup_timeout=120):
         RUNS.mkdir(parents=True, exist_ok=True)
         directory = Path(tempfile.mkdtemp(prefix="run-", dir=RUNS)) / "session"
     directory = Path(directory).resolve()
-    _setup(directory, port)
+    _setup(directory, port, language)
 
     client = server = None
     client_role = "client-base" if mode == "bad" else "client"

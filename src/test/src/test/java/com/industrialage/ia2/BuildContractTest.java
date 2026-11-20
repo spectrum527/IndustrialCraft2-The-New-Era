@@ -3,6 +3,7 @@ package com.industrialage.ia2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.DataInputStream;
@@ -11,40 +12,50 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class BuildContractTest {
+    private static final Pattern DEPENDENCY_FIELD =
+            Pattern.compile("\\s*(modId|versionRange|type)\\s*=\\s*\"([^\"]*)\"\\s*(?:#.*)?");
+
     @Test
     void jarsContainEntrypointMetadataAndCorrectBytecode() throws Exception {
-        for (String path : System.getProperty("ia2.jars").split(File.pathSeparator)) {
-            try (var jar = new JarFile(path)) {
+        for (var platform : platformJars()) {
+            try (var jar = new JarFile(platform.path().toFile())) {
                 var entry = jar.getJarEntry("com/industrialage/ia2/IndustrialAge2.class");
-                assertNotNull(entry);
+                assertNotNull(entry, platform.target());
                 try (var bytes = new DataInputStream(jar.getInputStream(entry))) {
-                    assertEquals(0xCAFEBABE, bytes.readInt());
+                    assertEquals(0xCAFEBABE, bytes.readInt(), platform.target());
                     bytes.readUnsignedShort();
-                    assertEquals(path.contains("1.21.1") ? 65 : 69, bytes.readUnsignedShort());
+                    assertEquals(
+                            platform.bytecodeVersion(),
+                            bytes.readUnsignedShort(),
+                            platform.target());
                 }
                 var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
-                assertNotNull(metadata);
-                var text =
-                        new String(
-                                jar.getInputStream(metadata).readAllBytes(),
-                                StandardCharsets.UTF_8);
+                assertNotNull(metadata, platform.target());
+                String text;
+                try (var stream = jar.getInputStream(metadata)) {
+                    text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                }
                 assertTrue(text.contains("modId=\"ic2\""));
                 assertTrue(text.contains("displayName=\"IndustrialCraft 2\""));
                 assertTrue(text.contains("[[dependencies.ic2]]"));
                 assertFalse(text.contains("modId=\"ia2\""));
-                assertTrue(
-                        text.contains(
-                                "versionRange=\"["
-                                        + (path.contains("1.21.1") ? "1.21.1" : "26.1")
-                                        + "]\""));
-                assertTrue(!text.contains("${"));
+                var dependencies = dependencies(text, platform.target());
+                assertDependency(dependencies, "minecraft", platform.target(), platform.target());
+                assertDependency(
+                        dependencies, "neoforge", platform.neoForgeVersion(), platform.target());
+                assertFalse(text.contains("${"));
                 assertNotNull(jar.getJarEntry("LICENSE"));
                 assertNotNull(jar.getJarEntry("COPYING"));
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));
@@ -55,8 +66,8 @@ class BuildContractTest {
     @Test
     void productionJarsExcludeFixturesAndOldResources() throws Exception {
         var compiledTests = compiledTestEntries();
-        for (String path : System.getProperty("ia2.jars").split(File.pathSeparator)) {
-            try (var jar = new JarFile(path)) {
+        for (var platform : platformJars()) {
+            try (var jar = new JarFile(platform.path().toFile())) {
                 var unexpectedEntries =
                         jar.stream()
                                 .map(JarEntry::getName)
@@ -74,18 +85,91 @@ class BuildContractTest {
                                 .toList();
                 assertTrue(
                         unexpectedEntries.isEmpty(),
-                        () -> path + " contains unexpected entries: " + unexpectedEntries);
+                        () ->
+                                platform.path()
+                                        + " contains unexpected entries: "
+                                        + unexpectedEntries);
                 var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
                 assertNotNull(metadata);
                 try (var stream = jar.getInputStream(metadata)) {
                     assertFalse(
                             new String(stream.readAllBytes(), StandardCharsets.UTF_8)
                                     .contains("ic2_gametest"),
-                            path);
+                            platform.path().toString());
                 }
             }
         }
     }
+
+    private static List<PlatformJar> platformJars() {
+        var names = List.of(requiredProperty("ia2.targets").split(",", -1));
+        assertEquals(names.size(), new HashSet<>(names).size(), "Duplicate NeoForge test targets");
+        return names.stream()
+                .map(
+                        name -> {
+                            var bytecodeVersion =
+                                    switch (name) {
+                                        case "1.21.1" -> 65;
+                                        case "26.1.2", "26.2" -> 69;
+                                        default ->
+                                                throw new AssertionError(
+                                                        "Unexpected target: " + name);
+                                    };
+                            var prefix = "ia2.target." + name + ".";
+                            return new PlatformJar(
+                                    name,
+                                    Path.of(requiredProperty(prefix + "jar")),
+                                    requiredProperty(prefix + "neoForgeVersion"),
+                                    bytecodeVersion);
+                        })
+                .toList();
+    }
+
+    private static String requiredProperty(String key) {
+        var value = System.getProperty(key);
+        assertNotNull(value, "Gradle did not provide " + key);
+        assertFalse(value.isBlank(), "Gradle provided an empty " + key);
+        return value;
+    }
+
+    private static List<Map<String, String>> dependencies(String text, String target) {
+        var result = new ArrayList<Map<String, String>>();
+        Map<String, String> current = null;
+        for (var line : text.split("\\R")) {
+            var trimmed = line.strip();
+            if (trimmed.startsWith("[")) {
+                if (current != null) {
+                    result.add(current);
+                }
+                current = trimmed.equals("[[dependencies.ic2]]") ? new HashMap<>() : null;
+            } else if (current != null) {
+                var field = DEPENDENCY_FIELD.matcher(line);
+                if (field.matches()) {
+                    assertNull(
+                            current.put(field.group(1), field.group(2)),
+                            target + ": duplicate dependency field");
+                }
+            }
+        }
+        if (current != null) {
+            result.add(current);
+        }
+        assertTrue(result.stream().allMatch(entry -> entry.containsKey("modId")), target);
+        return result;
+    }
+
+    private static void assertDependency(
+            List<Map<String, String>> dependencies, String modId, String version, String target) {
+        var matches =
+                dependencies.stream().filter(entry -> modId.equals(entry.get("modId"))).toList();
+        assertEquals(1, matches.size(), target + ": expected exactly one " + modId + " dependency");
+        assertEquals("required", matches.getFirst().get("type"), target + ": " + modId);
+        assertEquals(
+                "[" + version + "]", matches.getFirst().get("versionRange"), target + ": " + modId);
+    }
+
+    private record PlatformJar(
+            String target, Path path, String neoForgeVersion, int bytecodeVersion) {}
 
     private static Set<String> compiledTestEntries() throws IOException {
         var classDirectories = System.getProperty("ia2.testClassesDirs");

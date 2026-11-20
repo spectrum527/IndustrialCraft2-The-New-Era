@@ -26,7 +26,7 @@
 |---|---|
 | `spec/` | Spec 角色 |
 | `src/common/energy|machine|recipe|fluid|crop|reactor/` | Core Agent |
-| `src/neoforge/`（含 1.21.1 与 26.1 分叉） | Platform Agent |
+| `src/neoforge/`（1.21.1、26.1.2、26.2 适配及 26.x 共用层） | Platform Agent |
 | `src/common/content/` | Content Agent（按波次分） |
 | `src/client/`、`src/compat/` | Client Agent |
 | `src/datagen/` | Content Agent + Platform Agent |
@@ -43,12 +43,12 @@
 ## 3. 平台与版本（decisions.md A5）
 
 - 主基线 **NeoForge 1.21.1**（Java 21）：G5 内部切片和 G10 首发在此验收。
-- 同步目标 **NeoForge 26.1**：common 层不得 import 版本专属 API；版本差异收敛在 `src/neoforge/` 的版本子模块中。
-- 1.19.2 只是 parity 参考环境（跑原版 jar 采期望值），**不是发布目标**。
+- 同步目标 **NeoForge 26.1.2 与 26.2**（均为 Java 25）：每个目标分别编译、打包，从 P6 起分别进行运行验收。common 层不得 import 版本专属 API；26.x 共用的 Java 适配位于 `src/neoforge/26.x/src/main/java`；1.21.1 与 26.1.2 共用屏幕访问位于 `src/neoforge/pre-26.2/src/main/java`，26.2 的屏幕访问及其他目标专属差异留在各自版本目录。
+- **Forge 1.19.2 / Java 17** 是独立发行分支，保留 ForgeGradle 的重混淆打包。修复版 1.19.2 另起独立实例作为对照。四个平台共用玩法代码须可用 Java 17 编译。
 
 ## 4. 工程规约
 
-- Java 21；4 空格缩进；`final`/`record`/`sealed` 按宜使用。
+- common 与 1.21.1 使用 Java 21，26.1.2 与 26.2 使用 Java 25；4 空格缩进；`final`/`record`/`sealed` 按宜使用。
 - 公开 API 必须有 javadoc；禁止 `System.out`（用 SLF4J）；核心层禁止 import 平台类（CI 检查）。
 - 所有新增逻辑必须有单测或 parity 场景；PR ≤ 400 行（生成代码/数据除外）。
 - 网络层禁止反射序列化与从网络数据加载类（decisions.md：不做 DataEncoder 复刻）。

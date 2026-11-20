@@ -1,0 +1,20 @@
+{
+  "reference": {"game":"1.19.2","loader":"Forge 43.5.0","repair_build":"1.2.4 / 1.19.2-port.20261120.3","jar_sha256":"c3801301c8f32f957dd879413d33826438004f5a54f56fb17a2903da820efc5e","raw_snapshot_sha256":"5b77ea4ddfb93b0cc3bcf52a70fa4505c747d62a0b3ae374d4adfd793f84ba01","method":"Dedicated reference server, default config, independent timed samples in loaded chunks."},
+  "device":"ic2:metal_former",
+  "energy":{"capacity_observed_eu":4000,"eu_per_work_tick":10,"work_ticks":200,"eu_per_operation":2000,"capacity_method":"Four full BatBoxes feeding an idle empty machine; storage held at 4000 EU over multiple timed reads."},
+  "modes":[
+    {"value":0,"name":"extruding","input":"minecraft:copper_ingot","input_count":1,"output":"ic2:copper_cable","output_count":3},
+    {"value":1,"name":"rolling","input":"minecraft:copper_ingot","input_count":1,"output":"ic2:copper_plate","output_count":1},
+    {"value":1,"name":"rolling","input":"ic2:copper_plate","input_count":1,"output":"ic2:copper_casing","output_count":2},
+    {"value":1,"name":"rolling","input":"ic2:steel_ingot","input_count":1,"output":"ic2:steel_plate","output_count":1},
+    {"value":1,"name":"rolling","input":"ic2:steel_plate","input_count":1,"output":"ic2:steel_casing","output_count":2},
+    {"value":2,"name":"cutting","input":"ic2:copper_plate","input_count":1,"output":"ic2:copper_cable","output_count":2}
+  ],
+  "timed_case":{"initial_energy_eu":10000,"initial_input_count":1,"t1":{"progress":0,"energy_eu":10000},"t100":{"progress":99,"energy_eu":9010},"t200":{"progress":199,"energy_eu":8010},"t201":{"progress":0,"energy_eu":8000,"output_completed":true}},
+  "backpressure":[
+    {"mode":1,"input":"ic2:steel_plate","initial_energy_eu":4000,"initial_output":{"id":"ic2:steel_casing","count":62},"t201":{"input_count":0,"output_count":64,"energy_eu":2000}},
+    {"mode":1,"input":"ic2:steel_plate","initial_energy_eu":4000,"initial_output":{"id":"ic2:steel_casing","count":63},"t201":{"input_count":1,"output_count":63,"energy_eu":4000,"progress":0}},
+    {"mode":1,"input":"ic2:steel_ingot","initial_energy_eu":0,"t201":{"input_count":1,"output_count":0,"energy_eu":0,"progress":0}}
+  ],
+  "limits":"Only the listed individual recipes, initial idle start, output-capacity boundary and no-energy state were sampled. Six-face permissions, upgrades, continuous multi-batch accounting and mid-operation interruption are not established here."
+}

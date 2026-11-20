@@ -1,4 +1,4 @@
-"""Exercise A22 using authored, ignored fixtures and real dual-version builds."""
+"""Exercise A22 using authored, ignored fixtures and every current platform build."""
 from pathlib import Path
 import shutil
 import subprocess
@@ -15,6 +15,14 @@ PRIVATE_TEXTURES = [
     "blocks/wiring/cable/build/p0-test.png", "items/build/p0-test.png.mcmeta",
     "gui/build/p0-test.png",
 ]
+TARGETS = sorted(path.parent.name for path in (ROOT / "src/neoforge").glob("*/build.gradle"))
+MOD_VERSION = next(
+    line.partition("=")[2].strip()
+    for line in (ROOT / "gradle.properties").read_text(encoding="utf-8").splitlines()
+    if line.partition("=")[0].strip() == "mod_version"
+)
+if not TARGETS:
+    raise RuntimeError("No NeoForge target build files found")
 
 
 def gradle(*arguments):
@@ -22,9 +30,10 @@ def gradle(*arguments):
 
 
 def verify(expected):
-    jars = sorted(ROOT.glob("src/neoforge/*/build/libs/ic2-neoforge-*.jar"))
-    assert len(jars) == 2, jars
-    for path in jars:
+    for target in TARGETS:
+        path = (ROOT / "src/neoforge" / target / "build/libs"
+                / f"ic2-neoforge-{target}-{MOD_VERSION}.jar")
+        assert path.is_file(), f"Missing JAR for {target}: {path}"
         with zipfile.ZipFile(path) as jar:
             names = set(jar.namelist())
             assert OLD_MODEL not in names, path

@@ -1,0 +1,71 @@
+{
+  "reference": {
+    "version": "1.2.4-port.20261120",
+    "minecraft": "1.19.2",
+    "loader": "Forge 43.5.0",
+    "sha256": "c3801301c8f32f957dd879413d33826438004f5a54f56fb17a2903da820efc5e",
+    "source": "New server world, level.dat > fml > Registries > ids. Includes every ic2 namespace entry in the saved Forge registries."
+  },
+  "targets": {
+    "Forge-1.19.2": {
+      "artifact": "ic2-forge-1.19.2-0.1.0.jar",
+      "sha256": "e67443e6050abe6039ad2856fe739637e654f46b8d806592820add2a675efcf6",
+      "missing_model_or_blockstate": [],
+      "reference_block_matches": 292,
+      "reference_item_matches": 552,
+      "missing": [],
+      "additional": [
+        [
+          "item",
+          "ic2:foam_sprayer"
+        ]
+      ],
+      "unverified_paths": []
+    },
+    "NeoForge-1.21.1": {
+      "artifact": "ic2-neoforge-1.21.1-0.1.0.jar",
+      "sha256": "5796df6cfd9d9fd49a50b7c728cb61ab4839ba28d136828edf89069de1d6e6e5",
+      "missing_model_or_blockstate": [],
+      "reference_block_matches": 292,
+      "reference_item_matches": 552,
+      "missing": [],
+      "additional": [
+        [
+          "item",
+          "ic2:foam_sprayer"
+        ]
+      ],
+      "unverified_paths": []
+    },
+    "NeoForge-26.1.2": {
+      "artifact": "ic2-neoforge-26.1.2-0.1.0.jar",
+      "sha256": "54ff6e1e7411b40cfe3b2c795611fdf216d56ee6663469bf6d83a1fb84eb29eb",
+      "missing_model_or_blockstate": [],
+      "reference_block_matches": 292,
+      "reference_item_matches": 552,
+      "missing": [],
+      "additional": [
+        [
+          "item",
+          "ic2:foam_sprayer"
+        ]
+      ],
+      "unverified_paths": []
+    },
+    "NeoForge-26.2": {
+      "artifact": "ic2-neoforge-26.2-0.1.0.jar",
+      "sha256": "cfbbe089dc9529c0b8a8fb41af42382e0de76410be474f3c74b27de64a71c453",
+      "missing_model_or_blockstate": [],
+      "reference_block_matches": 292,
+      "reference_item_matches": 552,
+      "missing": [],
+      "additional": [
+        [
+          "item",
+          "ic2:foam_sprayer"
+        ]
+      ],
+      "unverified_paths": []
+    }
+  }
+}

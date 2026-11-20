@@ -98,6 +98,8 @@ def live_checks(client):
     client.check("title-unbound", lambda s: s["screen"] == "TitleScreen" and not s["overlay"]
                  and s["bindings"] == 1 and s["key"] == "key.keyboard.unknown")
     client.enter("connect", "dedicated-join")
+    client.check("production-and-vanilla-sprites-baked",
+                 lambda s: s.get("iconsBaked") and s.get("machineFacesBaked") and s.get("vanillaStoneBaked"))
     client.act("press")
     client.check("unbound-no-action", lambda s: s["world"] and not s["screen"])
     client.act("bind")
@@ -139,6 +141,75 @@ def live_checks(client):
                  and s["title"] == "IC2 acceptance menu" and s["menuId"] > 0)
     client.act("esc")
     client.check("server-menu-closed", lambda s: not s["screen"] and s["menuId"] == 0)
+    client.act("macerator")
+    client.check("production-machine-menu", lambda s: s["screen"] == "MachineScreen"
+                 and s.get("machineCapacity") == 1200 and s.get("machineDuration") == 300)
+    client.check("macerator-audio-starts", lambda s: s["maceratorStarts"] == 1 and s["maceratorPlaying"])
+    client.act("hide-chat")
+    client.act("machine-screenshot")
+    client.act("esc")
+    client.check("production-machine-closed", lambda s: not s["screen"] and s["menuId"] == 0)
+    client.act("macerator-stop")
+    client.check("macerator-audio-stops", lambda s: s["maceratorStarts"] == 1 and not s["maceratorPlaying"])
+    client.act("laser-shot")
+    client.check("laser-audio-plays-once", lambda s: s["laserStarts"] == 1)
+    client.act("meter-open")
+    client.check("meter-native-fraction", lambda s: s["screen"] == "MeterScreen"
+                 and s.get("meterMode") == 0 and s.get("meterAmount") == 0.5)
+    client.act("meter-shot")
+    for mode in (1, 2, 3, 0):
+        client.act("meter-next")
+        client.check("meter-mode-" + str(mode), lambda s: s.get("meterMode") == mode)
+    client.act("esc")
+    client.check("meter-esc", lambda s: not s["screen"] and s["menuId"] == 0)
+    client.act("flight-ready")
+    equipped = client.check("electric-jetpack-equipped", lambda s: s.get("jetpackEnergy") == 1200)
+    client.act("flight-start")
+    try:
+        client.check("electric-jetpack-thrust", lambda s: 0 < 1200 - s.get("jetpackEnergy", 1200)
+                     and (1200 - s["jetpackEnergy"]) % 8 == 0
+                     and s.get("height", 0) > equipped["height"] + 2, timeout=12)
+        before_hover = client.act("flight-hover")
+    finally:
+        client.act("flight-stop")
+    hover = client.check("electric-jetpack-hover-entered",
+                         lambda s: before_hover["jetpackEnergy"] - s.get("jetpackEnergy", 1200) >= 35,
+                         timeout=12)
+
+    def hovered(state):
+        used = hover["jetpackEnergy"] - state.get("jetpackEnergy", 1200)
+        return used >= 28 and used % 7 == 0 and abs(state["height"] - hover["height"]) <= 0.5
+
+    client.check("electric-jetpack-neutral-hover", hovered, timeout=12)
+    client.act("flight-hover")
+    client.check("electric-jetpack-lands",
+                 lambda s: s.get("height", 0) <= equipped["height"] + 0.1, timeout=12)
+    client.act("quantum-ready")
+    grounded = client.check("quantum-equipped", lambda s: s.get("bootEnergy") == 9000 and s.get("grounded"))
+    client.act("quantum-boost")
+    client.check("quantum-grounded-keeps-charge", lambda s: s.get("bootEnergy") == 9000 and s.get("grounded"))
+    client.act("flight-start")
+    try:
+        client.check("quantum-breaks-ground-for-4000-eu", lambda s: s.get("bootEnergy") == 5000
+                     and s["height"] > grounded["height"] + 1.5, timeout=12)
+    finally:
+        client.act("flight-stop")
+        client.act("quantum-release")
+    for kind in ("rubber_boat", "carbon_boat", "electric_boat"):
+        client.act("boat-" + kind)
+        client.check("holding-" + kind, lambda s: s.get("heldItem") == "ic2:" + kind
+                     and s.get("height") == 81 and s.get("grounded"))
+        client.act("boat-launch")
+        client.check("launched-" + kind, lambda s: s.get("boatNearby") and s.get("heldItem") == "minecraft:air")
+        client.act("boat-board")
+        client.check("riding-" + kind, lambda s: s.get("vehicle") == "ic2:" + kind)
+        texture = "ic2:textures/entity/boat/boat_" + kind.removesuffix("_boat") + ".png"
+        client.check("vehicle-texture-" + kind,
+                     lambda s: s.get("boatTexture") == texture and s.get("boatTextureLoaded"))
+        client.act("rider-camera")
+        client.act("hide-chat")
+        client.act("shot-" + kind)
+    client.act("first-person-camera")
     leave(client, "remote-exit")
     client.enter("connect", "reconnected")
     client.act("press")

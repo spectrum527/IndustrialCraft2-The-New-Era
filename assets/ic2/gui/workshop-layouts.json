@@ -1,0 +1,463 @@
+{
+  "format": 1,
+  "infoTab": {"atlas": "infobutton", "anchor": "right_edge", "rect": [4,4,10,10]},
+  "machines": {
+    "metal_former": {
+      "atlas": "guimetalformer",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guimetalformer.png backdrop and mode panel; Published repair 1.2.4 guidef metal_former.xml slot and meter anchors",
+      "slots": {"0": [17,17],"9": [116,35],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [17,53]},
+      "draw": [{"atlas": "common","rect": [52,40,21,15],"uv": [166,0]}],
+      "meters": [{"value": "energy","rect": [20,37,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [52,40,21,15],"direction": "right","sprite": ["common",166,16]}],
+      "controls": [{"action": 0,"label": "mode","rect": [64,52,22,22],"icon": "former"}]
+    },
+    "ore_washing_plant": {
+      "atlas": "guiorewashingplant",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored guiorewashingplant.png complete panel and active impeller; Published repair 1.2.4 guidef ore_washing_plant.xml all anchors",
+      "slots": {"0": [104,17],"9": [86,62],"10": [104,62],"11": [122,62],"6": [38,17],"14": [38,62],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [8,62]},
+      "meters": [{"value": "energy","rect": [15,38,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [63,23,14,47],"direction": "up"},{"value": "progress","rect": [103,39,18,18],"direction": "right","sprite": ["guiorewashingplant",177,118]}]
+    },
+    "centrifuge": {
+      "atlas": "guithermalcentrifuge",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guithermalcentrifuge.png; Published repair 1.2.4 guidef centrifuge.xml slot and gauge anchors",
+      "slots": {"0": [11,18],"9": [124,18],"10": [124,36],"11": [124,54],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [11,60]},
+      "meters": [{"value": "energy","rect": [15,38,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [84,25,3,28],"direction": "up"},{"value": "heat","rect": [67,66,21,5],"direction": "right","maximum": 1000}]
+    },
+    "blast_furnace": {
+      "atlas": "guiblastfurnacenew",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guiblastfurnacenew.png, including air column and horizontal tray; distinct from the plain published blast_furnace.xml",
+      "slots": {"0": [34,32],"4": [15,54],"13": [33,54],"9": [133,55],"10": [151,55]},
+      "meters": [{"value": "inlet","rect": [9,18,13,39],"direction": "up"},{"value": "progress","rect": [70,67,21,5],"direction": "right"},{"value": "heat","rect": [71,22,34,40],"direction": "up","maximum": 100000,"color": "80ffaa33"}]
+    },
+    "induction_furnace": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef induction_furnace.xml; the authored Common frame and two dedicated induction overlays. Four native upgrade slots start at y8 above the player inventory",
+      "slots": {"0": [43,17],"1": [59,17],"9": [113,35],"10": [129,35],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [51,53]},
+      "frames": [18,19,20,21],
+      "draw": [{"atlas": "guimetalformer","rect": [50,52,18,18],"uv": [16,52]},{"atlas": "overlay/induction_furnace_input","rect": [42,16,34,18],"uv": [0,0],"textureSize": [34,18]},{"atlas": "overlay/induction_furnace_output","rect": [110,30,38,26],"uv": [0,0],"textureSize": [38,26]},{"atlas": "common","rect": [81,35,21,15],"uv": [166,0]}],
+      "meters": [{"value": "energy","rect": [55,37,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [81,35,21,15],"direction": "right","sprite": ["common",166,16]},{"value": "heat","rect": [10,49,30,4],"direction": "right","maximum": 10000}]
+    },
+    "recycler": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef recycler.xml; authored Common frame, small and large slot sprites; no separate recycler PNG",
+      "slots": {"0": [56,17],"9": [116,35],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [56,53]},
+      "frames": [0,18,19,20,21],
+      "draw": [{"atlas": "guimetalformer","rect": [55,52,18,18],"uv": [16,52]},{"atlas": "common","rect": [80,35,21,15],"uv": [166,0]},{"atlas": "common","rect": [111,30,26,26],"uv": [99,35]}],
+      "meters": [{"value": "energy","rect": [59,37,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [80,35,21,15],"direction": "right","sprite": ["common",166,16]}]
+    },
+    "block_cutter": {
+      "atlas": "guiblockcutter",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guiblockcutter.png; Published repair 1.2.4 guidef block_cutter.xml axes and blade placement",
+      "slots": {"0": [27,17],"4": [71,35],"9": [116,39],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [26,53]},
+      "meters": [{"value": "energy","rect": [29,37,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [55,33,15,19],"direction": "right","sprite": ["guiblockcutter",176,15]}]
+    },
+    "canner": {
+      "atlas": "guicanner",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guicanner.png",
+      "slots": {"0": [41,17],"1": [80,44],"9": [119,17],"18": [152,25],"19": [152,43],"20": [152,61],"21": [152,79],"26": [8,80]},
+      "meters": [{"value": "energy","rect": [5,57,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [75,22,20,14],"direction": "right","sprite": ["guicanner",234,0]},{"value": "inlet","rect": [63,80,23,4],"direction": "right"},{"value": "outlet","rect": [89,80,22,4],"direction": "right"}],
+      "controls": [{"action": 0,"label": "mode","rect": [77,64,22,12]}],
+      "labels": [{"text": "mode","rect": [62,84,52,10]}]
+    },
+    "solid_canner": {
+      "atlas": "guisolidcanner",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored guisolidcanner.png; Published repair 1.2.4 guidef solid_canner.xml",
+      "slots": {"0": [37,36],"1": [67,36],"9": [116,36],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [8,62]},
+      "meters": [{"value": "energy","rect": [11,46,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [89,36,21,15],"direction": "right","sprite": ["common",166,16]}]
+    },
+    "classic_canner": {
+      "atlas": "gui_canner_classic",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw gui_canner_classic.png",
+      "slots": {"0": [71,17],"1": [71,53],"9": [118,35],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [30,45]},
+      "frames": [18,19,20,21],
+      "meters": [{"value": "energy","rect": [26,28,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [81,36,33,13],"direction": "right","sprite": ["gui_canner_classic",177,15]}]
+    },
+    "coke_kiln": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef coke_kiln.xml on authored Common frame; controller input retained to support this inventory",
+      "slots": {"0": [53,36],"9": [92,36]},
+      "meters": [{"value": "progress","rect": [71,36,13,13],"direction": "up","sprite": ["common",112,80]}]
+    },
+    "coke_kiln_grate": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef coke_kiln_grate.xml single fluid cell on authored Common frame",
+      "slots": {},
+      "meters": [{"value": "outlet","rect": [80,36,16,16],"direction": "up"}]
+    },
+    "coke_kiln_hatch": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef coke_kiln_hatch.xml on authored Common frame",
+      "slots": {"0": [80,36]}
+    },
+    "uu_assembly_bench": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "The public UU assembly screen has no dedicated redrawn atlas in the returned pack. Its template, material and output use the authored Common crafting surface.",
+      "slots": {"0": [53,18],"1": [53,54],"9": [116,36],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62]},
+      "frames": [0,1,18,19,20,21],
+      "draw": [{"atlas": "common","rect": [86,37,21,15],"uv": [166,0]},{"atlas": "common","rect": [111,31,26,26],"uv": [99,35]}],
+      "meters": [{"value": "energy","rect": [56,37,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [86,37,21,15],"direction": "right","sprite": ["common",166,16]}]
+    },
+    "solar_distiller": {
+      "atlas": "guisolardestiller",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guisolardestiller.png",
+      "slots": {},
+      "meters": [{"value": "inlet","rect": [36,43,54,18],"direction": "up"},{"value": "outlet","rect": [115,54,14,43],"direction": "up"},{"value": "progress","rect": [36,28,96,13],"direction": "right"}]
+    },
+    "liquid_heat_exchanger": {
+      "atlas": "guiheatsourcefluid",
+      "panel": [176,204],
+      "inventory": [8,122,180],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guiheatsourcefluid.png",
+      "slots": {},
+      "meters": [{"value": "inlet","rect": [18,46,13,45],"direction": "up"},{"value": "outlet","rect": [144,46,13,45],"direction": "up"}],
+      "labels": [{"text": "heat","rect": [18,30,139,9]}]
+    },
+    "weighted_fluid_distributor": {
+      "atlas": "guiweightedfluiddistributor",
+      "panel": [176,211],
+      "inventory": [8,129,187],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guiweightedfluiddistributor.png",
+      "slots": {},
+      "meters": [{"value": "inlet","rect": [32,110,111,11],"direction": "right"}],
+      "labels": [{"text": "active","rect": [59,9,101,10]}]
+    },
+    "fluid_bottler": {
+      "atlas": "guibottler",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guibottler.png",
+      "slots": {"0": [42,33],"1": [42,70],"9": [115,51],"18": [152,25],"19": [152,43],"20": [152,61],"21": [152,79],"26": [8,53]},
+      "meters": [{"value": "energy","rect": [10,35,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [79,36,14,47],"direction": "up"},{"value": "progress","rect": [100,55,15,13],"direction": "right","sprite": ["guibottler",199,0]}]
+    },
+    "fluid_regulator": {
+      "atlas": "guifluidregulator",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guifluidregulator.png",
+      "slots": {"26": [8,57]},
+      "meters": [{"value": "energy","rect": [12,38,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [81,36,13,48],"direction": "up"}],
+      "controls": [{"action": 0,"label": "mode","rect": [152,66,10,11]}],
+      "labels": [{"text": "mode","rect": [103,55,64,10]}]
+    },
+    "fluid_distributor": {
+      "atlas": "guifluiddistributor",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guifluiddistributor.png",
+      "slots": {},
+      "meters": [{"value": "inlet","rect": [28,36,54,48],"direction": "up"}],
+      "controls": [{"action": 0,"label": "mode","rect": [112,57,24,12]}],
+      "labels": [{"text": "mode","rect": [95,70,59,10]}]
+    },
+    "pump": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef pump.xml with authored pump arrow and Common tank",
+      "slots": {"0": [99,17],"9": [132,34],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [8,44]},
+      "frames": [0,9,18,19,20,21],
+      "draw": [{"atlas": "guimetalformer","rect": [7,43,18,18],"uv": [16,52]},{"atlas": "overlay/pump_arrow","rect": [93,36,36,13],"uv": [0,0],"textureSize": [36,13]},{"atlas": "common","rect": [70,16,20,55],"uv": [70,100]}],
+      "meters": [{"value": "energy","rect": [12,28,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [73,19,14,47],"direction": "up"},{"value": "progress","rect": [36,34,20,13],"direction": "right","sprite": ["common",166,113]}]
+    },
+    "electrolyzer": {
+      "atlas": "guielectrolyzer",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guielectrolyzer.png",
+      "slots": {"26": [8,62]},
+      "meters": [{"value": "energy","rect": [12,40,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [31,47,32,5],"direction": "right"},{"value": "outlet","rect": [70,47,32,5],"direction": "right"},{"value": "byproduct","rect": [109,47,32,5],"direction": "right"},{"value": "progress","rect": [52,57,76,4],"direction": "right"}]
+    },
+    "stirling_generator": {
+      "atlas": "guistirlinggenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guistirlinggenerator.png; public stirling_generator.xml text-role description",
+      "slots": {},
+      "meters": [{"value": "energy","rect": [61,34,54,11],"direction": "right"}],
+      "labels": [{"text": "energy","rect": [42,51,93,9]}]
+    },
+    "fluid_heat_generator": {
+      "atlas": "guifluidheatgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guifluidheatgenerator.png",
+      "slots": {"0": [16,18],"9": [16,54]},
+      "meters": [{"value": "inlet","rect": [72,22,15,50],"direction": "up"}],
+      "labels": [{"text": "heat","rect": [95,32,72,9]}]
+    },
+    "rt_heat_generator": {
+      "atlas": "guirtheatgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guirtheatgenerator.png",
+      "slots": {"0": [61,26],"1": [79,26],"2": [97,26],"3": [61,44],"4": [79,44],"5": [97,44]},
+      "labels": [{"text": "heat","rect": [51,67,72,10]}]
+    },
+    "fermenter": {
+      "atlas": "guifermenter",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guifermenter.png",
+      "slots": {"9": [86,80]},
+      "meters": [{"value": "inlet","rect": [37,48,49,31],"direction": "up"},{"value": "outlet","rect": [127,24,15,50],"direction": "up"}],
+      "labels": [{"text": "heat","rect": [101,13,61,10]}]
+    },
+    "semifluid_generator": {
+      "atlas": "guifluidgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guifluidgenerator.png; Published repair 1.2.4 guidef semifluid_generator.xml",
+      "slots": {"0": [27,17],"9": [27,53],"26": [117,49]},
+      "meters": [{"value": "inlet","rect": [72,22,15,50],"direction": "up"},{"value": "energy","rect": [110,27,28,12],"direction": "right"}]
+    },
+    "steam_generator": {
+      "atlas": "guisteamgenerator",
+      "panel": [176,220],
+      "inventory": [],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guisteamgenerator.png",
+      "slots": {},
+      "meters": [{"value": "inlet","rect": [10,155,74,46],"direction": "up"},{"value": "outlet","rect": [155,60,5,56],"direction": "up"},{"value": "heat","rect": [164,60,6,53],"direction": "up","maximum": 5000,"sprite": ["guisteamgenerator",178,0]}],
+      "controls": [{"action": 0,"label": "mode","rect": [23,25,9,9]}],
+      "labels": [{"text": "mode","rect": [68,27,79,10]},{"text": "heat","rect": [34,139,106,10]}]
+    },
+    "steam_repressurizer": {
+      "atlas": "guisteamrepressurizer",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guisteamrepressurizer.png complete frame; Published repair 1.2.4 guidef steam_repressurizer.xml window coordinates",
+      "slots": {},
+      "meters": [{"value": "inlet","rect": [16,20,36,45],"direction": "up"},{"value": "outlet","rect": [124,20,36,45],"direction": "up"}]
+    },
+    "condenser": {
+      "atlas": "guicondenser",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guicondenser.png",
+      "slots": {"26": [8,44]},
+      "meters": [{"value": "inlet","rect": [46,26,77,32],"direction": "up"},{"value": "outlet","rect": [46,74,77,15],"direction": "right"}],
+      "labels": [{"text": "energy","rect": [47,63,75,10]}]
+    },
+    "steam_kinetic_generator": {
+      "atlas": "guisteamkineticgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guisteamkineticgenerator.png",
+      "slots": {"0": [80,25]},
+      "meters": [{"value": "inlet","rect": [10,51,155,8],"direction": "right"},{"value": "outlet","rect": [10,68,155,8],"direction": "right"},{"value": "byproduct","rect": [10,71,155,4],"direction": "right"}],
+      "labels": [{"text": "kinetic","rect": [25,53,115,10]}]
+    },
+    "kinetic_generator": {
+      "atlas": "guikineticgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored guikineticgenerator.png; Published repair 1.2.4 guidef kinetic_generator.xml readout",
+      "slots": {},
+      "meters": [{"value": "energy","rect": [42,50,93,10],"direction": "right"}],
+      "labels": [{"text": "energy","rect": [42,51,93,9]}]
+    },
+    "electric_kinetic_generator": {
+      "atlas": "guielectrickineticgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guielectrickineticgenerator.png",
+      "slots": {"0": [44,27],"1": [62,27],"2": [80,27],"3": [98,27],"4": [116,27],"5": [44,45],"6": [62,45],"7": [80,45],"8": [98,45],"9": [116,45],"26": [8,62]},
+      "meters": [{"value": "energy","rect": [12,41,7,13],"direction": "up","sprite": ["common",116,65]}],
+      "labels": [{"text": "kinetic","rect": [30,69,112,10]}]
+    },
+    "manual_kinetic_generator": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "No dedicated manual kinetic atlas or public guidef. Shared authored Common frame for its supplemental readout.",
+      "slots": {},
+      "labels": [{"text": "kinetic","rect": [26,52,124,10]}]
+    },
+    "stirling_kinetic_generator": {
+      "atlas": "guistirlingkineticgenerator",
+      "panel": [176,204],
+      "inventory": [8,122,180],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guistirlingkineticgenerator.png",
+      "slots": {},
+      "meters": [{"value": "inlet","rect": [18,46,13,45],"direction": "up"},{"value": "outlet","rect": [144,46,13,45],"direction": "up"}],
+      "labels": [{"text": "kinetic","rect": [33,24,112,9]}]
+    },
+    "wind_kinetic_generator": {
+      "atlas": "guiwindkineticgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guiwindkineticgenerator.png",
+      "slots": {"0": [80,27]},
+      "labels": [{"text": "kinetic","rect": [17,49,139,10]},{"text": "active","rect": [17,67,139,10]}]
+    },
+    "water_kinetic_generator": {
+      "atlas": "guiwaterkineticgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Authored IC2 redraw guiwaterkineticgenerator.png",
+      "slots": {"0": [80,27]},
+      "labels": [{"text": "kinetic","rect": [17,49,139,10]},{"text": "active","rect": [17,67,139,10]}]
+    },
+    "classic_electrolyzer": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef classic_electrolyzer.xml; the published classic device does not use the modern electrolyzer design",
+      "slots": {"0": [54,35],"9": [112,35]},
+      "draw": [{"atlas": "common","rect": [79,38,32,17],"uv": [128,7]}],
+      "meters": [{"value": "progress","rect": [80,40,27,8],"direction": "right"}],
+      "controls": [{"action": 0,"label": "mode","rect": [78,58,33,12],"icon": "mode"}]
+    },
+    "mass_fabricator": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef mass_fabricator.xml Common panel with authored large result slot",
+      "slots": {"0": [115,62],"9": [115,23]},
+      "frames": [0],
+      "draw": [{"atlas": "common","rect": [110,18,26,26],"uv": [99,35]}],
+      "meters": [{"value": "energy","rect": [119,46,7,13],"direction": "up","sprite": ["common",116,65]}],
+      "labels": [{"text": "energy","rect": [18,22,86,10]},{"text": "recipe","rect": [18,34,86,10]}]
+    },
+    "classic_mass_fabricator": {
+      "atlas": "common",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": true,
+      "source": "Published repair 1.2.4 guidef classic_mass_fabricator.xml Common panel with authored large result slot",
+      "slots": {"0": [115,62],"9": [115,23]},
+      "frames": [0],
+      "draw": [{"atlas": "common","rect": [110,18,26,26],"uv": [99,35]}],
+      "meters": [{"value": "energy","rect": [119,46,7,13],"direction": "up","sprite": ["common",116,65]}],
+      "labels": [{"text": "energy","rect": [8,22,94,10]},{"text": "recipe","rect": [8,34,94,10]}]
+    },
+    "matter_generator": {
+      "atlas": "guimatter",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guimatter.png",
+      "slots": {"0": [72,38]},
+      "meters": [{"value": "outlet","rect": [98,24,15,50],"direction": "up"}]
+    },
+    "uu_scanner": {
+      "atlas": "guiscanner",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guiscanner.png",
+      "slots": {"0": [55,35],"14": [55,35],"26": [8,43]},
+      "meters": [{"value": "energy","rect": [12,28,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [9,66,138,13],"direction": "right"}],
+      "controls": [{"action": 0,"label": "record","rect": [151,62,19,16]}],
+      "labels": [{"text": "recipe","rect": [101,26,65,10]},{"text": "progress","rect": [101,45,65,10]}]
+    },
+    "pattern_storage": {
+      "atlas": "guipatternstorage",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guipatternstorage.png",
+      "slots": {"14": [18,20],"15": [18,20],"16": [18,20],"17": [18,20],"18": [18,20],"19": [18,20],"20": [18,20],"21": [18,20],"22": [18,20],"23": [18,20],"24": [18,20],"25": [18,20]},
+      "controls": [{"action": 1,"label": "previous","rect": [8,19,8,18]},{"action": 0,"label": "next","rect": [38,19,9,18]}],
+      "labels": [{"text": "pattern","rect": [9,49,152,10]}]
+    },
+    "replicator": {
+      "atlas": "guireplicator",
+      "panel": [176,184],
+      "inventory": [8,102,160],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guireplicator.png",
+      "slots": {"9": [92,58],"26": [152,83]},
+      "meters": [{"value": "inlet","rect": [29,32,15,50],"direction": "up"},{"value": "energy","rect": [136,84,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [50,37,93,4],"direction": "right"}],
+      "controls": [{"action": 1,"label": "stop","rect": [76,83,16,15]},{"action": 2,"label": "single","rect": [93,83,16,15]},{"action": 3,"label": "repeat","rect": [110,83,16,15]}],
+      "labels": [{"text": "recipe","rect": [52,40,89,10]}]
+    },
+    "electric_heat_generator": {
+      "atlas": "guielectricheatgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored IC2 redraw guielectricheatgenerator.png",
+      "slots": {"4": [41,26],"0": [59,26],"1": [77,26],"2": [95,26],"3": [113,26],"5": [41,44],"6": [59,44],"7": [77,44],"8": [95,44],"9": [113,44],"26": [8,62]},
+      "meters": [{"value": "energy","rect": [11,44,7,13],"direction": "up","sprite": ["common",116,65]}],
+      "labels": [{"text": "heat","rect": [33,67,108,10]}]
+    },
+    "solid_heat_generator": {
+      "atlas": "guisolidheatgenerator",
+      "panel": [176,166],
+      "inventory": [8,84,142],
+      "inventoryTitle": false,
+      "source": "Authored guisolidheatgenerator.png; Published repair 1.2.4 guidef solid_heat_generator.xml fuel, ash and heat locations",
+      "slots": {"0": [81,46],"9": [114,46]},
+      "meters": [{"value": "active","rect": [81,29,13,13],"direction": "right","sprite": ["common",112,80]}],
+      "labels": [{"text": "heat","rect": [49,66,77,10]}]
+    }
+  }
+}

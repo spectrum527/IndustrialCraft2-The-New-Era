@@ -1,0 +1,79 @@
+package com.industrialage.ia2.gametest;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
+
+/**
+ * Submit the observed Classic and survival-access patterns through a vanilla server crafting grid.
+ */
+final class ClassicCraftChecks {
+    private ClassicCraftChecks() {}
+
+    static void run(ServerLevel level, BiConsumer<String, Boolean> check) {
+        PipeGeometryChecks.run(level, NativeGameplayFixture::block);
+        check.accept("all-1024-physical-pipe-shapes", true);
+        var player = FakePlayerFactory.getMinecraft(level);
+        var source =
+                Objects.requireNonNull(
+                        ClassicCraftChecks.class.getResourceAsStream("/classic-recipes.json"));
+        try (var reader = new InputStreamReader(source, StandardCharsets.UTF_8)) {
+            for (JsonElement element :
+                    JsonParser.parseReader(reader).getAsJsonObject().getAsJsonArray("recipes")) {
+                var recipe = element.getAsJsonObject();
+                var grid =
+                        new CraftingMenu(
+                                55,
+                                player.getInventory(),
+                                ContainerLevelAccess.create(level, new BlockPos(5, 150, 5)));
+                if (recipe.has("pattern")) {
+                    int row = 0;
+                    for (var line : recipe.getAsJsonArray("pattern")) {
+                        char[] chars = line.getAsString().toCharArray();
+                        for (int x = 0; x < chars.length; x++)
+                            if (chars[x] != ' ')
+                                grid.getSlot(1 + row * 3 + x)
+                                        .set(
+                                                sample(
+                                                        recipe.getAsJsonObject("key")
+                                                                .get(Character.toString(chars[x]))
+                                                                .getAsString()));
+                        row++;
+                    }
+                } else {
+                    int i = 1;
+                    for (var ingredient : recipe.getAsJsonArray("ingredients"))
+                        grid.getSlot(i++).set(sample(ingredient.getAsString()));
+                }
+                grid.slotsChanged(grid.getSlot(1).container);
+                String result = recipe.get("output").getAsString();
+                var actual = grid.getSlot(0).getItem();
+                check.accept(
+                        "craft-" + result,
+                        actual.is(NativeGameplayFixture.item(result))
+                                && actual.getCount() == recipe.get("count").getAsInt());
+            }
+        } catch (java.io.IOException e) {
+            throw new java.io.UncheckedIOException(e);
+        }
+    }
+
+    private static ItemStack sample(String id) {
+        var registry = BuiltInRegistries.ITEM;
+        return new ItemStack(
+                registry.stream()
+                        .filter(item -> registry.getKey(item).toString().equals(id))
+                        .findFirst()
+                        .orElseThrow());
+    }
+}

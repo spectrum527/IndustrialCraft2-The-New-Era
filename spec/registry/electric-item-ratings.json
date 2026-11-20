@@ -1,0 +1,206 @@
+{
+  "ic2:advanced_batpack": {
+    "canSupply": true,
+    "maxEU": 600000.0,
+    "tier": 2,
+    "transferEU": 1000.0
+  },
+  "ic2:advanced_charging_re_battery": {
+    "canSupply": true,
+    "maxEU": 400000.0,
+    "tier": 2,
+    "transferEU": 1024.0
+  },
+  "ic2:advanced_re_battery": {
+    "canSupply": true,
+    "maxEU": 100000.0,
+    "tier": 2,
+    "transferEU": 256.0
+  },
+  "ic2:advanced_scanner": {
+    "canSupply": false,
+    "maxEU": 1000000.0,
+    "tier": 2,
+    "transferEU": 512.0
+  },
+  "ic2:batpack": {
+    "canSupply": true,
+    "maxEU": 60000.0,
+    "tier": 1,
+    "transferEU": 100.0
+  },
+  "ic2:chainsaw": {
+    "canSupply": false,
+    "maxEU": 30000.0,
+    "tier": 1,
+    "transferEU": 100.0
+  },
+  "ic2:charging_energy_crystal": {
+    "canSupply": true,
+    "maxEU": 4000000.0,
+    "tier": 3,
+    "transferEU": 8192.0
+  },
+  "ic2:charging_lapotron_crystal": {
+    "canSupply": true,
+    "maxEU": 40000000.0,
+    "tier": 4,
+    "transferEU": 32768.0
+  },
+  "ic2:charging_re_battery": {
+    "canSupply": true,
+    "maxEU": 40000.0,
+    "tier": 1,
+    "transferEU": 128.0
+  },
+  "ic2:cropnalyzer": {
+    "canSupply": false,
+    "maxEU": 100000.0,
+    "tier": 2,
+    "transferEU": 128.0
+  },
+  "ic2:diamond_drill": {
+    "canSupply": false,
+    "maxEU": 30000.0,
+    "tier": 1,
+    "transferEU": 100.0
+  },
+  "ic2:drill": {
+    "canSupply": false,
+    "maxEU": 30000.0,
+    "tier": 1,
+    "transferEU": 100.0
+  },
+  "ic2:electric_jetpack": {
+    "canSupply": false,
+    "maxEU": 30000.0,
+    "tier": 1,
+    "transferEU": 60.0
+  },
+  "ic2:electric_treetap": {
+    "canSupply": false,
+    "maxEU": 10000.0,
+    "tier": 1,
+    "transferEU": 100.0
+  },
+  "ic2:electric_wrench": {
+    "canSupply": false,
+    "maxEU": 12000.0,
+    "tier": 1,
+    "transferEU": 250.0
+  },
+  "ic2:energy_crystal": {
+    "canSupply": true,
+    "maxEU": 1000000.0,
+    "tier": 3,
+    "transferEU": 2048.0
+  },
+  "ic2:energy_pack": {
+    "canSupply": true,
+    "maxEU": 2000000.0,
+    "tier": 3,
+    "transferEU": 1000.0
+  },
+  "ic2:iridium_drill": {
+    "canSupply": false,
+    "maxEU": 300000.0,
+    "tier": 3,
+    "transferEU": 1000.0
+  },
+  "ic2:lapotron_crystal": {
+    "canSupply": true,
+    "maxEU": 10000000.0,
+    "tier": 4,
+    "transferEU": 8092.0
+  },
+  "ic2:mining_laser": {
+    "canSupply": false,
+    "maxEU": 300000.0,
+    "tier": 3,
+    "transferEU": 512.0
+  },
+  "ic2:nano_boots": {
+    "canSupply": false,
+    "maxEU": 1000000.0,
+    "tier": 3,
+    "transferEU": 1600.0
+  },
+  "ic2:nano_chestplate": {
+    "canSupply": false,
+    "maxEU": 1000000.0,
+    "tier": 3,
+    "transferEU": 1600.0
+  },
+  "ic2:nano_helmet": {
+    "canSupply": false,
+    "maxEU": 1000000.0,
+    "tier": 3,
+    "transferEU": 1600.0
+  },
+  "ic2:nano_leggings": {
+    "canSupply": false,
+    "maxEU": 1000000.0,
+    "tier": 3,
+    "transferEU": 1600.0
+  },
+  "ic2:nano_saber": {
+    "canSupply": false,
+    "maxEU": 160000.0,
+    "tier": 3,
+    "transferEU": 500.0
+  },
+  "ic2:night_vision_goggles": {
+    "canSupply": false,
+    "maxEU": 200000.0,
+    "tier": 1,
+    "transferEU": 200.0
+  },
+  "ic2:obscurator": {
+    "canSupply": false,
+    "maxEU": 100000.0,
+    "tier": 2,
+    "transferEU": 250.0
+  },
+  "ic2:quantum_boots": {
+    "canSupply": false,
+    "maxEU": 10000000.0,
+    "tier": 4,
+    "transferEU": 12000.0
+  },
+  "ic2:quantum_chestplate": {
+    "canSupply": false,
+    "maxEU": 10000000.0,
+    "tier": 4,
+    "transferEU": 12000.0
+  },
+  "ic2:quantum_helmet": {
+    "canSupply": false,
+    "maxEU": 10000000.0,
+    "tier": 4,
+    "transferEU": 12000.0
+  },
+  "ic2:quantum_leggings": {
+    "canSupply": false,
+    "maxEU": 10000000.0,
+    "tier": 4,
+    "transferEU": 12000.0
+  },
+  "ic2:re_battery": {
+    "canSupply": true,
+    "maxEU": 10000.0,
+    "tier": 1,
+    "transferEU": 100.0
+  },
+  "ic2:scanner": {
+    "canSupply": false,
+    "maxEU": 100000.0,
+    "tier": 1,
+    "transferEU": 128.0
+  },
+  "ic2:wind_meter": {
+    "canSupply": false,
+    "maxEU": 10000.0,
+    "tier": 1,
+    "transferEU": 100.0
+  }
+}
