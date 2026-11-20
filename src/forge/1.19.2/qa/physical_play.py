@@ -15,6 +15,7 @@ from verify import ROOT, server_setup, write_json
 # Shared, clean-room client control protocol (sequenced input, deadlines and state snapshots).
 sys.path.insert(0, str(ROOT / "src/test"))
 from platform_play_check import Client, change_config, integrated_checks, leave
+from magnetizer_check import check_magnetizer
 from protocol_mismatch import check_variant
 
 
@@ -213,6 +214,8 @@ def normal(client):
     client.check("closed-menu", lambda s: not s["screen"] and s["menuId"] == 0)
     machine_menu(client)
     workshop_menu(client)
+    lift = check_magnetizer(client, session.command, session.directory / "server.log")
+    write_json(session.directory / "magnetizer-checks.json", lift)
     leave(client, "left-server")
     client.act("press")
     client.check("bound-key-keeps-main-menu", lambda s: s["screen"] == "TitleScreen" and not s["world"])

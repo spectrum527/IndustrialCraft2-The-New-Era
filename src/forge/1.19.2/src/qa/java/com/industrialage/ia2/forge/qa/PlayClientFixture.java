@@ -8,6 +8,7 @@ import com.industrialage.ia2.equipment.MeterMenu;
 import com.industrialage.ia2.forge.ForgePlatform;
 import com.industrialage.ia2.forge.client.ForgeClient;
 import com.industrialage.ia2.forge.content.MachineMenu;
+import com.industrialage.ia2.gui.AuthoredScreen;
 import com.industrialage.ia2.industrial.WorkshopMenu;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -49,6 +50,8 @@ final class PlayClientFixture {
     private static final BlockPos MACHINE_POS = new BlockPos(25, 90, 25);
     private static final BlockPos WORKSHOP_POS = new BlockPos(29, 90, 25);
     private static final BlockPos AUTHORED_POS = WORKSHOP_POS;
+    private static final BlockPos STORAGE_POS = new BlockPos(29, 90, 25);
+    private boolean storageMining;
     private final Path input = Path.of("qa-input.txt");
     private final Path output = Path.of("qa-output.json");
     private String chat = "";
@@ -76,6 +79,11 @@ final class PlayClientFixture {
     }
 
     private void tick() {
+        var minecraft = Minecraft.getInstance();
+        if (storageMining && minecraft.player != null && minecraft.level != null) {
+            if (minecraft.level.getBlockState(STORAGE_POS).isAir()) storageMining = false;
+            else minecraft.gameMode.continueDestroyBlock(STORAGE_POS, Direction.NORTH);
+        }
         if (!Files.isRegularFile(input)) {
             return;
         }
@@ -110,6 +118,18 @@ final class PlayClientFixture {
             result.addProperty("reloadFailed", reload.isCompletedExceptionally());
             result.addProperty("chat", chat);
             result.addProperty("chatCount", chatCount);
+            result.addProperty("storageMining", storageMining);
+            if (mc.player != null && mc.level != null) {
+                result.addProperty(
+                        "storageBlock",
+                        net.minecraftforge.registries.ForgeRegistries.BLOCKS
+                                .getKey(mc.level.getBlockState(STORAGE_POS).getBlock())
+                                .toString());
+                var hotbar = new com.google.gson.JsonArray();
+                for (int i = 0; i < 9; i++)
+                    hotbar.add(itemEvidence(mc.player.getInventory().getItem(i)));
+                result.add("storageHotbar", hotbar);
+            }
             if (mc.getSingleplayerServer() != null && mc.level != null) {
                 var services =
                         ModList.get()
@@ -137,6 +157,7 @@ final class PlayClientFixture {
                                 });
             }
             if (mc.player != null) {
+                result.addProperty("height", mc.player.getY());
                 result.addProperty("menuId", mc.player.containerMenu.containerId);
                 if (mc.level != null) {
                     var block = mc.level.getBlockState(MACHINE_POS).getBlock();
@@ -223,6 +244,11 @@ final class PlayClientFixture {
         panel.addProperty("guiScale", window.getGuiScale());
         panel.addProperty("framebufferWidth", window.getWidth());
         panel.addProperty("framebufferHeight", window.getHeight());
+        if (screen instanceof AuthoredScreen<?> authored) {
+            panel.addProperty("panelScale", authored.panelScale());
+            panel.addProperty("viewportWidth", window.getGuiScaledWidth());
+            panel.addProperty("viewportHeight", window.getGuiScaledHeight());
+        }
         if (screen.getMenu() instanceof WorkshopMenu workshop) {
             panel.addProperty("device", workshop.device());
             panel.addProperty("atlas", workshop.atlas());
@@ -292,8 +318,9 @@ final class PlayClientFixture {
         if (action.startsWith("move-ui:") || action.startsWith("click-ui:")) {
             if (!(mc.screen instanceof AbstractContainerScreen<?> screen)) return;
             var offsets = action.substring(action.indexOf(':') + 1).split(",");
-            double x = screen.getGuiLeft() + Integer.parseInt(offsets[0]);
-            double y = screen.getGuiTop() + Integer.parseInt(offsets[1]);
+            float scale = screen instanceof AuthoredScreen<?> authored ? authored.panelScale() : 1;
+            double x = screen.getGuiLeft() + Integer.parseInt(offsets[0]) * scale;
+            double y = screen.getGuiTop() + Integer.parseInt(offsets[1]) * scale;
             if (action.startsWith("click-ui:")) {
                 mc.screen.mouseClicked(x, y, 0);
                 mc.screen.mouseReleased(x, y, 0);
@@ -308,7 +335,50 @@ final class PlayClientFixture {
             return;
         }
 
+        if (action.startsWith("storage-select:")) {
+            String id = action.substring("storage-select:".length());
+            for (int i = 0; i < 9; i++) {
+                if (itemId(mc.player.getInventory().getItem(i)).equals(id)) {
+                    mc.player.getInventory().selected = i;
+                    return;
+                }
+            }
+            throw new IllegalStateException("Storage item absent from hotbar: " + id);
+        }
         switch (action) {
+            case "storage-mine" -> {
+                storageMining = true;
+                mc.gameMode.startDestroyBlock(STORAGE_POS, Direction.NORTH);
+            }
+            case "storage-wrench" -> {
+                var connection = mc.getConnection();
+                mc.player.setShiftKeyDown(true);
+                connection.send(
+                        new net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket(
+                                mc.player,
+                                net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket
+                                        .Action.PRESS_SHIFT_KEY));
+                mc.gameMode.useItemOn(
+                        mc.player,
+                        InteractionHand.MAIN_HAND,
+                        new BlockHitResult(
+                                Vec3.atCenterOf(STORAGE_POS), Direction.NORTH, STORAGE_POS, false));
+                connection.send(
+                        new net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket(
+                                mc.player,
+                                net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket
+                                        .Action.RELEASE_SHIFT_KEY));
+                mc.player.setShiftKeyDown(false);
+            }
+            case "storage-place" ->
+                    mc.gameMode.useItemOn(
+                            mc.player,
+                            InteractionHand.MAIN_HAND,
+                            new BlockHitResult(
+                                    Vec3.atBottomCenterOf(STORAGE_POS),
+                                    Direction.UP,
+                                    STORAGE_POS.below(),
+                                    false));
             case "state" -> {}
             case "connect" -> {
                 String address = "127.0.0.1:" + Integer.getInteger("ic2.qa.clientPort");

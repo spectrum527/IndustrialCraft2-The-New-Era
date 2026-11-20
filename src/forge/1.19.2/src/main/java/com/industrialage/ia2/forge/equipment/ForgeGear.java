@@ -1,6 +1,7 @@
 package com.industrialage.ia2.forge.equipment;
 
 import com.industrialage.ia2.audio.IndustrialSounds;
+import com.industrialage.ia2.compat.CuriosBack;
 import com.industrialage.ia2.content.PortableEquipment;
 import com.industrialage.ia2.content.PortableEquipment.Kind;
 import com.industrialage.ia2.equipment.ArmorEffects;
@@ -130,11 +131,10 @@ public final class ForgeGear {
         if (event.phase != TickEvent.Phase.END || !(event.player instanceof ServerPlayer player)) {
             return;
         }
-        var chest = player.getItemBySlot(EquipmentSlot.CHEST);
-        var equipment = type(chest);
-        if (equipment != null && equipment.kind == Kind.PACK) {
-            transfer(chest, player.getMainHandItem());
-            transfer(chest, player.getOffhandItem());
+        var pack = CuriosBack.preferChest(player, stack -> isPack(stack) && stored(stack) > 0);
+        if (!pack.isEmpty()) {
+            transfer(pack, player.getMainHandItem());
+            transfer(pack, player.getOffhandItem());
         }
         var main = player.getMainHandItem();
         var off = player.getOffhandItem();
@@ -301,29 +301,51 @@ public final class ForgeGear {
         if (device != null) setStored(stack, device.stored(amount));
     }
 
+    private static boolean isPack(ItemStack stack) {
+        var device = type(stack);
+        return device != null && device.kind == Kind.PACK;
+    }
+
+    /** Live pack providing electric-boat thrust, or the fitted pack when its charge is low. */
+    public static ItemStack boatPack(LivingEntity rider) {
+        var working = CuriosBack.preferChest(rider, stack -> isPack(stack) && stored(stack) >= 4);
+        return working.isEmpty() ? CuriosBack.preferChest(rider, ForgeGear::isPack) : working;
+    }
+
+    /** Nameplate EU capacity of a native portable electrical device. */
+    public static double capacity(ItemStack stack) {
+        var device = type(stack);
+        return device == null ? 0 : device.capacity;
+    }
+
     static boolean boatPower(LivingEntity rider, boolean draw) {
-        var pack = rider.getItemBySlot(EquipmentSlot.CHEST);
-        var entry = type(pack);
-        if (entry == null || entry.kind != Kind.PACK || stored(pack) < 4) return false;
+        var pack = boatPack(rider);
+        if (stored(pack) < 4) return false;
         if (draw) setStored(pack, stored(pack) - 4);
         return true;
     }
 
+    private static ItemStack jetpack(LivingEntity player) {
+        return CuriosBack.preferChest(
+                player,
+                stack ->
+                        type(stack) == PortableEquipment.ELECTRIC_JETPACK
+                                || stack.getItem() instanceof FuelJetpack
+                                || JetpackMount.installed(stack));
+    }
+
     static boolean hasJetpack(LivingEntity player) {
-        var pack = player.getItemBySlot(EquipmentSlot.CHEST);
-        return type(pack) == PortableEquipment.ELECTRIC_JETPACK
-                || pack.getItem() instanceof FuelJetpack
-                || JetpackMount.installed(pack);
+        return !jetpack(player).isEmpty();
     }
 
     static boolean payForFlight(ServerPlayer player, boolean hover) {
-        var stack = player.getItemBySlot(EquipmentSlot.CHEST);
+        var stack = jetpack(player);
         if (JetpackMount.installed(stack))
             return JetpackMount.thrust(stack, hover, player.isCreative());
         if (stack.getItem() instanceof FuelJetpack)
             return FuelJetpack.consume(stack, hover, player.isCreative());
         int cost = hover ? 7 : 8;
-        if (!hasJetpack(player) || stored(stack) < cost) return false;
+        if (stack.isEmpty() || stored(stack) < cost) return false;
         if (!player.isCreative()) setStored(stack, stored(stack) - cost);
         return true;
     }

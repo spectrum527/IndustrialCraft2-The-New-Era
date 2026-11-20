@@ -127,6 +127,8 @@ final class WorkshopPlans {
         if (enrich) {
             requested = liquid(recipe.inputs().get(0));
             product = liquid(recipe.outputs().get(0));
+            var job = enrichContainer(node, recipe, inputs.get(0), requested, product);
+            if (job != null) return job;
         } else if (kind == WorkshopKind.ORE_WASHER) {
             requested = new Liquid("minecraft:water", recipe.value("amount"));
         }
@@ -148,6 +150,29 @@ final class WorkshopPlans {
                 recipe.value("fluid"));
     }
 
+    private static Job enrichContainer(
+            WorkshopNode node, Recipe recipe, Input additive, Liquid requested, Liquid product) {
+        if (additive.slot() == 0) return null;
+        var vessel = node.inventory.getItem(0);
+        if (!WorkshopPlatform.canSupplyContainer(vessel, true)) return null;
+        var tank = new WorkshopNode.Tank(product.amount());
+        tank.fill(product.id(), product.amount(), false);
+        var filled = WorkshopCells.namedFill(tank, vessel);
+        if (filled == null) filled = WorkshopPlatform.containerRecipe(tank, vessel, true);
+        if (filled == null
+                || filled.stack().isEmpty()
+                || filled.liquid().amount() != product.amount()) return null;
+        return new Job(
+                recipe.id() + "/container/" + WorkshopPlatform.itemId(vessel),
+                List.of(additive, new Input(0, 1)),
+                List.of(filled.stack()),
+                requested,
+                Liquid.EMPTY,
+                node.kind.duration,
+                0,
+                0);
+    }
+
     private static List<Input> inputs(WorkshopNode node, Recipe recipe, int start) {
         var result = new ArrayList<Input>();
         int used = 0;
@@ -164,7 +189,10 @@ final class WorkshopPlans {
     }
 
     private static int matchingSlot(WorkshopNode node, Stack expected, int used) {
-        for (int slot = 0; slot < node.kind.inputs(node.mode); slot++) {
+        int slots = node.kind.inputs(node.mode);
+        for (int index = 0; index < slots; index++) {
+            // Enrichment accepts an old save with its additive in slot 0.
+            int slot = node.kind == WorkshopKind.CANNER && node.mode == 3 ? 1 - index : index;
             var item = node.inventory.getItem(slot);
             if ((used & (1 << slot)) == 0 && item.getCount() >= expected.count()) {
                 if (matches(item, expected)) {
@@ -173,6 +201,19 @@ final class WorkshopPlans {
             }
         }
         return -1;
+    }
+
+    static boolean acceptsCanningInput(WorkshopKind kind, int mode, int slot, ItemStack item) {
+        if (slot >= kind.inputs(mode) || item.isEmpty()) return false;
+        if (kind == WorkshopKind.CANNER) {
+            if (mode == 1 || mode == 3 && slot == 0)
+                return WorkshopPlatform.itemId(item).equals("ic2:empty_cell")
+                        || WorkshopPlatform.canSupplyContainer(item, true);
+            if (mode == 2) return WorkshopPlatform.canSupplyContainer(item, false);
+        }
+        int ingredient = kind == WorkshopKind.SOLID_CANNER ? 1 - slot : slot;
+        return WorkshopRecipes.forType(kind.recipes(mode)).stream()
+                .anyMatch(recipe -> matches(item, recipe.inputs().get(ingredient)));
     }
 
     private static boolean matches(ItemStack item, Stack expected) {
@@ -192,10 +233,7 @@ final class WorkshopPlans {
         return switch (node.kind) {
             case INDUCTION -> !WorkshopPlatform.smelt(level, item).isEmpty();
             case FLUID_BOTTLER, PUMP, RECYCLER, UU_ASSEMBLY -> true;
-            case CANNER ->
-                    (node.mode == 1 || node.mode == 2)
-                            ? WorkshopPlatform.canSupplyContainer(item, node.mode == 1)
-                            : storedInput(node, item);
+            case CANNER, SOLID_CANNER -> true;
             case CLASSIC_CANNER ->
                     WorkshopPlatform.itemId(item).equals("ic2:coalfuel_cell")
                             || WorkshopPlatform.itemId(item).equals("ic2:empty_fuel_can")
@@ -245,7 +283,7 @@ final class WorkshopPlans {
         if (item.isEmpty()) {
             return null;
         }
-        var moved = WorkshopCells.namedFill(node, item, filling);
+        var moved = filling ? WorkshopCells.namedFill(node.inlet, item) : null;
         if (moved == null) {
             moved = WorkshopPlatform.containerRecipe(node, item, filling);
         }

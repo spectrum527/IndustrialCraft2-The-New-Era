@@ -118,7 +118,8 @@ def smoke(directory, launch=None):
               or case.find("error") is not None or case.find("skipped") is not None]
     text = log.read_text(errors="replace")
     required = re.search(r"All (\d+) required tests passed", text, re.I)
-    expected = {"harnesssmoke", "generatornewstate", "generatorfractionalnbt", "generatorcorruptnbt"}
+    expected = {"harnesssmoke", "generatornewstate", "generatorfractionalnbt", "generatorcorruptnbt",
+                "allboxremovalmethods"}
     if not expected.issubset(names) or failed or not required or int(required[1]) < len(expected):
         raise AssertionError(f"Missing executed Forge GameTest smoke or required success count in {log}")
     rejected = (directory / "generator-rejections.txt").read_text().splitlines()

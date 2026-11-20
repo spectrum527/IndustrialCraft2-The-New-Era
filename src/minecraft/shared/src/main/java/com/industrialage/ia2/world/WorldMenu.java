@@ -99,6 +99,10 @@ final class WorldMenu extends AbstractContainerMenu {
     @Override
     public boolean clickMenuButton(Player player, int id) {
         if (!stillValid(player)) return false;
+        // Forge 1.19.2 reads container button IDs from a signed byte on the wire.
+        if (kind == WorldMachineBlock.Kind.CHUNK_LOADER && id >= Byte.MIN_VALUE && id < 0) {
+            id = Byte.toUnsignedInt((byte) id);
+        }
         if (id >= 0 && id < layout.pages) {
             data.set(0, id);
             return true;

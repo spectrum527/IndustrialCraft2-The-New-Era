@@ -478,9 +478,10 @@ if args.logistics:
     pickaxe += ['bronze_tank','iron_tank','steel_tank','iridium_tank']
     pickaxe += [f'{material}_{kind}_pipe_{size}' for material in ('bronze','steel')
                 for kind in ('item','fluid') for size in ('tiny','small','medium','large')]
+pickaxe += ['iron_storage_box','bronze_storage_box','steel_storage_box','iridium_storage_box','personal_chest']
 minecraft_tag('mineable/pickaxe', pickaxe)
 minecraft_tag('needs_stone_tool', ('tin_ore','deepslate_tin_ore'))
-minecraft_tag('mineable/axe', ('rubber_log',))
+minecraft_tag('mineable/axe', ('rubber_log','wooden_storage_box'))
 minecraft_tag('logs', ('rubber_log',))
 minecraft_tag('leaves', ('rubber_leaves',))
 data(('tags/items/' if forge else 'tags/item/') + 'bronze_ingots',

@@ -1,12 +1,18 @@
 package com.industrialage.ia2.forge.content;
 
+import com.industrialage.ia2.power.EuBuffer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
-interface ForgeDevice extends MenuProvider {
+interface ForgeDevice extends MenuProvider, EuBuffer {
+    @Override
+    default EuBuffer.Reading bufferedEu() {
+        return new EuBuffer.Reading(energy(), capacity());
+    }
+
     MachineInventory inventory();
 
     default double energy() {

@@ -185,13 +185,14 @@ public final class ForgePower {
         var source = offer.node.endpoint;
         double budget = Math.min(offer.eu, source.offers());
         double start = budget;
-        for (var route :
+        var destinations =
                 routes.computeIfAbsent(
                         offer.pos,
-                        pos -> graph.routes(pos, cable -> nodes.get(cable).endpoint.loss()))) {
-            if (!(budget > 0)) {
-                break;
-            }
+                        pos -> graph.routes(pos, cable -> nodes.get(cable).endpoint.loss()));
+        if (destinations.isEmpty()) return false;
+        int first = level.getRandom().nextInt(destinations.size());
+        for (int index = 0; index < destinations.size() && budget > 0; index++) {
+            var route = destinations.get((first + index) % destinations.size());
             var sink = nodes.get(route.sink());
             if (sink == null
                     || !sink.ticking(level)

@@ -1,0 +1,4 @@
+{
+  "replace": false,
+  "values": ["ic2:batpack", "ic2:advanced_batpack", "ic2:energy_pack", "ic2:electric_jetpack", "ic2:jetpack"]
+}

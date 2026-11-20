@@ -1,5 +1,6 @@
 package com.industrialage.ia2.forge.content;
 
+import com.industrialage.ia2.compat.CuriosBack;
 import com.industrialage.ia2.content.PowerGrid;
 import com.industrialage.ia2.energy.graph.PacketBudget;
 import com.industrialage.ia2.forge.equipment.ForgeGear;
@@ -10,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -53,12 +53,7 @@ final class StorageDevice extends InventoryDevice implements WorldPowerStorage {
                         player -> player.isOnGround() && player.blockPosition().equals(feet));
         boolean transferred = false;
         for (var player : players) {
-            var equipment =
-                    java.util.List.of(
-                            player.getItemBySlot(EquipmentSlot.CHEST),
-                            player.getMainHandItem(),
-                            player.getOffhandItem());
-            for (var stack : equipment) {
+            for (var stack : CuriosBack.chargeableEquipment(player)) {
                 double accepted = ForgeGear.charge(stack, energy, storage.tier());
                 transferred |= accepted > 0 && draw(accepted) > 0;
             }

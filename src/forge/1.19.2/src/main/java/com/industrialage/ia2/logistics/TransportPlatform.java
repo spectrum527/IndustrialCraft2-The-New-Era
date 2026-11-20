@@ -345,7 +345,21 @@ public final class TransportPlatform {
 
         @Override
         public InteractionResult useOn(UseOnContext context) {
-            return wrench ? ForgeContent.wrenchBlock(context) : InteractionResult.PASS;
+            if (!wrench) return InteractionResult.PASS;
+            var block = context.getLevel().getBlockState(context.getClickedPos()).getBlock();
+            if (!(block instanceof com.industrialage.ia2.industrial.BoxBlock box))
+                return ForgeContent.wrenchBlock(context);
+            var action = box.wrench(context);
+            var player = context.getPlayer();
+            if (action.consumesAction()
+                    && !context.getLevel().isClientSide
+                    && player != null
+                    && !player.isCreative()) {
+                context.getItemInHand()
+                        .hurtAndBreak(
+                                1, player, holder -> holder.broadcastBreakEvent(context.getHand()));
+            }
+            return action;
         }
     }
 }

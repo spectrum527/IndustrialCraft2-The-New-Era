@@ -2,6 +2,7 @@ package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
 import com.industrialage.ia2.platform.CapabilityFacade.Face;
+import com.industrialage.ia2.power.EuBuffer;
 import com.industrialage.ia2.power.WorldEnergy;
 import com.industrialage.ia2.power.WorldPowerPort;
 import java.util.List;
@@ -21,7 +22,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-final class WorldMachine extends WorldSaveBase implements WorldPowerPort, MenuProvider {
+final class WorldMachine extends WorldSaveBase implements WorldPowerPort, EuBuffer, MenuProvider {
     private static final Ports INPUT = new Ports(Set.of(Face.values()), Set.of(), false);
     final WorldMachineBlock.Kind kind;
     final WorldInventory inventory;
@@ -320,6 +321,11 @@ final class WorldMachine extends WorldSaveBase implements WorldPowerPort, MenuPr
             setChanged();
         }
         return accepted;
+    }
+
+    @Override
+    public EuBuffer.Reading bufferedEu() {
+        return new EuBuffer.Reading(storedEnergy(), kind.packet > 0 ? capacity() : 0);
     }
 
     double storedEnergy() {

@@ -54,9 +54,9 @@ public final class BoxNode extends BoxHost {
                 new SimpleMenuProvider((id, inventory, who) -> menu(id, inventory, page), title));
     }
 
-    /** Scatters fixed storage and bench contents when the block is removed. */
+    /** Scatters workbench contents when the block is removed. */
     void releaseContents(net.minecraft.world.level.Level level, BlockPos pos) {
-        if (kind == BoxKind.PERSONAL_CHEST || kind == BoxKind.INDUSTRIAL_WORKBENCH)
+        if (kind == BoxKind.INDUSTRIAL_WORKBENCH)
             net.minecraft.world.Containers.dropContents(level, pos, items);
     }
 

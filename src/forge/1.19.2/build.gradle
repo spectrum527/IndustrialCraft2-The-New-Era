@@ -52,7 +52,7 @@ minecraft {
         }
         qaGameTestServer {
             parent runs.gameTestServer
-            property 'forge.enabledGameTestNamespaces', 'ic2_qa'
+            property 'forge.enabledGameTestNamespaces', providers.gradleProperty('qaGameTestNamespaces').getOrElse('ic2_qa,ic2_storage')
         }
         matching { it.name.startsWith('qa') || it.name.startsWith('serverQa') }.all {
             mods { ic2_qa { source sourceSets.qa } }
@@ -60,6 +60,7 @@ minecraft {
     }
 }
 dependencies { minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}" }
+apply from: rootProject.file('gradle/optional-mods.gradle')
 
 tasks.named('processQaResources') {
     from(rootProject.file('spec/registry/classic-playable-recipes.json')) { rename { 'classic-recipes.json' } }
@@ -78,6 +79,8 @@ def generateResources = tasks.register('generatePlayableResources', Exec) {
 }
 
 tasks.named('processResources') {
+    // Removed generated models must also disappear from the processed pack on incremental builds.
+    doFirst { delete destinationDir }
     from(rootProject.file('spec/registry/sounds.txt')) { into 'com/industrialage/ia2/audio' }
     from(rootProject.file('spec/registry')) {
         include 'industrial-materials.tsv', 'chest-supplements.tsv', 'processing-recipes.tsv', 'classic-processing.tsv', 'processing-tags.tsv', 'workshop-recipes.tsv', 'industrial-fluids.tsv', 'wind-height.tsv', 'radioactive-items.tsv'
@@ -104,6 +107,7 @@ tasks.named('jar') {
 
 apply from: 'qa/play.gradle'
 apply from: 'qa/machine.gradle'
+apply from: 'qa/optional-compat.gradle'
 
 apply from: rootProject.file('gradle/canonical-forge-jar.gradle')
 // Serve only this derived coordinate through the canonical publisher. ForgeGradle still generates

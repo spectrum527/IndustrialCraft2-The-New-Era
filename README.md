@@ -2,9 +2,15 @@
 
 0.1.0 是 IC2 Experimental 的独立重建。此分支为 Minecraft 1.19.2、Forge 43.5.0 和 Java 17 提供重混淆 JAR。新存档中可从橡胶树和基础加工起步，发展热能、动能、作物、UU 复制与游戏内核工业。[安装与第一条生产线](docs/first-playable.md) [0.1.0 四版下载](https://github.com/spectrum527/ic2/releases/tag/v0.1.0) · [实测记录](parity/evidence/first-playable-0.1.0/README.md)
 
+## 可选联动
+
+本分支构建可独立安装。另装 The One Probe 后，准星指向设备即可查看液体种类和毫桶数、储能与容量。另装 Curios 后，电池背包和喷气背包可放入背饰槽，电力背包穿在背饰位时也能用合适等级的充电座充电。[支持的装备与读数](spec/platform/optional-integrations.md)
+
 ## 构建与验证
 
 使用 64 位 JDK 17。在仓库根目录运行以下命令，Windows 使用 `gradlew.bat`。首次构建会下载 Forge 和 Minecraft 开发依赖。
+
+复现发行 JAR 时，可在全新检出目录运行打包命令，确保所含的类和资源均来自当前提交。
 
 ```sh
 ./gradlew build
