@@ -2,6 +2,7 @@
 
 import argparse
 from hashlib import sha256
+from itertools import combinations
 import json
 import re
 from pathlib import Path
@@ -25,6 +26,10 @@ def initial_state(path):
         return ('{ic2_energy:16000.0d,ic2_input_fluid:{FluidName:"minecraft:water",Amount:1000},'
                 'Items:[{Slot:0b,id:"ic2:crushed_tin",Count:2b},'
                 '{Slot:6b,id:"minecraft:water_bucket",Count:1b}]}')
+    if path == "semifluid_generator":
+        return '{ic2_energy:350.0d}'
+    if path == "pump":
+        return '{ic2_input_fluid:{FluidName:"minecraft:water",Amount:1000}}'
     return None
 
 
@@ -135,10 +140,49 @@ def capture(client, name):
     return file
 
 
+def validate_slot_rectangles(panel, name):
+    for first, second in combinations(panel["slots"], 2):
+        if abs(first["x"] - second["x"]) < 16 and abs(first["y"] - second["y"]) < 16:
+            raise AssertionError(f"{name} native slots {first['index']} and {second['index']} overlap")
+
+
 def item_matches(actual, expected):
     return (actual.get("item") == expected["item"]
             and actual.get("count") == expected.get("count", 1)
             and expected.get("tag", "") in actual.get("tag", ""))
+
+
+def owner_clicks(client, item, corner):
+    client.run.command(f"item replace entity P2Tester hotbar.1 with {item}")
+    client.check("prepared-native-hand-" + item.split("{")[0], lambda state: any(
+        slot["x"] == 26 and slot["y"] == 142 and slot["item"] == item.split("{")[0]
+        for slot in state.get("uiPanel", {}).get("slots", [])), timeout=8)
+    client.act("click-ui:34,150")
+    client.act(f"click-ui:{corner[0]+8},{corner[1]+8}")
+
+
+def energize_workshop(client, path, layout):
+    item, initial, final, delta = {
+        "metal_former": ("ic2:re_battery", 300, 0, 300),
+        "induction_furnace": ("ic2:advanced_re_battery", 250, 0, 250),
+        "semifluid_generator": ("ic2:re_battery", 9980, 10000, -20),
+    }[path]
+    corner = layout["slots"]["26"]
+    before = client.act("state")["workshopEnergy"]
+    owner_clicks(client, f"{item}{{ic2_energy:{initial}.0d}}", corner)
+
+    def matches(state):
+        slots = state.get("uiPanel", {}).get("slots", [])
+        battery = next((slot for slot in slots if slot["index"] == 26), {})
+        charge = re.search(r"ic2_energy:([0-9.]+)d", battery.get("tag", ""))
+        return (state.get("workshopEnergy") == before + delta
+                and item_matches(battery, {"item": item})
+                and (float(charge[1]) if charge else 0) == final)
+
+    client.check(path + "-real-battery-exchanged-exact-eu", matches, timeout=8)
+    return {"item": item, "slot": corner, "itemBefore": initial, "itemAfter": final,
+            "machineBefore": before, "machineAfter": before + delta,
+            "png": str(capture(client, path + "_battery"))}
 
 
 def click_steps(client, name, steps):
@@ -171,6 +215,7 @@ def click_steps(client, name, steps):
 
         label = step["name"]
         current = client.check(name + "-" + label, matches, timeout=10)
+        validate_slot_rectangles(current["uiPanel"], name + "-" + label)
         png = capture(client, name + "_" + label)
         outputs.append({"geometry": current["uiPanel"], "png": str(png)})
     return outputs
@@ -226,7 +271,7 @@ def verify_workshop(path, layout, geometry):
     machine = {str(slot["index"]): [slot["x"], slot["y"]]
                for slot in geometry["slots"] if slot["index"] < 27}
     if path == "uu_scanner":
-        expected = {key: expected[key] for key in ("0",)}
+        expected = {key: value for key, value in expected.items() if key != "14"}
     elif path == "pattern_storage":
         expected = {key: expected[key] for key in ("14",)}
     if machine != expected:
@@ -269,6 +314,7 @@ def inspect(client, device, layouts):
                 for slot in state.get("uiPanel", {}).get("slots", []))
             for item in device["items"]), timeout=10)
     geometry = state["uiPanel"]
+    validate_slot_rectangles(geometry, path)
     layout = layouts.get(path, {"atlas": device.get("atlas"), "inventory": device.get("inventory")})
     file = capture(client, path)
     closed_cells = None
@@ -329,6 +375,17 @@ def inspect(client, device, layouts):
                      lambda state: state.get("workshopFluid") >= 1000 and any(
                          slot["index"] == 14 and slot["item"] == "minecraft:bucket"
                          for slot in state.get("uiPanel", {}).get("slots", [])), timeout=8)
+    if path in ("metal_former", "induction_furnace", "semifluid_generator"):
+        result["battery"] = energize_workshop(client, path, layout)
+    if path == "pump":
+        owner_clicks(client, "minecraft:bucket", layout["slots"]["0"])
+        client.check("authored-pump-stored-water-filled-real-container",
+                     lambda state: state.get("workshopFluid") == 0 and any(
+                         slot["index"] == 9 and slot["item"] == "minecraft:water_bucket"
+                         for slot in state.get("uiPanel", {}).get("slots", [])), timeout=8)
+        result["container"] = {"input": "minecraft:bucket", "consumedWaterMb": 1000,
+                               "output": "minecraft:water_bucket",
+                               "png": str(capture(client, path + "_container"))}
     return result
 
 

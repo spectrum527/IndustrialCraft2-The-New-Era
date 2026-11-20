@@ -71,7 +71,10 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                             return layout.shows(slot)
                                     && purpose.insertable
                                     && (machine == null
-                                            || machine.inventory.canPlaceItem(slot, item));
+                                            ? slot != WorkshopInventory.POWER_ITEM_SLOT
+                                                    || WorkshopInventory.acceptsPowerItem(
+                                                            kind, item, get(Metric.TIER))
+                                            : machine.inventory.canPlaceItem(slot, item));
                         }
 
                         @Override
@@ -85,6 +88,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                         @Override
                         public int getMaxStackSize() {
                             return WorkshopInventory.componentBay(kind, slot)
+                                            || slot == WorkshopInventory.POWER_ITEM_SLOT
                                             || role(slot) == Role.TEMPLATE
                                             || kind == WorkshopKind.RADIOISOTOPE_HEAT && slot < 6
                                     ? 1
@@ -141,6 +145,10 @@ public final class WorkshopMenu extends AbstractContainerMenu {
     }
 
     private Role role(int slot) {
+        if (slot == WorkshopInventory.POWER_ITEM_SLOT) {
+            if (kind.chargesItem()) return Role.CHARGE;
+            return kind.dischargesItem() ? Role.DISCHARGE : Role.HIDDEN;
+        }
         if (WorkshopInventory.componentBay(kind, slot)) {
             return kind == WorkshopKind.ELECTRIC_HEAT ? Role.COIL : Role.MOTOR;
         }
@@ -186,6 +194,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
             return Role.HIDDEN;
         }
         return switch (kind) {
+            case PUMP -> Role.FILL;
             case FLUID_BOTTLER -> slot == 0 ? Role.FILL : Role.DRAIN;
             case CLASSIC_CANNER, SOLID_CANNER, CANNER -> slot == 1 ? Role.CONTAINER : Role.INPUT;
             case UU_ASSEMBLY -> slot == 0 ? Role.TEMPLATE : Role.MATTER;
@@ -225,6 +234,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                             case OUT_AMOUNT -> machine.outlet.amount;
                             case BY_FLUID -> WorkshopPlatform.previewFluidId(machine.byproduct.id);
                             case BY_AMOUNT -> machine.byproduct.amount;
+                            case TIER -> machine.energyTier();
                         };
                 return index % 2 == 0 ? value & 0xffff : value >>> 16;
             }
@@ -397,6 +407,11 @@ public final class WorkshopMenu extends AbstractContainerMenu {
     }
 
     private boolean insertIntoWorkshop(ItemStack stack) {
+        int powerItem = WorkshopInventory.POWER_ITEM_SLOT;
+        if (slots.get(powerItem).mayPlace(stack)
+                && moveItemStackTo(stack, powerItem, powerItem + 1, false)) {
+            return true;
+        }
         if (WorkshopInventory.componentBay(kind, 0)) {
             return moveItemStackTo(stack, 0, WorkshopInventory.COMPONENT_BAYS, false);
         }
@@ -442,7 +457,8 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         OUT_FLUID,
         OUT_AMOUNT,
         BY_FLUID,
-        BY_AMOUNT
+        BY_AMOUNT,
+        TIER
     }
 
     private enum Role {
@@ -452,6 +468,8 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         OUTPUT("output", false),
         FILL("fill", true),
         DRAIN("drain", true),
+        CHARGE("charge", true),
+        DISCHARGE("discharge", true),
         RETURN("return", false),
         VESSEL_RETURN("container_return", false),
         COIL("coil", true),

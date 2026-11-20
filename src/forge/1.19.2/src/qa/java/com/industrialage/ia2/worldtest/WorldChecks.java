@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -717,25 +718,11 @@ public final class WorldChecks {
                                     player,
                                     InteractionHand.MAIN_HAND,
                                     upgrade);
-            var click =
-                    java.util.Arrays.stream(type.getMethods())
-                            .filter(
-                                    method ->
-                                            method.getName().equals("clicked")
-                                                    && method.getParameterCount() == 4)
-                            .findFirst()
-                            .orElseThrow();
-            click.setAccessible(true);
-            Object pickup =
-                    java.util.Arrays.stream(click.getParameterTypes()[2].getEnumConstants())
-                            .filter(value -> value.toString().equals("PICKUP"))
-                            .findFirst()
-                            .orElseThrow();
             ItemStack coal = new ItemStack(Items.COAL, 2);
             menu.setCarried(coal);
-            click.invoke(menu, 0, 0, pickup, player);
+            menu.clicked(0, 0, ClickType.PICKUP, player);
             menu.setCarried(stack("raw_tin"));
-            click.invoke(menu, 1, 0, pickup, player);
+            menu.clicked(1, 0, ClickType.PICKUP, player);
             var settings =
                     com.industrialage.ia2.world.MachineAutomation.class.getDeclaredMethod(
                             "settings", ItemStack.class);
@@ -759,7 +746,7 @@ public final class WorldChecks {
             ItemStack other = worn.copy();
             other.setDamageValue(6);
             menu.setCarried(worn);
-            click.invoke(menu, 2, 0, pickup, player);
+            menu.clicked(2, 0, ClickType.PICKUP, player);
             menu.clickMenuButton(player, 0);
             rule = settings.invoke(null, upgrade);
             boolean damage =
@@ -769,7 +756,7 @@ public final class WorldChecks {
             for (int i = 0; i < 2; i++) charge.fill(battery, 50, 2);
             for (int i = 0; i < 4; i++) charge.fill(different, 50, 2);
             menu.setCarried(battery);
-            click.invoke(menu, 3, 0, pickup, player);
+            menu.clicked(3, 0, ClickType.PICKUP, player);
             menu.clickMenuButton(player, 1);
             rule = settings.invoke(null, upgrade);
             boolean energy =
@@ -784,7 +771,7 @@ public final class WorldChecks {
             };
             for (int i = 0; i < extra.length; i++) {
                 menu.setCarried(new ItemStack(extra[i]));
-                click.invoke(menu, 4 + i, 0, pickup, player);
+                menu.clicked(4 + i, 0, ClickType.PICKUP, player);
             }
             for (int i = 0; i < 3; i++) menu.clickMenuButton(player, 3);
             var reopened =

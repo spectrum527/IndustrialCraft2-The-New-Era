@@ -461,30 +461,21 @@ public final class WorkshopPlatform {
             WorkshopNode.Tank tank, ItemStack item, boolean filling) {
         var copy = item.copy();
         copy.setCount(1);
-        return FluidUtil.getFluidHandler(copy)
-                .map(
-                        handler -> {
-                            var liquid =
-                                    filling
-                                            ? fluid(tank.id, tank.amount)
-                                            : handler.drain(
-                                                    tank.capacity - tank.amount,
-                                                    IFluidHandler.FluidAction.EXECUTE);
-                            if (liquid.isEmpty() || liquid.hasTag()) {
-                                return null;
-                            }
-                            int amount =
-                                    filling
-                                            ? handler.fill(
-                                                    liquid, IFluidHandler.FluidAction.EXECUTE)
-                                            : liquid.getAmount();
-                            return amount > 0
-                                    ? new ContainerResult(
-                                            handler.getContainer(),
-                                            new Liquid(fluidId(liquid), amount))
-                                    : null;
-                        })
-                .orElse(null);
+        var handler = FluidUtil.getFluidHandler(copy).orElse(null);
+        if (handler == null) return null;
+        var liquid =
+                filling
+                        ? fluid(tank.id, tank.amount)
+                        : handler.drain(
+                                tank.capacity - tank.amount, IFluidHandler.FluidAction.EXECUTE);
+        if (liquid.isEmpty() || liquid.hasTag()) return null;
+        int amount =
+                filling
+                        ? handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE)
+                        : liquid.getAmount();
+        return amount > 0
+                ? new ContainerResult(handler.getContainer(), new Liquid(fluidId(liquid), amount))
+                : null;
     }
 
     static boolean interactFluid(

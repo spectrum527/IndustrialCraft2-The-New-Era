@@ -6,6 +6,8 @@ import static com.industrialage.ia2.forge.qa.PlayableGameTests.place;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.player;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.stack;
 
+import com.industrialage.ia2.forge.equipment.ForgeGear;
+import com.industrialage.ia2.industrial.WorkshopMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
@@ -13,11 +15,14 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -294,6 +299,130 @@ public final class WorkshopGameTests {
                                     && ash.getCount() == 1,
                             "One coal supplied 400 work ticks and 8000 buffered heat");
                 });
+    }
+
+    /** Exercises the actual discharge and generator charge slots, including tier and capacity. */
+    @GameTest(template = "smoke")
+    public static void portableEnergyThroughWorkshopMenus(GameTestHelper helper) {
+        var pos = helper.absolutePos(new BlockPos(1, 2, 1));
+        var former = menu(helper, pos, "metal_former");
+        var induction = menu(helper, pos.east(), "induction_furnace");
+        var generator = menu(helper, pos.above(3), "semifluid_generator");
+        var owner = player(helper, pos);
+        var tooHigh = battery("advanced_re_battery", 1000);
+        put(owner, former, 26, tooHigh);
+        check(
+                helper,
+                former.getSlot(26).getItem().isEmpty() && former.getCarried() == tooHigh,
+                "A tier two battery cannot discharge into a tier one machine");
+        setEnergy(helper, pos, 3960);
+        setEnergy(helper, pos.above(3), 350);
+        put(owner, former, 26, battery("re_battery", 1000));
+        put(owner, induction, 26, battery("advanced_re_battery", 250));
+        put(owner, generator, 26, battery("re_battery", 9980));
+        helper.runAfterDelay(
+                4,
+                () -> {
+                    check(
+                            helper,
+                            former.energy() == 4000 && batteryEnergy(former) == 960,
+                            "Metal former stopped exactly at its 4000 EU capacity");
+                    check(
+                            helper,
+                            induction.energy() == 250 && batteryEnergy(induction) == 0,
+                            "Induction furnace received the exact tier two battery debit");
+                    check(
+                            helper,
+                            generator.energy() == 330 && batteryEnergy(generator) == 10000,
+                            "Generator charged its battery to capacity with an exact 20 EU debit");
+                    var formerBlock = machine(helper, pos);
+                    formerBlock.load(formerBlock.saveWithoutMetadata());
+                    check(
+                            helper,
+                            former.energy() == 4000 && batteryEnergy(former) == 960,
+                            "The former reload retained its battery and energy together");
+                    helper.succeed();
+                });
+    }
+
+    /** Pumps a real source through the authored menu, preserving a blocked container result. */
+    @GameTest(template = "smoke")
+    public static void pumpFillsContainersWithBackpressure(GameTestHelper helper) {
+        var pos = helper.absolutePos(new BlockPos(1, 2, 1));
+        var menu = menu(helper, pos, "pump");
+        var world = helper.getLevel();
+        var owner = player(helper, pos);
+        world.setBlockAndUpdate(
+                pos,
+                world.getBlockState(pos).setValue(BlockStateProperties.FACING, Direction.DOWN));
+        world.setBlockAndUpdate(pos.below(), Blocks.WATER.defaultBlockState());
+        put(owner, menu, 0, new ItemStack(Items.BUCKET));
+        menu.getSlot(9).set(new ItemStack(Items.WATER_BUCKET));
+        put(owner, menu, 18, stack("overclocker_upgrade"));
+        put(owner, menu, 19, stack("transformer_upgrade"));
+        put(owner, menu, 20, stack("energy_storage_upgrade"));
+        put(owner, menu, 21, stack("fluid_ejector_upgrade"));
+        put(owner, menu, 26, battery("advanced_re_battery", 500));
+        helper.runAfterDelay(
+                25,
+                () -> {
+                    check(
+                            helper,
+                            menu.capacity() == 10042 && menu.energy() == 458,
+                            "Pump paid exactly 14 ticks × 3 EU with working upgrades");
+                    check(
+                            helper,
+                            menu.tank(0).amount() == 1000
+                                    && !world.getFluidState(pos.below()).isSource()
+                                    && menu.getSlot(0).getItem().is(Items.BUCKET),
+                            "Blocked result conserved the empty bucket and water taken from the world");
+                    menu.clicked(9, 0, ClickType.PICKUP, owner);
+                    check(
+                            helper,
+                            menu.getCarried().is(Items.WATER_BUCKET),
+                            "The existing container can be collected from the actual output");
+                    helper.runAfterDelay(
+                            3,
+                            () -> {
+                                check(
+                                        helper,
+                                        menu.tank(0).amount() == 0
+                                                && menu.energy() == 458
+                                                && menu.getSlot(0).getItem().isEmpty()
+                                                && menu.getSlot(9).getItem().is(Items.WATER_BUCKET),
+                                        "Free output made exactly one filled bucket from one stored liter");
+                                helper.succeed();
+                            });
+                });
+    }
+
+    private static WorkshopMenu menu(GameTestHelper helper, BlockPos pos, String id) {
+        var owner = player(helper, pos);
+        place(helper, owner, pos, stack(id));
+        return (WorkshopMenu)
+                ((MenuProvider) machine(helper, pos)).createMenu(1, owner.getInventory(), owner);
+    }
+
+    private static void put(Player player, WorkshopMenu menu, int slot, ItemStack stack) {
+        menu.setCarried(stack);
+        menu.clicked(slot, 0, ClickType.PICKUP, player);
+    }
+
+    private static void setEnergy(GameTestHelper helper, BlockPos pos, int amount) {
+        var node = machine(helper, pos);
+        var nbt = node.saveWithoutMetadata();
+        nbt.putDouble("ic2_energy", amount);
+        node.load(nbt);
+    }
+
+    private static ItemStack battery(String item, int charge) {
+        var battery = stack(item);
+        battery.getOrCreateTag().putDouble("ic2_energy", charge);
+        return battery;
+    }
+
+    private static double batteryEnergy(WorkshopMenu menu) {
+        return ForgeGear.stored(menu.getSlot(26).getItem());
     }
 
     private static IItemHandler items(GameTestHelper helper, BlockPos pos, Direction side) {

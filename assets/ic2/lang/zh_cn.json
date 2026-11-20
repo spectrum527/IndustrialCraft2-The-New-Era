@@ -441,6 +441,8 @@
   "gui.ic2.workshop.slot.output": "取走加工产物",
   "gui.ic2.workshop.slot.fill": "放入待灌装空容器",
   "gui.ic2.workshop.slot.drain": "放入待排空满容器",
+  "gui.ic2.workshop.slot.charge": "用发电机给电池或装备充电",
+  "gui.ic2.workshop.slot.discharge": "放入电池为机器供电",
   "gui.ic2.workshop.slot.return": "取走返还的空单元",
   "gui.ic2.workshop.slot.coil": "放入供热线圈",
   "gui.ic2.workshop.slot.upgrade": "放入加工或搬运升级",

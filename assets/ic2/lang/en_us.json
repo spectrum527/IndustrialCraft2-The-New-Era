@@ -441,6 +441,8 @@
   "gui.ic2.workshop.slot.output": "Collect the finished product",
   "gui.ic2.workshop.slot.fill": "Empty container to fill",
   "gui.ic2.workshop.slot.drain": "Full container to drain",
+  "gui.ic2.workshop.slot.charge": "Charge equipment from the generator",
+  "gui.ic2.workshop.slot.discharge": "Supply the machine with a charged battery",
   "gui.ic2.workshop.slot.return": "Returned empty air cell",
   "gui.ic2.workshop.slot.coil": "Heat source coil",
   "gui.ic2.workshop.slot.upgrade": "Processing or transfer upgrade",

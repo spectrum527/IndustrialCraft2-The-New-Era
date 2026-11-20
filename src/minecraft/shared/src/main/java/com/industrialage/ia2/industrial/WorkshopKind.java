@@ -80,7 +80,6 @@ enum WorkshopKind {
             case ELECTRIC_HEAT,
                             FLUID_REGULATOR,
                             FLUID_DISTRIBUTOR,
-                            PUMP,
                             ELECTROLYZER,
                             STIRLING,
                             FERMENTER,
@@ -124,7 +123,6 @@ enum WorkshopKind {
             case ELECTRIC_HEAT,
                             FLUID_REGULATOR,
                             FLUID_DISTRIBUTOR,
-                            PUMP,
                             ELECTROLYZER,
                             STIRLING,
                             RADIOISOTOPE_HEAT,
@@ -182,6 +180,35 @@ enum WorkshopKind {
 
     boolean generatesPower() {
         return this == STIRLING || this == SEMIFLUID || this == KINETIC;
+    }
+
+    boolean dischargesItem() {
+        return switch (this) {
+            case METAL_FORMER,
+                            ORE_WASHER,
+                            CENTRIFUGE,
+                            INDUCTION,
+                            RECYCLER,
+                            BLOCK_CUTTER,
+                            CANNER,
+                            SOLID_CANNER,
+                            CLASSIC_CANNER,
+                            FLUID_BOTTLER,
+                            FLUID_REGULATOR,
+                            PUMP,
+                            ELECTROLYZER,
+                            CONDENSER,
+                            ELECTRIC_KINETIC,
+                            UU_SCANNER,
+                            REPLICATOR,
+                            ELECTRIC_HEAT ->
+                    true;
+            default -> false;
+        };
+    }
+
+    boolean chargesItem() {
+        return this == SEMIFLUID;
     }
 
     boolean auxiliarySlot() {

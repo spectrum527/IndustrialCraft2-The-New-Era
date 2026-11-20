@@ -55,7 +55,9 @@ public final class PanelGraphics {
                 if (texture == null) return;
                 var atlas = net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
                 var sprite =
-                        net.minecraft.client.Minecraft.getInstance().getTextureAtlas(atlas).apply(texture);
+                        net.minecraft.client.Minecraft.getInstance()
+                                .getTextureAtlas(atlas)
+                                .apply(texture);
                 int tint = appearance.getTintColor();
                 float red = (tint >> 16 & 255) / 255f,
                         green = (tint >> 8 & 255) / 255f,
@@ -75,6 +77,24 @@ public final class PanelGraphics {
 
             public void text(Component text, int x, int y, int colour, boolean center) {
                 font.draw(g, text, left + x - (center ? font.width(text) / 2 : 0), top + y, colour);
+            }
+
+            @Override
+            public void fittedText(Component value, int centerX, int y, int maxWidth, int colour) {
+                int width = font.width(value);
+                if (width <= maxWidth) {
+                    text(value, centerX, y, colour, true);
+                    return;
+                }
+                float scale = (float) maxWidth / width;
+                g.pushPose();
+                try {
+                    g.translate(left + centerX, top + y, 0);
+                    g.scale(scale, scale, 1);
+                    font.draw(g, value, -width / 2f, 0, colour);
+                } finally {
+                    g.popPose();
+                }
             }
         };
     }

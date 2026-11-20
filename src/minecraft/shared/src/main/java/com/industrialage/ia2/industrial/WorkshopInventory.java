@@ -22,6 +22,7 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
     static final int UPGRADE_START = 18;
     static final int COMPONENT_BAYS = 10;
     static final int UPGRADE_END = UPGRADE_START + 4;
+    static final int POWER_ITEM_SLOT = 26;
     private final WorkshopNode node;
 
     static void dropOnReplacement(Level level, BlockPos pos, BlockState state, BlockState next) {
@@ -70,6 +71,9 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
+        if (slot == POWER_ITEM_SLOT) {
+            return acceptsPowerItem(node.kind, stack, node.energyTier());
+        }
         if (componentBay(node.kind, slot)) {
             String id = node.kind == WorkshopKind.ELECTRIC_HEAT ? "ic2:coil" : "ic2:electric_motor";
             return WorkshopPlatform.itemId(stack).equals(id);
@@ -97,6 +101,9 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
         }
         if (node.kind == WorkshopKind.FLUID_BOTTLER && slot < 2) {
             return WorkshopPlatform.canSupplyContainer(stack, slot == 0);
+        }
+        if (node.kind == WorkshopKind.PUMP && slot == 0) {
+            return WorkshopPlatform.canSupplyContainer(stack, true);
         }
         if (slot < node.kind.inputs(node.mode)) {
             String id = WorkshopPlatform.itemId(stack);
@@ -141,6 +148,12 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                 && (node.kind != WorkshopKind.SOLID_HEAT
                         || node.getLevel() instanceof net.minecraft.server.level.ServerLevel level
                                 && WorkshopPlatform.solidFuelTime(level, stack) >= 4);
+    }
+
+    static boolean acceptsPowerItem(WorkshopKind kind, ItemStack stack, int tier) {
+        return kind.chargesItem()
+                ? PowerPlatform.acceptsCharge(stack, tier)
+                : kind.dischargesItem() && PowerPlatform.canDischarge(stack, tier);
     }
 
     @Override
