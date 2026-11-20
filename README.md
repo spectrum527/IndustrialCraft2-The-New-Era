@@ -1,8 +1,6 @@
-# IndustrialCraft 2 · Forge 1.19.2
+# IndustrialCraft 2（IC2） · Forge 1.19.2
 
-这个分支为 Minecraft 1.19.2 独立构建 IC2。它从重建仓库的 P2 合并点 `10a57bac` 分出，复用本项目按行为规格开发的通用层，在 Forge 43.5.0 上接入注册、事件、方位能力、每档配置和网络。进入游戏后，可在控制设置里为“打开 IC2 状态”绑定按键。服务端管理员可用 `/ic2 config reload` 重载当前存档的配置。
-
-本分支已接入六面有向能量图、机器组件和基础火力发电机的燃烧、储能及存档。开发专服验证了同一台机器跨进程续烧。玩家可合成的发电机、分面库存和实际线路结算按后续任务接入。[首台机器验收](docs/forge-1.19.2-machine.md) · [P2 基座门禁](docs/gates/1.19.2-P2.md)
+0.1.0 是 IC2 Experimental 的独立重建。此分支为 Minecraft 1.19.2、Forge 43.5.0 和 Java 17 提供重混淆 JAR。新存档中可从橡胶树和基础加工起步，发展热能、动能、作物、UU 复制与游戏内核工业。[安装与第一条生产线](docs/first-playable.md)
 
 ## 构建与验证
 
@@ -23,6 +21,27 @@ python3 src/forge/1.19.2/qa/verify.py mismatch
 ```
 
 `runPlatformHostTest` 运行 JUnit 和 Forge GameTest。`runPlatformWorldTest` 在两个独立专服进程中保存并重开同一存档。`play` 与 `mismatch` 启动实际游戏客户端，需要图形会话。开发夹具由单独的 `ic2_qa` 模组加载。
+
+### 安装包复验
+
+使用独立安装的 Forge 43.5.0 专服依赖。将下列参数改为当前 JAR、专服的 `libraries/` 和已确认的 `eula.txt`，输出目录使用新路径。脚本复制一份发行 JAR，所有专服都核对同一个 SHA-256，每组验收保留日志和结果。
+
+```sh
+./gradlew :forge:1.19.2:reobfJar
+python3 -B src/forge/1.19.2/qa/verify_production.py \
+  --jar src/forge/1.19.2/build/libs/ic2-forge-1.19.2-0.1.0.jar \
+  --libraries /absolute/path/to/forge-server/libraries \
+  --eula /absolute/path/to/forge-server/eula.txt \
+  --directory .task-context/forge-release-proof
+```
+
+机器测例通过真实电缆和管道传输。首次安装、冷重启、整条生产线和客户端菜单各有独立记录。`verify.py smoke` 另跑实际加载器上的 GameTest，覆盖玩家操作触发的扫描、图样入库、单次和连续复制。测试模组位于单独源集。发布前由隔离的规格端执行相似度检验，交接只收录脱敏统计。
+
+## 发行差异
+
+参考配方中两种空单元的图案相同，中心都是玻璃板。此版保留旧单元的玻璃板配方，通用流体单元改用玻璃方块，两个配方仍各使用四个锡外壳，均可在同一生存世界合成。通用流体单元保留具体液体、数据和毫桶量，最大 1,000 mB。
+
+废料盒可手持右键开启，也能以原生红石发射器自动开启。两种方式都从同一个权重表抽取物品。[黑箱对照和权重来源](spec/registry/scrap-box-observation.md)
 
 ## 工程依据
 

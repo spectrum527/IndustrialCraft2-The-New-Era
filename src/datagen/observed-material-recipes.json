@@ -1,0 +1,1243 @@
+{
+  "evidence": "Independent in-game recipe-book export for input/output, and spec/registry/repair-smelting.tsv for furnace duration/XP. Only concrete available IDs are included.",
+  "evidence_sha256": "3cc455f334a5cfccc399aac030d48e54e4ce94887405bc60a577d145e2210a76",
+  "recipes": [
+    {
+      "source_id": "ic2:shaped/advanced_circuit",
+      "kind": "shaped",
+      "output": "ic2:advanced_circuit",
+      "count": 1,
+      "shape": [
+        [
+          "minecraft:redstone",
+          "minecraft:glowstone_dust",
+          "minecraft:redstone"
+        ],
+        [
+          "minecraft:lapis_lazuli",
+          "ic2:circuit",
+          "minecraft:lapis_lazuli"
+        ],
+        [
+          "minecraft:redstone",
+          "minecraft:glowstone_dust",
+          "minecraft:redstone"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/advanced_circuit_vertical",
+      "kind": "shaped",
+      "output": "ic2:advanced_circuit",
+      "count": 1,
+      "shape": [
+        [
+          "minecraft:redstone",
+          "minecraft:lapis_lazuli",
+          "minecraft:redstone"
+        ],
+        [
+          "minecraft:glowstone_dust",
+          "ic2:circuit",
+          "minecraft:glowstone_dust"
+        ],
+        [
+          "minecraft:redstone",
+          "minecraft:lapis_lazuli",
+          "minecraft:redstone"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/carbon_fibre",
+      "kind": "shaped",
+      "output": "ic2:carbon_fibre",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:coal_dust",
+          "ic2:coal_dust"
+        ],
+        [
+          "ic2:coal_dust",
+          "ic2:coal_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/cf_powder",
+      "kind": "shaped",
+      "output": "ic2:cf_powder",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:stone_dust",
+          "minecraft:sand",
+          "ic2:stone_dust"
+        ],
+        [
+          "ic2:stone_dust",
+          "minecraft:clay_ball",
+          "ic2:stone_dust"
+        ],
+        [
+          "ic2:stone_dust",
+          "minecraft:sand",
+          "ic2:stone_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/coal_ball",
+      "kind": "shaped",
+      "output": "ic2:coal_ball",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:coal_dust",
+          "ic2:coal_dust",
+          "ic2:coal_dust"
+        ],
+        [
+          "ic2:coal_dust",
+          "minecraft:flint",
+          "ic2:coal_dust"
+        ],
+        [
+          "ic2:coal_dust",
+          "ic2:coal_dust",
+          "ic2:coal_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/coil",
+      "kind": "shaped",
+      "output": "ic2:coil",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:copper_cable",
+          "ic2:copper_cable",
+          "ic2:copper_cable"
+        ],
+        [
+          "ic2:copper_cable",
+          "minecraft:iron_ingot",
+          "ic2:copper_cable"
+        ],
+        [
+          "ic2:copper_cable",
+          "ic2:copper_cable",
+          "ic2:copper_cable"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/copper_boiler",
+      "kind": "shaped",
+      "output": "ic2:copper_boiler",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:copper_casing",
+          "ic2:copper_casing",
+          "ic2:copper_casing"
+        ],
+        [
+          "ic2:copper_casing",
+          null,
+          "ic2:copper_casing"
+        ],
+        [
+          "ic2:copper_casing",
+          "ic2:copper_casing",
+          "ic2:copper_casing"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/copper_dust",
+      "kind": "shaped",
+      "output": "ic2:copper_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_copper_dust",
+          "ic2:small_copper_dust",
+          "ic2:small_copper_dust"
+        ],
+        [
+          "ic2:small_copper_dust",
+          "ic2:small_copper_dust",
+          "ic2:small_copper_dust"
+        ],
+        [
+          "ic2:small_copper_dust",
+          "ic2:small_copper_dust",
+          "ic2:small_copper_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/diamond_dust_from_small_dust",
+      "kind": "shaped",
+      "output": "ic2:diamond_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_diamond_dust",
+          "ic2:small_diamond_dust",
+          "ic2:small_diamond_dust"
+        ],
+        [
+          "ic2:small_diamond_dust",
+          "ic2:small_diamond_dust",
+          "ic2:small_diamond_dust"
+        ],
+        [
+          "ic2:small_diamond_dust",
+          "ic2:small_diamond_dust",
+          "ic2:small_diamond_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/electric_motor",
+      "kind": "shaped",
+      "output": "ic2:electric_motor",
+      "count": 1,
+      "shape": [
+        [
+          null,
+          "ic2:tin_casing",
+          null
+        ],
+        [
+          "ic2:coil",
+          "minecraft:iron_ingot",
+          "ic2:coil"
+        ],
+        [
+          null,
+          "ic2:tin_casing",
+          null
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/electric_motor_vertical",
+      "kind": "shaped",
+      "output": "ic2:electric_motor",
+      "count": 1,
+      "shape": [
+        [
+          null,
+          "ic2:coil",
+          null
+        ],
+        [
+          "ic2:tin_casing",
+          "minecraft:iron_ingot",
+          "ic2:tin_casing"
+        ],
+        [
+          null,
+          "ic2:coil",
+          null
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/emerald_dust_from_small_dust",
+      "kind": "shaped",
+      "output": "ic2:emerald_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_emerald_dust",
+          "ic2:small_emerald_dust",
+          "ic2:small_emerald_dust"
+        ],
+        [
+          "ic2:small_emerald_dust",
+          "ic2:small_emerald_dust",
+          "ic2:small_emerald_dust"
+        ],
+        [
+          "ic2:small_emerald_dust",
+          "ic2:small_emerald_dust",
+          "ic2:small_emerald_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/energium_dust",
+      "kind": "shaped",
+      "output": "ic2:energium_dust",
+      "count": 9,
+      "shape": [
+        [
+          "minecraft:redstone",
+          "ic2:diamond_dust",
+          "minecraft:redstone"
+        ],
+        [
+          "ic2:diamond_dust",
+          "minecraft:redstone",
+          "ic2:diamond_dust"
+        ],
+        [
+          "minecraft:redstone",
+          "ic2:diamond_dust",
+          "minecraft:redstone"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/gold_dust",
+      "kind": "shaped",
+      "output": "ic2:gold_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_gold_dust",
+          "ic2:small_gold_dust",
+          "ic2:small_gold_dust"
+        ],
+        [
+          "ic2:small_gold_dust",
+          "ic2:small_gold_dust",
+          "ic2:small_gold_dust"
+        ],
+        [
+          "ic2:small_gold_dust",
+          "ic2:small_gold_dust",
+          "ic2:small_gold_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/heat_conductor",
+      "kind": "shaped",
+      "output": "ic2:heat_conductor",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:rubber",
+          "ic2:copper_plate",
+          "ic2:rubber"
+        ],
+        [
+          "ic2:rubber",
+          "ic2:copper_plate",
+          "ic2:rubber"
+        ],
+        [
+          "ic2:rubber",
+          "ic2:copper_plate",
+          "ic2:rubber"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/lapis_dust",
+      "kind": "shaped",
+      "output": "ic2:lapis_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_lapis_dust",
+          "ic2:small_lapis_dust",
+          "ic2:small_lapis_dust"
+        ],
+        [
+          "ic2:small_lapis_dust",
+          "ic2:small_lapis_dust",
+          "ic2:small_lapis_dust"
+        ],
+        [
+          "ic2:small_lapis_dust",
+          "ic2:small_lapis_dust",
+          "ic2:small_lapis_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/lead_dust",
+      "kind": "shaped",
+      "output": "ic2:lead_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_lead_dust",
+          "ic2:small_lead_dust",
+          "ic2:small_lead_dust"
+        ],
+        [
+          "ic2:small_lead_dust",
+          "ic2:small_lead_dust",
+          "ic2:small_lead_dust"
+        ],
+        [
+          "ic2:small_lead_dust",
+          "ic2:small_lead_dust",
+          "ic2:small_lead_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/lithium_dust",
+      "kind": "shaped",
+      "output": "ic2:lithium_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_lithium_dust",
+          "ic2:small_lithium_dust",
+          "ic2:small_lithium_dust"
+        ],
+        [
+          "ic2:small_lithium_dust",
+          "ic2:small_lithium_dust",
+          "ic2:small_lithium_dust"
+        ],
+        [
+          "ic2:small_lithium_dust",
+          "ic2:small_lithium_dust",
+          "ic2:small_lithium_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/mixed_metal_ingot",
+      "kind": "shaped",
+      "output": "ic2:mixed_metal_ingot",
+      "count": 2,
+      "shape": [
+        [
+          "ic2:iron_plate",
+          "ic2:iron_plate",
+          "ic2:iron_plate"
+        ],
+        [
+          "ic2:bronze_plate",
+          "ic2:bronze_plate",
+          "ic2:bronze_plate"
+        ],
+        [
+          "ic2:tin_plate",
+          "ic2:tin_plate",
+          "ic2:tin_plate"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/mox_1",
+      "kind": "shaped",
+      "output": "ic2:mox",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:uranium_238",
+          "ic2:uranium_238",
+          "ic2:uranium_238"
+        ],
+        [
+          "ic2:plutonium",
+          "ic2:plutonium",
+          "ic2:plutonium"
+        ],
+        [
+          "ic2:uranium_238",
+          "ic2:uranium_238",
+          "ic2:uranium_238"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/mox_2",
+      "kind": "shaped",
+      "output": "ic2:mox",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:uranium_238",
+          "ic2:uranium_238",
+          "ic2:uranium_238"
+        ],
+        [
+          "ic2:plutonium",
+          "ic2:plutonium",
+          "ic2:plutonium"
+        ],
+        [
+          "ic2:uranium_238",
+          "ic2:uranium_238",
+          "ic2:uranium_238"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/mox_3",
+      "kind": "shaped",
+      "output": "ic2:mox",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot"
+        ],
+        [
+          "ic2:plutonium",
+          "ic2:plutonium",
+          "ic2:plutonium"
+        ],
+        [
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/mox_4",
+      "kind": "shaped",
+      "output": "ic2:mox",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot"
+        ],
+        [
+          "ic2:plutonium",
+          "ic2:plutonium",
+          "ic2:plutonium"
+        ],
+        [
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/obsidian_dust",
+      "kind": "shaped",
+      "output": "ic2:obsidian_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_obsidian_dust",
+          "ic2:small_obsidian_dust",
+          "ic2:small_obsidian_dust"
+        ],
+        [
+          "ic2:small_obsidian_dust",
+          "ic2:small_obsidian_dust",
+          "ic2:small_obsidian_dust"
+        ],
+        [
+          "ic2:small_obsidian_dust",
+          "ic2:small_obsidian_dust",
+          "ic2:small_obsidian_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/plant_ball_1",
+      "kind": "shaped",
+      "output": "ic2:plant_ball",
+      "count": 1,
+      "shape": [
+        [
+          "minecraft:wheat",
+          "minecraft:wheat",
+          "minecraft:wheat"
+        ],
+        [
+          "minecraft:wheat",
+          null,
+          "minecraft:wheat"
+        ],
+        [
+          "minecraft:wheat",
+          "minecraft:wheat",
+          "minecraft:wheat"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/plant_ball_2",
+      "kind": "shaped",
+      "output": "ic2:plant_ball",
+      "count": 1,
+      "shape": [
+        [
+          "minecraft:sugar_cane",
+          "minecraft:sugar_cane",
+          "minecraft:sugar_cane"
+        ],
+        [
+          "minecraft:sugar_cane",
+          null,
+          "minecraft:sugar_cane"
+        ],
+        [
+          "minecraft:sugar_cane",
+          "minecraft:sugar_cane",
+          "minecraft:sugar_cane"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/plant_ball_3",
+      "kind": "shaped",
+      "output": "ic2:plant_ball",
+      "count": 1,
+      "shape": [
+        [
+          "minecraft:cactus",
+          "minecraft:cactus",
+          "minecraft:cactus"
+        ],
+        [
+          "minecraft:cactus",
+          null,
+          "minecraft:cactus"
+        ],
+        [
+          "minecraft:cactus",
+          "minecraft:cactus",
+          "minecraft:cactus"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/plant_ball_6",
+      "kind": "shaped",
+      "output": "ic2:plant_ball",
+      "count": 1,
+      "shape": [
+        [
+          "minecraft:tall_grass",
+          "minecraft:tall_grass",
+          "minecraft:tall_grass"
+        ],
+        [
+          "minecraft:tall_grass",
+          null,
+          "minecraft:tall_grass"
+        ],
+        [
+          "minecraft:tall_grass",
+          "minecraft:tall_grass",
+          "minecraft:tall_grass"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/plant_ball_7",
+      "kind": "shaped",
+      "output": "ic2:plant_ball",
+      "count": 1,
+      "shape": [
+        [
+          "minecraft:wheat_seeds",
+          "minecraft:wheat_seeds",
+          "minecraft:wheat_seeds"
+        ],
+        [
+          "minecraft:wheat_seeds",
+          null,
+          "minecraft:wheat_seeds"
+        ],
+        [
+          "minecraft:wheat_seeds",
+          "minecraft:wheat_seeds",
+          "minecraft:wheat_seeds"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/plutonium",
+      "kind": "shaped",
+      "output": "ic2:plutonium",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_plutonium",
+          "ic2:small_plutonium",
+          "ic2:small_plutonium"
+        ],
+        [
+          "ic2:small_plutonium",
+          "ic2:small_plutonium",
+          "ic2:small_plutonium"
+        ],
+        [
+          "ic2:small_plutonium",
+          "ic2:small_plutonium",
+          "ic2:small_plutonium"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/power_unit",
+      "kind": "shaped",
+      "output": "ic2:power_unit",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:re_battery",
+          "ic2:copper_cable",
+          "ic2:iron_casing"
+        ],
+        [
+          "ic2:re_battery",
+          "ic2:circuit",
+          "ic2:electric_motor"
+        ],
+        [
+          "ic2:re_battery",
+          "ic2:copper_cable",
+          "ic2:iron_casing"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/silver_dust",
+      "kind": "shaped",
+      "output": "ic2:silver_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_silver_dust",
+          "ic2:small_silver_dust",
+          "ic2:small_silver_dust"
+        ],
+        [
+          "ic2:small_silver_dust",
+          "ic2:small_silver_dust",
+          "ic2:small_silver_dust"
+        ],
+        [
+          "ic2:small_silver_dust",
+          "ic2:small_silver_dust",
+          "ic2:small_silver_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/small_power_unit",
+      "kind": "shaped",
+      "output": "ic2:small_power_unit",
+      "count": 1,
+      "shape": [
+        [
+          null,
+          "ic2:copper_cable",
+          "ic2:iron_casing"
+        ],
+        [
+          "ic2:re_battery",
+          "ic2:circuit",
+          "ic2:electric_motor"
+        ],
+        [
+          null,
+          "ic2:copper_cable",
+          "ic2:iron_casing"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/sulfur_dust",
+      "kind": "shaped",
+      "output": "ic2:sulfur_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_sulfur_dust",
+          "ic2:small_sulfur_dust",
+          "ic2:small_sulfur_dust"
+        ],
+        [
+          "ic2:small_sulfur_dust",
+          "ic2:small_sulfur_dust",
+          "ic2:small_sulfur_dust"
+        ],
+        [
+          "ic2:small_sulfur_dust",
+          "ic2:small_sulfur_dust",
+          "ic2:small_sulfur_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/tin_dust",
+      "kind": "shaped",
+      "output": "ic2:tin_dust",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_tin_dust",
+          "ic2:small_tin_dust",
+          "ic2:small_tin_dust"
+        ],
+        [
+          "ic2:small_tin_dust",
+          "ic2:small_tin_dust",
+          "ic2:small_tin_dust"
+        ],
+        [
+          "ic2:small_tin_dust",
+          "ic2:small_tin_dust",
+          "ic2:small_tin_dust"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/uranium",
+      "kind": "shaped",
+      "output": "ic2:uranium",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:uranium_238",
+          "ic2:uranium_238",
+          "ic2:uranium_238"
+        ],
+        [
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235"
+        ],
+        [
+          "ic2:uranium_238",
+          "ic2:uranium_238",
+          "ic2:uranium_238"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/uranium_2",
+      "kind": "shaped",
+      "output": "ic2:uranium",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot"
+        ],
+        [
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235"
+        ],
+        [
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot",
+          "ic2:uranium_ingot"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shaped/uranium_235",
+      "kind": "shaped",
+      "output": "ic2:uranium_235",
+      "count": 1,
+      "shape": [
+        [
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235"
+        ],
+        [
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235"
+        ],
+        [
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235",
+          "ic2:small_uranium_235"
+        ]
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/bronze_casing",
+      "kind": "shapeless",
+      "output": "ic2:bronze_casing",
+      "count": 2,
+      "ingredients": [
+        "ic2:bronze_plate",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/bronze_plate",
+      "kind": "shapeless",
+      "output": "ic2:bronze_plate",
+      "count": 1,
+      "ingredients": [
+        "ic2:bronze_ingot",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/carbon_mesh",
+      "kind": "shapeless",
+      "output": "ic2:carbon_mesh",
+      "count": 1,
+      "ingredients": [
+        "ic2:carbon_fibre",
+        "ic2:carbon_fibre"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/copper_casing",
+      "kind": "shapeless",
+      "output": "ic2:copper_casing",
+      "count": 2,
+      "ingredients": [
+        "ic2:copper_plate",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/gold_casing",
+      "kind": "shapeless",
+      "output": "ic2:gold_casing",
+      "count": 2,
+      "ingredients": [
+        "ic2:gold_plate",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/gold_plate",
+      "kind": "shapeless",
+      "output": "ic2:gold_plate",
+      "count": 1,
+      "ingredients": [
+        "minecraft:gold_ingot",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/iron_casing",
+      "kind": "shapeless",
+      "output": "ic2:iron_casing",
+      "count": 2,
+      "ingredients": [
+        "ic2:iron_plate",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/lead_casing",
+      "kind": "shapeless",
+      "output": "ic2:lead_casing",
+      "count": 2,
+      "ingredients": [
+        "ic2:lead_plate",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/lead_plate",
+      "kind": "shapeless",
+      "output": "ic2:lead_plate",
+      "count": 1,
+      "ingredients": [
+        "ic2:lead_ingot",
+        "ic2:forge_hammer"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/small_plutonium",
+      "kind": "shapeless",
+      "output": "ic2:small_plutonium",
+      "count": 9,
+      "ingredients": [
+        "ic2:plutonium"
+      ]
+    },
+    {
+      "source_id": "ic2:shapeless/small_uranium_235",
+      "kind": "shapeless",
+      "output": "ic2:small_uranium_235",
+      "count": 9,
+      "ingredients": [
+        "ic2:uranium_235"
+      ]
+    },
+    {
+      "source_id": "ic2:smelting/bronze_ingot_from_bronze_dust",
+      "kind": "smelting",
+      "output": "ic2:bronze_ingot",
+      "count": 1,
+      "ingredient": "ic2:bronze_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/coal_dust",
+      "kind": "smelting",
+      "output": "ic2:coal_dust",
+      "count": 1,
+      "ingredient": "ic2:coal_fuel_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/copper_ingot_from_copper_dust",
+      "kind": "smelting",
+      "output": "minecraft:copper_ingot",
+      "count": 1,
+      "ingredient": "ic2:copper_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/copper_ingot_from_crushed_copper",
+      "kind": "smelting",
+      "output": "minecraft:copper_ingot",
+      "count": 1,
+      "ingredient": "ic2:crushed_copper",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/copper_ingot_from_purified_copper",
+      "kind": "smelting",
+      "output": "minecraft:copper_ingot",
+      "count": 1,
+      "ingredient": "ic2:purified_copper",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/gold_ingot_from_crushed_gold",
+      "kind": "smelting",
+      "output": "minecraft:gold_ingot",
+      "count": 1,
+      "ingredient": "ic2:crushed_gold",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/gold_ingot_from_gold_dust",
+      "kind": "smelting",
+      "output": "minecraft:gold_ingot",
+      "count": 1,
+      "ingredient": "ic2:gold_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/gold_ingot_from_purified_gold",
+      "kind": "smelting",
+      "output": "minecraft:gold_ingot",
+      "count": 1,
+      "ingredient": "ic2:purified_gold",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/iron_ingot_from_crushed_iron",
+      "kind": "smelting",
+      "output": "minecraft:iron_ingot",
+      "count": 1,
+      "ingredient": "ic2:crushed_iron",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/iron_ingot_from_iron_dust",
+      "kind": "smelting",
+      "output": "minecraft:iron_ingot",
+      "count": 1,
+      "ingredient": "ic2:iron_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/iron_ingot_from_purified_iron",
+      "kind": "smelting",
+      "output": "minecraft:iron_ingot",
+      "count": 1,
+      "ingredient": "ic2:purified_iron",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/jungle_log_from_rubber_log",
+      "kind": "smelting",
+      "output": "minecraft:jungle_log",
+      "count": 1,
+      "ingredient": "ic2:rubber_log",
+      "duration_ticks": 200,
+      "xp": 0.1
+    },
+    {
+      "source_id": "ic2:smelting/lead_ingot_from_crushed_lead",
+      "kind": "smelting",
+      "output": "ic2:lead_ingot",
+      "count": 1,
+      "ingredient": "ic2:crushed_lead",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/lead_ingot_from_lead_dust",
+      "kind": "smelting",
+      "output": "ic2:lead_ingot",
+      "count": 1,
+      "ingredient": "ic2:lead_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/lead_ingot_from_purified_lead",
+      "kind": "smelting",
+      "output": "ic2:lead_ingot",
+      "count": 1,
+      "ingredient": "ic2:purified_lead",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/lead_ingot_from_raw_lead",
+      "kind": "smelting",
+      "output": "ic2:lead_ingot",
+      "count": 1,
+      "ingredient": "ic2:raw_lead",
+      "duration_ticks": 200,
+      "xp": 0.5
+    },
+    {
+      "source_id": "ic2:smelting/rubber",
+      "kind": "smelting",
+      "output": "ic2:rubber",
+      "count": 1,
+      "ingredient": "ic2:resin",
+      "duration_ticks": 200,
+      "xp": 0.3
+    },
+    {
+      "source_id": "ic2:smelting/silver_ingot_from_crushed_silver",
+      "kind": "smelting",
+      "output": "ic2:silver_ingot",
+      "count": 1,
+      "ingredient": "ic2:crushed_silver",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/silver_ingot_from_purified_silver",
+      "kind": "smelting",
+      "output": "ic2:silver_ingot",
+      "count": 1,
+      "ingredient": "ic2:purified_silver",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/silver_ingot_from_silver_dust",
+      "kind": "smelting",
+      "output": "ic2:silver_ingot",
+      "count": 1,
+      "ingredient": "ic2:silver_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/tin_ingot",
+      "kind": "smelting",
+      "output": "ic2:tin_ingot",
+      "count": 1,
+      "ingredient": "ic2:tin_ore",
+      "duration_ticks": 200,
+      "xp": 0.5
+    },
+    {
+      "source_id": "ic2:smelting/tin_ingot_from_crushed_tin",
+      "kind": "smelting",
+      "output": "ic2:tin_ingot",
+      "count": 1,
+      "ingredient": "ic2:crushed_tin",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/tin_ingot_from_deepslate",
+      "kind": "smelting",
+      "output": "ic2:tin_ingot",
+      "count": 1,
+      "ingredient": "ic2:deepslate_tin_ore",
+      "duration_ticks": 200,
+      "xp": 0.5
+    },
+    {
+      "source_id": "ic2:smelting/tin_ingot_from_purified_tin",
+      "kind": "smelting",
+      "output": "ic2:tin_ingot",
+      "count": 1,
+      "ingredient": "ic2:purified_tin",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/tin_ingot_from_raw_tin",
+      "kind": "smelting",
+      "output": "ic2:tin_ingot",
+      "count": 1,
+      "ingredient": "ic2:raw_tin",
+      "duration_ticks": 200,
+      "xp": 0.5
+    },
+    {
+      "source_id": "ic2:smelting/tin_ingot_from_tin_dust",
+      "kind": "smelting",
+      "output": "ic2:tin_ingot",
+      "count": 1,
+      "ingredient": "ic2:tin_dust",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/uranium_ingot_from_crushed_uranium",
+      "kind": "smelting",
+      "output": "ic2:uranium_ingot",
+      "count": 1,
+      "ingredient": "ic2:crushed_uranium",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/uranium_ingot_from_purified_uranium",
+      "kind": "smelting",
+      "output": "ic2:uranium_ingot",
+      "count": 1,
+      "ingredient": "ic2:purified_uranium",
+      "duration_ticks": 200,
+      "xp": 0.0
+    },
+    {
+      "source_id": "ic2:smelting/uranium_ingot_from_raw_uranium",
+      "kind": "smelting",
+      "output": "ic2:uranium_ingot",
+      "count": 1,
+      "ingredient": "ic2:raw_uranium",
+      "duration_ticks": 200,
+      "xp": 0.5
+    }
+  ],
+  "smelting_spec_sha256": "9f77321495b3275b324750fd05c4e4c7f51e567e7bf8121a80c3b021b74240a4"
+}

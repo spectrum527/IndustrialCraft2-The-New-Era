@@ -1,5 +1,6 @@
 package com.industrialage.ia2.machine;
 
+import java.util.function.DoubleUnaryOperator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NumericTag;
@@ -57,10 +58,19 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
 
     /** Debits at most one 32 EU packet. The calling network round controls the cadence. */
     public final double drawPacket(double requested) {
+        return draw(requested, generator::extractEnergy);
+    }
+
+    /** Debits local slot charging independently of the generator's network packet rating. */
+    protected final double drawLocalEnergy(double requested) {
+        return draw(requested, generator::extractLocalEnergy);
+    }
+
+    private double draw(double requested, DoubleUnaryOperator debit) {
         if (!isLoadedServerMachine()) {
             return 0;
         }
-        double sent = generator.extractEnergy(requested);
+        double sent = debit.applyAsDouble(requested);
         if (sent > 0) {
             setChanged();
         }

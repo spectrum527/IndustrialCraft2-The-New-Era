@@ -1,0 +1,394 @@
+{
+  "reference": {
+    "game": "Minecraft 1.19.2",
+    "loader": "Forge 43.5.0",
+    "repair_build": "1.2.4 / 1.19.2-port.20261120.3",
+    "mod_sha256": "c3801301c8f32f957dd879413d33826438004f5a54f56fb17a2903da820efc5e",
+    "method": "Dedicated server; isolated loaded chunks; block data and energy storage sampled by independent timed commands; default settings",
+    "raw_snapshot_sha256": "be5b9c90411e06237d3ee2154deea8ce23f623718596230def2bd7aa232f4b5c",
+    "boundary_snapshot_sha256": "f394c804df6046c23a14c87b5ca6e1c0acabd420c3f22bdef5c6715dc1f172ac"
+  },
+  "common": {
+    "reactor_id": "ic2:nuclear_reactor",
+    "cycle_ticks_observed": 20,
+    "initial_hull_heat": 0,
+    "fuel_uses_increment_per_cycle": 1,
+    "no_signal_or_empty_output_eu_per_tick": 0
+  },
+  "cold_samples": [
+    {
+      "name": "single",
+      "components": [
+        {
+          "slot": 0,
+          "id": "ic2:uranium_fuel_rod"
+        }
+      ],
+      "interval": [
+        20,
+        100
+      ],
+      "stored_energy_eu": [
+        0,
+        400
+      ],
+      "hull_heat": [
+        0,
+        16
+      ],
+      "fuel_use": [
+        0,
+        4
+      ],
+      "steady_eu_per_tick": 5,
+      "hull_heat_per_cycle": 4
+    },
+    {
+      "name": "dual",
+      "components": [
+        {
+          "slot": 0,
+          "id": "ic2:dual_uranium_fuel_rod"
+        }
+      ],
+      "interval": [
+        20,
+        100
+      ],
+      "stored_energy_eu": [
+        180,
+        1780
+      ],
+      "hull_heat": [
+        24,
+        120
+      ],
+      "fuel_use": [
+        1,
+        5
+      ],
+      "steady_eu_per_tick": 20,
+      "hull_heat_per_cycle": 24
+    },
+    {
+      "name": "two_adjacent",
+      "components": [
+        {
+          "slot": 0,
+          "id": "ic2:uranium_fuel_rod"
+        },
+        {
+          "slot": 1,
+          "id": "ic2:uranium_fuel_rod"
+        }
+      ],
+      "interval": [
+        20,
+        100
+      ],
+      "stored_energy_eu": [
+        140,
+        1740
+      ],
+      "hull_heat": [
+        24,
+        120
+      ],
+      "each_fuel_use": [
+        1,
+        5
+      ],
+      "steady_eu_per_tick": 20,
+      "hull_heat_per_cycle": 24
+    },
+    {
+      "name": "single_and_heat_vent",
+      "components": [
+        {
+          "slot": 0,
+          "id": "ic2:uranium_fuel_rod"
+        },
+        {
+          "slot": 1,
+          "id": "ic2:heat_vent"
+        }
+      ],
+      "interval": [
+        20,
+        100
+      ],
+      "stored_energy_eu": [
+        25,
+        425
+      ],
+      "hull_heat": [
+        0,
+        0
+      ],
+      "vent_use": [
+        0,
+        0
+      ],
+      "steady_eu_per_tick": 5
+    },
+    {
+      "name": "single_and_reactor_heat_vent",
+      "components": [
+        {
+          "slot": 0,
+          "id": "ic2:uranium_fuel_rod"
+        },
+        {
+          "slot": 1,
+          "id": "ic2:reactor_heat_vent"
+        }
+      ],
+      "interval": [
+        20,
+        100
+      ],
+      "stored_energy_eu": [
+        5,
+        405
+      ],
+      "hull_heat": [
+        0,
+        0
+      ],
+      "vent_use": [
+        0,
+        0
+      ],
+      "steady_eu_per_tick": 5
+    },
+    {
+      "name": "six_chambers_single",
+      "components": [
+        {
+          "slot": 0,
+          "id": "ic2:uranium_fuel_rod"
+        }
+      ],
+      "interval": [
+        20,
+        100
+      ],
+      "stored_energy_eu": [
+        10,
+        410
+      ],
+      "hull_heat": [
+        4,
+        20
+      ],
+      "fuel_use": [
+        1,
+        5
+      ],
+      "steady_eu_per_tick": 5,
+      "hull_heat_per_cycle": 4
+    }
+  ],
+  "hull_cooling_without_redstone_or_fuel": {
+    "initial_heat": 100,
+    "snapshot_ticks": [
+      20,
+      40,
+      100,
+      200
+    ],
+    "no_component": {
+      "hull_heat": [
+        100,
+        100,
+        100,
+        100
+      ]
+    },
+    "heat_vent": {
+      "hull_heat_at_100_200": [
+        100,
+        100
+      ]
+    },
+    "advanced_heat_vent": {
+      "hull_heat_at_100_200": [
+        100,
+        100
+      ]
+    },
+    "reactor_heat_vent": {
+      "hull_heat": [
+        95,
+        90,
+        75,
+        50
+      ],
+      "component_use": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "overclocked_heat_vent": {
+      "hull_heat_at_20_40_100": [
+        64,
+        28,
+        0
+      ],
+      "component_use_at_20_40_100": [
+        16,
+        32,
+        0
+      ]
+    }
+  },
+  "reflectors": {
+    "layout": "uranium fuel rod at 0, reflector at 1",
+    "interval": [
+      20,
+      100
+    ],
+    "hull_heat": [
+      12,
+      60
+    ],
+    "eu_per_tick": 10,
+    "neutron_reflector_use": [
+      1,
+      5
+    ],
+    "thick_neutron_reflector_use": [
+      1,
+      5
+    ],
+    "iridium_neutron_reflector_use": [
+      0,
+      0
+    ],
+    "depletion_boundaries": {
+      "neutron_reflector": {
+        "starting_use": 29998,
+        "after_one_use": 29999,
+        "after_two": "removed",
+        "observed_limit_uses": 30000
+      },
+      "thick_neutron_reflector": {
+        "starting_use": 119998,
+        "after_one_use": 119999,
+        "after_two": "removed",
+        "observed_limit_uses": 120000
+      },
+      "iridium_neutron_reflector": {
+        "starting_use": 2000000000,
+        "after_five_use": 2000000000
+      }
+    }
+  },
+  "layout": {
+    "no_chamber_input_slots_0_3_saved_indices": [
+      0,
+      9
+    ],
+    "adjacent_steady_eu_per_tick": 20,
+    "adjacent_heat_per_cycle": 24,
+    "no_chamber_input_slots_2_3_saved_indices": [
+      2,
+      9
+    ],
+    "nonadjacent_steady_eu_per_tick": 10,
+    "nonadjacent_heat_per_cycle": 8,
+    "six_chambers_accepted_saved_index": 53,
+    "no_chamber_input_index_53": "rejected as out of bounds"
+  },
+  "depletion": [
+    {
+      "id": "ic2:uranium_fuel_rod",
+      "initial_use": 19998,
+      "subsequent_use": 19999,
+      "after_next": "ic2:depleted_uranium_fuel_rod",
+      "total_added_hull_heat": 8
+    },
+    {
+      "id": "ic2:uranium_fuel_rod",
+      "initial_use": 19999,
+      "after_next": "ic2:depleted_uranium_fuel_rod",
+      "total_added_hull_heat": 4
+    },
+    {
+      "id": "ic2:dual_uranium_fuel_rod",
+      "initial_use": 19999,
+      "after_next": "ic2:depleted_dual_uranium_fuel_rod",
+      "total_added_hull_heat": 24
+    },
+    {
+      "id": "ic2:quad_uranium_fuel_rod",
+      "initial_use": 19999,
+      "after_next": "ic2:depleted_quad_uranium_fuel_rod",
+      "total_added_hull_heat": 96
+    },
+    {
+      "id": "ic2:mox_fuel_rod",
+      "initial_use": 9999,
+      "after_next": "ic2:depleted_mox_fuel_rod",
+      "total_added_hull_heat": 4
+    }
+  ],
+  "restart": {
+    "unpowered_single_before_after": {
+      "heat": 172,
+      "fuel_use": 43,
+      "output": 0
+    },
+    "unpowered_dual_before_after": {
+      "heat": 1056,
+      "fuel_use": 44,
+      "output": 0
+    },
+    "six_chamber_single_before_after": {
+      "heat": 172,
+      "fuel_use": 43,
+      "output": 0
+    }
+  },
+  "limits": "Electric reactor mode only. Other components, active-flag meaning, MOX heat scaling, liquid reactors and reactor output packet timing require further samples.",
+  "meltdown_boundary": {
+    "no_plating": {
+      "survives": 9999,
+      "melts": 10000
+    },
+    "one_reactor_plating": {
+      "survives": 10999,
+      "melts": 11000
+    },
+    "one_reactor_heat_plating": {
+      "survives": 11999,
+      "melts": 12000
+    },
+    "one_containment_reactor_plating": {
+      "survives": 10499,
+      "melts": 10500
+    },
+    "two_reactor_plating": {
+      "survives": 11999,
+      "melts": 12000
+    },
+    "conditions": "Idle, no fuel, no redstone; exact preset hull heat, separate remote chunks."
+  },
+  "coolant_cells": {
+    "reactor_coolant_cell": 10000,
+    "triple_reactor_coolant_cell": 30000,
+    "sextuple_reactor_coolant_cell": 60000,
+    "observation": "A cell at exactly its capacity survived; a further 4 heat from a neighboring uranium rod removed it. During the removal cycle the hull remained at 0; subsequent cycles heated the hull."
+  },
+  "chamber_removal": {
+    "before": {
+      "chambers": 6,
+      "occupied_saved_index": 53,
+      "id": "ic2:uranium_fuel_rod",
+      "use": 198
+    },
+    "ordinary_destroy_one_chamber": "Initially remains in block data; within 13 seconds the out-of-range stack is ejected as an item with use=198; the removed chamber separately dropped ic2:machine. Exact delay unmeasured."
+  }
+}

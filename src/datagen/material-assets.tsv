@@ -1,0 +1,114 @@
+id	texture	name_en_us	name_zh_cn
+ic2:advanced_circuit	items/crafting/advanced_circuit	Advanced Circuit	高级电路板
+ic2:alloy	items/crafting/alloy	Advanced Alloy	高级合金
+ic2:ashes	items/resource/ashes	Ashes	灰烬
+ic2:bio_chaff	items/crafting/bio_chaff	Bio Chaff	糠
+ic2:bronze_casing	items/resource/casing/bronze	Bronze Item Casing	青铜外壳
+ic2:bronze_plate	items/resource/plate/bronze	Bronze Plate	青铜板
+ic2:carbon_fibre	items/crafting/carbon_fibre	Raw Carbon Fibre	粗制碳纤维
+ic2:carbon_mesh	items/crafting/carbon_mesh	Raw Carbon Mesh	粗制碳纤维网
+ic2:carbon_plate	items/crafting/carbon_plate	Carbon Plate	碳板
+ic2:cf_powder	items/crafting/cf_powder	CF Powder	建筑泡沫粉
+ic2:clay_dust	items/resource/dust/clay	Clay Dust	黏土粉
+ic2:coal_ball	items/crafting/coal_ball	Coal Ball	煤球
+ic2:coal_block	items/crafting/coal_block	Compressed Coal Ball	压缩煤球
+ic2:coal_chunk	items/crafting/coal_chunk	Coal Chunk	煤块
+ic2:coal_fuel_dust	items/resource/dust/coal_fuel	Hydrated Coal Dust	湿煤粉
+ic2:coil	items/crafting/coil	Coil	线圈
+ic2:coin	items/coin	Industrial Credit	工业货币
+ic2:coke	items/resource/coke	Coal Coke	焦炭
+ic2:compressed_hydrated_coal	items/crafting/compressed_hydrated_coal	H. Coal	压缩煤
+ic2:compressed_plants	items/crafting/compressed_plants	Compressed Plants	压缩植物
+ic2:copper_boiler	items/crafting/copper_boiler	Copper Boiler	铜锅炉
+ic2:copper_casing	items/resource/casing/copper	Copper Item Casing	铜质外壳
+ic2:copper_dust	items/resource/dust/copper	Copper Dust	铜粉
+ic2:copper_ingot	items/resource/ingot/copper	Copper Ingot	铜锭
+ic2:crushed_gold	items/resource/crushed/gold	Crushed Gold Ore	粉碎金矿石
+ic2:crushed_iron	items/resource/crushed/iron	Crushed Iron Ore	粉碎铁矿石
+ic2:crushed_lead	items/resource/crushed/lead	Crushed Lead Ore	粉碎铅矿石
+ic2:crushed_silver	items/resource/crushed/silver	Crushed Silver Ore	粉碎银矿石
+ic2:crushed_uranium	items/resource/crushed/uranium	Crushed Uranium Ore	粉碎铀矿石
+ic2:dense_bronze_plate	items/resource/plate/dense_bronze	Dense Bronze Plate	致密青铜板
+ic2:dense_copper_plate	items/resource/plate/dense_copper	Dense Copper Plate	致密铜板
+ic2:dense_gold_plate	items/resource/plate/dense_gold	Dense Gold Plate	致密金板
+ic2:dense_iron_plate	items/resource/plate/dense_iron	Dense Iron Plate	致密铁板
+ic2:dense_lapis_plate	items/resource/plate/dense_lapis	Dense Lapis Lazuli Plate	致密青金石板
+ic2:dense_lead_plate	items/resource/plate/dense_lead	Dense Lead Plate	致密铅板
+ic2:dense_obsidian_plate	items/resource/plate/dense_obsidian	Dense Obsidian Plate	致密黑曜石板
+ic2:dense_steel_plate	items/resource/plate/dense_steel	Dense Steel Plate	致密钢板
+ic2:dense_tin_plate	items/resource/plate/dense_tin	Dense Tin Plate	致密锡板
+ic2:diamond_dust	items/resource/dust/diamond	Diamond Dust	钻石粉
+ic2:electric_motor	items/crafting/electric_motor	Electric Motor	电动马达
+ic2:emerald_dust	items/resource/dust/emerald	Emerald Dust	绿宝石粉
+ic2:ender_pearl_dust	items/resource/dust/ender_pearl	Ender Pearl Dust	末影珍珠粉
+ic2:energium_dust	items/resource/dust/energium	Energium Dust	能量水晶粉
+ic2:gold_casing	items/resource/casing/gold	Gold Item Casing	黄金外壳
+ic2:gold_dust	items/resource/dust/gold	Gold Dust	金粉
+ic2:gold_plate	items/resource/plate/gold	Gold Plate	金板
+ic2:heat_conductor	items/crafting/heat_conductor	Heat Conductor	热传导器
+ic2:hydrated_tin_dust	items/resource/dust/tin_hydrated	Hydrated Tin Dust	湿锡粉
+ic2:industrial_diamond	items/crafting/industrial_diamond	Industrial Diamond	工业钻石
+ic2:iridium	items/crafting/iridium	Iridium Reinforced Plate	强化铱板
+ic2:iridium_ore	items/resource/iridium_ore	Iridium Ore	铱矿石
+ic2:iridium_shard	items/resource/iridium_shard	Iridium Shard	铱碎片
+ic2:iron_casing	items/resource/casing/iron	Iron Item Casing	铁质外壳
+ic2:lapis_dust	items/resource/dust/lapis	Lapis Lazuli Dust	青金石粉
+ic2:lapis_plate	items/resource/plate/lapis	Lapis Lazuli Plate	青金石板
+ic2:lead_casing	items/resource/casing/lead	Lead Item Casing	铅质外壳
+ic2:lead_dust	items/resource/dust/lead	Lead Dust	铅粉
+ic2:lead_ingot	items/resource/ingot/lead	Lead Ingot	铅锭
+ic2:lead_plate	items/resource/plate/lead	Lead Plate	铅板
+ic2:lithium_dust	items/resource/dust/lithium	Lithium Dust	锂粉
+ic2:mixed_metal_ingot	items/resource/ingot/mixed_metal	Mixed Metal Ingot	合金锭
+ic2:mox	items/resource/nuclear/mox	MOX Nuclear Fuel	钚铀混合氧化物核燃料(MOX)
+ic2:mox_pellet	items/resource/nuclear/mox_pellet	Pellets of MOX Nuclear Fuel	钚铀混合氧化物核燃料靶丸(MOX)
+ic2:netherrack_dust	items/resource/dust/netherrack	Netherrack Dust	下界岩粉
+ic2:obsidian_dust	items/resource/dust/obsidian	Obsidian Dust	黑曜石粉
+ic2:obsidian_plate	items/resource/plate/obsidian	Obsidian Plate	黑曜石板
+ic2:pellet	items/crafting/pellet	CF Pellet	建筑泡沫颗粒
+ic2:plant_ball	items/crafting/plant_ball	Plantball	植物球
+ic2:plutonium	items/resource/nuclear/plutonium	Plutonium	钚
+ic2:power_unit	items/crafting/power_unit	Power Unit	驱动把手
+ic2:purified_copper	items/resource/purified/copper	Purified Crushed Copper Ore	纯净的粉碎铜矿石
+ic2:purified_gold	items/resource/purified/gold	Purified Crushed Gold Ore	纯净的粉碎金矿石
+ic2:purified_iron	items/resource/purified/iron	Purified Crushed Iron Ore	纯净的粉碎铁矿石
+ic2:purified_lead	items/resource/purified/lead	Purified Crushed Lead Ore	纯净的粉碎铅矿石
+ic2:purified_silver	items/resource/purified/silver	Purified Crushed Silver Ore	纯净的粉碎银矿石
+ic2:purified_tin	items/resource/purified/tin	Purified Crushed Tin Ore	纯净的粉碎锡矿石
+ic2:purified_uranium	items/resource/purified/uranium	Purified Crushed Uranium Ore	纯净的粉碎铀矿石
+ic2:raw_lead	items/resource/raw/lead	Raw Lead	粗铅
+ic2:raw_uranium	items/resource/raw/uranium	Raw Uranium	粗铀
+ic2:refined_iron_ingot	items/resource/ingot/refined_iron	Refined Iron	精炼铁锭
+ic2:scrap	items/crafting/scrap	Scrap	废料
+ic2:silicon_dioxide_dust	items/resource/dust/silicon_dioxide	Silicon Dioxide	二氧化硅粉
+ic2:silver_dust	items/resource/dust/silver	Silver Dust	银粉
+ic2:silver_ingot	items/resource/ingot/silver	Silver Ingot	银锭
+ic2:slag	items/resource/slag	Slag	矿渣
+ic2:small_bronze_dust	items/resource/dust/small_bronze	Tiny Pile of Bronze Dust	小撮青铜粉
+ic2:small_copper_dust	items/resource/dust/small_copper	Tiny Pile of Copper Dust	小撮铜粉
+ic2:small_diamond_dust	items/resource/dust/small_diamond	Tiny Pile of Diamond Dust	小撮钻石粉
+ic2:small_emerald_dust	items/resource/dust/small_emerald	Tiny Pile of Emerald Dust	小撮绿宝石粉
+ic2:small_gold_dust	items/resource/dust/small_gold	Tiny Pile of Gold Dust	小撮金粉
+ic2:small_iron_dust	items/resource/dust/small_iron	Tiny Pile of Iron Dust	小撮铁粉
+ic2:small_lapis_dust	items/resource/dust/small_lapis	Tiny Pile of Lapis Dust	小撮青金石粉
+ic2:small_lead_dust	items/resource/dust/small_lead	Tiny Pile of Lead Dust	小撮铅粉
+ic2:small_lithium_dust	items/resource/dust/small_lithium	Tiny Pile of Lithium Dust	小撮锂粉
+ic2:small_obsidian_dust	items/resource/dust/small_obsidian	Tiny Pile of Obsidian Dust	小撮黑曜石粉
+ic2:small_plutonium	items/resource/nuclear/small_plutonium	Tiny Pile of Plutonium	小撮钚
+ic2:small_power_unit	items/crafting/small_power_unit	Small Power Unit	小型驱动把手
+ic2:small_silver_dust	items/resource/dust/small_silver	Tiny Pile of Silver Dust	小撮银粉
+ic2:small_sulfur_dust	items/resource/dust/small_sulfur	Tiny Pile of Sulfur Dust	小撮硫粉
+ic2:small_tin_dust	items/resource/dust/small_tin	Tiny Pile of Tin Dust	小撮锡粉
+ic2:small_uranium_235	items/resource/nuclear/small_uranium_235	Tiny Pile of Uranium 235	小撮铀-235
+ic2:small_uranium_238	items/resource/nuclear/small_uranium_238	Tiny Pile of Uranium 238	小撮铀-238
+ic2:steel_casing	items/resource/casing/steel	Steel Item Casing	钢质外壳
+ic2:steel_ingot	items/resource/ingot/steel	Steel Ingot	钢锭
+ic2:steel_plate	items/resource/plate/steel	Steel Plate	钢板
+ic2:stone_dust	items/resource/dust/stone	Stone Dust	石粉
+ic2:sulfur_dust	items/resource/dust/sulfur	Sulfur Dust	硫粉
+ic2:tin_dust	items/resource/dust/tin	Tin Dust	锡粉
+ic2:uranium	items/resource/nuclear/uranium	Enriched Uranium Nuclear Fuel	浓缩铀核燃料
+ic2:uranium_235	items/resource/nuclear/uranium_235	Uranium 235	铀-235
+ic2:uranium_238	items/resource/nuclear/uranium_238	Uranium 238	铀-238
+ic2:uranium_ingot	items/resource/ingot/uranium	Refined Uranium	铀锭
+ic2:uranium_pellet	items/resource/nuclear/uranium_pellet	Pellets of Enriched Uranium Nuclear Fuel	浓缩铀核燃料靶丸

@@ -1,0 +1,326 @@
+{
+  "sourceBuild": "1.2.4-port.20261120",
+  "reference": "Declarative Classic profile in the distributed game JAR, player-visible recipe table. Legacy names are translated to their current registry IDs. Survival-access entries are rebuild-specific.",
+  "recipes": [
+    {
+      "output": "classic_canner",
+      "count": 1,
+      "pattern": [
+        "TCT",
+        "TMT",
+        "TTT"
+      ],
+      "key": {
+        "T": "ic2:tin_ingot",
+        "C": "ic2:circuit",
+        "M": "ic2:machine"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "classic_electrolyzer",
+      "count": 1,
+      "source": "bundled-classic-profile: original layout shared with Experimental output, use the new machine in the grid to choose Classic",
+      "classicProfileLayout": {
+        "pattern": [
+          "c c",
+          "cCc",
+          "EME"
+        ],
+        "key": {
+          "c": "ic2:insulated_copper_cable",
+          "C": "ic2:circuit",
+          "E": "ic2:empty_cell",
+          "M": "ic2:machine"
+        }
+      },
+      "ingredients": [
+        "ic2:electrolyzer"
+      ]
+    },
+    {
+      "output": "classic_mass_fabricator",
+      "count": 1,
+      "source": "bundled-classic-profile: original layout shared with Experimental output, use the new machine in the grid to choose Classic",
+      "classicProfileLayout": {
+        "pattern": [
+          "GCG",
+          "ALA",
+          "GCG"
+        ],
+        "key": {
+          "G": "minecraft:glowstone_dust",
+          "C": "ic2:advanced_circuit",
+          "A": "ic2:advanced_machine",
+          "L": "ic2:lapotron_crystal"
+        }
+      },
+      "ingredients": [
+        "ic2:matter_generator"
+      ]
+    },
+    {
+      "output": "classic_mfe",
+      "count": 1,
+      "source": "bundled-classic-profile: original layout shared with Experimental output, use the new machine in the grid to choose Classic",
+      "classicProfileLayout": {
+        "pattern": [
+          "cCc",
+          "CMC",
+          "cCc"
+        ],
+        "key": {
+          "c": "ic2:double_insulated_gold_cable",
+          "C": "ic2:energy_crystal",
+          "M": "ic2:machine"
+        }
+      },
+      "ingredients": [
+        "ic2:mfe"
+      ]
+    },
+    {
+      "output": "classic_mfsu",
+      "count": 1,
+      "pattern": [
+        "LCL",
+        "LML",
+        "LAL"
+      ],
+      "key": {
+        "L": "ic2:lapotron_crystal",
+        "C": "ic2:advanced_circuit",
+        "M": "ic2:classic_mfe",
+        "A": "ic2:advanced_machine"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "classic_cropmatron",
+      "count": 1,
+      "pattern": [
+        "cBc",
+        "CMC",
+        "CCC"
+      ],
+      "key": {
+        "c": "ic2:circuit",
+        "B": "minecraft:chest",
+        "C": "ic2:crop_stick",
+        "M": "ic2:machine"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "classic_nuke",
+      "count": 1,
+      "pattern": [
+        "RCR",
+        "UMU",
+        "RCR"
+      ],
+      "key": {
+        "R": "ic2:re_enriched_uranium",
+        "C": "ic2:advanced_circuit",
+        "U": "ic2:uranium_block",
+        "M": "ic2:advanced_machine"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "nuke",
+      "count": 1,
+      "pattern": [
+        "RCR",
+        "RMR",
+        "RCR"
+      ],
+      "key": {
+        "R": "ic2:thick_neutron_reflector",
+        "C": "ic2:advanced_circuit",
+        "M": "ic2:advanced_machine"
+      },
+      "source": "repaired-shipped-recipe-1.2.4"
+    },
+    {
+      "output": "near_depleted_uranium",
+      "count": 1,
+      "pattern": [
+        "CCC",
+        "CUC",
+        "CCC"
+      ],
+      "key": {
+        "C": "ic2:empty_cell",
+        "U": "ic2:uranium_ingot"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "depleted_isotope_fuel_rod",
+      "count": 1,
+      "ingredients": [
+        "ic2:near_depleted_uranium",
+        "ic2:coal_dust"
+      ],
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "uranium_fuel_rod",
+      "count": 1,
+      "ingredients": [
+        "ic2:re_enriched_uranium",
+        "ic2:coal_dust"
+      ],
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "empty_fuel_can",
+      "count": 1,
+      "pattern": [
+        " TT",
+        "T T",
+        "TTT"
+      ],
+      "key": {
+        "T": "ic2:tin_ingot"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "heatpack",
+      "count": 1,
+      "pattern": [
+        "C",
+        "L",
+        "P"
+      ],
+      "key": {
+        "C": "ic2:circuit",
+        "L": "ic2:lava_cell",
+        "P": "ic2:dense_copper_plate"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "bio_cell",
+      "count": 1,
+      "ingredients": [
+        "ic2:empty_cell",
+        "ic2:compressed_plants"
+      ],
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "hydrated_coal_cell",
+      "count": 1,
+      "ingredients": [
+        "ic2:empty_cell",
+        "ic2:compressed_hydrated_coal"
+      ],
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "reinforced_stone",
+      "count": 8,
+      "pattern": [
+        "SSS",
+        "SAS",
+        "SSS"
+      ],
+      "key": {
+        "S": "minecraft:stone",
+        "A": "ic2:alloy"
+      },
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "refined_iron_ingot",
+      "count": 8,
+      "ingredients": [
+        "ic2:machine"
+      ],
+      "source": "bundled-classic-profile"
+    },
+    {
+      "output": "tank",
+      "count": 1,
+      "ingredients": [
+        "ic2:iron_tank",
+        "ic2:tin_casing",
+        "minecraft:glass_pane"
+      ],
+      "source": "survival-access"
+    },
+    {
+      "output": "uu_assembly_bench",
+      "count": 1,
+      "ingredients": [
+        "ic2:industrial_workbench",
+        "ic2:advanced_circuit",
+        "ic2:uu_matter"
+      ],
+      "source": "survival-access"
+    },
+    {
+      "output": "advanced_ejector_upgrade",
+      "count": 1,
+      "ingredients": [
+        "ic2:ejector_upgrade",
+        "ic2:advanced_circuit",
+        "minecraft:comparator"
+      ],
+      "source": "survival-access"
+    },
+    {
+      "output": "advanced_pulling_upgrade",
+      "count": 1,
+      "ingredients": [
+        "ic2:pulling_upgrade",
+        "ic2:advanced_circuit",
+        "minecraft:comparator"
+      ],
+      "source": "survival-access"
+    },
+    {
+      "output": "small_bronze_dust",
+      "count": 9,
+      "ingredients": [
+        "ic2:bronze_dust"
+      ],
+      "source": "survival-access: inverse of nine-small unit conversion"
+    },
+    {
+      "output": "small_lapis_dust",
+      "count": 9,
+      "ingredients": [
+        "ic2:lapis_dust"
+      ],
+      "source": "survival-access: inverse of nine-small unit conversion"
+    },
+    {
+      "output": "small_diamond_dust",
+      "count": 9,
+      "ingredients": [
+        "ic2:diamond_dust"
+      ],
+      "source": "survival-access: inverse of nine-small unit conversion"
+    },
+    {
+      "output": "small_obsidian_dust",
+      "count": 9,
+      "ingredients": [
+        "ic2:obsidian_dust"
+      ],
+      "source": "survival-access: inverse of nine-small unit conversion"
+    },
+    {
+      "output": "small_uranium_238",
+      "count": 9,
+      "ingredients": [
+        "ic2:uranium_238"
+      ],
+      "source": "survival-access: inverse of nine-small unit conversion"
+    }
+  ]
+}

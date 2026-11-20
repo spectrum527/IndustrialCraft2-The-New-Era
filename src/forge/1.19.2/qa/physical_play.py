@@ -95,6 +95,75 @@ def resource_checks(client):
                     raise AssertionError("The invalid resource produced no rejection evidence")
 
 
+def machine_menu(client):
+    session = client.run
+    for command in ("forceload add 25 25", "fill 24 89 22 27 89 27 minecraft:stone",
+                    "setblock 25 90 25 ic2:batbox[facing=north]",
+                    "data merge block 25 90 25 {ic2_energy:35000.0d}",
+                    "tp P2Tester 25.5 90 23.5"):
+        session.command(command)
+    client.check("native-batbox-arrived", lambda state: state.get("nativeMachine") == "ic2:batbox")
+    client.act("use-native-machine")
+    client.check("native-batbox-screen", lambda state: state["screen"] == "MachineScreen"
+                 and state.get("machineEnergy") == 35000 and state.get("machineCapacity") == 40000)
+    client.act("cycle-native-redstone")
+    client.check("native-batbox-mode-roundtrip", lambda state: state.get("machineRedstone") == 1)
+    client.act("snapshot-native-machine")
+    until(lambda: (session.directory / "client/screenshots/native-batbox.png").is_file(),
+          "Native machine screenshot", session.client)
+    client.act("esc")
+    client.check("native-batbox-close", lambda state: not state["screen"])
+
+
+def workshop_menu(client):
+    session = client.run
+    for command in ("forceload add 29 25",
+                    "fill 28 89 22 30 89 26 minecraft:stone",
+                    "setblock 29 90 25 ic2:metal_former[facing=north]",
+                    'data merge block 29 90 25 {ic2_energy:3500.0d,ic2_mode:1,'
+                    'Items:[{Slot:0b,id:"minecraft:copper_ingot",Count:2b},'
+                    '{Slot:18b,id:"ic2:overclocker_upgrade",Count:1b}]}',
+                    "tp P2Tester 29.5 90 23.5"):
+        session.command(command)
+    client.check("native-former-arrived", lambda state: state.get("nativeWorkshop") == "ic2:metal_former")
+    client.act("use-native-workshop")
+    before = client.check("native-former-live-upgrade-and-recipe",
+                          lambda state: state["screen"] == "WorkshopScreen"
+                          and state.get("workshopDuration") == 140 and state.get("workshopEnergy", 0) > 0
+                          and state.get("workshopProgress", 0) > 0
+                          and "Copper Plate" in state.get("workshopRecipe", "")
+                          and state.get("workshopMode") == "Rolling"
+                          and "upgrade" in state.get("workshopSlot", "").lower())
+    client.act("snapshot-native-workshop")
+    until(lambda: (session.directory / "client/screenshots/native-metal-former-upgrade.png").is_file(),
+          "Native upgraded former screenshot", session.client)
+    client.check("native-former-progress-advanced-live",
+                 lambda state: state.get("workshopProgress", 0) > before["workshopProgress"]
+                 and state["workshopEnergy"] < before["workshopEnergy"])
+    client.act("cycle-native-redstone")
+    client.check("native-former-mode-button-reached-server",
+                 lambda state: state.get("workshopMode") == "Cutting" and state.get("workshopProgress") == 0)
+    client.act("esc")
+    client.check("native-former-closed", lambda state: not state["screen"])
+
+    session.command("setblock 29 90 25 ic2:ore_washing_plant[facing=north]")
+    session.command('data merge block 29 90 25 {ic2_energy:16000.0d,'
+                    'ic2_input_fluid:{FluidName:"minecraft:water",Amount:2000},'
+                    'Items:[{Slot:0b,id:"ic2:crushed_tin",Count:2b}]}')
+    client.check("native-washer-arrived", lambda state: state.get("nativeWorkshop") == "ic2:ore_washing_plant")
+    client.act("use-native-workshop")
+    client.check("native-washer-tank-and-recipe-live",
+                 lambda state: state.get("workshopFluid") == 2000
+                 and "water" in state.get("workshopFluidName", "").lower()
+                 and "Purified" in state.get("workshopRecipe", "")
+                 and state.get("workshopProgress", 0) > 0)
+    client.act("snapshot-native-washer")
+    until(lambda: (session.directory / "client/screenshots/native-ore-washer.png").is_file(),
+          "Native ore washer screenshot", session.client)
+    client.act("esc")
+    client.check("native-washer-closed", lambda state: not state["screen"])
+
+
 def normal(client):
     session = client.run
     client.enter("connect", "dedicated-join")
@@ -140,6 +209,8 @@ def normal(client):
     client.check("bound-key-keeps-menu", lambda s: s["screen"] == "SampleScreen" and s["menuId"] > 0)
     client.act("esc")
     client.check("closed-menu", lambda s: not s["screen"] and s["menuId"] == 0)
+    machine_menu(client)
+    workshop_menu(client)
     leave(client, "left-server")
     client.act("press")
     client.check("bound-key-keeps-main-menu", lambda s: s["screen"] == "TitleScreen" and not s["world"])
@@ -147,7 +218,7 @@ def normal(client):
     client.act("press")
     client.check("cleared-echo", lambda s: s["screen"] == "StatusScreen" and "No echo reply" in s["text"])
     leave(client, "left-server-again")
-    integrated_checks(client)
+    integrated_checks(client, accept_experimental=True)
     return {"echo": number}
 
 

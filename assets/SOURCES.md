@@ -1733,3 +1733,14 @@
 | `assets/ic2/sounds/machine/teleporter/charge.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/machine/teleporter/use.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/machine/terraformer/loop.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
+| `assets/ic2/textures/models/armor/alloy_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_alloy_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/hazmat_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_hazmat_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/hazmat_layer_2.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_hazmat_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/nano_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_nano_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/nano_layer_2.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_nano_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/night_vision_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_night_vision_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_quantum_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_1_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_1_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_2.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_quantum_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_2_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_2_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/signs/rubber.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/entity/signs/rubber.png`，原样适配橡胶告示牌 | 2026-11-20 |

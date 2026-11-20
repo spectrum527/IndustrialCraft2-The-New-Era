@@ -1,0 +1,21 @@
+{
+  "blocks": {
+    "wooden_storage_box": {
+      "portable": true
+    },
+    "iron_storage_box": {
+      "portable": true
+    },
+    "bronze_storage_box": {
+      "portable": true
+    },
+    "steel_storage_box": {
+      "portable": true
+    },
+    "iridium_storage_box": {
+      "portable": true
+    },
+    "personal_chest": {},
+    "industrial_workbench": {}
+  }
+}

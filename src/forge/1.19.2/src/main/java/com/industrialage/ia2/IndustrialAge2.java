@@ -1,7 +1,15 @@
 package com.industrialage.ia2;
 
+import com.industrialage.ia2.audio.SoundPlatform;
+import com.industrialage.ia2.fluids.FluidContent;
 import com.industrialage.ia2.forge.ForgePlatform;
+import com.industrialage.ia2.forge.content.ForgeContent;
+import com.industrialage.ia2.industrial.BoxPlatform;
+import com.industrialage.ia2.industrial.PowerPlatform;
+import com.industrialage.ia2.industrial.Radiation;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import com.industrialage.ia2.lifecycle.ServerLifecycle;
+import com.industrialage.ia2.logistics.TransportPlatform;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -27,6 +35,17 @@ public final class IndustrialAge2 {
                 ForgePlatform.create(
                         context.getModEventBus(), gameBus, container, FMLEnvironment.dist);
         container.registerExtensionPoint(ForgePlatform.class, () -> platform);
+        ForgeContent.register(context.getModEventBus(), gameBus, platform.services().config());
+        com.industrialage.ia2.forge.equipment.ForgeGear.install(context.getModEventBus(), gameBus);
+        TransportPlatform.register(context.getModEventBus());
+        com.industrialage.ia2.world.WorldPlatform.install(context.getModEventBus(), gameBus);
+        WorkshopPlatform.install(context.getModEventBus());
+        FluidContent.register(context.getModEventBus());
+        PowerPlatform.install(context.getModEventBus(), platform.services().config());
+        BoxPlatform.install(context.getModEventBus());
+        Radiation.install(
+                context.getModEventBus(), net.minecraftforge.common.MinecraftForge.EVENT_BUS);
+        SoundPlatform.install(context.getModEventBus(), FMLEnvironment.dist.isClient());
         var lifecycle = new ServerLifecycle(platform.services().events());
         lifecycle.initialize();
         LOG.info("IC2 platform initialized");

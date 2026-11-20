@@ -5,6 +5,8 @@ import com.google.gson.JsonParser;
 import com.industrialage.ia2.config.ActiveConfig;
 import com.industrialage.ia2.forge.ForgePlatform;
 import com.industrialage.ia2.forge.client.ForgeClient;
+import com.industrialage.ia2.forge.content.MachineMenu;
+import com.industrialage.ia2.industrial.WorkshopMenu;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.io.IOException;
@@ -16,15 +18,22 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -34,6 +43,8 @@ import org.lwjgl.glfw.GLFW;
 
 /** Operates the real 1.19.2 client from its isolated acceptance directory. */
 final class PlayClientFixture {
+    private static final BlockPos MACHINE_POS = new BlockPos(25, 90, 25);
+    private static final BlockPos WORKSHOP_POS = new BlockPos(29, 90, 25);
     private final Path input = Path.of("qa-input.txt");
     private final Path output = Path.of("qa-output.json");
     private String chat = "";
@@ -121,6 +132,38 @@ final class PlayClientFixture {
             }
             if (mc.player != null) {
                 result.addProperty("menuId", mc.player.containerMenu.containerId);
+                if (mc.level != null) {
+                    var block = mc.level.getBlockState(MACHINE_POS).getBlock();
+                    result.addProperty(
+                            "nativeMachine",
+                            net.minecraftforge.registries.ForgeRegistries.BLOCKS
+                                    .getKey(block)
+                                    .toString());
+                }
+                if (mc.level != null) {
+                    var block = mc.level.getBlockState(WORKSHOP_POS).getBlock();
+                    result.addProperty(
+                            "nativeWorkshop",
+                            net.minecraftforge.registries.ForgeRegistries.BLOCKS
+                                    .getKey(block)
+                                    .toString());
+                }
+                if (mc.player.containerMenu instanceof WorkshopMenu workshop) {
+                    result.addProperty("workshopEnergy", workshop.energy());
+                    result.addProperty("workshopCapacity", workshop.capacity());
+                    result.addProperty("workshopProgress", workshop.progress());
+                    result.addProperty("workshopDuration", workshop.duration());
+                    result.addProperty("workshopRecipe", workshop.job().getString());
+                    result.addProperty("workshopMode", workshop.controlLabel().getString());
+                    result.addProperty("workshopSlot", workshop.slotLabel(18).getString());
+                    result.addProperty("workshopFluid", workshop.tank(0).amount());
+                    result.addProperty("workshopFluidName", workshop.tank(0).liquid().getString());
+                }
+                if (mc.player.containerMenu instanceof MachineMenu machine) {
+                    result.addProperty("machineEnergy", machine.energy());
+                    result.addProperty("machineCapacity", machine.capacity());
+                    result.addProperty("machineRedstone", machine.redstoneMode());
+                }
             }
         } catch (Exception failure) {
             result.addProperty("error", failure.toString());
@@ -174,6 +217,46 @@ final class PlayClientFixture {
             case "reload-config" -> mc.player.commandUnsigned("ic2 config reload");
             case "values" -> mc.player.commandUnsigned("ic2accept values");
             case "menu" -> mc.player.commandUnsigned("ic2accept menu");
+            case "use-native-machine" ->
+                    mc.gameMode.useItemOn(
+                            mc.player,
+                            InteractionHand.MAIN_HAND,
+                            new BlockHitResult(
+                                    Vec3.atCenterOf(MACHINE_POS).add(0, 0, -0.5),
+                                    Direction.NORTH,
+                                    MACHINE_POS,
+                                    false));
+            case "use-native-workshop" -> {
+                mc.gui.getChat().clearMessages(false);
+                mc.gameMode.useItemOn(
+                        mc.player,
+                        InteractionHand.MAIN_HAND,
+                        new BlockHitResult(
+                                Vec3.atCenterOf(WORKSHOP_POS).add(0, 0, -0.5),
+                                Direction.NORTH,
+                                WORKSHOP_POS,
+                                false));
+            }
+            case "snapshot-native-workshop" ->
+                    Screenshot.grab(
+                            mc.gameDirectory,
+                            "native-metal-former-upgrade.png",
+                            mc.getMainRenderTarget(),
+                            message -> {});
+            case "snapshot-native-washer" ->
+                    Screenshot.grab(
+                            mc.gameDirectory,
+                            "native-ore-washer.png",
+                            mc.getMainRenderTarget(),
+                            message -> {});
+            case "snapshot-native-machine" ->
+                    Screenshot.grab(
+                            mc.gameDirectory,
+                            "native-batbox.png",
+                            mc.getMainRenderTarget(),
+                            message -> {});
+            case "cycle-native-redstone" ->
+                    mc.gameMode.handleInventoryButtonClick(mc.player.containerMenu.containerId, 0);
             case "pack-on", "pack-off", "pack-refresh" -> {
                 var packs = mc.getResourcePackRepository();
                 packs.reload();
@@ -190,6 +273,19 @@ final class PlayClientFixture {
             }
             case "single-a", "single-b" ->
                     mc.createWorldOpenFlows().loadLevel(new TitleScreen(), action);
+            case "accept-experimental-world" -> {
+                if (!(mc.screen instanceof ConfirmScreen confirm)) {
+                    throw new IllegalStateException(
+                            "Expected the isolated world's experimental settings confirmation");
+                }
+                confirm.children().stream()
+                        .filter(Button.class::isInstance)
+                        .map(Button.class::cast)
+                        .filter(button -> button.active)
+                        .findFirst()
+                        .orElseThrow()
+                        .onPress();
+            }
             case "quit" -> mc.stop();
             default -> throw new IllegalArgumentException("Unknown acceptance action " + action);
         }

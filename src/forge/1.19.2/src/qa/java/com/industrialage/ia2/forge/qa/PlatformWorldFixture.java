@@ -122,6 +122,7 @@ final class PlatformWorldFixture {
                             && item.get() == item.get()
                             && itemCalls == 1);
             if ("write".equals(phase)) {
+                ForgeArmorChecks.run(world, this::check);
                 editWorld(world);
                 server.saveEverything(false, true, true);
             } else if (!"read".equals(phase)) {

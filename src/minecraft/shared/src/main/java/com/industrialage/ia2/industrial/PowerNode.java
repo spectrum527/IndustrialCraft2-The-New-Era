@@ -1,0 +1,521 @@
+package com.industrialage.ia2.industrial;
+
+import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
+import com.industrialage.ia2.energy.graph.PacketBudget;
+import com.industrialage.ia2.platform.CapabilityFacade.Face;
+import com.industrialage.ia2.power.WorldEnergy;
+import com.industrialage.ia2.power.WorldPowerPort;
+import com.industrialage.ia2.reactor.ElectricReactor;
+import java.util.EnumSet;
+import java.util.Set;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
+/**
+ * Real-world EU source, accumulator, transformer or reactor connected to its level's energy graph.
+ */
+public final class PowerNode extends PowerSaveBase
+        implements WorldPowerPort, com.industrialage.ia2.power.WorldPowerStorage, MenuProvider {
+    private static final Set<Face> ALL = Set.of(Face.values());
+    private static final Ports OUTPUT = new Ports(Set.of(), ALL, false);
+    final PowerKind kind;
+    final PowerInventory inventory;
+    final ElectricReactor reactor = new ElectricReactor();
+    int chambers;
+    boolean fluidMode;
+    int coolant;
+    int hotCoolant;
+    BlockPos vesselCenter;
+
+    PowerNode coolantTank() {
+        if (kind == PowerKind.NUCLEAR_REACTOR) return fluidMode ? this : null;
+        return kind == PowerKind.REACTOR_FLUID_PORT && getLevel() instanceof ServerLevel server
+                ? ReactorVessel.core(this, server)
+                : null;
+    }
+
+    /** Current cold and hot coolant in millibuckets, as held by the controller. */
+    public int coolantAmount(boolean hot) {
+        return hot ? hotCoolant : coolant;
+    }
+
+    /** Fluid mode suppresses electrical output from both the controller and its chambers. */
+    public boolean isFluidReactor() {
+        return kind == PowerKind.NUCLEAR_REACTOR && fluidMode;
+    }
+
+    int automationLimit(net.minecraft.world.item.ItemStack stack) {
+        if (kind == PowerKind.REACTOR_ACCESS_HATCH || kind == PowerKind.NUCLEAR_REACTOR)
+            return PowerPlatform.path(stack).equals("heatpack") ? 64 : 1;
+        return inventory.getMaxStackSize();
+    }
+
+    net.minecraft.world.WorldlyContainer automationInventory() {
+        return kind == PowerKind.REACTOR_ACCESS_HATCH ? new ReactorHatch(this) : inventory;
+    }
+
+    int mode;
+    boolean stepUp;
+    int fuel;
+    java.util.UUID owner;
+    int saleSize = 1000;
+    int trades;
+    double credit;
+    BlockPos target;
+    long cooldownUntil;
+    int liquid;
+    double energy;
+    double waterFraction;
+    private int nearbyWater;
+    private int windObstructions;
+    private boolean linked;
+    private long lastTick = Long.MIN_VALUE;
+    private double remaining;
+
+    /** Creates the machine state for this physical block. */
+    public PowerNode(BlockPos pos, BlockState state) {
+        super(PowerPlatform.type(), pos, state);
+        kind = ((PowerBlock) state.getBlock()).kind;
+        inventory = new PowerInventory(this);
+    }
+
+    void tick(ServerLevel level) {
+        if (kind.vesselPart()) return;
+        long now = level.getGameTime();
+        if (lastTick == now) return;
+        boolean first = lastTick == Long.MIN_VALUE;
+        lastTick = now;
+        if (kind.chargeBlock()) {
+            if (level.hasNeighborSignal(worldPosition)) GameCharges.prime(level, this);
+            return;
+        }
+        if (!linked) {
+            WorldEnergy.connect(this);
+            linked = true;
+        }
+        boolean active = false;
+        if (kind.lowTier() > 0) {
+            boolean next = mode == 2 || mode == 0 && level.hasNeighborSignal(worldPosition);
+            if (stepUp != next) {
+                stepUp = next;
+                WorldEnergy.connect(this);
+                setChanged();
+            }
+            active = stepUp;
+        } else if (kind == PowerKind.NUCLEAR_REACTOR) {
+            if (first || (now + worldPosition.asLong()) % 20 == 0) {
+                boolean powered = level.hasNeighborSignal(worldPosition);
+                int count = 0;
+                for (Direction side : Direction.values()) {
+                    BlockPos pos = worldPosition.relative(side);
+                    if (level.hasChunkAt(pos)
+                            && level.getBlockEntity(pos) instanceof PowerNode n
+                            && n.kind == PowerKind.REACTOR_CHAMBER
+                            && n.controller(level) == this) {
+                        count++;
+                        powered |= level.hasNeighborSignal(pos);
+                    }
+                }
+                // A first tick after a reload only discovers the currently attached chambers.
+                // A component cycle must keep world cadence across a close/reopen.
+                if (count < chambers) ejectHidden(level, count);
+                chambers = count;
+                int shell = chambers == 6 ? ReactorVessel.inspect(level, worldPosition) : -1;
+                fluidMode = shell >= 0;
+                if (fluidMode) powered |= shell > 0;
+                if ((now + worldPosition.asLong()) % 20 == 0) {
+                    reactor.cycle(inventory, count, powered, PowerSettings.multiplier("nuclear"));
+                    if (fluidMode) {
+                        int heat = reactor.ventedHeat();
+                        int warmed =
+                                Math.min(
+                                        heat * 2,
+                                        Math.min(
+                                                coolant, ReactorVessel.TANK_CAPACITY - hotCoolant));
+                        coolant -= warmed;
+                        hotCoolant += warmed;
+                        reactor.returnHeat(heat - warmed / 2);
+                    }
+                    setChanged();
+                    if (reactor.heat() >= reactor.limit()) {
+                        PowerPlatform.meltdown(
+                                level,
+                                worldPosition,
+                                ElectricReactor.meltdownPower(inventory, chambers));
+                        return;
+                    }
+                }
+            }
+            remaining = fluidMode ? 0 : reactor.output();
+            active = reactor.output() > 0 || reactor.heat() >= 1000;
+        } else if (kind.playerMachine()) {
+            active = PlayerMachines.tick(this, level);
+        } else if (kind != PowerKind.REACTOR_CHAMBER && !kind.storage()) {
+            double generated = generate(level, now, first);
+            if (generated > 0 && energy < capacity()) {
+                energy = Math.min(capacity(), energy + generated);
+                setChanged();
+            }
+            active = generated > 0;
+        }
+        int chargeSlot = kind.chargeSlot();
+        if (chargeSlot >= 0) {
+            double input =
+                    kind.storage()
+                            ? PowerPlatform.discharge(
+                                    inventory.getItem(1),
+                                    Math.max(0, capacity() - energy),
+                                    kind.itemTier())
+                            : 0;
+            energy += input;
+            double output =
+                    PowerPlatform.charge(inventory.getItem(chargeSlot), energy, kind.itemTier());
+            energy -= output;
+            if (input > 0 || output > 0) setChanged();
+        }
+        BlockState current = getBlockState();
+        if (current.getValue(PowerBlock.ACTIVE) != active)
+            level.setBlock(worldPosition, current.setValue(PowerBlock.ACTIVE, active), 2);
+    }
+
+    private double generate(ServerLevel level, long now, boolean first) {
+        switch (kind) {
+            case SOLAR_GENERATOR:
+                return PowerSettings.sun(level, worldPosition)
+                        ? PowerSettings.multiplier("solar")
+                        : 0;
+            case RT_GENERATOR:
+                int pellets = 0;
+                for (int i = 0; i < 6; i++) if (inventory.part(i).equals("rtg_pellet")) pellets++;
+                return pellets == 0
+                        ? 0
+                        : (1 << (pellets - 1)) * PowerSettings.multiplier("radioisotope");
+            case GEO_GENERATOR:
+                if (liquid <= 7000
+                        && inventory.getItem(0).is(Items.LAVA_BUCKET)
+                        && storeEmpty(Items.BUCKET.getDefaultInstance())) {
+                    inventory.removeItem(0, 1);
+                    liquid += 1000;
+                    setChanged();
+                }
+                if (energy >= capacity() || liquid < 2) return 0;
+                liquid -= 2;
+                setChanged();
+                return 20 * PowerSettings.multiplier("geothermal");
+            case WIND_GENERATOR:
+                if (first || Math.floorMod(now + worldPosition.asLong(), 128) == 0) {
+                    windObstructions = 0;
+                    for (BlockPos p :
+                            BlockPos.betweenClosed(
+                                    worldPosition.offset(-4, -2, -4),
+                                    worldPosition.offset(4, 4, 4))) {
+                        if (!p.equals(worldPosition)
+                                && level.hasChunkAt(p)
+                                && !level.isEmptyBlock(p)) windObstructions++;
+                    }
+                }
+                return com.industrialage.ia2.content.WindHeight.response(worldPosition.getY())
+                        * breeze(level, now)
+                        * com.industrialage.ia2.content.WindHeight.clearance(windObstructions)
+                        * PowerSettings.multiplier("wind");
+            case WATER_GENERATOR:
+                if (fuel == 0 && energy < capacity()) {
+                    ItemStack input = inventory.getItem(0);
+                    ItemStack empty =
+                            input.is(Items.WATER_BUCKET)
+                                    ? Items.BUCKET.getDefaultInstance()
+                                    : inventory.part(0).equals("water_cell")
+                                            ? PowerPlatform.item("empty_cell")
+                                            : ItemStack.EMPTY;
+                    if (!empty.isEmpty() && storeEmpty(empty)) {
+                        inventory.removeItem(0, 1);
+                        fuel = 500;
+                    }
+                }
+                if (fuel > 0) {
+                    fuel--;
+                    setChanged();
+                    return PowerSettings.multiplier("water");
+                }
+                if (first || Math.floorMod(now + worldPosition.asLong(), 64) == 0) {
+                    nearbyWater = 0;
+                    for (BlockPos p :
+                            BlockPos.betweenClosed(
+                                    worldPosition.offset(-1, -1, -1),
+                                    worldPosition.offset(1, 1, 1))) {
+                        if (level.hasChunkAt(p) && level.getFluidState(p).is(FluidTags.WATER))
+                            nearbyWater++;
+                    }
+                }
+                if (nearbyWater > 0 && energy < capacity()) {
+                    waterFraction += nearbyWater * 0.01 * PowerSettings.multiplier("water");
+                    int whole = (int) waterFraction;
+                    waterFraction -= whole;
+                    setChanged();
+                    return whole;
+                }
+                return 0;
+            default:
+                return 0;
+        }
+    }
+
+    private static double breeze(ServerLevel level, long tick) {
+        // Shared fluctuations for installations in the same weather, continuous across a
+        // save/restart.
+        long epoch = Math.floorDiv(tick, 1024);
+        var random = new java.util.Random(level.getSeed() + epoch * 0x9e3779b97f4a7c15L);
+        double value = 3.6 + 2.6 * random.nextDouble();
+        return value * (level.isThundering() ? 1.5 : level.isRaining() ? 1.25 : 1.0);
+    }
+
+    /** Potential wind at this altitude in the current weather, before local obstruction. */
+    public static double ambientWind(ServerLevel level, int altitude) {
+        return com.industrialage.ia2.content.WindHeight.response(altitude)
+                * breeze(level, level.getGameTime());
+    }
+
+    /** Current native wind generator output, or a negative value for a different device. */
+    public double measuredWind(ServerLevel level) {
+        if (kind != PowerKind.WIND_GENERATOR) return -1;
+        return ambientWind(level, worldPosition.getY())
+                * com.industrialage.ia2.content.WindHeight.clearance(windObstructions)
+                * PowerSettings.multiplier("wind");
+    }
+
+    private boolean storeEmpty(ItemStack empty) {
+        ItemStack previous = inventory.getItem(1);
+        if (!previous.isEmpty()
+                && (!previous.is(empty.getItem())
+                        || previous.getCount() >= previous.getMaxStackSize())) return false;
+        if (previous.isEmpty()) inventory.setItem(1, empty);
+        else previous.grow(1);
+        return true;
+    }
+
+    /** Native lava fluid ports use this method for both simulated and committed input. */
+    public int fillLava(int offered, boolean simulate) {
+        if (kind != PowerKind.GEO_GENERATOR || offered <= 0) return 0;
+        int accepted = Math.min(offered, 8000 - liquid);
+        if (!simulate && accepted > 0) {
+            liquid += accepted;
+            setChanged();
+        }
+        return accepted;
+    }
+
+    PowerNode controller(ServerLevel level) {
+        PowerNode result = null;
+        for (Direction d : Direction.values()) {
+            BlockPos p = worldPosition.relative(d);
+            if (level.hasChunkAt(p)
+                    && level.getBlockEntity(p) instanceof PowerNode core
+                    && core.kind == PowerKind.NUCLEAR_REACTOR) {
+                if (result != null) return null;
+                result = core;
+            }
+        }
+        return result;
+    }
+
+    private void ejectHidden(ServerLevel level, int count) {
+        for (int i = 0; i < 54; i++)
+            if (!ElectricReactor.exposed(i, count) && !inventory.getItem(i).isEmpty()) {
+                Block.popResource(level, worldPosition, inventory.removeItemNoUpdate(i));
+            }
+        setChanged();
+    }
+
+    /** Current hull heat available to the machine menu and monitoring integrations. */
+    public int hullHeat() {
+        return reactor.heat();
+    }
+
+    /** Current continuous reactor generation before network demand and line loss. */
+    public double reactorOutput() {
+        return reactor.output();
+    }
+
+    /** Current stored EU, excluding temporary reactor offers. */
+    public double storedEu() {
+        return energy;
+    }
+
+    /** Active component grid width. */
+    public int coreWidth() {
+        return ElectricReactor.width(chambers);
+    }
+
+    /** Current component use at a fixed save slot. */
+    public int componentUse(int slot) {
+        return inventory.wear(slot);
+    }
+
+    void changeMode(ServerLevel level) {
+        mode = (mode + 1) % 3;
+        WorldEnergy.connect(this);
+        setChanged();
+    }
+
+    private Face front() {
+        return Face.valueOf(getBlockState().getValue(BlockStateProperties.FACING).name());
+    }
+
+    @Override
+    public Ports energyPorts() {
+        if (kind.vesselPart()) return new Ports(Set.of(), Set.of(), false);
+        int low = kind.lowTier();
+        if (kind.playerMachine())
+            return kind.poweredPlayerMachine()
+                    ? new Ports(ALL, Set.of(), false)
+                    : new Ports(Set.of(), Set.of(), false);
+        if (low == 0 && !kind.storage()) return OUTPUT;
+        var high = EnumSet.of(front());
+        var others = EnumSet.complementOf(high);
+        return low > 0 && !stepUp ? new Ports(high, others, false) : new Ports(others, high, false);
+    }
+
+    private double capacity() {
+        if (kind.lowTier() > 0) return 8 * PacketBudget.packetSize(kind.lowTier());
+        return switch (kind) {
+            case RCI_RSH, RCI_LZH, ENERGY_O_MAT -> 10_000;
+            case TESLA_COIL -> 10_000;
+            case MAGNETIZER -> 100;
+            case CLASSIC_MFE -> 600_000;
+            case CLASSIC_MFSU -> 10_000_000;
+            case GEO_GENERATOR -> 2400;
+            case RT_GENERATOR -> 20000;
+            case WATER_GENERATOR -> 4;
+            case WIND_GENERATOR -> 32;
+            case SOLAR_GENERATOR -> 2;
+            default -> 0;
+        };
+    }
+
+    @Override
+    public double packetLimit() {
+        if (kind.lowTier() > 0) return PacketBudget.packetSize(kind.lowTier() + (stepUp ? 0 : 1));
+        return kind == PowerKind.CLASSIC_MFSU ? 512 : kind == PowerKind.CLASSIC_MFE ? 128 : 32;
+    }
+
+    private double packet() {
+        return kind.lowTier() > 0
+                ? PacketBudget.packetSize(kind.lowTier() + (stepUp ? 1 : 0))
+                : packetLimit();
+    }
+
+    @Override
+    public int packetsPerTick() {
+        return kind.lowTier() > 0 && !stepUp ? Math.min(4, (int) (energy / packet())) : 1;
+    }
+
+    @Override
+    public double offer() {
+        if (kind.playerMachine()) return 0;
+        if (kind == PowerKind.CREATIVE_GENERATOR) return PacketBudget.packetSize(1);
+        if (kind == PowerKind.NUCLEAR_REACTOR) return remaining;
+        if (kind == PowerKind.REACTOR_CHAMBER && getLevel() instanceof ServerLevel level) {
+            var core = controller(level);
+            return core == null ? 0 : core.offer();
+        }
+        double packet = packet();
+        return kind.lowTier() > 0 || kind.storage()
+                ? energy >= packet ? packet : 0
+                : Math.min(energy, packet);
+    }
+
+    @Override
+    public double draw(double eu) {
+        if (eu <= 0) return 0;
+        if (kind == PowerKind.CREATIVE_GENERATOR) return eu;
+        if (kind == PowerKind.REACTOR_CHAMBER && getLevel() instanceof ServerLevel level) {
+            var core = controller(level);
+            return core == null ? 0 : core.draw(eu);
+        }
+        if (kind == PowerKind.NUCLEAR_REACTOR) {
+            double used = Math.min(eu, remaining);
+            remaining -= used;
+            return used;
+        }
+        double used = Math.min(eu, energy);
+        energy -= used;
+        setChanged();
+        return used;
+    }
+
+    @Override
+    public int availableStoredEnergy() {
+        return kind.storage() ? (int) energy : 0;
+    }
+
+    @Override
+    public boolean exchangeStoredEnergy(int delta, boolean simulate) {
+        if (!kind.storage() || energy + delta < 0 || energy + delta > capacity()) return false;
+        if (!simulate && delta != 0) {
+            energy += delta;
+            setChanged();
+        }
+        return true;
+    }
+
+    @Override
+    public double receive(double eu) {
+        if ((kind.lowTier() == 0 && !kind.storage() && !kind.poweredPlayerMachine())
+                || !Double.isFinite(eu)
+                || eu <= 0) return 0;
+        double available =
+                kind == PowerKind.ENERGY_O_MAT ? Math.min(capacity(), credit) : capacity();
+        double accepted = Math.min(eu, Math.max(0, available - energy));
+        if (accepted > 0) {
+            energy += accepted;
+            setChanged();
+        }
+        return accepted;
+    }
+
+    @Override
+    public boolean ranThisTick(ServerLevel level) {
+        return !isRemoved() && lastTick == level.getGameTime();
+    }
+
+    @Override
+    public void setRemoved() {
+        WorldEnergy.disconnect(this);
+        linked = false;
+        super.setRemoved();
+    }
+
+    @Override
+    public void onChunkUnloaded() {
+        WorldEnergy.disconnect(this);
+        linked = false;
+        lastTick = Long.MIN_VALUE;
+        super.onChunkUnloaded();
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("block.ic2." + kind.path);
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory player, Player opener) {
+        if (kind.trader() && owner == null) {
+            owner = opener.getUUID();
+            setChanged();
+        }
+        return new PowerMenu(id, player, inventory);
+    }
+}
