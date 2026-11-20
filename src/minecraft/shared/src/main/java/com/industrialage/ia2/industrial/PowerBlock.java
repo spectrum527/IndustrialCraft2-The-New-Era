@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -56,11 +57,21 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
             Level level, BlockState state, BlockEntityType<T> type) {
-        if (kind.vesselPart()) return null;
+        if (kind.vesselPart() && kind != PowerKind.REACTOR_FLUID_PORT) return null;
         if (!(level instanceof ServerLevel))
             return (w, p, s, e) -> com.industrialage.ia2.audio.IndustrialSounds.observe(w, p, s);
         if (!(level instanceof ServerLevel server) || type != PowerPlatform.type()) return null;
         return (world, pos, now, entity) -> ((PowerNode) entity).tick(server);
+    }
+
+    @Override
+    public boolean isSignalSource(BlockState state) {
+        return kind.storage();
+    }
+
+    @Override
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+        return level.getBlockEntity(pos) instanceof PowerNode node ? node.redstoneSignal() : 0;
     }
 
     @Override
@@ -124,17 +135,17 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock {
             }
             return true;
         }
-        if (kind.lowTier() > 0 && player.isShiftKeyDown()) device.changeMode(server);
+        if ((kind.lowTier() > 0 || kind.storage()) && player.isShiftKeyDown())
+            device.changeMode(server);
         else if (kind == PowerKind.REACTOR_CHAMBER) {
             PowerNode core = device.controller(server);
             if (core != null) player.openMenu(core);
         } else if (kind.vesselPart()) {
-            var core = ReactorVessel.core(device, server);
-            if (kind == PowerKind.REACTOR_ACCESS_HATCH && core != null) player.openMenu(core);
-            else if (kind == PowerKind.REACTOR_FLUID_PORT && core != null)
-                player.sendSystemMessage(
-                        net.minecraft.network.chat.Component.translatable(
-                                "ic2.reactor.coolant", core.coolant, core.hotCoolant));
+            if (kind == PowerKind.REACTOR_FLUID_PORT) player.openMenu(device);
+            else if (kind == PowerKind.REACTOR_ACCESS_HATCH) {
+                var core = ReactorVessel.core(device, server);
+                if (core != null) player.openMenu(core);
+            }
         } else player.openMenu(device);
         return true;
     }

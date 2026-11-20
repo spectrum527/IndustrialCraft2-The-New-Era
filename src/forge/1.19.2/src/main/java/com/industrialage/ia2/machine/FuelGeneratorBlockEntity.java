@@ -51,6 +51,12 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
         return generator.snapshot();
     }
 
+    /** Returns the live burn reserve as a fraction of the active fuel. */
+    public final double fuelRatio() {
+        int capacity = generator.fuelCapacity();
+        return capacity == 0 ? 0 : (double) generator.snapshot().fuelTicks() / capacity;
+    }
+
     /** Reports activity during the most recent loaded tick. */
     public final boolean isActive() {
         return generator.isActive();
@@ -83,6 +89,7 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
         var state = savedState();
         var payload = new CompoundTag();
         payload.putInt(FUEL_TICKS, state.fuelTicks());
+        payload.putInt("fuel_capacity", generator.fuelCapacity());
         payload.putDouble(STORED_ENERGY, state.storedEnergy());
         tag.put(GENERATOR, payload);
     }
@@ -92,6 +99,7 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
         var state = readState(tag);
         super.load(tag);
         generator.restore(state);
+        generator.restoreFuelCapacity(tag.getCompound(GENERATOR).getInt("fuel_capacity"));
     }
 
     private FuelGenerator.Snapshot readState(CompoundTag tag) {

@@ -35,7 +35,8 @@ public final class MeterPlatform {
                         () ->
                                 IForgeMenuType.create(
                                         (id, inventory, data) ->
-                                                new MeterMenu(menu.get(), id, null, null)));
+                                                new MeterMenu(
+                                                        menu.get(), id, inventory, null, null)));
         items.register("meter", () -> new Reader(ForgeContent.itemProperties().stacksTo(1)));
         if (FMLEnvironment.dist == Dist.CLIENT) Client.install(modBus);
     }
@@ -62,7 +63,8 @@ public final class MeterPlatform {
             }
             player.openMenu(
                     new SimpleMenuProvider(
-                            (id, inventory, opener) -> new MeterMenu(menu.get(), id, level, pos),
+                            (id, inventory, opener) ->
+                                    new MeterMenu(menu.get(), id, inventory, level, pos),
                             Component.translatable("item.ic2.meter")));
             return InteractionResult.CONSUME;
         }

@@ -16,6 +16,10 @@ final class FluidKey {
         return new FluidStack(prototype, amount);
     }
 
+    int registryId() {
+        return net.minecraft.core.Registry.FLUID.getId(stack(1).getFluid());
+    }
+
     @Override
     public boolean equals(Object other) {
         return other instanceof FluidKey key && prototype.isFluidEqual(key.prototype);

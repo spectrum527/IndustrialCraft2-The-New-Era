@@ -24,6 +24,7 @@ final class ProcessingDevice extends InventoryDevice {
     private final MachineKind kind;
     private final ProcessingMachine machine;
     private int heat;
+    private int fuelCapacity;
     private int cooking;
     private boolean burning;
     private String smeltingItem = "";
@@ -114,6 +115,7 @@ final class ProcessingDevice extends InventoryDevice {
             if (burnTime > 0) {
                 inventory.consumeFuel();
                 heat = burnTime;
+                fuelCapacity = burnTime;
             }
         }
 
@@ -252,10 +254,16 @@ final class ProcessingDevice extends InventoryDevice {
     }
 
     @Override
+    public double fuelRatio() {
+        return heat == 0 || fuelCapacity == 0 ? 0 : (double) heat / fuelCapacity;
+    }
+
+    @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         if (machine == null) {
             tag.putInt("ic2_heat", heat);
+            tag.putInt("ic2_fuel_capacity", heat == 0 ? 0 : fuelCapacity);
             tag.putString("ic2_smelting", smeltingItem);
         } else {
             tag.putDouble("ic2_energy", machine.energy());
@@ -270,6 +278,7 @@ final class ProcessingDevice extends InventoryDevice {
         super.load(tag);
         if (machine == null) {
             heat = Math.max(0, tag.getInt("ic2_heat"));
+            fuelCapacity = Math.max(heat, tag.getInt("ic2_fuel_capacity"));
             smeltingItem = tag.getString("ic2_smelting");
             cooking = Math.max(0, Math.min(IRON_FURNACE_DURATION - 1, tag.getInt("ic2_progress")));
         } else {

@@ -316,7 +316,8 @@ public final class WorkshopPlatform {
         return liquid.isEmpty() ? 0 : Registry.FLUID.getId(liquid.getFluid());
     }
 
-    static Component previewFluid(int id) {
+    /** Localized fluid name shared with the material tank readout. */
+    public static Component previewFluid(int id) {
         if (id != 0) {
             var fluid = Registry.FLUID.byId(id);
             if (fluid != null) {
@@ -453,6 +454,11 @@ public final class WorkshopPlatform {
     }
 
     static ContainerResult containerRecipe(WorkshopNode node, ItemStack item, boolean filling) {
+        return containerRecipe(filling ? node.inlet : node.outlet, item, filling);
+    }
+
+    static ContainerResult containerRecipe(
+            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
         var copy = item.copy();
         copy.setCount(1);
         return FluidUtil.getFluidHandler(copy)
@@ -460,9 +466,9 @@ public final class WorkshopPlatform {
                         handler -> {
                             var liquid =
                                     filling
-                                            ? fluid(node.inlet.id, node.inlet.amount)
+                                            ? fluid(tank.id, tank.amount)
                                             : handler.drain(
-                                                    node.outlet.capacity - node.outlet.amount,
+                                                    tank.capacity - tank.amount,
                                                     IFluidHandler.FluidAction.EXECUTE);
                             if (liquid.isEmpty() || liquid.hasTag()) {
                                 return null;

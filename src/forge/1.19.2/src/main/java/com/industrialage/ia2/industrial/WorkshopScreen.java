@@ -1,66 +1,66 @@
 package com.industrialage.ia2.industrial;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.industrialage.ia2.gui.PanelGraphics;
 import com.mojang.blaze3d.vertex.PoseStack;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-/** Native client view of the live, server-owned workshop inventory. */
+/** Draws the device's returned industrial artwork around its real server inventory. */
 public final class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
-    private static final ResourceLocation ART =
-            ResourceLocation.fromNamespaceAndPath("ic2", WorkshopPanel.INVENTORY_TEXTURE);
-    private Button control;
+    private final List<Button> controls = new ArrayList<>();
 
     /** Creates the screen for the machine menu sent by the server. */
     public WorkshopScreen(WorkshopMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        imageWidth = WorkshopMenu.WIDTH;
-        imageHeight = WorkshopMenu.HEIGHT;
+        imageWidth = menu.layout().width;
+        imageHeight = menu.layout().height;
     }
 
     @Override
     protected void init() {
         super.init();
-        if (menu.hasControl()) {
-            control =
-                    addRenderableWidget(
-                            new Button(
-                                    leftPos + 166,
-                                    topPos + 6,
-                                    112,
-                                    18,
-                                    menu.controlLabel(),
-                                    button ->
-                                            minecraft.gameMode.handleInventoryButtonClick(
-                                                    menu.containerId, 0)));
+        controls.clear();
+        for (var control : menu.layout().controls) {
+            var area = control.area();
+            var widget =
+                    new Button(
+                            leftPos + area.x(),
+                            topPos + area.y(),
+                            area.width(),
+                            area.height(),
+                            control.caption(menu),
+                            button ->
+                                    minecraft.gameMode.handleInventoryButtonClick(
+                                            menu.containerId, control.action())) {
+                        @Override
+                        public void renderButton(
+                                PoseStack graphics, int mouseX, int mouseY, float tick) {
+                            // The authored atlas supplies the visible button face.
+                        }
+                    };
+            controls.add(addRenderableWidget(widget));
         }
     }
 
     @Override
     protected void containerTick() {
         super.containerTick();
-        if (control != null) {
-            control.setMessage(menu.controlLabel());
+        for (int i = 0; i < controls.size(); i++) {
+            controls.get(i).setMessage(menu.layout().controls.get(i).caption(menu));
         }
     }
 
     @Override
     protected void renderBg(PoseStack graphics, float tick, int mouseX, int mouseY) {
-        WorkshopPanel.surface(
-                menu,
-                (x1, y1, x2, y2, color) ->
-                        fill(
-                                graphics,
-                                leftPos + x1,
-                                topPos + y1,
-                                leftPos + x2,
-                                topPos + y2,
-                                color));
-        RenderSystem.setShaderTexture(0, ART);
-        blit(graphics, leftPos + 56, topPos + 153, 0, 79, 176, 84);
+        WorkshopPanel.background(menu, PanelGraphics.at(graphics, font, leftPos, topPos));
+        var mode = WorkshopPanel.modePicture(menu);
+        if (mode != null) {
+            itemRenderer.renderAndDecorateItem(mode.item(), leftPos + mode.x(), topPos + mode.y());
+        }
     }
 
     @Override
@@ -69,10 +69,31 @@ public final class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> 
                 menu,
                 title,
                 playerInventoryTitle,
-                mouseX - leftPos,
-                mouseY - topPos,
-                (x1, y1, x2, y2, color) -> fill(graphics, x1, y1, x2, y2, color),
-                (text, x, y, color, max) -> drawLine(graphics, text, x, y, color, max));
+                PanelGraphics.at(graphics, font, 0, 0),
+                (label, width) ->
+                        font.width(label) <= width
+                                ? label
+                                : Component.literal(
+                                        font.plainSubstrByWidth(
+                                                        label.getString(), Math.max(1, width - 6))
+                                                + "…"));
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack graphics, int mouseX, int mouseY) {
+        boolean item = hoveredSlot != null && hoveredSlot.hasItem();
+        var details =
+                WorkshopPanel.tooltip(
+                        menu,
+                        mouseX - leftPos,
+                        mouseY - topPos,
+                        hoveredSlot == null ? -1 : hoveredSlot.index,
+                        item);
+        if (!details.isEmpty()) {
+            renderComponentTooltip(graphics, details, mouseX, mouseY);
+        } else {
+            super.renderTooltip(graphics, mouseX, mouseY);
+        }
     }
 
     @Override
@@ -80,21 +101,5 @@ public final class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> 
         renderBackground(graphics);
         super.render(graphics, mouseX, mouseY, tick);
         renderTooltip(graphics, mouseX, mouseY);
-    }
-
-    private void drawLine(
-            PoseStack graphics, Component text, int x, int y, int color, int maxWidth) {
-        int width = font.width(text);
-        if (width <= maxWidth) {
-            font.draw(graphics, text, x, y, color);
-            return;
-        }
-        float scale = (float) maxWidth / width;
-        var pose = graphics;
-        pose.pushPose();
-        pose.translate(x, y + (1 - scale) * 4, 0);
-        pose.scale(scale, scale, 1);
-        font.draw(graphics, text, 0, 0, color);
-        pose.popPose();
     }
 }

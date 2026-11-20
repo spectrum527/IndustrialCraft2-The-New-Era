@@ -100,7 +100,7 @@ final class WorldMachine extends WorldSaveBase implements WorldPowerPort, MenuPr
 
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory slots, Player player) {
-        return new WorldMenu(id, slots, inventory);
+        return new WorldMenu(id, slots, this);
     }
 
     void tick(ServerLevel server) {
@@ -320,6 +320,10 @@ final class WorldMachine extends WorldSaveBase implements WorldPowerPort, MenuPr
             setChanged();
         }
         return accepted;
+    }
+
+    double storedEnergy() {
+        return energy;
     }
 
     boolean canPay(double cost) {

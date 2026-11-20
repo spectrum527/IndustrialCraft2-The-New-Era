@@ -28,6 +28,7 @@ public final class FuelGenerator implements BlockEntityBase.Component {
     private final IntSupplier fuelBurnTime;
     private final Runnable consumeFuel;
     private int fuelTicks;
+    private int fuelCapacity;
     private double storedEnergy;
     private boolean active;
 
@@ -59,6 +60,7 @@ public final class FuelGenerator implements BlockEntityBase.Component {
             }
             consumeFuel.run();
             fuelTicks = workingTicks;
+            fuelCapacity = workingTicks;
         }
         fuelTicks--;
         storedEnergy = Math.min(CAPACITY, storedEnergy + energyPerTick);
@@ -103,7 +105,18 @@ public final class FuelGenerator implements BlockEntityBase.Component {
     /** Restores host-persisted state. Activity resumes on a subsequent loaded server tick. */
     public void restore(Snapshot snapshot) {
         fuelTicks = snapshot.fuelTicks();
+        fuelCapacity = fuelTicks;
         storedEnergy = snapshot.storedEnergy();
         active = false;
+    }
+
+    /** Initial duration of the current fuel, for the native flame gauge. */
+    public int fuelCapacity() {
+        return fuelTicks == 0 ? 0 : fuelCapacity;
+    }
+
+    /** Restores the fuel gauge reference duration from an optional saved field. */
+    public void restoreFuelCapacity(int capacity) {
+        fuelCapacity = Math.max(fuelTicks, capacity);
     }
 }

@@ -78,6 +78,7 @@ public final class PowerNode extends PowerSaveBase
     int liquid;
     double energy;
     double waterFraction;
+    private int lastSignal = -1;
     private int nearbyWater;
     private int windObstructions;
     private boolean linked;
@@ -92,7 +93,12 @@ public final class PowerNode extends PowerSaveBase
     }
 
     void tick(ServerLevel level) {
-        if (kind.vesselPart()) return;
+        if (kind.vesselPart()) {
+            if (kind == PowerKind.REACTOR_FLUID_PORT
+                    && !inventory.getItem(0).isEmpty()
+                    && level.getGameTime() % 8 == 0) servicePort(level);
+            return;
+        }
         long now = level.getGameTime();
         if (lastTick == now) return;
         boolean first = lastTick == Long.MIN_VALUE;
@@ -160,7 +166,49 @@ public final class PowerNode extends PowerSaveBase
             }
             remaining = fluidMode ? 0 : reactor.output();
             active = reactor.output() > 0 || reactor.heat() >= 1000;
+            if (fluidMode) {
+                serviceContainer(54, false);
+                serviceContainer(56, true);
+            }
         } else if (kind.playerMachine()) {
+            int dischargeSlot =
+                    kind == PowerKind.MAGNETIZER
+                            ? 1
+                            : kind == PowerKind.ENERGY_O_MAT
+                                    ? 4
+                                    : kind == PowerKind.RCI_RSH || kind == PowerKind.RCI_LZH
+                                            ? 9
+                                            : -1;
+            if (dischargeSlot >= 0) {
+                double room =
+                        kind == PowerKind.ENERGY_O_MAT ? Math.min(credit, capacity()) : capacity();
+                double used =
+                        PowerPlatform.discharge(
+                                inventory.getItem(dischargeSlot),
+                                Math.max(0, room - energy),
+                                kind == PowerKind.ENERGY_O_MAT ? 4 : upgradeTier());
+                if (used > 0) {
+                    energy += used;
+                    setChanged();
+                }
+            }
+            if ((kind == PowerKind.RCI_LZH || kind == PowerKind.RCI_RSH) && now % 8 == 0) {
+                var upgrades =
+                        java.util.List.of(
+                                inventory.getItem(10),
+                                inventory.getItem(11),
+                                inventory.getItem(12),
+                                inventory.getItem(13));
+                int slot = (int) ((now / 8) % 9);
+                com.industrialage.ia2.world.MachineAutomation.transfer(
+                        level,
+                        worldPosition,
+                        inventory,
+                        slot,
+                        -1,
+                        upgrades,
+                        item -> inventory.canPlaceItem(slot, item));
+            }
             active = PlayerMachines.tick(this, level);
         } else if (kind != PowerKind.REACTOR_CHAMBER && !kind.storage()) {
             double generated = generate(level, now, first);
@@ -184,6 +232,10 @@ public final class PowerNode extends PowerSaveBase
                     PowerPlatform.charge(inventory.getItem(chargeSlot), energy, kind.itemTier());
             energy -= output;
             if (input > 0 || output > 0) setChanged();
+        }
+        if (kind.storage() && lastSignal != redstoneSignal()) {
+            lastSignal = redstoneSignal();
+            level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
         }
         BlockState current = getBlockState();
         if (current.getValue(PowerBlock.ACTIVE) != active)
@@ -364,9 +416,21 @@ public final class PowerNode extends PowerSaveBase
     }
 
     void changeMode(ServerLevel level) {
-        mode = (mode + 1) % 3;
+        mode = (mode + 1) % (kind.storage() ? 7 : 3);
         WorldEnergy.connect(this);
         setChanged();
+    }
+
+    int redstoneSignal() {
+        if (!kind.storage()) return 0;
+        double unit = packetLimit(), maximum = capacity();
+        return switch (mode) {
+            case 1 -> energy >= maximum - 20 * unit ? 15 : 0;
+            case 2 -> energy > unit && energy < maximum - unit ? 15 : 0;
+            case 3 -> energy < maximum - unit ? 15 : 0;
+            case 4 -> energy < unit ? 15 : 0;
+            default -> 0;
+        };
     }
 
     private Face front() {
@@ -387,12 +451,93 @@ public final class PowerNode extends PowerSaveBase
         return low > 0 && !stepUp ? new Ports(high, others, false) : new Ports(others, high, false);
     }
 
-    private double capacity() {
+    private int upgradeCount(String id) {
+        int start =
+                kind == PowerKind.MAGNETIZER
+                        ? 2
+                        : kind == PowerKind.RCI_RSH || kind == PowerKind.RCI_LZH ? 10 : -1;
+        if (start < 0) return 0;
+        int count = 0;
+        for (int i = start; i < start + 4; i++)
+            if (inventory.part(i).equals(id)) count += inventory.count(i);
+        return count;
+    }
+
+    int upgradeTier() {
+        return Math.min(5, 1 + upgradeCount("transformer_upgrade"));
+    }
+
+    private void serviceContainer(int slot, boolean filling) {
+        var input = inventory.getItem(slot);
+        if (input.isEmpty()) return;
+        String liquid = filling ? "ic2:hot_coolant" : "ic2:coolant";
+        var tank = new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY);
+        tank.fill(liquid, filling ? hotCoolant : coolant, false);
+        var move = WorkshopPlatform.containerRecipe(tank, input, filling);
+        if (move == null || !liquid.equals(move.liquid().id())) return;
+        int volume = move.liquid().amount();
+        if (volume <= 0 || (filling ? hotCoolant : ReactorVessel.TANK_CAPACITY - coolant) < volume)
+            return;
+        var returned = move.stack();
+        var output = inventory.getItem(slot + 1);
+        if (!returned.isEmpty()
+                && !output.isEmpty()
+                && (!WorkshopPlatform.sameItem(output, returned)
+                        || returned.getCount() + output.getCount() > output.getMaxStackSize()))
+            return;
+        inventory.removeItem(slot, 1);
+        if (output.isEmpty()) inventory.setItem(slot + 1, returned);
+        else if (!returned.isEmpty()) output.grow(returned.getCount());
+        if (filling) hotCoolant -= volume;
+        else coolant += volume;
+        setChanged();
+    }
+
+    private void servicePort(ServerLevel level) {
+        var core = coolantTank();
+        if (core == null) return;
+        boolean extract = inventory.part(0).equals("fluid_ejector_upgrade");
+        var upgrade = inventory.getItem(0);
+        int limit =
+                Math.min(
+                        1000,
+                        100
+                                * com.industrialage.ia2.content.ProcessingUpgrades.transferLimit(
+                                        upgrade.getCount()));
+        for (var side : com.industrialage.ia2.world.MachineAutomation.faces(upgrade)) {
+            var target = worldPosition.relative(side);
+            if (!level.hasChunkAt(target) || level.getBlockEntity(target) instanceof PowerNode)
+                continue;
+            if (extract && core.hotCoolant > 0) {
+                core.hotCoolant -=
+                        WorkshopPlatform.pushFluid(
+                                level,
+                                target,
+                                side.getOpposite(),
+                                "ic2:hot_coolant",
+                                Math.min(limit, core.hotCoolant));
+            } else if (!extract && core.coolant < ReactorVessel.TANK_CAPACITY) {
+                var drawn =
+                        WorkshopPlatform.pullFluid(
+                                level,
+                                target,
+                                side.getOpposite(),
+                                "ic2:coolant",
+                                Math.min(limit, ReactorVessel.TANK_CAPACITY - core.coolant),
+                                false);
+                if (drawn != null) core.coolant += drawn.amount();
+            }
+        }
+        core.setChanged();
+    }
+
+    double capacity() {
         if (kind.lowTier() > 0) return 8 * PacketBudget.packetSize(kind.lowTier());
         return switch (kind) {
-            case RCI_RSH, RCI_LZH, ENERGY_O_MAT -> 10_000;
+            case RCI_RSH, RCI_LZH -> 10_000 + 10_000 * upgradeCount("energy_storage_upgrade");
+            case ENERGY_O_MAT -> 10_000;
             case TESLA_COIL -> 10_000;
-            case MAGNETIZER -> 100;
+            case MAGNETIZER -> 100 + 10_000 * upgradeCount("energy_storage_upgrade");
             case CLASSIC_MFE -> 600_000;
             case CLASSIC_MFSU -> 10_000_000;
             case GEO_GENERATOR -> 2400;
@@ -407,6 +552,8 @@ public final class PowerNode extends PowerSaveBase
     @Override
     public double packetLimit() {
         if (kind.lowTier() > 0) return PacketBudget.packetSize(kind.lowTier() + (stepUp ? 0 : 1));
+        if (kind == PowerKind.MAGNETIZER || kind == PowerKind.RCI_RSH || kind == PowerKind.RCI_LZH)
+            return PacketBudget.packetSize(upgradeTier());
         return kind == PowerKind.CLASSIC_MFSU ? 512 : kind == PowerKind.CLASSIC_MFE ? 128 : 32;
     }
 
@@ -423,6 +570,11 @@ public final class PowerNode extends PowerSaveBase
 
     @Override
     public double offer() {
+        if (kind.storage()
+                && mode >= 5
+                && getLevel() instanceof ServerLevel level
+                && level.hasNeighborSignal(worldPosition)
+                && !(mode == 6 && energy > capacity() - 20 * packetLimit())) return 0;
         if (kind.playerMachine()) return 0;
         if (kind == PowerKind.CREATIVE_GENERATOR) return PacketBudget.packetSize(1);
         if (kind == PowerKind.NUCLEAR_REACTOR) return remaining;

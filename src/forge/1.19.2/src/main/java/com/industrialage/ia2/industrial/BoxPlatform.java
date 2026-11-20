@@ -60,6 +60,9 @@ public final class BoxPlatform {
             BOXES.add(block);
             ITEMS.register(k.path, () -> new BlockItem(block.get(), ForgeContent.itemProperties()));
         }
+        BoxMenus.install(bus);
+        if (net.minecraftforge.fml.loading.FMLEnvironment.dist
+                == net.minecraftforge.api.distmarker.Dist.CLIENT) BoxMenus.clients(bus);
         BLOCKS.register(bus);
         ITEMS.register(bus);
         TYPES.register(bus);

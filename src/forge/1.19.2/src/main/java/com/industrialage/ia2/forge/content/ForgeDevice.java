@@ -29,6 +29,10 @@ interface ForgeDevice extends MenuProvider {
         return false;
     }
 
+    default double fuelRatio() {
+        return 0;
+    }
+
     @Override
     default Component getDisplayName() {
         return Component.translatable("block.ic2." + inventory().kind.path);

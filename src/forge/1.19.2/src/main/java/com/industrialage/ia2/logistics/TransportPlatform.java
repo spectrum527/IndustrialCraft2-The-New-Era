@@ -83,6 +83,9 @@ public final class TransportPlatform {
         ITEMS.register("crowbar", () -> new ServiceTool(false));
         ITEMS.register("empty_cell", () -> new CellItem(false));
         ITEMS.register("fluid_cell", () -> new CellItem(true));
+        TankMenus.install(modBus);
+        if (net.minecraftforge.fml.loading.FMLEnvironment.dist
+                == net.minecraftforge.api.distmarker.Dist.CLIENT) TankMenus.clients(modBus);
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
         ENTITIES.register(modBus);
@@ -181,6 +184,16 @@ public final class TransportPlatform {
                 cell,
                 new ItemStack(
                         ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("ic2:empty_cell"))));
+    }
+
+    static ItemStack exchangeCursor(TransportNode node, ItemStack carried, Player who) {
+        var single = carried.copy();
+        single.setCount(1);
+        var port = new FluidPort(node, Direction.UP);
+        var result = FluidUtil.tryEmptyContainer(single, port, Integer.MAX_VALUE, who, true);
+        if (!result.isSuccess())
+            result = FluidUtil.tryFillContainer(single, port, Integer.MAX_VALUE, who, true);
+        return result.isSuccess() ? result.getResult() : null;
     }
 
     static boolean containerInteraction(

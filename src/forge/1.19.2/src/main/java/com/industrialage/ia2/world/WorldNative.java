@@ -207,6 +207,14 @@ final class WorldNative {
         return com.industrialage.ia2.forge.equipment.ForgeGear.spend(stack, eu);
     }
 
+    static double charge(ItemStack stack, double offer, int tier) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.charge(stack, offer, tier);
+    }
+
+    static double stored(ItemStack stack) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.stored(stack);
+    }
+
     static double discharge(ItemStack stack, double available, int tier) {
         return com.industrialage.ia2.forge.equipment.ForgeGear.discharge(stack, available, tier);
     }

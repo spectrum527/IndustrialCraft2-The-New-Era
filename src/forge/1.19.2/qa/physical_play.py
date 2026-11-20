@@ -268,7 +268,7 @@ def stop(process, command=None):
             return process.wait(timeout=8)
 
 
-def exercise(directory, manifest, rejecting=None):
+def exercise(directory, manifest, rejecting=None, profile=None):
     client_dir, server_dir = directory / "client", directory / "server"
     client_dir.mkdir()
     server_dir.mkdir()
@@ -288,7 +288,10 @@ def exercise(directory, manifest, rejecting=None):
         probe = Client(session)
         probe.check("main-menu-unbound", lambda s: s["screen"] == "TitleScreen" and not s["overlay"]
                     and s["bindings"] == 1 and s["key"] == "key.keyboard.unknown", 160)
-        result = mismatch(probe, manifest, rejecting) if rejecting else normal(probe)
+        if rejecting:
+            result = mismatch(probe, manifest, rejecting)
+        else:
+            result = (profile or normal)(probe)
     finally:
         def quit_client():
             tmp = client_dir / "qa-quit.tmp"

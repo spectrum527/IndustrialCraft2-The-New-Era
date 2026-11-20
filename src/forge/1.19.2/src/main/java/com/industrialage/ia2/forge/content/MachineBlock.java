@@ -86,11 +86,10 @@ class MachineBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return switch (kind) {
-            case GENERATOR -> new GeneratorDevice(pos, state);
-            case BATBOX, CESU, MFE, MFSU -> new StorageDevice(pos, state);
-            default -> new ProcessingDevice(pos, state);
-        };
+        if (kind == MachineKind.GENERATOR) return new GeneratorDevice(pos, state);
+        return kind.storesEnergy()
+                ? new StorageDevice(pos, state)
+                : new ProcessingDevice(pos, state);
     }
 
     @Override

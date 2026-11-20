@@ -225,6 +225,7 @@ public final class WorldChecks {
         previewWoodwork(level, player);
         prepareAutomation(level, player);
         prepareProcessors(level, player);
+        checkAdvancedUpgradeSettings(player);
     }
 
     private void previewWoodwork(ServerLevel level, ServerPlayer player) {
@@ -319,6 +320,7 @@ public final class WorldChecks {
         set(level, SORTER.east(), Blocks.CHEST);
         set(level, SORTER.below(), Blocks.CHEST);
         var sorter = device(level, player, SORTER);
+        checkPageTransfer(sorter, player, SORTER, false);
         sorter.slots.get(0).set(new ItemStack(Items.DIAMOND, 4));
         sorter.slots.get(1).set(new ItemStack(Items.COBBLESTONE, 8));
         sorter.slots.get(18 + Direction.EAST.ordinal()).set(new ItemStack(Items.DIAMOND));
@@ -334,6 +336,7 @@ public final class WorldChecks {
                     new ItemStack(Items.COBBLESTONE, i + 1 == chest.getContainerSize() ? 60 : 64));
         }
         var distributor = device(level, player, DISTRIBUTOR);
+        checkPageTransfer(distributor, player, DISTRIBUTOR, true);
         distributor.slots.get(0).set(new ItemStack(Items.COBBLESTONE, 8));
         distributor.slots.get(18 + Direction.EAST.ordinal()).set(new ItemStack(Items.PAPER, 2));
         distributor.slots.get(18 + Direction.DOWN.ordinal()).set(new ItemStack(Items.PAPER));
@@ -688,6 +691,177 @@ public final class WorldChecks {
                         .filter(pos -> level.getBlockState(pos).is(block("foam")))
                         .count();
         verify("sprayer-flood-fills-ten", area == 10);
+    }
+
+    private void checkAdvancedUpgradeSettings(ServerPlayer player) {
+        ItemStack previous = player.getMainHandItem();
+        ItemStack upgrade = stack("advanced_pulling_upgrade");
+        player.setItemInHand(InteractionHand.MAIN_HAND, upgrade);
+        try {
+            Class<?> type = Class.forName("com.industrialage.ia2.world.UpgradeMenu");
+            var constructor =
+                    type.getDeclaredConstructor(
+                            net.minecraft.world.inventory.MenuType.class,
+                            int.class,
+                            net.minecraft.world.entity.player.Inventory.class,
+                            net.minecraft.world.entity.player.Player.class,
+                            InteractionHand.class,
+                            ItemStack.class);
+            constructor.setAccessible(true);
+            var menu =
+                    (net.minecraft.world.inventory.AbstractContainerMenu)
+                            constructor.newInstance(
+                                    null,
+                                    91,
+                                    player.getInventory(),
+                                    player,
+                                    InteractionHand.MAIN_HAND,
+                                    upgrade);
+            var click =
+                    java.util.Arrays.stream(type.getMethods())
+                            .filter(
+                                    method ->
+                                            method.getName().equals("clicked")
+                                                    && method.getParameterCount() == 4)
+                            .findFirst()
+                            .orElseThrow();
+            click.setAccessible(true);
+            Object pickup =
+                    java.util.Arrays.stream(click.getParameterTypes()[2].getEnumConstants())
+                            .filter(value -> value.toString().equals("PICKUP"))
+                            .findFirst()
+                            .orElseThrow();
+            ItemStack coal = new ItemStack(Items.COAL, 2);
+            menu.setCarried(coal);
+            click.invoke(menu, 0, 0, pickup, player);
+            menu.setCarried(stack("raw_tin"));
+            click.invoke(menu, 1, 0, pickup, player);
+            var settings =
+                    com.industrialage.ia2.world.MachineAutomation.class.getDeclaredMethod(
+                            "settings", ItemStack.class);
+            settings.setAccessible(true);
+            Object rule = settings.invoke(null, upgrade);
+            var matches = rule.getClass().getDeclaredMethod("matches", ItemStack.class);
+            matches.setAccessible(true);
+            boolean multiple =
+                    (boolean) matches.invoke(rule, new ItemStack(Items.COAL))
+                            && (boolean) matches.invoke(rule, stack("raw_tin"))
+                            && !(boolean) matches.invoke(rule, new ItemStack(Items.DIAMOND))
+                            && coal.getCount() == 2;
+            menu.clickMenuButton(player, 2);
+            rule = settings.invoke(null, upgrade);
+            boolean deny =
+                    !(boolean) matches.invoke(rule, new ItemStack(Items.COAL))
+                            && (boolean) matches.invoke(rule, new ItemStack(Items.DIAMOND));
+            menu.clickMenuButton(player, 2);
+            ItemStack worn = new ItemStack(Items.IRON_PICKAXE);
+            worn.setDamageValue(5);
+            ItemStack other = worn.copy();
+            other.setDamageValue(6);
+            menu.setCarried(worn);
+            click.invoke(menu, 2, 0, pickup, player);
+            menu.clickMenuButton(player, 0);
+            rule = settings.invoke(null, upgrade);
+            boolean damage =
+                    (boolean) matches.invoke(rule, worn) && !(boolean) matches.invoke(rule, other);
+            var battery = stack("re_battery");
+            var different = stack("re_battery");
+            for (int i = 0; i < 2; i++) charge.fill(battery, 50, 2);
+            for (int i = 0; i < 4; i++) charge.fill(different, 50, 2);
+            menu.setCarried(battery);
+            click.invoke(menu, 3, 0, pickup, player);
+            menu.clickMenuButton(player, 1);
+            rule = settings.invoke(null, upgrade);
+            boolean energy =
+                    (boolean) matches.invoke(rule, battery)
+                            && !(boolean) matches.invoke(rule, different);
+            Item[] extra = {
+                Items.IRON_INGOT,
+                Items.GOLD_INGOT,
+                Items.LAPIS_LAZULI,
+                Items.REDSTONE,
+                Items.EMERALD
+            };
+            for (int i = 0; i < extra.length; i++) {
+                menu.setCarried(new ItemStack(extra[i]));
+                click.invoke(menu, 4 + i, 0, pickup, player);
+            }
+            for (int i = 0; i < 3; i++) menu.clickMenuButton(player, 3);
+            var reopened =
+                    (net.minecraft.world.inventory.AbstractContainerMenu)
+                            constructor.newInstance(
+                                    null,
+                                    92,
+                                    player.getInventory(),
+                                    player,
+                                    InteractionHand.MAIN_HAND,
+                                    upgrade);
+            boolean persisted =
+                    reopened.slots.get(0).getItem().is(Items.COAL)
+                            && reopened.slots.get(1).getItem().is(items.apply("raw_tin"))
+                            && com.industrialage.ia2.world.MachineAutomation.faces(upgrade)
+                                    .equals(List.of(Direction.NORTH));
+            for (int i = 0; i < extra.length; i++)
+                persisted &= reopened.slots.get(4 + i).getItem().is(extra[i]);
+            persisted &=
+                    reopened.slots.get(2).getItem().is(Items.IRON_PICKAXE)
+                            && reopened.slots.get(3).getItem().is(items.apply("re_battery"));
+            verify("advanced-upgrade-nine-samples-do-not-consume", multiple && persisted);
+            verify("advanced-upgrade-exclusion", deny);
+            verify("advanced-upgrade-damage-match", damage);
+            verify("advanced-upgrade-energy-match", energy);
+            verify("advanced-upgrade-reopens-with-filters-and-face", persisted);
+        } catch (ReflectiveOperationException failure) {
+            throw new IllegalStateException(failure);
+        } finally {
+            player.setItemInHand(InteractionHand.MAIN_HAND, previous);
+        }
+    }
+
+    private void checkPageTransfer(
+            net.minecraft.world.inventory.AbstractContainerMenu menu,
+            ServerPlayer player,
+            BlockPos pos,
+            boolean weighted) {
+        var position = player.position();
+        var saved = player.getInventory().getItem(9).copy();
+        player.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        menu.slots.get(0).set(new ItemStack(Items.COBBLESTONE, 3));
+        menu.slots.get(9).set(new ItemStack(Items.COBBLESTONE, 7));
+        player.getInventory().setItem(9, new ItemStack(Items.COBBLESTONE, 5));
+        boolean first =
+                menu.clickMenuButton(player, 0)
+                        && menu.slots.get(0).isActive()
+                        && !menu.slots.get(9).isActive();
+        menu.quickMoveStack(player, 27);
+        first &=
+                menu.slots.get(0).getItem().getCount() == 8
+                        && menu.slots.get(9).getItem().getCount() == 7
+                        && player.getInventory().getItem(9).isEmpty();
+        player.getInventory().setItem(9, new ItemStack(Items.COBBLESTONE, 4));
+        boolean second =
+                menu.clickMenuButton(player, 1)
+                        && !menu.slots.get(0).isActive()
+                        && menu.slots.get(9).isActive();
+        menu.quickMoveStack(player, 27);
+        second &=
+                menu.slots.get(0).getItem().getCount() == 8
+                        && menu.slots.get(9).getItem().getCount() == 11
+                        && player.getInventory().getItem(9).isEmpty();
+        if (weighted)
+            second &=
+                    menu.clickMenuButton(player, 2)
+                            && menu.slots.get(18).isActive()
+                            && menu.slots.get(25).isActive()
+                            && !menu.slots.get(0).isActive()
+                            && !menu.slots.get(9).isActive();
+        verify((weighted ? "distributor" : "sorter") + "-page-shift-first", first);
+        verify((weighted ? "distributor" : "sorter") + "-page-shift-second", second);
+        menu.slots.get(0).set(ItemStack.EMPTY);
+        menu.slots.get(9).set(ItemStack.EMPTY);
+        menu.clickMenuButton(player, 0);
+        player.getInventory().setItem(9, saved);
+        player.setPos(position.x, position.y, position.z);
     }
 
     private void placeStick(ServerLevel level, ServerPlayer player, BlockPos pos) {

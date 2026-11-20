@@ -17,16 +17,12 @@ import net.minecraft.world.item.ItemStack;
  * Workshop slots and synchronized quantities, using separate halves for values that exceed a short.
  */
 public final class WorkshopMenu extends AbstractContainerMenu {
-    public static final int WIDTH = 288;
-    public static final int HEIGHT = 237;
-    public static final int PLAYER_X = 64;
-    public static final int PLAYER_Y = 158;
-    private static final int HOTBAR_Y = 216;
     private static final int MACHINE_SLOTS = WorkshopInventory.SIZE;
     private static final int DATA_SIZE = Metric.values().length * 2;
 
     private final WorkshopNode machine;
     private final WorkshopKind kind;
+    private final WorkshopLayout layout;
     private final Container inventory;
     private final ContainerData data;
 
@@ -55,22 +51,25 @@ public final class WorkshopMenu extends AbstractContainerMenu {
             ContainerData data) {
         super(WorkshopPlatform.menuType(), id);
         this.kind = kind;
+        this.layout = WorkshopLayout.of(kind);
         this.inventory = inventory;
         this.machine = machine;
         this.data = data;
         for (int index = 0; index < MACHINE_SLOTS; index++) {
             int slot = index;
+            var point = layout.slot(index);
             addSlot(
-                    new Slot(inventory, index, slotX(index), slotY(index)) {
+                    new Slot(inventory, index, point.x(), point.y()) {
                         @Override
                         public boolean isActive() {
-                            return role(slot) != Role.HIDDEN;
+                            return layout.shows(slot) && role(slot) != Role.HIDDEN;
                         }
 
                         @Override
                         public boolean mayPlace(ItemStack item) {
                             var purpose = role(slot);
-                            return purpose.insertable
+                            return layout.shows(slot)
+                                    && purpose.insertable
                                     && (machine == null
                                             || machine.inventory.canPlaceItem(slot, item));
                         }
@@ -78,32 +77,59 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                         @Override
                         public boolean mayPickup(Player player) {
                             var purpose = role(slot);
-                            return purpose != Role.HIDDEN && purpose != Role.PATTERN;
+                            return layout.shows(slot)
+                                    && purpose != Role.HIDDEN
+                                    && purpose != Role.PATTERN;
                         }
 
                         @Override
                         public int getMaxStackSize() {
-                            return role(slot) == Role.TEMPLATE
+                            return WorkshopInventory.componentBay(kind, slot)
+                                            || role(slot) == Role.TEMPLATE
                                             || kind == WorkshopKind.RADIOISOTOPE_HEAT && slot < 6
                                     ? 1
                                     : super.getMaxStackSize();
                         }
                     });
         }
+        var playerSlots = layout.player;
+        int playerX = playerSlots == null ? 0 : playerSlots.x();
+        int playerY = playerSlots == null ? 0 : playerSlots.rows();
+        int hotbarY = playerSlots == null ? 0 : playerSlots.hotbar();
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 9; column++) {
-                addSlot(
-                        new Slot(
-                                player,
-                                9 + row * 9 + column,
-                                PLAYER_X + 18 * column,
-                                PLAYER_Y + 18 * row));
+                addPlayerSlot(
+                        player, 9 + row * 9 + column, playerX + 18 * column, playerY + 18 * row);
             }
         }
         for (int column = 0; column < 9; column++) {
-            addSlot(new Slot(player, column, PLAYER_X + 18 * column, HOTBAR_Y));
+            addPlayerSlot(player, column, playerX + 18 * column, hotbarY);
         }
         addDataSlots(data);
+    }
+
+    private void addPlayerSlot(Inventory inventory, int index, int x, int y) {
+        addSlot(
+                new Slot(inventory, index, x, y) {
+                    @Override
+                    public boolean isActive() {
+                        return layout.player != null;
+                    }
+                });
+    }
+
+    WorkshopLayout layout() {
+        return layout;
+    }
+
+    /** Identifies the machine represented by this live native menu. */
+    public String device() {
+        return kind.path;
+    }
+
+    /** The original backdrop selected for this particular machine. */
+    public String atlas() {
+        return layout.atlas;
     }
 
     /** Native slot labels include controls and transfer roles specific to each workshop kind. */
@@ -115,13 +141,25 @@ public final class WorkshopMenu extends AbstractContainerMenu {
     }
 
     private Role role(int slot) {
+        if (WorkshopInventory.componentBay(kind, slot)) {
+            return kind == WorkshopKind.ELECTRIC_HEAT ? Role.COIL : Role.MOTOR;
+        }
         if (kind == WorkshopKind.PATTERN_STORAGE) {
-            return slot >= WorkshopMatter.FIRST_PATTERN && slot < WorkshopMatter.FIRST_PATTERN + 12
+            return slot == WorkshopMatter.FIRST_PATTERN + Math.floorMod(get(Metric.CYCLES), 12)
                     ? Role.PATTERN
                     : Role.HIDDEN;
         }
-        if (kind == WorkshopKind.UU_SCANNER && slot == WorkshopMatter.FIRST_PATTERN) {
-            return Role.PATTERN;
+        if (kind == WorkshopKind.UU_SCANNER) {
+            boolean recorded = !inventory.getItem(WorkshopMatter.FIRST_PATTERN).isEmpty();
+            if (slot == WorkshopMatter.FIRST_PATTERN || slot == 0) {
+                return slot == 0
+                        ? (recorded ? Role.HIDDEN : Role.INPUT)
+                        : (recorded ? Role.PATTERN : Role.HIDDEN);
+            }
+        }
+        if (kind == WorkshopKind.ORE_WASHER) {
+            if (slot == WorkshopInventory.WASHER_WATER_SLOT) return Role.DRAIN;
+            if (slot == WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT) return Role.VESSEL_RETURN;
         }
         if (kind == WorkshopKind.BLAST_FURNACE && slot == WorkshopInventory.RETURN_SLOT) {
             return Role.RETURN;
@@ -160,33 +198,6 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         };
     }
 
-    private int slotX(int index) {
-        if (kind == WorkshopKind.PATTERN_STORAGE && index >= WorkshopMatter.FIRST_PATTERN) {
-            return 12 + 20 * ((index - WorkshopMatter.FIRST_PATTERN) % 6);
-        }
-        if (kind == WorkshopKind.UU_SCANNER && index == WorkshopMatter.FIRST_PATTERN) {
-            return 12;
-        }
-        if (index >= WorkshopInventory.UPGRADE_START) {
-            return 12 + 20 * (index - WorkshopInventory.UPGRADE_START);
-        }
-        if (index == WorkshopInventory.RETURN_SLOT
-                || index == WorkshopInventory.AUX_SLOT && kind.auxiliarySlot()) {
-            return 120;
-        }
-        return 12 + 20 * (index % WorkshopInventory.OUTPUT_START);
-    }
-
-    private int slotY(int index) {
-        if (kind == WorkshopKind.PATTERN_STORAGE && index >= WorkshopMatter.FIRST_PATTERN) {
-            return 56 + 30 * ((index - WorkshopMatter.FIRST_PATTERN) / 6);
-        }
-        if (index >= WorkshopInventory.UPGRADE_START) {
-            return 125;
-        }
-        return index >= WorkshopInventory.OUTPUT_START ? 87 : 55;
-    }
-
     private static ContainerData live(WorkshopNode machine) {
         return new ContainerData() {
             @Override
@@ -205,6 +216,8 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                             case ACTIVE ->
                                     machine.getBlockState().getValue(WorkshopBlock.ACTIVE) ? 1 : 0;
                             case MODE -> machine.mode;
+                            case CYCLES -> machine.cycles;
+                            case KINETIC -> machine.auxiliaryUnits;
                             case PRODUCT -> WorkshopPlatform.previewItemId(machine.preview);
                             case IN_FLUID -> WorkshopPlatform.previewFluidId(machine.inlet.id);
                             case IN_AMOUNT -> machine.inlet.amount;
@@ -254,6 +267,25 @@ public final class WorkshopMenu extends AbstractContainerMenu {
 
     public boolean active() {
         return get(Metric.ACTIVE) != 0;
+    }
+
+    int mode() {
+        return get(Metric.MODE);
+    }
+
+    int motion() {
+        return get(Metric.KINETIC);
+    }
+
+    Component patternName() {
+        for (int slot = WorkshopMatter.FIRST_PATTERN;
+                slot < WorkshopMatter.FIRST_PATTERN + 12;
+                slot++) {
+            if (slots.get(slot).isActive() && !inventory.getItem(slot).isEmpty()) {
+                return inventory.getItem(slot).getHoverName();
+            }
+        }
+        return Component.translatable("gui.ic2.workshop.empty");
     }
 
     /** Returns a translated live recipe product or idle state. */
@@ -320,13 +352,17 @@ public final class WorkshopMenu extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player player, int action) {
-        if (action != 0 || machine == null || !stillValid(player) || !hasControl()) {
+        if (machine == null
+                || !stillValid(player)
+                || layout.controls.stream().noneMatch(control -> control.action() == action)) {
             return false;
         }
-        if (kind.modes() > 1) {
+        if (kind == WorkshopKind.REPLICATOR) {
+            machine.selectMode(action - 1);
+        } else if (kind.modes() > 1) {
             machine.cycleMode();
         } else if (machine.getLevel() instanceof ServerLevel level) {
-            WorkshopMatter.recordOrSelect(machine, level, player);
+            WorkshopMatter.recordOrSelect(machine, level, player, action == 1 ? -1 : 1);
         }
         return true;
     }
@@ -361,6 +397,17 @@ public final class WorkshopMenu extends AbstractContainerMenu {
     }
 
     private boolean insertIntoWorkshop(ItemStack stack) {
+        if (WorkshopInventory.componentBay(kind, 0)) {
+            return moveItemStackTo(stack, 0, WorkshopInventory.COMPONENT_BAYS, false);
+        }
+        if (kind == WorkshopKind.ORE_WASHER) {
+            int tankSlot = WorkshopInventory.WASHER_WATER_SLOT;
+            if (slots.get(tankSlot).mayPlace(stack)
+                    && moveItemStackTo(stack, tankSlot, tankSlot + 1, false)) {
+                return true;
+            }
+        }
+
         if (slots.get(WorkshopInventory.UPGRADE_START).mayPlace(stack)
                 && moveItemStackTo(
                         stack,
@@ -387,6 +434,8 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         HEAT,
         ACTIVE,
         MODE,
+        CYCLES,
+        KINETIC,
         PRODUCT,
         IN_FLUID,
         IN_AMOUNT,
@@ -404,6 +453,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         FILL("fill", true),
         DRAIN("drain", true),
         RETURN("return", false),
+        VESSEL_RETURN("container_return", false),
         COIL("coil", true),
         UPGRADE("upgrade", true),
         BLADE("blade", true),

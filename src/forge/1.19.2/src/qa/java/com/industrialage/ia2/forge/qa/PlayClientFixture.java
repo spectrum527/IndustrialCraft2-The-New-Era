@@ -1,8 +1,10 @@
 package com.industrialage.ia2.forge.qa;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.industrialage.ia2.config.ActiveConfig;
+import com.industrialage.ia2.equipment.MeterMenu;
 import com.industrialage.ia2.forge.ForgePlatform;
 import com.industrialage.ia2.forge.client.ForgeClient;
 import com.industrialage.ia2.forge.content.MachineMenu;
@@ -32,6 +34,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -45,6 +48,7 @@ import org.lwjgl.glfw.GLFW;
 final class PlayClientFixture {
     private static final BlockPos MACHINE_POS = new BlockPos(25, 90, 25);
     private static final BlockPos WORKSHOP_POS = new BlockPos(29, 90, 25);
+    private static final BlockPos AUTHORED_POS = WORKSHOP_POS;
     private final Path input = Path.of("qa-input.txt");
     private final Path output = Path.of("qa-output.json");
     private String chat = "";
@@ -96,6 +100,8 @@ final class PlayClientFixture {
                     "text", mc.screen == null ? "" : mc.screen.getNarrationMessage().getString());
             result.addProperty("overlay", mc.getOverlay() != null);
             result.addProperty("world", mc.level != null);
+            readAuthoredScreen(mc, result);
+
             result.addProperty("pid", ProcessHandle.current().pid());
             result.addProperty(
                     "player", mc.player == null ? "" : mc.player.getGameProfile().getName());
@@ -181,7 +187,127 @@ final class PlayClientFixture {
         }
     }
 
+    private static void readAuthoredScreen(Minecraft minecraft, JsonObject result) {
+        if (minecraft.level != null) {
+            result.addProperty(
+                    "uiTarget",
+                    net.minecraftforge.registries.ForgeRegistries.BLOCKS
+                            .getKey(minecraft.level.getBlockState(AUTHORED_POS).getBlock())
+                            .toString());
+        }
+        if (minecraft.player != null) {
+            var held = minecraft.player.getMainHandItem();
+            result.addProperty("uiHeld", itemId(held));
+            var inventory = minecraft.player.getInventory();
+            var stored = new JsonArray();
+            for (int i = 0; i < inventory.getContainerSize(); i++) {
+                var stack = inventory.getItem(i);
+                if (!stack.isEmpty()) {
+                    var record = itemEvidence(stack);
+                    record.addProperty("index", i);
+                    stored.add(record);
+                }
+            }
+            result.add("uiInventory", stored);
+            if (held.hasTag()) {
+                result.addProperty("uiHeldEu", held.getTag().getDouble("ic2_energy"));
+            }
+        }
+        if (!(minecraft.screen instanceof AbstractContainerScreen<?> screen)) return;
+        var window = minecraft.getWindow();
+        var panel = new JsonObject();
+        panel.addProperty("left", screen.getGuiLeft());
+        panel.addProperty("top", screen.getGuiTop());
+        panel.addProperty("width", screen.getXSize());
+        panel.addProperty("height", screen.getYSize());
+        panel.addProperty("guiScale", window.getGuiScale());
+        panel.addProperty("framebufferWidth", window.getWidth());
+        panel.addProperty("framebufferHeight", window.getHeight());
+        if (screen.getMenu() instanceof WorkshopMenu workshop) {
+            panel.addProperty("device", workshop.device());
+            panel.addProperty("atlas", workshop.atlas());
+        }
+        if (screen.getMenu() instanceof MeterMenu meter) {
+            result.addProperty("meterMode", meter.mode());
+        } else if (screen.getMenu() instanceof MachineMenu machine) {
+            result.addProperty("redstoneMode", machine.redstoneMode());
+        }
+        var slots = new JsonArray();
+        for (var slot : screen.getMenu().slots) {
+            if (!slot.isActive()) continue;
+            var item = itemEvidence(slot.getItem());
+            item.addProperty("index", slot.index);
+            item.addProperty("x", slot.x);
+            item.addProperty("y", slot.y);
+            slots.add(item);
+        }
+        panel.add("slots", slots);
+        panel.add("carried", itemEvidence(screen.getMenu().getCarried()));
+        result.add("uiPanel", panel);
+    }
+
+    private static String itemId(ItemStack stack) {
+        return net.minecraftforge.registries.ForgeRegistries.ITEMS
+                .getKey(stack.getItem())
+                .toString();
+    }
+
+    private static JsonObject itemEvidence(ItemStack stack) {
+        var evidence = new JsonObject();
+        evidence.addProperty("item", itemId(stack));
+        evidence.addProperty("count", stack.getCount());
+        if (stack.hasTag()) evidence.addProperty("tag", stack.getTag().toString());
+        return evidence;
+    }
+
     private void act(Minecraft mc, KeyMapping key, String action) {
+        if (action.startsWith("ui:")) {
+            mc.gui.getChat().clearMessages(false);
+            mc.gameMode.useItemOn(
+                    mc.player,
+                    InteractionHand.MAIN_HAND,
+                    new BlockHitResult(
+                            Vec3.atCenterOf(AUTHORED_POS).add(0, 0, -0.5),
+                            Direction.NORTH,
+                            AUTHORED_POS,
+                            false));
+            return;
+        }
+        if (action.startsWith("ui-item:")) {
+            mc.gui.getChat().clearMessages(false);
+            mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
+            return;
+        }
+        if (action.startsWith("snapshot-ui:")) {
+            String name = action.substring("snapshot-ui:".length());
+            if (!name.matches("[a-z0-9_]+"))
+                throw new IllegalArgumentException("Invalid screen name");
+            Screenshot.grab(
+                    mc.gameDirectory,
+                    "authored-" + name + ".png",
+                    mc.getMainRenderTarget(),
+                    message -> {});
+            return;
+        }
+        if (action.startsWith("move-ui:") || action.startsWith("click-ui:")) {
+            if (!(mc.screen instanceof AbstractContainerScreen<?> screen)) return;
+            var offsets = action.substring(action.indexOf(':') + 1).split(",");
+            double x = screen.getGuiLeft() + Integer.parseInt(offsets[0]);
+            double y = screen.getGuiTop() + Integer.parseInt(offsets[1]);
+            if (action.startsWith("click-ui:")) {
+                mc.screen.mouseClicked(x, y, 0);
+                mc.screen.mouseReleased(x, y, 0);
+            } else {
+                mc.getToasts().clear();
+                var window = mc.getWindow();
+                GLFW.glfwSetCursorPos(
+                        window.getWindow(),
+                        x * window.getScreenWidth() / window.getGuiScaledWidth(),
+                        y * window.getScreenHeight() / window.getGuiScaledHeight());
+            }
+            return;
+        }
+
         switch (action) {
             case "state" -> {}
             case "connect" -> {

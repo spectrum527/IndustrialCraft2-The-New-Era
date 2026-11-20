@@ -15,9 +15,12 @@ import net.minecraft.world.level.block.state.BlockState;
 final class WorkshopInventory extends SimpleContainer implements WorldlyContainer {
     static final int SIZE = 27;
     static final int AUX_SLOT = 4;
+    static final int WASHER_WATER_SLOT = 6;
+    static final int WASHER_CONTAINER_RETURN_SLOT = 14;
     static final int OUTPUT_START = 9;
     static final int RETURN_SLOT = 13;
     static final int UPGRADE_START = 18;
+    static final int COMPONENT_BAYS = 10;
     static final int UPGRADE_END = UPGRADE_START + 4;
     private final WorkshopNode node;
 
@@ -50,8 +53,33 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
         return node.kind.inputs(node.mode);
     }
 
+    static boolean componentBay(WorkshopKind kind, int index) {
+        return index >= 0
+                && index < COMPONENT_BAYS
+                && (kind == WorkshopKind.ELECTRIC_HEAT || kind == WorkshopKind.ELECTRIC_KINETIC);
+    }
+
+    int installedComponents(String id) {
+        int count = 0;
+        for (int index = 0; index < COMPONENT_BAYS; index++) {
+            var stack = getItem(index);
+            if (WorkshopPlatform.itemId(stack).equals(id)) count += stack.getCount();
+        }
+        return Math.min(COMPONENT_BAYS, count);
+    }
+
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
+        if (componentBay(node.kind, slot)) {
+            String id = node.kind == WorkshopKind.ELECTRIC_HEAT ? "ic2:coil" : "ic2:electric_motor";
+            return WorkshopPlatform.itemId(stack).equals(id);
+        }
+        if (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_WATER_SLOT) {
+            var drain =
+                    WorkshopPlatform.containerRecipe(
+                            new WorkshopNode.Tank(node.inlet.capacity), stack, false);
+            return drain != null && drain.liquid().id().equals("minecraft:water");
+        }
         if (slot >= UPGRADE_START && slot < UPGRADE_END) {
             return WorkshopAutomation.canInstall(node, stack);
         }

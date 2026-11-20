@@ -38,6 +38,9 @@ abstract class TransportSaveBase extends BlockEntity {
         if (node.liquid != null && node.amount > 0) {
             tag.put("ic2_fluid", node.liquid.stack(node.amount).writeToNBT(new CompoundTag()));
         }
+        for (int i = 0; i < node.upgrades.getContainerSize(); i++)
+            if (!node.upgrades.getItem(i).isEmpty())
+                tag.put("upgrade_" + i, node.upgrades.getItem(i).save(new CompoundTag()));
         tag.putInt("ic2_closed", node.closed);
         tag.putInt("ic2_pump_lv", node.lv);
         tag.putInt("ic2_pump_mv", node.mv);
@@ -49,6 +52,8 @@ abstract class TransportSaveBase extends BlockEntity {
         if (!(this instanceof TransportNode node)) {
             return;
         }
+        for (int i = 0; i < node.upgrades.getContainerSize(); i++)
+            node.upgrades.setItem(i, ItemStack.of(tag.getCompound("upgrade_" + i)));
         node.cargo =
                 node.spec.kind() == Kind.ITEM_PIPE
                         ? ItemStack.of(tag.getCompound("ic2_cargo"))

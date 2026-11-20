@@ -153,7 +153,10 @@ public final class MachineAutomation {
         if (level instanceof ServerLevel) {
             var current = settings(upgrade);
             Direction side = current.side == face ? null : face;
-            save(upgrade, new Settings(side, current.item, current.denied));
+            save(
+                    upgrade,
+                    new Settings(
+                            side, current.filters, current.denied, current.meta, current.energy));
             WorldNative.reply(
                     player,
                     Component.translatable(
@@ -170,14 +173,27 @@ public final class MachineAutomation {
         String path = WorldNative.itemId(upgrade);
         if (!(path.equals("ic2:advanced_ejector_upgrade")
                 || path.equals("ic2:advanced_pulling_upgrade"))) return false;
+        if (sample.isEmpty() && !player.isShiftKeyDown()) {
+            if (level instanceof ServerLevel) {
+                var hand =
+                        player.getMainHandItem() == upgrade
+                                ? net.minecraft.world.InteractionHand.MAIN_HAND
+                                : net.minecraft.world.InteractionHand.OFF_HAND;
+                UpgradeMenu.open(player, hand);
+            }
+            return true;
+        }
         if (level instanceof ServerLevel) {
             var current = settings(upgrade);
-            String id = sample.isEmpty() ? "" : WorldNative.itemId(sample);
-            boolean denied = !id.isEmpty() && player.isShiftKeyDown();
-            save(upgrade, new Settings(current.side, id, denied));
+            var filters = new Sample[9];
+            if (!sample.isEmpty()) filters[0] = Sample.of(sample);
+            boolean denied = !sample.isEmpty() && player.isShiftKeyDown();
+            save(
+                    upgrade,
+                    new Settings(current.side, filters, denied, current.meta, current.energy));
             WorldNative.reply(
                     player,
-                    id.isEmpty()
+                    sample.isEmpty()
                             ? Component.translatable("ic2.upgrades.filter_clear")
                             : Component.translatable(
                                     denied
@@ -206,33 +222,91 @@ public final class MachineAutomation {
         return settings(upgrade).faces();
     }
 
-    private static Settings settings(ItemStack stack) {
-        String[] data = WorldNative.upgradeConfig(stack).split(",", -1);
-        if (data.length != 3) return new Settings(null, "", false);
+    static Settings settings(ItemStack stack) {
+        String raw = WorldNative.upgradeConfig(stack);
+        String[] data = raw.split(",", -1);
         Direction side = null;
-        for (Direction direction : Direction.values()) {
-            if (direction.getName().equals(data[0])) side = direction;
+        if (data.length == 3) {
+            for (Direction direction : Direction.values())
+                if (direction.getName().equals(data[0])) side = direction;
+            var filters = new Sample[9];
+            if (!data[1].isEmpty()) filters[0] = new Sample(data[1], 0, 0);
+            return new Settings(side, filters, Boolean.parseBoolean(data[2]), false, false);
         }
-        return new Settings(side, data[1], Boolean.parseBoolean(data[2]));
+        String[] parts = raw.split(";", -1);
+        if (parts.length != 6 || !parts[0].equals("v2"))
+            return new Settings(null, new Sample[9], false, false, false);
+        for (Direction direction : Direction.values())
+            if (direction.getName().equals(parts[1])) side = direction;
+        var filters = new Sample[9];
+        String[] samples = parts[5].split("\\|", -1);
+        for (int i = 0; i < Math.min(9, samples.length); i++) {
+            String[] fields = samples[i].split("~", -1);
+            if (fields.length != 3 || fields[0].isEmpty()) continue;
+            try {
+                filters[i] =
+                        new Sample(
+                                fields[0],
+                                Integer.parseInt(fields[1]),
+                                Double.parseDouble(fields[2]));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return new Settings(
+                side,
+                filters,
+                Boolean.parseBoolean(parts[2]),
+                Boolean.parseBoolean(parts[3]),
+                Boolean.parseBoolean(parts[4]));
     }
 
-    private static void save(ItemStack stack, Settings settings) {
+    static void save(ItemStack stack, Settings settings) {
+        var samples = new java.util.ArrayList<String>(9);
+        for (Sample filter : settings.filters)
+            samples.add(
+                    filter == null ? "" : filter.id + "~" + filter.damage + "~" + filter.energy);
         WorldNative.setUpgradeConfig(
                 stack,
                 String.join(
-                        ",",
+                        ";",
+                        "v2",
                         settings.side == null ? "" : settings.side.getName(),
-                        settings.item,
-                        Boolean.toString(settings.denied)));
+                        Boolean.toString(settings.denied),
+                        Boolean.toString(settings.meta),
+                        Boolean.toString(settings.energy),
+                        String.join("|", samples)));
     }
 
-    private record Settings(Direction side, String item, boolean denied) {
+    record Sample(String id, int damage, double energy) {
+        static Sample of(ItemStack stack) {
+            return new Sample(
+                    WorldNative.itemId(stack), stack.getDamageValue(), WorldNative.stored(stack));
+        }
+
+        boolean matches(ItemStack stack, boolean meta, boolean charge) {
+            return id.equals(WorldNative.itemId(stack))
+                    && (!meta || damage == stack.getDamageValue())
+                    && (!charge || Double.compare(energy, WorldNative.stored(stack)) == 0);
+        }
+    }
+
+    record Settings(
+            Direction side, Sample[] filters, boolean denied, boolean meta, boolean energy) {
         List<Direction> faces() {
             return side == null ? List.of(Direction.values()) : List.of(side);
         }
 
         boolean matches(ItemStack stack) {
-            return item.isEmpty() || denied != item.equals(WorldNative.itemId(stack));
+            boolean configured = false, found = false;
+            for (Sample sample : filters)
+                if (sample != null) {
+                    configured = true;
+                    if (sample.matches(stack, meta, energy)) {
+                        found = true;
+                        break;
+                    }
+                }
+            return !configured || denied != found;
         }
     }
 }

@@ -17,8 +17,13 @@ final class PowerInventory extends SimpleContainer
     final PowerNode device;
 
     PowerInventory(PowerNode node) {
-        super(node.kind == PowerKind.NUCLEAR_REACTOR ? 54 : 9);
+        super(size(node.kind));
         device = node;
+    }
+
+    static int size(PowerKind kind) {
+        if (kind == PowerKind.NUCLEAR_REACTOR) return 58;
+        return kind == PowerKind.RCI_LZH || kind == PowerKind.RCI_RSH ? 14 : 9;
     }
 
     @Override
@@ -28,6 +33,31 @@ final class PowerInventory extends SimpleContainer
             return PowerPlatform.acceptsCharge(stack, device.kind.itemTier());
         if (device.kind.storage() && slot == 1)
             return PowerPlatform.canDischarge(stack, device.kind.itemTier());
+        if (device.kind == PowerKind.NUCLEAR_REACTOR && slot >= 54) {
+            if (!device.fluidMode) return false;
+            if (slot == 56) return WorkshopPlatform.canSupplyContainer(stack, true);
+            if (slot != 54) return false;
+            var drain =
+                    WorkshopPlatform.containerRecipe(
+                            new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY), stack, false);
+            return drain != null && drain.liquid().id().equals("ic2:coolant");
+        }
+        int upgrades =
+                device.kind == PowerKind.MAGNETIZER
+                        ? 2
+                        : device.kind == PowerKind.RCI_RSH || device.kind == PowerKind.RCI_LZH
+                                ? 10
+                                : -1;
+        if (upgrades >= 0) {
+            if (slot == upgrades - 1)
+                return PowerPlatform.canDischarge(stack, device.upgradeTier());
+            if (slot >= upgrades && slot < upgrades + 4)
+                return part.equals("energy_storage_upgrade")
+                        || part.equals("transformer_upgrade")
+                        || upgrades == 10
+                                && (part.equals("pulling_upgrade")
+                                        || part.equals("advanced_pulling_upgrade"));
+        }
         return switch (device.kind) {
             case NUCLEAR_REACTOR ->
                     ElectricReactor.exposed(slot, device.chambers)
@@ -38,11 +68,18 @@ final class PowerInventory extends SimpleContainer
             case NUKE ->
                     slot == 0 && GameCharges.cartridge(stack)
                             || slot == 1 && GameCharges.primingItem(stack);
-            case RCI_RSH -> slot == 0 && stack.is(Items.REDSTONE_BLOCK);
-            case RCI_LZH -> slot == 0 && stack.is(Items.LAPIS_BLOCK);
+            case RCI_RSH -> slot < 9 && stack.is(Items.REDSTONE_BLOCK);
+            case RCI_LZH -> slot < 9 && stack.is(Items.LAPIS_BLOCK);
             case TRADE_O_MAT -> slot >= 0 && slot <= 2;
             case ENERGY_O_MAT ->
-                    slot == 0 || slot == 2 || slot == 3 && PowerPlatform.acceptsCharge(stack, 4);
+                    slot == 0
+                            || slot == 2
+                            || slot == 3 && PowerPlatform.acceptsCharge(stack, 4)
+                            || slot == 4 && PowerPlatform.canDischarge(stack, 4);
+            case REACTOR_FLUID_PORT ->
+                    slot == 0
+                            && (part.equals("fluid_pulling_upgrade")
+                                    || part.equals("fluid_ejector_upgrade"));
             case RT_GENERATOR -> slot < 6 && part.equals("rtg_pellet");
             case GEO_GENERATOR -> slot == 0 && stack.is(Items.LAVA_BUCKET);
             case WATER_GENERATOR ->
@@ -69,7 +106,7 @@ final class PowerInventory extends SimpleContainer
         if (slot == device.kind.chargeSlot() || device.kind.storage()) return false;
         if (device.kind.trader()) return slot == 3 && device.kind == PowerKind.TRADE_O_MAT;
         return device.kind == PowerKind.NUCLEAR_REACTOR
-                ? part(slot).startsWith("depleted_")
+                ? (slot == 55 || slot == 57 || slot < 54 && part(slot).startsWith("depleted_"))
                 : slot == 1 || stack.is(Items.BUCKET);
     }
 
@@ -79,7 +116,12 @@ final class PowerInventory extends SimpleContainer
     }
 
     int limit(ItemStack stack) {
+        return limit(0, stack);
+    }
+
+    int limit(int slot, ItemStack stack) {
         return device.kind == PowerKind.NUCLEAR_REACTOR
+                        && slot < 54
                         && !PowerPlatform.path(stack).equals("heatpack")
                 ? 1
                 : getMaxStackSize();
@@ -87,9 +129,9 @@ final class PowerInventory extends SimpleContainer
 
     @Override
     public void setItem(int slot, ItemStack stack) {
-        if (!stack.isEmpty() && stack.getCount() > limit(stack)) {
+        if (!stack.isEmpty() && stack.getCount() > limit(slot, stack)) {
             ItemStack limited = stack.copy();
-            limited.setCount(limit(stack));
+            limited.setCount(limit(slot, stack));
             super.setItem(slot, limited);
         } else super.setItem(slot, stack);
     }

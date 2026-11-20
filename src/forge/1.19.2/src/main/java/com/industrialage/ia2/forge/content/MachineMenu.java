@@ -1,9 +1,11 @@
 package com.industrialage.ia2.forge.content;
 
+import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.forge.content.MachineKind.Slot;
 import java.util.Locale;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,8 +23,10 @@ public final class MachineMenu extends AbstractContainerMenu {
     private static final int DURATION = 5;
     private static final int WORKING = 6;
     private static final int MODE = 7;
-    private static final int DATA_SIZE = 8;
+    private static final int FUEL = 8;
+    private static final int DATA_SIZE = 9;
     private final MachineInventory inventory;
+    private final MachineLayout layout;
     private final ContainerData data;
     private final StorageDevice storage;
 
@@ -43,28 +47,15 @@ public final class MachineMenu extends AbstractContainerMenu {
             StorageDevice storage) {
         super(ForgeContent.MACHINE_MENU.get(), id);
         this.inventory = inventory;
+        this.layout = MachineLayout.byPath(inventory.kind.path);
         this.data = data;
         this.storage = storage;
         for (int index = 0; index < inventory.getContainerSize(); index++) {
             var kind = inventory.kind.slots.get(index);
-            int x =
-                    switch (kind) {
-                        case OUTPUT -> 111;
-                        case CHARGE -> inventory.kind.storesEnergy() ? 55 : 111;
-                        case DISCHARGE -> inventory.kind.storesEnergy() ? 111 : 55;
-                        case INPUT, FUEL -> 55;
-                        case UPGRADE -> 151;
-                    };
-            int y =
-                    switch (kind) {
-                        case INPUT -> 16;
-                        case FUEL -> inventory.kind == MachineKind.GENERATOR ? 30 : 52;
-                        case OUTPUT, CHARGE -> 30;
-                        case DISCHARGE -> inventory.kind.storesEnergy() ? 30 : 52;
-                        case UPGRADE -> 7 + 18 * (index - 3);
-                    };
+            var position = layout.item(slotRole(index), Math.max(0, index - 3));
             addSlot(
-                    new net.minecraft.world.inventory.Slot(inventory, index, x, y) {
+                    new net.minecraft.world.inventory.Slot(
+                            inventory, index, position.x(), position.y()) {
                         @Override
                         public boolean mayPlace(ItemStack stack) {
                             return inventory.canPlaceItem(getSlotIndex(), stack);
@@ -81,15 +72,33 @@ public final class MachineMenu extends AbstractContainerMenu {
                         }
                     });
         }
+        if (layout == MachineLayout.STORAGE) {
+            int x = 8;
+            for (var armor :
+                    new EquipmentSlot[] {
+                        EquipmentSlot.FEET,
+                        EquipmentSlot.LEGS,
+                        EquipmentSlot.CHEST,
+                        EquipmentSlot.HEAD
+                    }) {
+                addSlot(com.industrialage.ia2.gui.EquipmentSlots.worn(player, armor, x, 84));
+                x += 18;
+            }
+        }
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 9; column++) {
                 addSlot(
                         new net.minecraft.world.inventory.Slot(
-                                player, column + (row + 1) * 9, 8 + 18 * column, 84 + 18 * row));
+                                player,
+                                column + (row + 1) * 9,
+                                8 + 18 * column,
+                                layout.inventoryTop() + 1 + 18 * row));
             }
         }
         for (int column = 0; column < 9; column++) {
-            addSlot(new net.minecraft.world.inventory.Slot(player, column, 8 + 18 * column, 142));
+            addSlot(
+                    new net.minecraft.world.inventory.Slot(
+                            player, column, 8 + 18 * column, layout.hotbarTop() + 1));
         }
         addDataSlots(data);
     }
@@ -116,6 +125,7 @@ public final class MachineMenu extends AbstractContainerMenu {
                     case DURATION -> machine.duration();
                     case WORKING -> machine.active() ? 1 : 0;
                     case MODE -> machine instanceof StorageDevice device ? device.mode() : 0;
+                    case FUEL -> (int) Math.round(machine.fuelRatio() * 10_000);
                     default -> throw new IndexOutOfBoundsException(index);
                 };
             }
@@ -148,6 +158,26 @@ public final class MachineMenu extends AbstractContainerMenu {
     /** Server-synchronized duration under the installed upgrades. */
     public int duration() {
         return data.get(DURATION);
+    }
+
+    /** Authored panel type and inventory anchors. */
+    public MachineLayout layout() {
+        return layout;
+    }
+
+    /** Count of slots belonging to the machine itself. */
+    public int machineSlots() {
+        return inventory.getContainerSize();
+    }
+
+    /** Purpose of a slot within the machine panel. */
+    public MachineLayout.Kind slotRole(int slot) {
+        return MachineLayout.Kind.valueOf(inventory.kind.slots.get(slot).name());
+    }
+
+    /** Current burn reserve, as a fraction of the initial fuel. */
+    public double fuelRatio() {
+        return data.get(FUEL) / 10_000.0;
     }
 
     /** Returns the completion ratio of the current job. */
@@ -197,14 +227,15 @@ public final class MachineMenu extends AbstractContainerMenu {
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         var slot = slots.get(index);
-        if (!slot.hasItem()) {
+        if (!slot.hasItem() || !slot.mayPickup(player)) {
             return ItemStack.EMPTY;
         }
         var stack = slot.getItem();
         var before = stack.copy();
         int firstPlayerSlot = inventory.getContainerSize();
-        if (index < firstPlayerSlot) {
-            if (!moveItemStackTo(stack, firstPlayerSlot, slots.size(), true)) {
+        int playerInventory = slots.size() - 36;
+        if (index < playerInventory) {
+            if (!moveItemStackTo(stack, playerInventory, slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
         } else {
@@ -220,11 +251,11 @@ public final class MachineMenu extends AbstractContainerMenu {
                 moveItemStackTo(stack, 3, firstPlayerSlot, false);
             }
             if (stack.getCount() == before.getCount()) {
-                int hotbar = firstPlayerSlot + 27;
+                int hotbar = playerInventory + 27;
                 boolean moved =
                         index < hotbar
                                 ? moveItemStackTo(stack, hotbar, slots.size(), false)
-                                : moveItemStackTo(stack, firstPlayerSlot, hotbar, false);
+                                : moveItemStackTo(stack, playerInventory, hotbar, false);
                 if (!moved) {
                     return ItemStack.EMPTY;
                 }

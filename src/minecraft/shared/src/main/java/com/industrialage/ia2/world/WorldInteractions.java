@@ -211,7 +211,10 @@ final class WorldInteractions {
                             : InteractionHand.MAIN_HAND;
             var held = player.getItemInHand(opposite);
             var bag = CropSeed.read(held);
-            if (bag == null) return false;
+            if (bag == null) {
+                if (server) AnalyzerMenu.open(player, hand);
+                return true;
+            }
             if (server) {
                 var results = scan(player, tool, bag.crop(), bag.genes(), true);
                 if (results != bag.genes()) {
@@ -253,17 +256,19 @@ final class WorldInteractions {
         }
         int radius = advanced ? 6 : 3;
         var origin = player.blockPosition();
-        int ores = 0;
+        var ores = new java.util.HashMap<Block, Integer>();
         for (var pos :
                 BlockPos.betweenClosed(
                         origin.offset(-radius, -radius, -radius),
                         origin.offset(radius, radius, radius))) {
-            if (world.hasChunkAt(pos) && Mining.ore(world.getBlockState(pos))) ores++;
+            if (!world.hasChunkAt(pos)) continue;
+            var state = world.getBlockState(pos);
+            if (Mining.ore(state)) ores.merge(state.getBlock(), 1, Integer::sum);
         }
-        WorldNative.reply(player, Component.translatable("ic2.world.ore_count", ores));
+        ScannerMenu.open(player, advanced, ores);
     }
 
-    private static CropGenes scan(
+    static CropGenes scan(
             Player player, ItemStack tool, CropSpecies crop, CropGenes genes, boolean advance) {
         int step = Math.min(4, genes.scan() + 1);
         if (!player.isCreative() && !WorldNative.spend(tool, 60 + step * 30)) {

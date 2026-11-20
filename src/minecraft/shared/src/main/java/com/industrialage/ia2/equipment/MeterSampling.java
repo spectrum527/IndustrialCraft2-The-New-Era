@@ -73,17 +73,24 @@ public final class MeterSampling {
         private final ServerLevel level;
         private final BlockPos position;
         private final Samples samples;
+        private long since;
         private boolean closed;
 
         private Watch(ServerLevel level, BlockPos position, Samples samples) {
             this.level = level;
             this.position = position;
             this.samples = samples;
+            since = samples.ticks;
         }
 
         /** Calculates the rolling summary for input, output, gain, or voltage tier. */
         public Reading read(int mode) {
-            return samples.read(mode);
+            return samples.read(mode, (int) Math.min(WINDOW, samples.ticks - since));
+        }
+
+        /** Starts a fresh observation without changing the readings of any other reader. */
+        public void reset() {
+            since = samples.ticks;
         }
 
         @Override
@@ -102,7 +109,7 @@ public final class MeterSampling {
         private final double[][] history = new double[4][WINDOW];
         private int viewers;
         private int cursor;
-        private int count;
+        private long ticks;
         private double in;
         private double out;
         private double voltage;
@@ -119,17 +126,17 @@ public final class MeterSampling {
             history[2][cursor] = in - out;
             history[3][cursor] = voltage;
             cursor = (cursor + 1) % WINDOW;
-            count = Math.min(count + 1, WINDOW);
+            ticks++;
             in = out = voltage = 0;
         }
 
-        Reading read(int mode) {
+        Reading read(int mode, int count) {
             if (count == 0) return new Reading(0, 0, 0, 0);
             double min = Double.POSITIVE_INFINITY;
             double max = Double.NEGATIVE_INFINITY;
             double total = 0;
             for (int sample = 0; sample < count; sample++) {
-                double value = history[mode][sample];
+                double value = history[mode][(cursor + WINDOW - count + sample) % WINDOW];
                 min = Math.min(min, value);
                 max = Math.max(max, value);
                 total += value;

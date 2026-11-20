@@ -78,6 +78,9 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
     void tick(ServerLevel level) {
         lastServerTick = level.getGameTime();
         WorkshopAutomation.tick(this, level);
+        if (kind == WorkshopKind.ORE_WASHER) {
+            refillWasher();
+        }
         if (kind == WorkshopKind.SOLID_HEAT) {
             tickSolidHeat(level);
             return;
@@ -354,8 +357,41 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
     }
 
     void cycleMode() {
-        mode = (mode + 1) % kind.modes();
-        resetProgress();
+        selectMode((mode + 1) % kind.modes());
+    }
+
+    void selectMode(int requested) {
+        if (mode != requested) {
+            mode = requested;
+            resetProgress();
+            setChanged();
+        }
+    }
+
+    private void refillWasher() {
+        var water = inventory.getItem(WorkshopInventory.WASHER_WATER_SLOT);
+        if (water.isEmpty() || inlet.amount >= inlet.capacity) return;
+        var drain = WorkshopPlatform.containerRecipe(inlet, water, false);
+        if (drain == null || !drain.liquid().id().equals("minecraft:water")) return;
+        var remainder = drain.stack();
+        int returnSlot = WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT;
+        var previous = inventory.getItem(returnSlot);
+        if (!remainder.isEmpty()
+                && !previous.isEmpty()
+                && (!WorkshopPlatform.sameItem(previous, remainder)
+                        || previous.getCount() + remainder.getCount()
+                                > previous.getMaxStackSize())) {
+            return;
+        }
+        int amount = drain.liquid().amount();
+        if (inlet.fill("minecraft:water", amount, true) != amount) return;
+        inlet.fill("minecraft:water", amount, false);
+        inventory.removeItem(WorkshopInventory.WASHER_WATER_SLOT, 1);
+        if (previous.isEmpty()) {
+            inventory.setItem(returnSlot, remainder);
+        } else if (!remainder.isEmpty()) {
+            previous.grow(remainder.getCount());
+        }
         setChanged();
     }
 
@@ -481,11 +517,8 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
                 return 0;
             }
         }
-        var coil = inventory.getItem(WorkshopInventory.AUX_SLOT);
-        if (!WorkshopPlatform.itemId(coil).equals("ic2:coil")) {
-            return 0;
-        }
-        int coils = Math.min(10, coil.getCount());
+        int coils = inventory.installedComponents("ic2:coil");
+        if (coils == 0) return 0;
         if (generatedHeatAt != level.getGameTime()) {
             deliveredHeat = 0;
         }

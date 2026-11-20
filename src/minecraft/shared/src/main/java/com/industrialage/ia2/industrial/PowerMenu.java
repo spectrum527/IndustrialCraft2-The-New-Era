@@ -5,7 +5,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -13,36 +12,59 @@ import net.minecraft.world.item.ItemStack;
 /** Synchronizes live measurements and protects each input, output and owner-editable shop slot. */
 final class PowerMenu extends AbstractContainerMenu {
     final PowerKind kind;
+    final PowerLayout layout;
+    final boolean guest;
+    final int playerStart;
     final PowerInventory live;
-    final SimpleContainerData data = new SimpleContainerData(14);
+    final SimpleContainerData data = new SimpleContainerData(18);
     private final Container contents;
     final int machineSlots;
 
     PowerMenu(int id, Inventory player, PowerInventory inventory) {
-        this(PowerMenus.type(inventory.device.kind), id, player, inventory.device.kind, inventory);
+        this(view(inventory.device, player.player), id, player, inventory.device.kind, inventory);
     }
 
-    PowerMenu(
-            MenuType<PowerMenu> type,
-            int id,
-            Inventory player,
-            PowerKind kind,
-            PowerInventory inventory) {
-        super(type, id);
+    private static String view(PowerNode device, Player opener) {
+        if (device.isFluidReactor()) return device.kind.path + "_fluid";
+        return device.kind.trader()
+                        && device.owner != null
+                        && !device.owner.equals(opener.getUUID())
+                ? device.kind.path + "_guest"
+                : device.kind.path;
+    }
+
+    PowerMenu(String key, int id, Inventory player, PowerKind kind, PowerInventory inventory) {
+        super(PowerMenus.type(key), id);
         this.kind = kind;
+        layout = PowerLayout.get(key);
+        guest = key.endsWith("_guest");
         live = inventory;
-        machineSlots = core() ? 54 : 9;
+        machineSlots =
+                kind == PowerKind.NUCLEAR_REACTOR && key.endsWith("_fluid")
+                        ? 58
+                        : kind == PowerKind.NUCLEAR_REACTOR ? 54 : PowerInventory.size(kind);
         contents = inventory == null ? new SimpleContainer(machineSlots) : inventory;
         for (int i = 0; i < machineSlots; i++) {
             int index = i;
+            int[] at = layout.origin(i);
+            if (kind == PowerKind.MAGNETIZER && i == 0) {
+                addSlot(
+                        com.industrialage.ia2.gui.EquipmentSlots.worn(
+                                player,
+                                net.minecraft.world.entity.EquipmentSlot.FEET,
+                                at[0],
+                                at[1]));
+                continue;
+            }
+            int backing = kind == PowerKind.NUKE && i > 0 ? 1 : i;
             addSlot(
-                    new Slot(contents, i, slotX(i), slotY(i)) {
+                    new Slot(contents, backing, at[0], at[1]) {
                         @Override
                         public boolean mayPlace(ItemStack stack) {
                             return isActive()
                                     && (live == null
                                             || permitted(index, player.player)
-                                                    && live.canPlaceItem(index, stack));
+                                                    && live.canPlaceItem(backing, stack));
                         }
 
                         @Override
@@ -59,16 +81,28 @@ final class PowerMenu extends AbstractContainerMenu {
                         public int getMaxStackSize(ItemStack stack) {
                             return live == null
                                     ? stack.getMaxStackSize()
-                                    : Math.min(stack.getMaxStackSize(), live.limit(stack));
+                                    : Math.min(stack.getMaxStackSize(), live.limit(backing, stack));
                         }
                     });
         }
-        int x = core() ? 26 : 25, y = core() ? 161 : 99;
-        for (int row = 0; row < 3; row++)
-            for (int col = 0; col < 9; col++)
-                addSlot(new Slot(player, 9 + row * 9 + col, x + 18 * col, y + 18 * row));
-        for (int col = 0; col < 9; col++)
-            addSlot(new Slot(player, col, x + 18 * col, y + (core() ? 60 : 58)));
+        if (kind.storage()) {
+            int position = 8;
+            for (var armor :
+                    new net.minecraft.world.entity.EquipmentSlot[] {
+                        net.minecraft.world.entity.EquipmentSlot.FEET,
+                        net.minecraft.world.entity.EquipmentSlot.LEGS,
+                        net.minecraft.world.entity.EquipmentSlot.CHEST,
+                        net.minecraft.world.entity.EquipmentSlot.HEAD
+                    }) {
+                addSlot(com.industrialage.ia2.gui.EquipmentSlots.worn(player, armor, position, 84));
+                position += 18;
+            }
+        }
+        playerStart = slots.size();
+        var inv = layout.inventory();
+        for (int i = 0; i < 27; i++)
+            addSlot(new Slot(player, 9 + i, inv[0] + 18 * (i % 9), inv[1] + 18 * (i / 9)));
+        for (int i = 0; i < 9; i++) addSlot(new Slot(player, i, inv[0] + 18 * i, inv[2]));
         addDataSlots(data);
         measure();
     }
@@ -85,58 +119,30 @@ final class PowerMenu extends AbstractContainerMenu {
     }
 
     boolean exposed(int i) {
-        if (core())
-            return i % 9 < (live == null ? Math.max(3, data.get(0)) : live.device.coreWidth());
-        if (i == kind.chargeSlot() || i == 1 && kind.storage()) return true;
-        return switch (kind) {
-            case RT_GENERATOR -> i < 6;
-            case WATER_GENERATOR, GEO_GENERATOR, NUKE -> i < 2;
-            case ENERGY_O_MAT -> i == 0 || i == 2 || i == 3;
-            case TRADE_O_MAT -> i <= 3;
-            case RCI_RSH, RCI_LZH -> i == 0;
-            default -> false;
-        };
+        if (!layout.slots().containsKey(i)) return false;
+        return !core()
+                || i >= 54
+                || i % 9 < (live == null ? Math.max(3, data.get(0)) : live.device.coreWidth());
     }
 
-    private int slotX(int i) {
-        return core()
-                ? 26 + i % 9 * 18
-                : kind == PowerKind.RT_GENERATOR ? 23 + i * 24 : 25 + i * 46;
-    }
-
-    private int slotY(int i) {
-        return core() ? 25 + i / 9 * 18 : 35;
-    }
-
-    String role(int i) {
-        if (i == kind.chargeSlot()) return "charge";
-        if (kind.storage() && i == 1) return "discharge";
-        return switch (kind) {
-            case NUCLEAR_REACTOR -> "component";
-            case TRADE_O_MAT, ENERGY_O_MAT ->
-                    switch (i) {
-                        case 0 -> "price";
-                        case 1 -> "goods";
-                        case 2 -> "payment";
-                        default -> kind == PowerKind.ENERGY_O_MAT ? "charge" : "delivery";
-                    };
-            case NUKE -> i == 0 ? "cartridge" : "slot";
-            case WATER_GENERATOR, GEO_GENERATOR -> i == 0 ? "fuel" : "empty";
-            case RT_GENERATOR -> "fuel";
-            default -> "input";
-        };
-    }
-
-    int width() {
-        return core() ? 212 : 210;
-    }
-
-    int height() {
-        return core() ? 242 : 184;
-    }
-
-    boolean fluid() {
-        return data.get(1) != 0;
+    @Override
+    public boolean clickMenuButton(Player who, int action) {
+        if (live == null || !stillValid(who)) return false;
+        var device = live.device;
+        if (!(device.getLevel() instanceof net.minecraft.server.level.ServerLevel level))
+            return false;
+        if ((kind.lowTier() > 0 || kind.storage()) && action == 0) device.changeMode(level);
+        else if (kind == PowerKind.ENERGY_O_MAT
+                && !guest
+                && who.getUUID().equals(device.owner)
+                && (action == 0 || action == 1)) {
+            int[] rates = {1000, 5000, 10000};
+            int current = device.saleSize == 5000 ? 1 : device.saleSize == 10000 ? 2 : 0;
+            device.saleSize = rates[Math.floorMod(current + (action == 1 ? 1 : -1), rates.length)];
+            device.setChanged();
+        } else return false;
+        broadcastChanges();
+        return true;
     }
 
     private void value(int i, int n) {
@@ -157,8 +163,12 @@ final class PowerMenu extends AbstractContainerMenu {
         value(4, n.hullHeat());
         value(6, n.reactor.limit());
         value(8, (int) Math.round(n.reactorOutput() * 10));
-        data.set(10, n.coolant);
-        data.set(11, n.hotCoolant);
+        var tank = kind == PowerKind.REACTOR_FLUID_PORT ? n.coolantTank() : n;
+        data.set(10, tank == null ? 0 : tank.coolant);
+        data.set(11, tank == null ? 0 : tank.hotCoolant);
+        value(14, (int) n.capacity());
+        data.set(16, n.saleSize);
+        data.set(17, n.getBlockState().getValue(PowerBlock.ACTIVE) ? 1 : 0);
         value(
                 12,
                 kind.trader()
@@ -174,7 +184,10 @@ final class PowerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return contents.stillValid(player);
+        return contents.stillValid(player)
+                && (live == null
+                        || !core()
+                        || live.device.isFluidReactor() == (machineSlots == 58));
     }
 
     @Override
@@ -185,17 +198,47 @@ final class PowerMenu extends AbstractContainerMenu {
         var stack = slot.getItem();
         var prior = stack.copy();
         boolean changed;
-        if (index < machineSlots)
-            changed = moveItemStackTo(stack, machineSlots, slots.size(), true);
+        if (index < playerStart) changed = moveItemStackTo(stack, playerStart, slots.size(), true);
         else if (kind.trader()) {
             int target =
                     kind == PowerKind.ENERGY_O_MAT && PowerPlatform.acceptsCharge(stack, 4) ? 3 : 2;
-            changed = moveItemStackTo(stack, target, target + 1, false);
-        } else changed = moveItemStackTo(stack, 0, machineSlots, false);
+            changed = insertIntoDevice(stack, target, target + 1);
+        } else changed = insertIntoDevice(stack, 0, playerStart);
         if (!changed) return ItemStack.EMPTY;
         if (stack.isEmpty()) slot.set(ItemStack.EMPTY);
         else slot.setChanged();
         slot.onTake(player, stack);
         return prior;
+    }
+
+    private boolean insertIntoDevice(ItemStack incoming, int start, int end) {
+        int before = incoming.getCount();
+        for (int pass = 0; pass < 2 && !incoming.isEmpty(); pass++) {
+            for (int i = start; i < end && !incoming.isEmpty(); i++) {
+                var slot = getSlot(i);
+                if (!slot.isActive() || !slot.mayPlace(incoming)) continue;
+                var current = slot.getItem();
+                if (pass == 0) {
+                    if (current.isEmpty() || !WorkshopPlatform.sameItem(current, incoming))
+                        continue;
+                    int add =
+                            Math.min(
+                                    incoming.getCount(),
+                                    Math.min(
+                                                    current.getMaxStackSize(),
+                                                    slot.getMaxStackSize(incoming))
+                                            - current.getCount());
+                    if (add > 0) {
+                        current.grow(add);
+                        incoming.shrink(add);
+                        slot.setChanged();
+                    }
+                } else if (current.isEmpty()) {
+                    int count = Math.min(incoming.getCount(), slot.getMaxStackSize(incoming));
+                    if (count > 0) slot.set(incoming.split(count));
+                }
+            }
+        }
+        return before != incoming.getCount();
     }
 }

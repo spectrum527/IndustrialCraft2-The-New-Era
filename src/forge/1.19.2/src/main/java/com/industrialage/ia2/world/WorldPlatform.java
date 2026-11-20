@@ -82,6 +82,8 @@ public final class WorldPlatform {
         for (String name : SUPPLIES) registerItem(name, props -> WorldNative.supply(name, props));
         WorldBlocks.install();
         WorldSigns.install(modBus);
+        WorldMenus.install(modBus);
+        com.industrialage.ia2.industrial.ToolMenus.install(modBus);
         gameBus.addListener(ForgeLootAdditions::appendToChest);
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
