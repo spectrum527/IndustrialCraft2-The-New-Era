@@ -26,7 +26,7 @@ jobs:
       - name: Build the production JAR and run common contracts
         run: ./gradlew build --console=plain
       - name: Run Forge GameTests and native generator storage contracts
-        run: ./gradlew :test:runGameTest -Pic2.smokeEvidenceDir=build/evidence-smoke
+        run: ./gradlew :test:runGameTest :forge:1.19.2:reobfQaFixtureJar -Pic2.smokeEvidenceDir=build/evidence-smoke
       - name: Restart the Forge world and resume the same generator
         run: ./gradlew :test:runPlatformWorldTest -Pic2.worldEvidenceDir=build/evidence-world
       - name: Check the matching and mismatching clients
@@ -44,6 +44,7 @@ jobs:
           name: forge-1.19.2-verification
           path: |
             src/forge/1.19.2/build/libs/*.jar
+            src/forge/1.19.2/build/qa-machine/fixtures/*.jar
             src/test/build/test-results/test/TEST-*.xml
             build/evidence-*/**/result.json
             build/evidence-*/**/*.properties
