@@ -166,6 +166,8 @@ def workshop_menu(client):
 
 def normal(client):
     session = client.run
+    # The player stands still with screens open during the resource and machine checks.
+    session.command("gamerule doMobSpawning false")
     client.enter("connect", "dedicated-join")
     client.act("press")
     client.check("unbound-no-action", lambda s: s["world"] and not s["screen"])
