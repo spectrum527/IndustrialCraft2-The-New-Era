@@ -1129,5 +1129,12 @@
   "ic2.upgrades.meta": "耐久",
   "ic2.upgrades.energy": "电量",
   "ic2.upgrades.allow": "允许",
-  "ic2.upgrades.deny": "排除"
+  "ic2.upgrades.deny": "排除",
+  "top.ic2.conductor": "导线（本地储能 0 EU）",
+  "top.ic2.empty": "空",
+  "top.ic2.energy": "储能 %s / %s EU",
+  "top.ic2.fluid": "%s %s / %s mB",
+  "top.ic2.no_rider_battery": "未接入骑手电池",
+  "top.ic2.output": "输出 %s EU/t",
+  "top.ic2.rider_battery": "骑手电池（%s）%s / %s EU"
 }

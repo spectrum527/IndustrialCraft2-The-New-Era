@@ -3,7 +3,9 @@ package com.industrialage.ia2.industrial;
 import com.industrialage.ia2.content.ProcessingUpgrades;
 import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
 import com.industrialage.ia2.energy.graph.PacketBudget;
+import com.industrialage.ia2.logistics.FluidContents;
 import com.industrialage.ia2.platform.CapabilityFacade.Face;
+import com.industrialage.ia2.power.EuBuffer;
 import com.industrialage.ia2.power.WorldEnergy;
 import com.industrialage.ia2.power.WorldPowerPort;
 import java.util.ArrayList;
@@ -24,7 +26,8 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * A placed industrial processor. Native items and fluids commit together when one job completes.
  */
-public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPort, MenuProvider {
+public final class WorkshopNode extends WorkshopSaveBase
+        implements WorldPowerPort, EuBuffer, MenuProvider {
     private static final int BLAST_FURNACE_WORK_HEAT = 50_000;
     private static final int BLAST_FURNACE_HEAT_CAPACITY = 100_000;
     private static final Set<Face> SIDES = Set.copyOf(EnumSet.allOf(Face.class));
@@ -682,6 +685,29 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
             setChanged();
         }
         return amount;
+    }
+
+    @Override
+    public EuBuffer.Reading bufferedEu() {
+        return new EuBuffer.Reading(energy, energyCapacity());
+    }
+
+    /** Physical input, output, and byproduct tanks, each listed once. */
+    public List<FluidContents> fluidContents() {
+        var tanks = new ArrayList<FluidContents>(3);
+        if (inlet.capacity > 0) tanks.add(readTank(inlet));
+        if (outlet != inlet && outlet.capacity > 0) tanks.add(readTank(outlet));
+        if (byproduct.capacity > 0) tanks.add(readTank(byproduct));
+        return tanks;
+    }
+
+    private static FluidContents readTank(Tank tank) {
+        return tank.amount == 0
+                ? FluidContents.empty(tank.capacity)
+                : new FluidContents(
+                        WorkshopPlatform.previewFluid(WorkshopPlatform.previewFluidId(tank.id)),
+                        tank.amount,
+                        tank.capacity);
     }
 
     int energyCapacity() {

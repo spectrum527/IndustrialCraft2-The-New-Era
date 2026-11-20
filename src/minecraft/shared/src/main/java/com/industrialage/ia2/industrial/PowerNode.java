@@ -2,11 +2,15 @@ package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
 import com.industrialage.ia2.energy.graph.PacketBudget;
+import com.industrialage.ia2.logistics.FluidContents;
 import com.industrialage.ia2.platform.CapabilityFacade.Face;
+import com.industrialage.ia2.power.EuBuffer;
 import com.industrialage.ia2.power.WorldEnergy;
 import com.industrialage.ia2.power.WorldPowerPort;
 import com.industrialage.ia2.reactor.ElectricReactor;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.OptionalDouble;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +31,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
  * Real-world EU source, accumulator, transformer or reactor connected to its level's energy graph.
  */
 public final class PowerNode extends PowerSaveBase
-        implements WorldPowerPort, com.industrialage.ia2.power.WorldPowerStorage, MenuProvider {
+        implements WorldPowerPort,
+                EuBuffer,
+                com.industrialage.ia2.power.WorldPowerStorage,
+                MenuProvider {
     private static final Set<Face> ALL = Set.of(Face.values());
     private static final Ports OUTPUT = new Ports(Set.of(), ALL, false);
     final PowerKind kind;
@@ -400,6 +407,45 @@ public final class PowerNode extends PowerSaveBase
     /** Current continuous reactor generation before network demand and line loss. */
     public double reactorOutput() {
         return reactor.output();
+    }
+
+    @Override
+    public EuBuffer.Reading bufferedEu() {
+        return new EuBuffer.Reading(storedEu(), capacity());
+    }
+
+    /** Live EU/t for a reactor core or an attached reactor chamber in electric mode. */
+    public OptionalDouble electricalReactorOutput(ServerLevel level) {
+        var core =
+                switch (kind) {
+                    case NUCLEAR_REACTOR -> this;
+                    case REACTOR_CHAMBER -> controller(level);
+                    default -> null;
+                };
+        return core == null || core.fluidMode
+                ? OptionalDouble.empty()
+                : OptionalDouble.of(core.reactorOutput());
+    }
+
+    /** Live fluid contents of a geothermal inlet or a fluid-mode reactor. */
+    public List<FluidContents> fluidContents() {
+        if (kind == PowerKind.GEO_GENERATOR) {
+            return List.of(readTank("minecraft:lava", liquid, 8_000));
+        }
+        var core = coolantTank();
+        return core == null
+                ? List.of()
+                : List.of(
+                        readTank("ic2:coolant", core.coolant, ReactorVessel.TANK_CAPACITY),
+                        readTank("ic2:hot_coolant", core.hotCoolant, ReactorVessel.TANK_CAPACITY));
+    }
+
+    private static FluidContents readTank(String id, int amount, int capacity) {
+        // The inlet has a fixed fluid type even while empty.
+        return new FluidContents(
+                WorkshopPlatform.previewFluid(WorkshopPlatform.previewFluidId(id)),
+                amount,
+                capacity);
     }
 
     /** Current stored EU, excluding temporary reactor offers. */
