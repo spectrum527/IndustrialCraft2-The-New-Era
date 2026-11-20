@@ -45,6 +45,15 @@ class BuildContractTest {
                 assertFalse(text.contains("${"));
                 assertNotNull(jar.getJarEntry("com/industrialage/ia2/config/active-keys.tsv"));
                 assertNotNull(jar.getJarEntry("assets/ic2/status/client.json"));
+                for (String type :
+                        Set.of(
+                                "energy/graph/EnergyGraph", "energy/graph/PacketBudget",
+                                "machine/BlockEntityBase", "machine/FuelGenerator",
+                                "machine/ForgeMachineBlockEntity",
+                                        "machine/FuelGeneratorBlockEntity")) {
+                    assertNotNull(
+                            jar.getJarEntry("com/industrialage/ia2/" + type + ".class"), type);
+                }
                 assertNotNull(jar.getJarEntry("LICENSE"));
                 assertNotNull(jar.getJarEntry("COPYING"));
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));

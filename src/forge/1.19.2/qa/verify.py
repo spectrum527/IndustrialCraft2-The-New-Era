@@ -1,6 +1,7 @@
 """Run independent P2 smoke, cross-JVM world, and physical client checks on Forge 43.5.0."""
 
 import argparse
+from hashlib import sha256
 import json
 from pathlib import Path
 import re
@@ -107,9 +108,18 @@ def smoke(directory):
               or case.find("error") is not None or case.find("skipped") is not None]
     text = log.read_text(errors="replace")
     required = re.search(r"All (\d+) required tests passed", text, re.I)
-    if not any(name.endswith("harnesssmoke") for name in names) or failed or not required or int(required[1]) < 1:
+    expected = {"harnesssmoke", "generatornewstate", "generatorfractionalnbt", "generatorcorruptnbt"}
+    if not expected.issubset(names) or failed or not required or int(required[1]) < len(expected):
         raise AssertionError(f"Missing executed Forge GameTest smoke or required success count in {log}")
-    return {"cases": names, "requiredPassed": int(required[1]), "requiredFailed": 0, "processExit": exit_code}
+    rejected = (directory / "generator-rejections.txt").read_text().splitlines()
+    if len(set(rejected)) != 14 or len(rejected) != 14:
+        raise AssertionError(f"Incomplete corrupt native NBT diagnostics: {rejected}")
+    binary = directory / "generator-fractional.nbt"
+    return {"cases": names, "requiredPassed": int(required[1]), "requiredFailed": 0, "processExit": exit_code,
+            "nativeNbt": {"new": {"fuelTicks": 0, "storedEU": 0},
+                          "roundTrip": {"fuelTicks": 123, "storedEU": 1200.5, "file": binary.name,
+                                        "sha256": sha256(binary.read_bytes()).hexdigest()},
+                          "corrupt": {"count": len(rejected), "diagnosedAndPreserved": rejected}}}
 
 
 def main():
