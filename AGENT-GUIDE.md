@@ -49,10 +49,10 @@
 | 路线 | 净室重写，三角色隔离（A2） |
 | 平台 | NeoForge 1.21.1 主基线；26.1.2 与 26.2 同步编译，各自运行验收从 P6 开始（A5） |
 | 包名 / group | `com.industrialage.ia2` 为既有内部坐标（A3） |
-| 协议 | 代码 LGPL-3.0（A11）；新作素材 CC BY-SA 4.0（A21） |
-| 可见性 | GitHub 私有仓库（spectrum527 账号），素材全部重绘后才转 Public（A12） |
-| 发布 | 转 Public 前只做邀请制封闭测试，不上 Modrinth / CurseForge（A13） |
-| 对外表述 | IndustrialCraft 2（IC2），按 A15 使用 |
+| 协议 | 代码 LGPL-3.0-only，游戏美术 CC BY-SA 4.0，标识另依品牌条款（A11、A21） |
+| 可见性 | 主仓库公开，独立参考与计划仓库私有（A12） |
+| 发布 | 正式版本通过 GitHub Releases 公开分发（A13） |
+| 对外表述 | IndustrialCraft²: The New Era，见 A15 |
 | 构建 | ModDevGradle（A19）；CI 为 GitHub Actions，看板为 GitHub Projects（A18） |
 | 配置 | 只建 58 个活键，无旧键兼容层；只出迁移文档（A10） |
 | 版本基线 | 修复正式版的玩家行为与修正优先；2.9.40 补未覆盖行为，2.8.222 用于交叉核对（A23）。实现只读独立行为规格。 |
@@ -212,7 +212,7 @@ P?-T?
 
 ### Artist / Audio Agent（`assets/`）
 
-- 本仓库 `assets/` **只收新作**（CC BY-SA 4.0）。三类纹理从空白画布重绘，私有参考存放在独立仓库 `ic2-legacy-assets`，不进本仓库（A22）。
+- 本仓库 `assets/` 收录有来源登记的游戏美术、验收截图和[项目标识](docs/branding.md)，游戏美术采用 CC BY-SA 4.0。三类纹理从空白画布重绘，私有参考存放在独立仓库 `ic2-legacy-assets`，不进本仓库（A22）。
 - 每个资源在 `assets/SOURCES.md` 登记状态 `legacy` / `new`、作者、协议；转 Public 的门禁是 `legacy` = 0（A7）。
 - 新作署名及 CC BY-SA 4.0 登记见 `assets/SOURCES.md`。纹理路径、状态、制作与验收见 `spec/assets/textures.md`。
 
