@@ -137,6 +137,9 @@ public final class OptionalCompatFixture {
                 TopReply.block(level, player, WASHER, "top.ic2.energy", "567.25", "16000");
                 TopReply.block(level, player, WASHER, "top.ic2.fluid", "Water", 321, 8000);
                 report.add("TOP washer 567.25 / 16000 EU and Water 321 / 8000 mB");
+                washer.receive(0.0045);
+                TopReply.block(level, player, WASHER, "top.ic2.energy", "567.255", "16000");
+                report.add("TOP fractional EU rounded to three decimal places");
                 place(level, GEO, "geo_generator");
                 var geo = (PowerNode) level.getBlockEntity(GEO);
                 require(geo.fillLava(765, false) == 765, "seed geothermal lava");
