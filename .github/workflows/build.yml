@@ -4,7 +4,7 @@ on:
   push:
     branches: ['1.19.2']
   pull_request:
-    branches: ['1.19.2']
+    branches: ['1.19.2', 'forge1192/**']
   workflow_dispatch:
 
 permissions:
