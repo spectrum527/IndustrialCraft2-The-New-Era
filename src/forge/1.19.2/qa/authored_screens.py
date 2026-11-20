@@ -4,6 +4,8 @@ import argparse
 from hashlib import sha256
 from itertools import combinations
 import json
+import math
+import os
 import re
 from pathlib import Path
 from struct import unpack
@@ -34,6 +36,13 @@ def initial_state(path):
     return None
 
 
+def framebuffer_pixel(panel, x, y):
+    zoom = panel.get("panelScale", 1)
+    scale = panel["guiScale"]
+    return (int((panel["left"] + (x + 0.5) * zoom) * scale),
+            int((panel["top"] + (y + 0.5) * zoom) * scale))
+
+
 def assert_artwork(file, panel, artwork, limit, layout, strict):
     """Compare original upper-screen atlas pixels at the documented native scale."""
     from PIL import Image
@@ -41,8 +50,7 @@ def assert_artwork(file, panel, artwork, limit, layout, strict):
     with Image.open(file) as screenshot, Image.open(artwork) as atlas:
         source = atlas.convert("RGBA")
         screen = screenshot.convert("RGB")
-        scale = panel["guiScale"]
-        left, top = panel["left"], panel["top"]
+        width = layout["panel"][0]
         same = protected = protected_matches = 0
         sampled = 0
         masks = [field["rect"] for key in ("controls", "draw", "meters", "labels")
@@ -56,12 +64,11 @@ def assert_artwork(file, panel, artwork, limit, layout, strict):
             if native["index"] < 27 and native.get("count", 0) > 0:
                 masks.append((native["x"]-2, native["y"]-2, 22, 21))
         for y in range(16, limit):
-            for x in range(5, panel["width"] - 5):
+            for x in range(5, width - 5):
                 rgba = source.getpixel((x, y))
                 if rgba[3] != 255:
                     continue
-                actual = screen.getpixel((int((left + x + 0.5) * scale),
-                                          int((top + y + 0.5) * scale)))
+                actual = screen.getpixel(framebuffer_pixel(panel, x, y))
                 sampled += 1
                 is_exact = actual == rgba[:3]
                 same += is_exact
@@ -81,15 +88,12 @@ def water_well(file, panel):
     """A filled tank's native water texture must be visible inside the authored 16px well."""
     from PIL import Image
 
-    scale = panel["guiScale"]
-    left, top = panel["left"] + 80, panel["top"] + 36
     pixels = 0
     with Image.open(file) as screenshot:
         screen = screenshot.convert("RGB")
         for y in range(16):
             for x in range(16):
-                red, green, blue = screen.getpixel((int((left + x + 0.5) * scale),
-                                                    int((top + y + 0.5) * scale)))
+                red, green, blue = screen.getpixel(framebuffer_pixel(panel, 80 + x, 36 + y))
                 pixels += blue - red > 40 and blue - green > 25
     if pixels < 16 * 16 * 3 // 4:
         raise AssertionError(f"Native water well contained only {pixels}/256 blue water pixels")
@@ -105,7 +109,6 @@ def reactor_tiles(file, panel, layout):
     closed = [(slots[str(index)][0] - 1, slots[str(index)][1] - 1)
               for index in range(54) if index not in exposed]
     same = compared = 0
-    scale = panel["guiScale"]
     with Image.open(file) as screenshot, Image.open(TEXTURES / "guinuclearreactor.png") as atlas:
         actual = screenshot.convert("RGB")
         ink = atlas.convert("RGBA")
@@ -115,9 +118,7 @@ def reactor_tiles(file, panel, layout):
                     expected = ink.getpixel((212 + sx, sy))
                     if expected[3] != 255:
                         continue
-                    px = int((panel["left"] + x + sx + 0.5) * scale)
-                    py = int((panel["top"] + y + sy + 0.5) * scale)
-                    same += actual.getpixel((px, py)) == expected[:3]
+                    same += actual.getpixel(framebuffer_pixel(panel, x + sx, y + sy)) == expected[:3]
                     compared += 1
     if len(closed) != 36 or same != compared:
         raise AssertionError(f"reactor authored closed-chamber overlays matched {same}/{compared}")
@@ -271,11 +272,27 @@ def prepare_block(client, path, key, device):
     client.act("ui:" + path)
 
 
+def verify_panel_size(path, raw_size, panel):
+    zoom = panel.get("panelScale", 1)
+    if "panelScale" in panel:
+        available = (panel["viewportWidth"], panel["viewportHeight"])
+        expected_zoom = min(1, *(max(1, viewport - 4) / size
+                                 for viewport, size in zip(available, raw_size)))
+        if not math.isclose(zoom, expected_zoom, abs_tol=1e-6):
+            raise AssertionError(f"{path} panel scale {zoom}, expected {expected_zoom}")
+        if (panel["left"] < 0 or panel["top"] < 0
+                or panel["left"] + panel["width"] > available[0]
+                or panel["top"] + panel["height"] > available[1]):
+            raise AssertionError(f"{path} panel exceeds the viewport: {panel}")
+    expected = [math.ceil(size * zoom - 1e-5) for size in raw_size]
+    if [panel["width"], panel["height"]] != expected:
+        raise AssertionError(f"{path} dimensions differ from {expected}")
+
+
 def verify_workshop(path, layout, geometry):
     if geometry.get("device") != path or geometry.get("atlas") != layout["atlas"]:
         raise AssertionError(f"{path} opened a different Workshop atlas")
-    if [geometry["width"], geometry["height"]] != layout["panel"]:
-        raise AssertionError(f"{path} original panel dimensions changed")
+    verify_panel_size(path, layout["panel"], geometry)
     expected = layout["slots"]
     machine = {str(slot["index"]): [slot["x"], slot["y"]]
                for slot in geometry["slots"] if slot["index"] < 27}
@@ -288,8 +305,8 @@ def verify_workshop(path, layout, geometry):
 
 
 def verify_other(path, device, panel):
-    if "size" in device and [panel["width"], panel["height"]] != device["size"]:
-        raise AssertionError(f"{path} dimensions differ from {device['size']}")
+    if "size" in device:
+        verify_panel_size(path, device["size"], panel)
     if "slots" in device and len(panel["slots"]) != device["slots"]:
         raise AssertionError(f"{path} expected {device['slots']} slots, found {len(panel['slots'])}")
     actual = {(slot["x"], slot["y"]) for slot in panel["slots"]}
@@ -324,7 +341,8 @@ def inspect(client, device, layouts):
             for item in device["items"]), timeout=10)
     file, geometry = capture(client, path)
     validate_slot_rectangles(geometry, path)
-    layout = layouts.get(path, {"atlas": device.get("atlas"), "inventory": device.get("inventory")})
+    layout = layouts.get(path, {"atlas": device.get("atlas"), "inventory": device.get("inventory"),
+                                "panel": device.get("size", [geometry["width"], geometry["height"]])})
     closed_cells = None
     if path in ("nuclear_reactor", "nuclear_reactor_chambers"):
         core_layout = json.loads(POWER_LAYOUTS.read_text())["nuclear_reactor"]
@@ -342,7 +360,7 @@ def inspect(client, device, layouts):
         resource = TEXTURES / f"{atlas}.png"
         if "textureSha256" in device and sha256(resource.read_bytes()).hexdigest() != device["textureSha256"]:
             raise AssertionError(f"{path} changed its authored atlas")
-        upper = layout["inventory"][1] - 3 if layout.get("inventory") else geometry["height"] - 4
+        upper = layout["inventory"][1] - 3 if layout.get("inventory") else layout["panel"][1] - 4
         pixel_audit = assert_artwork(file, geometry, resource, upper, layout,
                                      path in ("metal_former", "ore_washing_plant"))
     result = {"png": str(file), "screen": state["screen"], "title": state["title"],
@@ -364,8 +382,11 @@ def inspect(client, device, layouts):
         result["steps"] = click_steps(client, path, actions)
     if path == "metal_former":
         client.act("click-ui:74,63")
+        language = os.environ.get("IC2_QA_LANGUAGE", "en_us")
+        locale = json.loads((ROOT / "assets/ic2/lang" / f"{language}.json").read_text(encoding="utf-8"))
+        cutting = locale["gui.ic2.workshop.metal_former.2"]
         client.check("authored-metal-mode-hotspot-works",
-                     lambda state: state.get("workshopMode") == "Cutting", timeout=8)
+                     lambda state: state.get("workshopMode") == cutting, timeout=8)
         client.act("click-ui:160,16")
         captured = {"item": "ic2:overclocker_upgrade", "count": 1}
         client.check("authored-metal-upgrade-first-slot-can-pick-up",
