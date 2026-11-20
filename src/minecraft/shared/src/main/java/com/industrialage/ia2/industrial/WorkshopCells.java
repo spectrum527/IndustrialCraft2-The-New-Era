@@ -13,18 +13,16 @@ final class WorkshopCells {
 
     private WorkshopCells() {}
 
-    static WorkshopPlans.ContainerResult namedFill(
-            WorkshopNode node, ItemStack stack, boolean filling) {
-        if (!filling
-                || node.inlet.amount < VOLUME
+    static WorkshopPlans.ContainerResult namedFill(WorkshopNode.Tank tank, ItemStack stack) {
+        if (tank.amount < VOLUME
                 || !WorkshopPlatform.sameItem(stack, WorkshopPlatform.stack("ic2:empty_cell", 1))) {
             return null;
         }
-        var filled = namedStack(node.inlet.id);
+        var filled = namedStack(tank.id);
         return filled.isEmpty()
                 ? null
                 : new WorkshopPlans.ContainerResult(
-                        filled, new WorkshopPlans.Liquid(node.inlet.id, VOLUME));
+                        filled, new WorkshopPlans.Liquid(tank.id, VOLUME));
     }
 
     static ItemStack namedStack(String fluid) {
