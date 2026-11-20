@@ -3,7 +3,7 @@ def commonImports = tasks.register('checkCommonImports') {
     inputs.files(commonJavaSources)
     doLast {
         commonJavaSources.each {
-            if (it.text =~ /(?m)^\s*import\s+(static\s+)?(?:net\.neoforged|net\.minecraftforge|net\.fabricmc)\./) {
+            if (it.text =~ /(?m)^\s*import\s+(static\s+)?(?:net\.minecraft|net\.neoforged|net\.minecraftforge|net\.fabricmc)\./) {
                 throw new GradleException("Platform import in common: $it")
             }
         }

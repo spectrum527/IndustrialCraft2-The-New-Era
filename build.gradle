@@ -1,7 +1,6 @@
 plugins {
     id 'base'
-    id 'net.neoforged.moddev' apply false
-    id 'com.diffplug.spotless' version '8.0.0'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 allprojects {
     group = 'com.industrialage.ia2'
@@ -10,7 +9,7 @@ allprojects {
 }
 subprojects {
     plugins.withId('java') {
-        java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+        java.toolchain.languageVersion = JavaLanguageVersion.of(17)
         tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
         tasks.withType(AbstractArchiveTask).configureEach {
             preserveFileTimestamps = false
@@ -20,10 +19,12 @@ subprojects {
 }
 spotless {
     java {
-        target subprojects.collect { it.fileTree('src') { include '**/*.java' } } +
-                [fileTree('src/neoforge/shared/src') { include '**/*.java' }]
-        googleJavaFormat('1.28.0').aosp()
+        target 'src/common/src/**/*.java', 'src/forge/**/*.java', 'src/test/src/test/**/*.java',
+                'src/neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeEvents.java',
+                'src/neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeConfig.java'
+        targetExclude '**/build/**'
+        googleJavaFormat('1.22.0').aosp()
     }
 }
 apply from: 'gradle/checks.gradle'
-tasks.named('build') { dependsOn subprojects.collect { it.tasks.matching { it.name == 'build' } } }
+tasks.named('build') { dependsOn ':forge:1.19.2:build', ':test:test' }

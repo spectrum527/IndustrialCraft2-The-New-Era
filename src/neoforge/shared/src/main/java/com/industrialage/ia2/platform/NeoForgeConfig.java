@@ -6,16 +6,16 @@ import com.electronwill.nightconfig.toml.TomlFormat;
 import com.electronwill.nightconfig.toml.TomlParser;
 import com.electronwill.nightconfig.toml.TomlWriter;
 import com.industrialage.ia2.config.ActiveConfig;
+import com.industrialage.ia2.config.WorldConfigFile;
 import com.mojang.brigadier.context.CommandContext;
 import java.io.IOException;
-import java.io.StringReader;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -34,12 +34,10 @@ import org.slf4j.LoggerFactory;
 public final class NeoForgeConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(NeoForgeConfig.class);
     private final String fileName;
-    private final ModConfigSpec schema;
+    private final Format format;
     private final AtomicReference<Session> active = new AtomicReference<>();
     private final ConfigFacade facade =
-            () ->
-                    Optional.ofNullable(active.get())
-                            .flatMap(session -> session.publisher().current());
+            () -> Optional.ofNullable(active.get()).flatMap(session -> session.file().current());
 
     /** Hooks the shared configuration schema and commands into the server lifecycle. */
     public NeoForgeConfig(ModContainer container, IEventBus gameBus) {
@@ -49,7 +47,7 @@ public final class NeoForgeConfig {
             builder.comment(entry.comment())
                     .define(entry.path(), entry.defaultValue(), entry::accepts);
         }
-        schema = builder.build();
+        format = new Format(builder.build());
         gameBus.addListener(this::start);
         gameBus.addListener(this::stop);
         gameBus.addListener(this::registerCommands);
@@ -64,8 +62,7 @@ public final class NeoForgeConfig {
         var server = event.getServer();
         var file =
                 server.getWorldPath(LevelResource.ROOT).resolve("serverconfig").resolve(fileName);
-        var keys = ActiveConfig.entries().stream().map(ActiveConfig.Entry::key).toList();
-        var session = new Session(server, file, new ConfigFacade.Publisher(keys, snapshot -> {}));
+        var session = new Session(server, new WorldConfigFile(file, format));
         active.set(session);
         load(session, true);
     }
@@ -106,11 +103,29 @@ public final class NeoForgeConfig {
 
     private Optional<String> load(Session session, boolean createIfMissing) {
         try {
-            if (createIfMissing && Files.notExists(session.file())) {
-                createDefaults(session.file());
-            }
-            var source = Files.readString(session.file());
-            var candidate = new TomlParser().parse(new StringReader(source));
+            session.file().load(createIfMissing);
+            LOGGER.info(
+                    "Loaded {} IC2 configuration values from {}",
+                    ActiveConfig.entries().size(),
+                    session.file().path());
+            return Optional.empty();
+        } catch (IOException
+                | ParsingException
+                | WritingException
+                | IllegalArgumentException failure) {
+            var reason =
+                    Optional.ofNullable(failure.getMessage())
+                            .orElse(failure.getClass().getSimpleName());
+            LOGGER.warn(
+                    "Rejected IC2 configuration at {} because {}", session.file().path(), reason);
+            return Optional.of(reason);
+        }
+    }
+
+    private record Format(ModConfigSpec schema) implements WorldConfigFile.Format {
+        @Override
+        public Function<List<String>, Object> read(Reader text) {
+            var candidate = new TomlParser().parse(text);
             // This listener observes value corrections, not comment changes. A correction aborts
             // validation of this detached parse result, which is never written back to the file.
             schema.correct(
@@ -124,42 +139,16 @@ public final class NeoForgeConfig {
                                 };
                         throw new IllegalArgumentException(message + String.join("/", path));
                     });
-            var values = new HashMap<String, Object>();
-            for (var entry : ActiveConfig.entries()) {
-                values.put(entry.key().name(), entry.resolve(candidate.get(entry.path())));
-            }
-            session.publisher().publish(values);
-            LOGGER.info(
-                    "Loaded {} IC2 configuration values from {}", values.size(), session.file());
-            return Optional.empty();
-        } catch (IOException
-                | ParsingException
-                | WritingException
-                | IllegalArgumentException failure) {
-            var reason =
-                    Optional.ofNullable(failure.getMessage())
-                            .orElse(failure.getClass().getSimpleName());
-            LOGGER.warn("Rejected IC2 configuration at {} because {}", session.file(), reason);
-            return Optional.of(reason);
+            return candidate::get;
+        }
+
+        @Override
+        public void writeDefaults(Writer writer) {
+            var defaults = TomlFormat.newConfig(LinkedHashMap::new);
+            schema.correct(defaults);
+            new TomlWriter().write(defaults, writer);
         }
     }
 
-    private void createDefaults(Path file) throws IOException {
-        var defaults = TomlFormat.newConfig(LinkedHashMap::new);
-        schema.correct(defaults);
-        Files.createDirectories(file.getParent());
-        var temporary = Files.createTempFile(file.getParent(), "ic2-config-", ".toml");
-        try {
-            try (var writer = Files.newBufferedWriter(temporary)) {
-                new TomlWriter().write(defaults, writer);
-            }
-            Files.move(temporary, file);
-        } catch (FileAlreadyExistsException concurrentCreation) {
-            // Validate the file written by the other writer instead of replacing it.
-        } finally {
-            Files.deleteIfExists(temporary);
-        }
-    }
-
-    private record Session(MinecraftServer server, Path file, ConfigFacade.Publisher publisher) {}
+    private record Session(MinecraftServer server, WorldConfigFile file) {}
 }
