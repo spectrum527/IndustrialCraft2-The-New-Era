@@ -32,6 +32,7 @@ public final class PowerNode extends PowerSaveBase
     private static final Ports OUTPUT = new Ports(Set.of(), ALL, false);
     final PowerKind kind;
     final PowerInventory inventory;
+    final PlayerMachines.LiftContacts liftContacts;
     final ElectricReactor reactor = new ElectricReactor();
     int chambers;
     boolean fluidMode;
@@ -90,6 +91,7 @@ public final class PowerNode extends PowerSaveBase
         super(PowerPlatform.type(), pos, state);
         kind = ((PowerBlock) state.getBlock()).kind;
         inventory = new PowerInventory(this);
+        liftContacts = kind == PowerKind.MAGNETIZER ? new PlayerMachines.LiftContacts() : null;
     }
 
     void tick(ServerLevel level) {
