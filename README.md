@@ -21,6 +21,8 @@
 
 三个 NeoForge 分支共享玩法层，本工程可以分别构建三个目标。Forge 1.19.2 分支使用 ForgeGradle 的重混淆发行任务。
 
+复现发行 JAR 时，可在全新检出目录运行下列打包命令。这样旧分支的编译类和生成资源不会混入成品。
+
 ```sh
 ./gradlew :neoforge:1.21.1:jar :neoforge:26.1.2:jar :neoforge:26.2:jar
 ./gradlew :neoforge:1.21.1:nativeGameplayTest
