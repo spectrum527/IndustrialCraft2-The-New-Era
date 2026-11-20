@@ -3,6 +3,29 @@
 from packaged_playable import block, energy, feed, items, merge, seed_eu
 
 
+def kinetic_routes(server):
+    server.send("forceload add 0 0 31 15")
+    for z, facing, xs, cable in (
+        (3, "east", (2, 3, 5), "4 150 3"),
+        (7, "west", (22, 21, 20), None),
+    ):
+        motor, converter, storage = (f"{x} 150 {z}" for x in xs)
+        intake = "west" if facing == "east" else "east"
+        server.send(block(motor, f"ic2:electric_kinetic_generator[facing={facing}]"),
+                    block(converter, f"ic2:kinetic_generator[facing={intake}]"),
+                    block(storage, "ic2:mfe"))
+        if cable:
+            server.send(block(cable, "ic2:gold_cable"))
+        server.send(merge(motor, '{ic2_energy:800.0d,Items:[{Slot:0b,id:"ic2:electric_motor",Count:1b}]}'))
+        server.require("motor_paid_and_mfe_received_800_" + facing,
+                       energy(motor, 0), energy(converter, 0), energy(storage, 800))
+        server.state(motor, converter, storage)
+        if cable:
+            server.send(block(motor, f"ic2:manual_kinetic_generator[facing={facing}]"),
+                        merge(motor, "{ic2_heat:40}"))
+            server.require("one_crank_added_10_eu_on_same_cable", energy(storage, 810))
+
+
 def thermal_lines(server):
     server.send(
         "forceload add 0 0 47 47",

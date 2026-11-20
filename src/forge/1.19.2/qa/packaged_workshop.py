@@ -11,7 +11,7 @@ import zipfile
 
 from packaged_playable import block, boot, energy, feed, items, merge, seed_eu
 from packaged_server import digest
-from workshop_connected import advanced_lines, matter_lines, metal_lines, steam_lines, thermal_lines
+from workshop_connected import advanced_lines, kinetic_routes, matter_lines, metal_lines, steam_lines, thermal_lines
 
 
 def fuelled_line(server, z, name, mode, ingredient, count):
@@ -170,6 +170,7 @@ def main():
     profile = parser.add_mutually_exclusive_group()
     profile.add_argument("--automation", action="store_true")
     profile.add_argument("--thermal", action="store_true")
+    profile.add_argument("--kinetic", action="store_true")
     profile.add_argument("--metal-lines", action="store_true")
     profile.add_argument("--advanced", action="store_true")
     profile.add_argument("--steam", action="store_true")
@@ -216,6 +217,8 @@ def main():
                 steam_lines(server)
             elif args.thermal:
                 thermal_lines(server)
+            elif args.kinetic:
+                kinetic_routes(server)
             else:
                 workshop(server)
             checks = server.checks
