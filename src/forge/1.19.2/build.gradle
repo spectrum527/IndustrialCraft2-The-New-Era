@@ -105,6 +105,7 @@ tasks.named('jar') {
 
 apply from: 'qa/play.gradle'
 apply from: 'qa/machine.gradle'
+apply from: 'qa/optional-compat.gradle'
 
 apply from: rootProject.file('gradle/canonical-forge-jar.gradle')
 // Serve only this derived coordinate through the canonical publisher. ForgeGradle still generates

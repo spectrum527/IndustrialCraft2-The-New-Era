@@ -28,6 +28,9 @@ public final class ForgeQa {
             GlobalTestReporter.replaceWith(new JUnitLikeTestReporter(new File("game-test.xml")));
         }
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
+        if (System.getProperty("ic2.compat.mode") != null) {
+            new com.industrialage.ia2.compatqa.OptionalCompatFixture();
+        }
         var phase = System.getProperty("ic2.qa.worldPhase");
         if (phase != null) {
             bus.addListener(
