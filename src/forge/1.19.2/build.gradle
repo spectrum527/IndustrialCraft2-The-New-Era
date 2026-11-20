@@ -91,6 +91,7 @@ tasks.named('processResources') {
     }
     from(rootProject.file('spec/config/active-keys.tsv')) { into 'com/industrialage/ia2/config' }
     from(rootProject.file('assets')) {
+        exclude 'qa/**'  // Registered documentation figures stay outside the mod JAR.
         into 'assets'
         exclude '**/*.md', '**/.git*', '**/.DS_Store'
         includeEmptyDirs = false

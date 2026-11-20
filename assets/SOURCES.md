@@ -1746,3 +1746,5 @@
 | `assets/ic2/textures/models/armor/quantum_layer_2_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_2_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
 | `assets/ic2/textures/entity/signs/rubber.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/entity/signs/rubber.png`，原样适配橡胶告示牌 | 2026-11-20 |
 | `assets/ic2/gui/power-layouts.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 根据作者专用 GUI 图稿、游戏公开槽位和像素测量重新编写的玩家界面布局 | 2026-11-20 |
+| `assets/qa/first-playable-0.1.0/processing-comparison.png` | new | IC2 重建项目 | 验收文档图；作者纹理及游戏元素保留原许可 | 回交原稿与实际游戏中成形机、洗矿机的并列验证图，仅供文档使用 | 2026-11-20 |
+| `assets/qa/first-playable-0.1.0/workbench-comparison.png` | new | IC2 重建项目 | 验收文档图；作者纹理及游戏元素保留原许可 | 修复版与重建版各自独立运行的工业工作台实拍对照图，仅供文档使用 | 2026-11-20 |
