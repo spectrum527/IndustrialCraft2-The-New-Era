@@ -1,7 +1,11 @@
 package com.industrialage.ia2.forge.qa;
 
 import com.mojang.authlib.GameProfile;
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Properties;
+import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -9,12 +13,6 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.fml.ModList;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Properties;
-import java.util.UUID;
 
 /** Installs the independent matrix beside a reobfuscated JAR on a real dedicated server. */
 final class InstalledStorageFixture {

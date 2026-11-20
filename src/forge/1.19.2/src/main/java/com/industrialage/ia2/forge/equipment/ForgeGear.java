@@ -2,8 +2,8 @@ package com.industrialage.ia2.forge.equipment;
 
 import com.industrialage.ia2.audio.IndustrialSounds;
 import com.industrialage.ia2.compat.CuriosBack;
-import com.industrialage.ia2.content.PortableEquipment.Kind;
 import com.industrialage.ia2.content.PortableEquipment;
+import com.industrialage.ia2.content.PortableEquipment.Kind;
 import com.industrialage.ia2.equipment.ArmorEffects;
 import com.industrialage.ia2.equipment.ArmorPlatform;
 import com.industrialage.ia2.equipment.JetpackMount;

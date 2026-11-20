@@ -1,13 +1,12 @@
 package com.industrialage.ia2.industrial;
 
+import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.UUID;
 
 /** Persistent inventory shared by viewers and serialized by the native block entity. */
 public final class BoxNode extends BoxHost {

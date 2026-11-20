@@ -2,7 +2,9 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.forge.content.ForgeContent;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -31,10 +33,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /** Wires the shared transport devices to Forge registration, item handlers and fluid handlers. */
 public final class TransportPlatform {

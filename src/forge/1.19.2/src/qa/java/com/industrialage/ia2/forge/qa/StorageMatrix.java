@@ -2,7 +2,10 @@ package com.industrialage.ia2.forge.qa;
 
 import com.industrialage.ia2.industrial.BoxBlock;
 import com.industrialage.ia2.industrial.BoxNode;
-
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -19,11 +22,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 /** Shared survival matrix for the development GameTest and the installed production JAR. */
 final class StorageMatrix {
