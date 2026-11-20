@@ -1,0 +1,188 @@
+{
+  "targets": {
+    "1.19.2": {
+      "minecraft": "1.19.2",
+      "jar": "ic2-forge-1.19.2-0.1.0.jar",
+      "sha256": "623689e1e62b0ba4174fc5b8ae5ac2d16b487d97519fc7edddea939c159d192d",
+      "optionalInstalls": {
+        "none": [
+          "ic2 0.1.0 / ic2-forge-1.19.2-0.1.0.jar",
+          "Chest pack charge 0 -> 100 EU; pad 701 -> 601 EU"
+        ],
+        "top": [
+          "ic2 0.1.0 / ic2-forge-1.19.2-0.1.0.jar",
+          "theoneprobe 1.19-6.2.2 / theoneprobe-1.19-6.2.2.jar",
+          "Chest pack charge 0 -> 100 EU; pad 701 -> 601 EU",
+          "TOP boat rider battery 100 / 60000 EU",
+          "TOP conductor reports 0 EU local buffer",
+          "TOP BatBox 723 -> 595 / 40000 EU",
+          "TOP tank empty -> Water 1234 / 24000 mB",
+          "TOP washer 567.25 / 16000 EU and Water 321 / 8000 mB",
+          "TOP fractional EU rounded to three decimal places",
+          "TOP geothermal Lava 765 / 8000 mB and 0 / 2400 EU"
+        ],
+        "curios": [
+          "ic2 0.1.0 / ic2-forge-1.19.2-0.1.0.jar",
+          "curios 1.19.2-5.1.6.4 / curios-forge-1.19.2-5.1.6.4.jar",
+          "Curios validates all five IC2 packs and rejects diamond",
+          "Curios pack charge 0 -> 100 EU; pad 701 -> 601 EU",
+          "Curios retained 100 EU after unequipping"
+        ],
+        "both": [
+          "ic2 0.1.0 / ic2-forge-1.19.2-0.1.0.jar",
+          "theoneprobe 1.19-6.2.2 / theoneprobe-1.19-6.2.2.jar",
+          "curios 1.19.2-5.1.6.4 / curios-forge-1.19.2-5.1.6.4.jar",
+          "Curios validates all five IC2 packs and rejects diamond",
+          "Curios pack charge 0 -> 100 EU; pad 701 -> 601 EU",
+          "TOP boat rider battery 100 / 60000 EU",
+          "TOP conductor reports 0 EU local buffer",
+          "TOP BatBox 723 -> 595 / 40000 EU",
+          "TOP tank empty -> Water 1234 / 24000 mB",
+          "TOP washer 567.25 / 16000 EU and Water 321 / 8000 mB",
+          "TOP fractional EU rounded to three decimal places",
+          "TOP geothermal Lava 765 / 8000 mB and 0 / 2400 EU",
+          "Curios retained 100 EU after unequipping"
+        ]
+      },
+      "storage": {
+        "survivalRoundTrips": 24,
+        "boxIds": [
+          "bronze_storage_box",
+          "iridium_storage_box",
+          "iron_storage_box",
+          "personal_chest",
+          "steel_storage_box",
+          "wooden_storage_box"
+        ],
+        "methods": [
+          "hand",
+          "wrong shovel",
+          "axe for wood, pickaxe for metal",
+          "wrench"
+        ],
+        "assertionCount": 270
+      },
+      "oldElectrolyzerSave": {
+        "serverPids": [
+          80152,
+          80730
+        ],
+        "legacyProgress": 31,
+        "previouslyPaidEU": 496,
+        "additionalCostEU": 5904,
+        "checks": [
+          "stalled_without_overflow_32000",
+          "stalled_without_overflow_5904",
+          "retained_on_restart_32000",
+          "retained_on_restart_5904",
+          "one_batch_with_exact_prepaid_eu_32000",
+          "one_batch_with_exact_prepaid_eu_5904"
+        ],
+        "startAndEndEU": [
+          [
+            32000,
+            26096
+          ],
+          [
+            5904,
+            0
+          ]
+        ]
+      },
+      "machineReadbacks": {
+        "hydrogen-below": {
+          "fluid": "ic2:hydrogen",
+          "amount": 26,
+          "data": "[00:41:56] [Server thread/INFO] [minecraft/MinecraftServer]: 29, 89, 25 has the following block data: {ic2_closed: 0, x: 29, ic2_fluid: {FluidName: \"ic2:hydrogen\", Amount: 26}, y: 89, z: 25, id: \"ic2:transport\", ic2_pump_lv: 0, ic2_pump_mv: 0}"
+        },
+        "oxygen-above": {
+          "fluid": "ic2:oxygen",
+          "amount": 13,
+          "data": "[00:41:56] [Server thread/INFO] [minecraft/MinecraftServer]: 29, 91, 25 has the following block data: {ic2_closed: 0, x: 29, ic2_fluid: {FluidName: \"ic2:oxygen\", Amount: 13}, y: 91, z: 25, id: \"ic2:transport\", ic2_pump_lv: 0, ic2_pump_mv: 0}"
+        },
+        "enrichment-container-holds-1000-mb-biomass": "[00:41:36] [Server thread/INFO] [minecraft/MinecraftServer]: P2Tester has the following entity data: {Slot: 5b, id: \"ic2:fluid_cell\", Count: 1b, tag: {Fluid: {FluidName: \"ic2:biomass\", Amount: 1000}}}",
+        "upgraded-electrolysis-pays-6400": {
+          "pos": "29 90 25",
+          "observed": "{ic2_progress:0,ic2_energy:0.0d}"
+        },
+        "legacy-electrolyzer-finishes-after-5904-additional-eu": {
+          "pos": "29 90 25",
+          "observed": "{ic2_progress:0,ic2_energy:0.0d}"
+        }
+      },
+      "logicalBoundsAt1920x1200Auto": {
+        "reactor_core": {
+          "x": 88,
+          "y": 2,
+          "width": 207,
+          "height": 236,
+          "scale": 5.0,
+          "viewportWidth": 384,
+          "viewportHeight": 240
+        },
+        "reactor_six_chambers": {
+          "x": 88,
+          "y": 2,
+          "width": 207,
+          "height": 236,
+          "scale": 5.0,
+          "viewportWidth": 384,
+          "viewportHeight": 240
+        },
+        "reactor_fluid": {
+          "x": 88,
+          "y": 2,
+          "width": 207,
+          "height": 236,
+          "scale": 5.0,
+          "viewportWidth": 384,
+          "viewportHeight": 240
+        },
+        "sorting_page_1": {
+          "x": 89,
+          "y": 2,
+          "width": 206,
+          "height": 236,
+          "scale": 5.0,
+          "viewportWidth": 384,
+          "viewportHeight": 240
+        },
+        "sorting_page_2_hover": {
+          "x": 89,
+          "y": 2,
+          "width": 206,
+          "height": 236,
+          "scale": 5.0,
+          "viewportWidth": 384,
+          "viewportHeight": 240
+        },
+        "chunk_loader": {
+          "x": 108,
+          "y": 2,
+          "width": 167,
+          "height": 236,
+          "scale": 5.0,
+          "viewportWidth": 384,
+          "viewportHeight": 240
+        }
+      },
+      "focusedClientFrames": 32,
+      "kineticNetwork": [
+        "motor_paid_and_mfe_received_800_east",
+        "one_crank_added_10_eu_on_same_cable",
+        "motor_paid_and_mfe_received_800_west"
+      ],
+      "chunkButtonsTested": [
+        100,
+        127,
+        128,
+        180
+      ]
+    }
+  },
+  "screenshots": {
+    "electrolyzer_running.png": "8217c058fded6a24d772ddc77d8aab5930507728493820fed63eb39b45a75a63",
+    "canner_pack_product.png": "6c18f3f56120314cbcd1004b3ffdd4b7141458030d2f91e5b52ee8d27e9321f7",
+    "solid_canner_pack_product.png": "b379195a33e4a92118d75dfc205c0d67c841fdb0b96ef2e112e4a011f0129ecc"
+  }
+}
