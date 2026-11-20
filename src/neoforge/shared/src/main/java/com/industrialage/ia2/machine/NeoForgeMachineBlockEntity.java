@@ -1,5 +1,9 @@
 package com.industrialage.ia2.machine;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.Dynamic;
+import java.util.Objects;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -8,6 +12,34 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /** Binds a machine's components to the lifetime of one loaded server-side block entity. */
 public abstract class NeoForgeMachineBlockEntity extends BlockEntity {
+    /** A named component snapshot in the block entity's save, shared by both native save APIs. */
+    public record SavedState<S>(String key, Codec<S> codec, S initial) {
+        /** Defines the key, payload format and initial value for a newly placed machine. */
+        public SavedState {
+            Objects.requireNonNull(key);
+            Objects.requireNonNull(codec);
+            Objects.requireNonNull(initial);
+        }
+
+        /** Reads an existing payload in full before the machine adopts it. */
+        public S decode(Optional<Dynamic<?>> data, BlockPos pos) {
+            return data.map(
+                            value ->
+                                    codec.parse(value)
+                                            .getOrThrow(
+                                                    error ->
+                                                            new IllegalStateException(
+                                                                    "Invalid "
+                                                                            + key
+                                                                            + " state at "
+                                                                            + pos
+                                                                            + " ("
+                                                                            + error
+                                                                            + ")")))
+                    .orElse(initial);
+        }
+    }
+
     /** Constructs the native host for this instance's component group. */
     protected NeoForgeMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
