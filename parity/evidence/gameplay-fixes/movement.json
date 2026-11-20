@@ -1,38 +1,39 @@
 {
-  "stage": "Targeted installed-JAR regression before the combined GUI and integration build. At normal game speed the server readings follow the client sample within each observation.",
+  "stage": "Clean production JARs installed on both server and client, at normal game speed.",
   "versions": {
     "1.19.2": {
-      "jarSha256": "069b251d5fafe95104631ab21cf284f75df3f21bc819300a7d01bdd4993b1de8",
-      "emptyFeetY": 151.0,
-      "noPowerY": 151.0,
+      "jarSha256": "17f9ab9c5811b5d3391da0439dd92982e25cc6fc25b054d13a37a4f4bd85c633",
       "startY": 151,
       "initialEU": 500,
+      "controls": {
+        "bare": {
+          "clientY": 151.0,
+          "serverY": 151.0,
+          "eu": 500.0
+        },
+        "unpowered": {
+          "clientY": 151.0,
+          "serverY": 151.0,
+          "eu": 0.0
+        }
+      },
       "samples": [
         {
           "clientY": 151.0,
           "serverY": 151.07725,
-          "eu": 494.0
+          "eu": 492.0
         },
         {
-          "clientY": 151.463125,
-          "serverY": 152.157875,
-          "eu": 486.0
+          "clientY": 151.771875,
+          "serverY": 152.62099999999998,
+          "eu": 484.0
         },
         {
-          "clientY": 153.16124999999997,
-          "serverY": 154.36124999999996,
-          "eu": 478.0
+          "clientY": 153.76124999999996,
+          "serverY": 154.96124999999995,
+          "eu": 476.0
         }
       ]
     }
-  },
-  "kineticRoutes": {
-    "jar": "ic2-forge-1.19.2-0.1.0.jar",
-    "sha256": "069b251d5fafe95104631ab21cf284f75df3f21bc819300a7d01bdd4993b1de8",
-    "checks": [
-      "motor_paid_and_mfe_received_800_east",
-      "one_crank_added_10_eu_on_same_cable",
-      "motor_paid_and_mfe_received_800_west"
-    ]
   }
 }

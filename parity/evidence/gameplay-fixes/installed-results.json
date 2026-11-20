@@ -3,7 +3,7 @@
     "1.19.2": {
       "minecraft": "1.19.2",
       "jar": "ic2-forge-1.19.2-0.1.0.jar",
-      "sha256": "623689e1e62b0ba4174fc5b8ae5ac2d16b487d97519fc7edddea939c159d192d",
+      "sha256": "17f9ab9c5811b5d3391da0439dd92982e25cc6fc25b054d13a37a4f4bd85c633",
       "optionalInstalls": {
         "none": [
           "ic2 0.1.0 / ic2-forge-1.19.2-0.1.0.jar",
@@ -64,8 +64,8 @@
       },
       "oldElectrolyzerSave": {
         "serverPids": [
-          80152,
-          80730
+          90390,
+          90754
         ],
         "legacyProgress": 31,
         "previouslyPaidEU": 496,
@@ -93,14 +93,14 @@
         "hydrogen-below": {
           "fluid": "ic2:hydrogen",
           "amount": 26,
-          "data": "[00:41:56] [Server thread/INFO] [minecraft/MinecraftServer]: 29, 89, 25 has the following block data: {ic2_closed: 0, x: 29, ic2_fluid: {FluidName: \"ic2:hydrogen\", Amount: 26}, y: 89, z: 25, id: \"ic2:transport\", ic2_pump_lv: 0, ic2_pump_mv: 0}"
+          "data": "[01:10:38] [Server thread/INFO] [minecraft/MinecraftServer]: 29, 89, 25 has the following block data: {ic2_closed: 0, x: 29, ic2_fluid: {FluidName: \"ic2:hydrogen\", Amount: 26}, y: 89, z: 25, id: \"ic2:transport\", ic2_pump_lv: 0, ic2_pump_mv: 0}"
         },
         "oxygen-above": {
           "fluid": "ic2:oxygen",
           "amount": 13,
-          "data": "[00:41:56] [Server thread/INFO] [minecraft/MinecraftServer]: 29, 91, 25 has the following block data: {ic2_closed: 0, x: 29, ic2_fluid: {FluidName: \"ic2:oxygen\", Amount: 13}, y: 91, z: 25, id: \"ic2:transport\", ic2_pump_lv: 0, ic2_pump_mv: 0}"
+          "data": "[01:10:38] [Server thread/INFO] [minecraft/MinecraftServer]: 29, 91, 25 has the following block data: {ic2_closed: 0, x: 29, ic2_fluid: {FluidName: \"ic2:oxygen\", Amount: 13}, y: 91, z: 25, id: \"ic2:transport\", ic2_pump_lv: 0, ic2_pump_mv: 0}"
         },
-        "enrichment-container-holds-1000-mb-biomass": "[00:41:36] [Server thread/INFO] [minecraft/MinecraftServer]: P2Tester has the following entity data: {Slot: 5b, id: \"ic2:fluid_cell\", Count: 1b, tag: {Fluid: {FluidName: \"ic2:biomass\", Amount: 1000}}}",
+        "enrichment-container-holds-1000-mb-biomass": "[01:10:18] [Server thread/INFO] [minecraft/MinecraftServer]: P2Tester has the following entity data: {Slot: 5b, id: \"ic2:fluid_cell\", Count: 1b, tag: {Fluid: {FluidName: \"ic2:biomass\", Amount: 1000}}}",
         "upgraded-electrolysis-pays-6400": {
           "pos": "29 90 25",
           "observed": "{ic2_progress:0,ic2_energy:0.0d}"
@@ -181,8 +181,8 @@
     }
   },
   "screenshots": {
-    "electrolyzer_running.png": "8217c058fded6a24d772ddc77d8aab5930507728493820fed63eb39b45a75a63",
-    "canner_pack_product.png": "6c18f3f56120314cbcd1004b3ffdd4b7141458030d2f91e5b52ee8d27e9321f7",
-    "solid_canner_pack_product.png": "b379195a33e4a92118d75dfc205c0d67c841fdb0b96ef2e112e4a011f0129ecc"
+    "electrolyzer_running.png": "14c90569755ea563f56fac17fead2e60684a67e44cce31b010e6c06249059da9",
+    "canner_pack_product.png": "b887fd8806ce4702957a7a5728dd85d7cfeb5e82db97285d51312299d39c2b92",
+    "solid_canner_pack_product.png": "eb5ed4738fb48473eb574e3211d3b8fbed051d5b8b9ca92bbb62df2640cf01a0"
   }
 }
