@@ -7,7 +7,7 @@ from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
 
-PACKAGING = {"META-INF/MANIFEST.MF", "LICENSE", "COPYING", "LICENSE-ASSETS"}
+PACKAGING = {"META-INF/MANIFEST.MF", "LICENSE", "COPYING", "LICENSE-ASSETS", "NOTICE.md"}
 TEST_SOURCE = Path(__file__).resolve().parent / "src"
 FIXTURE_MARKERS = (b"ic2_gametest", b"ic2_modern_smoke", b"ic2:qa_platform_pillar", b"ic2:qa_fuel_generator", b"ic2:qa_side",
                    b"ic2_qa:platform_blocks", b"ic2_qa:platform_items", b"ic2accept")

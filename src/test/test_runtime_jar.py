@@ -33,7 +33,7 @@ class RuntimeJarTests(unittest.TestCase):
                 archive.writestr(name, value)
 
     def test_equal_outputs_pass_and_a_rebuilt_candidate_must_still_match_its_record(self):
-        self.package()
+        self.package({"NOTICE.md": b"Attribution for the release"})
         first = verify(self.jar, self.roots)
         self.assertEqual(first["problems"], [])
         report = self.jar.parent / "first.json"
