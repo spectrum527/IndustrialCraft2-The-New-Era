@@ -1,67 +1,17 @@
-# 平台与构建记录（P0-T3）
+# Forge 1.19.2 构建环境
 
-本记录落实 `decisions.md` A5、A6、A17、A19、A20、A22，不改变既有平台决定。本轮已取得 P0-T4 本地与 Linux CI 双版本构建证据；负责人审批见 [P0-T4 PR](https://github.com/spectrum527/ic2/pull/10)。负责人于 2026-11-12 确认 G0 通过，见 [G0 记录](gates/G0.md)。
-
-## 平台与版本
-
-| 用途 | 目标 | 工具链与验收 |
-|---|---|---|
-| 主基线 | Minecraft 1.21.1 / NeoForge | JDK 21；MVP 与 G5 在此验收 |
-| 同步移植 | Minecraft 26.1 / NeoForge | JDK 25；从第一天双版本编译，运行验收从 P6 纳入 |
-| 行为参考 | Minecraft 1.19.2 / Forge | JDK 17；修复发布版 1.2.0-port.20261119 给首发玩法基准，2.9.40 提供未覆盖行为的原始对照 |
-| 补充参考 | Minecraft 1.12.2 / Forge | A25 要求 JDK 8；P0-T9 待执行，用于已批准缺失功能与交叉核对，不阻塞本次 G0 |
-
-- 构建插件：**ModDevGradle**（A19）。
-- 本轮锁定：1.21.1 使用 NeoForge **21.1.265**；26.1 使用 NeoForge **26.1.0.19-beta**；ModDevGradle **2.0.148**；Gradle Wrapper **9.2.1**。构建值写入 `gradle.properties` 和 Wrapper 配置，升级另行验证，不使用动态版本。
-- 版本已按 [NeoForge 官方元数据](https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml)、[26.1 官方 MDK](https://github.com/NeoForgeMDKs/MDK-26.1-ModDevGradle/blob/main/gradle.properties) 和 [ModDevGradle 官方元数据](https://maven.neoforged.net/releases/net/neoforged/moddev/net.neoforged.moddev.gradle.plugin/maven-metadata.xml) 核对；这些是本轮固定值，不宣称始终为最新版。
-- 26.1 的 JDK 25 与 Gradle 不低于 9.1 的要求见 [官方发布说明](https://neoforged.net/news/26.1release/)。本轮使用已安装的 JDK 21 / 25 分别编译两个适配模块，共用层保持 Java 21。
-- 26.1 所选构建仍为 beta；不能静默以其他 Minecraft 补丁版本替换该目标，后续升级须重新验证。
-- Fabric 在 v1.0 后按需求评估；当前 MVP 至 v1.0 仅发布 NeoForge（A6）。
-
-## 选择理由
-
-主基线固定在 1.21.1，使 MVP 的构建、客户端、专用服务器和 G5 验收有统一目标。26.1 同步编译可尽早暴露版本耦合，但其运行门禁按既定阶段逐步加入。1.19.2 独立作为行为参照，避免把旧环境的二进制兼容要求带入重建架构。
-
-ModDevGradle 是已批准的构建方案；P0-T4 已对上述组合执行本地双版本构建，并记录 Wrapper 与依赖校验和。选型记录、编译证据、运行证据和 CI 结果分别保留。
-
-## 双版本子模块结构
-
-以下为职责边界示意，具体 Gradle project 名称由 P0-T4 落地：
-
-```text
-src/
-  common/             核心行为、内容定义与平台能力接口
-  neoforge/
-    1.21.1/           主基线注册、事件、网络、能力与客户端适配
-    26.1/             同步目标的同类适配
-  datagen/            数据生成入口，按目标版本连接适配层
-  test/               核心单测及各目标平台的运行测试
-```
-
-依赖由版本适配层指向 common，common 不依赖任一适配模块，也不得引用平台或版本专属 API。平台能力通过小接口注入；版本差异收敛在对应适配层。每个内容 PR 都须通过双版本编译，主基线的运行结果不能替代同步目标的编译结果。
-
-原版素材仍在独立私有素材仓库，通过可选属性 `ic2.legacyAssetsDir`（保留旧属性别名） 引入；属性缺省时跳过该资源目录。新作资源放在 `assets/` 并在同路径时优先。外部 PNG 及其动画元数据只供参考；构建过滤这些图像，包括机器 GUI，详情见 A22。素材文件不得进入主仓库历史；P0-T4 必须验证有、无外部素材目录两种构建情形（A22）。
-
-## 风险与验证责任
-
-| 风险 | 处理及验收责任 |
+| 项目 | 本分支使用的版本 |
 |---|---|
-| 平台组合、beta 目标与升级兼容性 | 保持固定版本和校验值；升级后重跑双版本编译及对应运行门禁 |
-| 版本专属类型渗入核心层 | 双版本编译并检查 common 的导入；发现耦合时收敛到能力接口 |
-| 两个目标的客户端、网络或存档行为分歧 | 分开记录各目标结果；从 P6 起加入 26.1 运行验收 |
-| 仅编译通过，实际无法加载 | P0/P2 分别保留构建证据与客户端、专用服务器加载证据 |
-| 外部素材目录缺失或资源覆盖顺序错误 | 分别构建并检查生成包；确认新作同路径优先且历史中无原版素材 |
+| Minecraft | 1.19.2，Mojang 官方映射 |
+| Forge | 43.5.0 |
+| Java | JDK 17，生产类文件版本 61 |
+| Gradle / ForgeGradle | 8.8 / 6.0.54 |
+| 游戏标识 / Java 包 | `ic2` / `com.industrialage.ia2` |
 
-## 回退方案
+包装器来自 Forge 43.5.0 官方 MDK。MDK ZIP 的 SHA-1 为 `6ab341eccdbf89ee3ef911afb43a890ed31d1f65`。Gradle 发行包的 SHA-256 为 `a4b4158601f8636cdeeab09bd76afb640030bb5b144aafe261a5e8af027dc612`。包装器启动时核对发行包，构建依赖的校验记录在 `gradle/verification-metadata.xml`。[Forge 下载页](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.19.2.html) · [Gradle 8.8 校验值](https://downloads.gradle.org/distributions/gradle-8.8-bin.zip.sha256) · [Forge 开发环境](https://docs.minecraftforge.net/en/1.19.x/gettingstarted/)
 
-单次构建或适配回归可回到最后通过验证的依赖组合或实现提交；保留失败日志，再由对应角色修复。不能通过静默删除 26.1 编译检查来恢复绿色状态。
+`src/common` 的中立服务与 `src/forge/1.19.2` 的宿主实现一起编入生产 JAR。ForgeGradle 的 `reobfJar` 将开发环境名称映射到发行环境。资源包格式为 9。配置声明来自本仓库的 58 项行为规格。工具、依赖和原版游戏由 Gradle 获取，核心逻辑按本项目的洁净室分工维护。
 
-如负责人后续批准改用 Forge 1.19.2 作为发布目标，应先通过决策 PR 修改 A5，再建立对应的平台适配模块；核心行为与接口边界保持不变，只调整平台实现、构建入口及必要的数据兼容层。该方案是条件性的风险预案，当前仍执行 NeoForge 双版本目标，不新增 1.19.2 发布承诺。
+ForgeGradle 在本机生成映射 JAR 时会写入时间戳。构建将条目按固定顺序、固定时间编码，再对整个归档执行 Gradle 严格 SHA-256 校验。Linux、macOS 和 Windows 的原生依赖按各自发行文件锁定。复验时可运行 `./gradlew --dependency-verification strict clean build`。
 
-## 当前验证与交接
-
-`/usr/libexec/java_home -V` 已列出 JDK 17、21、25。本轮 P0-T4 在 JDK 21 / 25 下分别完成主基线与同步目标的真实 `clean build`，JAR 契约测试核对入口、元数据、字节码版本及完整许可文件；有/无外部素材及新作覆盖的自造资源回归也已执行。
-
-主线专用服务器曾实际记录入口加载及 `Done`，随后人工停止并保存世界；该停止命令的非零退出码不冒充成功构建。未执行 26.1 运行验收、客户端功能或 GameTest；相似度缺私有输入时仍明确跳过。
-
-负责人已批准 P0-T4 / P0-T5 首次依赖下载。P0-T5 已完成进入世界、放置机器、打开 GUI、退出重启后重入，以及 M01 / M08 的单边参考采样，见 [参考实例 PR](https://github.com/spectrum527/ic2/pull/13)；额外扣电的修复目标已由负责人批准，见 [B#41 决策与规格 PR](https://github.com/spectrum527/ic2/pull/14)；候选实现、回归与双边比较仍未完成。负责人现已确认 G0 通过，P2 可按任务依赖开工；授权原件继续后补，P2 的注册、生命周期、网络、配置与客户端功能仍须分别验收。
+分支起点为 `10a57bacabd33c2fb282fd3a6b8bdc5991521cea`。主线当时的 NeoForge 运行记录可按提交复查。本分支的验证使用自己的 Forge 实例、存档和记录。[主线 P2 快照](https://github.com/spectrum527/ic2/tree/10a57bacabd33c2fb282fd3a6b8bdc5991521cea) · [1.19.2 验收](gates/1.19.2-P2.md)

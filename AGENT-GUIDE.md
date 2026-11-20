@@ -26,7 +26,7 @@
 
 ## 1. 项目一句话
 
-把一个停更的工业模组按**行为规格净室重写**为 **IndustrialCraft 2**（mod id `ic2`），主基线 **NeoForge 1.21.1 / Java 21**，同步 **NeoForge 26.1**，作为开源项目发布。目标是核心行为一致（同样的输入、能耗、产出），**不要求 1:1 复刻**。
+把一个停更的工业模组按**行为规格净室重写**为 **IndustrialCraft 2**（mod id `ic2`），本分支目标为 **Minecraft 1.19.2 / Forge 43.5.0 / Java 17**，作为开源项目发布。目标是核心行为一致（同样的输入、能耗、产出），**不要求 1:1 复刻**。
 
 ### 1.1 工作规则
 
@@ -47,17 +47,17 @@
 | 项 | 结论 |
 |---|---|
 | 路线 | 净室重写，三角色隔离（A2） |
-| 平台 | NeoForge 1.21.1 主基线；26.1 从第一天双版本编译，运行验收从 P6 开始（A5） |
+| 平台 | 本分支使用 Forge 43.5.0，专服和物理客户端均以 1.19.2 验收（A5） |
 | 包名 / group | `com.industrialage.ia2` 为既有内部坐标（A3） |
 | 协议 | 代码 LGPL-3.0（A11）；新作素材 CC BY-SA 4.0（A21） |
 | 可见性 | GitHub 私有仓库（spectrum527 账号），素材全部重绘后才转 Public（A12） |
 | 发布 | 转 Public 前只做邀请制封闭测试，不上 Modrinth / CurseForge（A13） |
 | 对外表述 | IndustrialCraft 2（IC2），按 A15 使用 |
-| 构建 | ModDevGradle（A19）；CI 为 GitHub Actions，看板为 GitHub Projects（A18） |
+| 构建 | ForgeGradle（A19）；CI 为 GitHub Actions，看板为 GitHub Projects（A18） |
 | 配置 | 只建 58 个活键，无旧键兼容层；只出迁移文档（A10） |
 | 版本基线 | 修复正式版的玩家行为与修正优先；2.9.40 补未覆盖行为，2.8.222 用于交叉核对（A23）。实现只读独立行为规格。 |
 | 首发范围 | 依修复版的生存路线交付，包含两类管各 8 种、两档泵盖、四档充电电池及八条实际产线。G5 是内部切片，G10 验整版（A27）。 |
-| 工具链 | 主线 JDK 21、26.1 模块 JDK 25；NeoForge / ModDevGradle / Gradle 版本以 `docs/02-platform.md` 锁定值为准 |
+| 工具链 | Java 17、Forge、ForgeGradle 与 Gradle 版本以 `docs/02-platform.md` 锁定值为准 |
 
 ---
 
@@ -73,7 +73,7 @@ rebuild/                     ← 未来的开源仓库根
 ├── src/                     ← Gradle 多模块根
 │   ├── common/              ← 加载器无关核心 + 内容定义
 │   │   └── src/main/java/com/industrialage/ia2/{energy,machine,recipe,fluid,crop,reactor,worldgen,network,config,content,api,platform,lifecycle}/
-│   ├── neoforge/            ← 平台适配（含 1.21.1 / 26.1 版本子模块）
+│   ├── forge/1.19.2/        ← Forge 宿主和独立运行夹具
 │   ├── datagen/             ← 数据生成
 │   └── test/                ← JUnit + GameTest
 ├── parity/                  ← 场景脚本、期望值与对比报告（QA）
@@ -121,7 +121,7 @@ P?-T?
 
 ## 怎么验证（贴命令与输出）
 ./gradlew build
-./gradlew :common:test --tests ...
+./gradlew :test:test
 
 ## decisions.md 关联修复项
 - B#xx → 回归测试：<TestName>（无则写"无"）
@@ -147,7 +147,7 @@ P?-T?
 | GUI | 一套数据驱动布局 + 手写例外通道（B#8） | 两套 GUI 体系并存 |
 | 配置 | `ModConfigSpec`，只保留活键（A10），键名沿用 spec 中的活键清单 | 旧键兼容层、死键 |
 | 内容 | 能用定义文件生成就不写类（机器/方块/掉落/语言键/JEI 分类） | 每台机器一个手写类 |
-| 测试 | JUnit（公式、库存、配方、能量）+ NeoForge GameTest（方块/机器） | 只"看起来正确"的验收 |
+| 测试 | JUnit（公式、库存、配方、能量）+ Forge GameTest（方块/机器） | 只"看起来正确"的验收 |
 | 日志 | SLF4J | `System.out` |
 | 风格 | Java 21、4 空格、`final`/`record`/`sealed` 按宜使用、公开 API 有 javadoc、spotless | 无说明的 `@SuppressWarnings("unchecked")` |
 
@@ -155,11 +155,10 @@ P?-T?
 
 ```bash
 ./gradlew build
-./gradlew :neoforge:1.21.1:runClient
-./gradlew :neoforge:1.21.1:runServer
-./gradlew :datagen:runData
+./gradlew :forge:1.19.2:runClient
+./gradlew :forge:1.19.2:runServer
 ./gradlew :test:test
-./gradlew :test:runGameTest
+./gradlew :forge:1.19.2:runQaGameTestServer
 ./gradlew spotlessCheck
 ```
 
@@ -186,12 +185,9 @@ P?-T?
 - 核心层纯 Java + Minecraft 公共类型；平台能力通过 Facade 注入。
 - 优先顺序：平台接口（P2-T2）→ 生命周期（P2-T4）→ 网络 payload（P2-T6）→ 能量网（P3）→ 机器框架（P4）。
 
-### Platform Agent（`src/neoforge/`）
+### Platform Agent
 
-- P0-T4/P2-T1：**ModDevGradle** 多模块（A19），锁定 NeoForge 版本号写进 `gradle.properties`；支持可选属性 `ic2.legacyAssetsDir` 作为额外资源目录（缺省时跳过，A22），`rebuild/assets/` 同路径优先。
-- 1.21.1 与 26.1 的差异只能出现在 neoforge 的版本子模块；每个 PR 双版本编译（26.1 的运行验收从 P6 起）。
-- CI（GitHub Actions）加两条检查：`common` 下 grep `import net.neoforged` 必须为空；仓库内不得出现 legacy 素材（对照 `assets/SOURCES.md`）。
-- 仓库根放 `LICENSE`（LGPL-3.0）与 `LICENSE-ASSETS`（CC BY-SA 4.0）。
+Forge 43.5.0 的注册、事件、能力、配置和网络适配由本分支的版本模块提供。生产源码与开发夹具使用两个独立的 source set。CI 检查共同层的依赖、生产包隔离、JUnit 和实际宿主行为。
 
 ### Content Agent（`src/common/content/`）
 
@@ -218,19 +214,9 @@ P?-T?
 
 ---
 
-## 6. 当前工作（2026-11-19）
+## 6. 当前工作（1.19.2 分支）
 
-G0 与 G2 已通过。P2 的注册、生命周期、能力、配置、网络和物理客户端接线均已交付。[验收证据与机器接入入口](docs/gates/G2.md)
-
-| 可开始的工作 | 输入 | 交付 |
-|---|---|---|
-| Core 与 QA 执行 P3-T1、P4-T1 | 能量规格、平台与生命周期契约 | 能量图与方块实体组件的独立实现及回归 |
-| Spec 执行 P1-T2/T19 | 章程、路由实测与玩家路线 | 125 个设备/管件逐项映射、修复版工况和存盘期望 |
-| Artist 执行 P8-T3 | 纹理规格和资产清单 | 机器样张、电池电量、线缆、两类管道端口/朝向及泵盖 |
-
-G1、G5、机器 M09 回归、目标端物流与客户端美术仍待验收。P4-T9/P5-T9 交付运输切片，P6-T14 和 P10 负责原接线及候选复验。首发排期见私有计划仓库的 `task_plan.md`。
-
----
+本分支的阶段准入推进到 P2。G0、G1、G2 的负责人决定及各项技术证据见[分支门禁表](docs/gates/1.19.2-P2.md)。后续能量图、机器和生存生产线按已有行为规格继续开发。
 
 ## 7. 必须停手上报的情况
 

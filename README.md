@@ -1,32 +1,34 @@
-# IndustrialCraft 2（IC2）
+# IndustrialCraft 2 · Forge 1.19.2
 
-这个工作区按 IC2 Experimental 的行为规格重建工业模组。游戏使用 `ic2` 命名空间，已有内容沿用 2.9.40 的注册与资源路径。主平台是 NeoForge 1.21.1（Java 21），同步构建 NeoForge 26.1（Java 25）。原有 Java 包和 Maven group 仍为 `com.industrialage.ia2`。
+这个分支为 Minecraft 1.19.2 独立构建 IC2。它从重建仓库的 P2 合并点 `10a57bac` 分出，复用本项目按行为规格开发的通用层，在 Forge 43.5.0 上接入注册、事件、方位能力、每档配置和网络。进入游戏后，可在控制设置里为“打开 IC2 状态”绑定按键。服务端管理员可用 `/ic2 config reload` 重载当前存档的配置。
 
-## 当前进度
+P2 是平台开发基座。发电、输电、机器加工和生存配方由后续阶段接入。G0、G1、G2 的分支准入决定及每项技术验收的范围见[分支进度与门禁](docs/gates/1.19.2-P2.md)。
 
-G0 与 G2 已通过。两个 NeoForge 版本均已编译，1.21.1 已在独立客户端和专服验证注册、方位能力、配置重载、双向消息及同一存档的重启读回。能量网和机器框架可以接入这些服务。G1 的全量规格和 G5 的可玩切片仍待验收。[G2 结果与复跑命令](docs/gates/G2.md)
+## 构建与验证
 
-首个玩家版本以修复版 1.19.2 的生存与工业玩法为对照。G5 计划交付八种物品管、八种流体管和两档泵盖，首发验收全部八条参考产线。[物流行为规格](spec/logistics/pipes.md)
-
-机器、物品、线缆及管道的纹理全部重绘。首批围绕发电机、BatBox、打粉机、铜缆与电池制作。新图放在 `assets/`，逐项登记作者、来源与许可。制作规则和当前任务见[纹理规格](spec/assets/textures.md)与[接续队列](AGENT-GUIDE.md#6-当前工作2026-11-19)。
-
-## 工作入口
-
-| 目录或文件 | 用途 |
-|---|---|
-| [决策表](decisions.md)与[章程](docs/00-charter.md) | 当前名称、首发范围、验收平台与 39 项基础切片 |
-| [协作规则](AGENTS.md)与[工作指南](AGENT-GUIDE.md) | 角色、交接与任务入口 |
-| [行为规格](spec/README.md) | 实现与测试使用的规格 |
-| [配对验证](parity/README.md) | 参考观测、候选场景和预期值 |
-| [美术工作区](assets/README.md) | 新作目录及生产素材登记 |
-
-在本目录运行：
+使用 64 位 JDK 17。在仓库根目录运行以下命令，Windows 使用 `gradlew.bat`。首次构建会下载 Forge 和 Minecraft 开发依赖。
 
 ```sh
 ./gradlew build
-./gradlew :test:runGameTest
-./gradlew :test:runPlatformHostTest :test:runPlatformWorldTest
-python3 src/test/resource_overlay.py
+./gradlew :forge:1.19.2:runClient
+./gradlew :forge:1.19.2:runServer
 ```
 
-工程基线与阶段记录见 [G0](docs/gates/G0.md)。完整工作区的 `../Progress.md` 和私有计划仓库的 `task_plan.md` 记录本轮交接。代码使用 LGPL-3.0，新作素材使用 CC BY-SA 4.0。
+生产 JAR 位于 `src/forge/1.19.2/build/libs/`。将它放进 Minecraft 1.19.2 / Forge 43.5.0 实例的 `mods/` 目录，两端使用同一构建。专服首次启动遵循 Minecraft 的 EULA 流程。修复版和本分支都使用 `ic2`，请用新实例和新存档测试。
+
+```sh
+python3 src/forge/1.19.2/qa/verify.py smoke
+python3 src/forge/1.19.2/qa/verify.py world
+python3 src/forge/1.19.2/qa/verify.py play
+python3 src/forge/1.19.2/qa/verify.py mismatch
+```
+
+`world` 在独立专服进程中保存并重开同一存档。`play` 与 `mismatch` 启动实际游戏客户端，需要图形会话。开发夹具由单独的 `ic2_qa` 模组加载。
+
+## 工程依据
+
+- 目标版本、工具校验值与构建输入见[平台记录](docs/02-platform.md)。
+- 宿主行为、网络帧、配置边界与验收入口见[Forge 适配契约](spec/platform/forge-1.19.2.md)。
+- 修复版的发行包提供黑盒行为参照。实现与 QA 分别从行为规格编写代码和断言，原版及修复版材料在独立环境保管。[洁净室决策](decisions.md) · [素材登记](assets/SOURCES.md)
+
+代码遵循 LGPL-3.0，新作素材遵循 CC BY-SA 4.0。

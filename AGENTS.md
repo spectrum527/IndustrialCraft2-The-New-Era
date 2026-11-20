@@ -26,7 +26,8 @@
 |---|---|
 | `spec/` | Spec 角色 |
 | `src/common/energy|machine|recipe|fluid|crop|reactor/` | Core Agent |
-| `src/neoforge/`（含 1.21.1 与 26.1 分叉） | Platform Agent |
+| `src/forge/1.19.2/src/main/` | Platform Agent / Client Agent |
+| `src/forge/1.19.2/src/qa/`、`src/forge/1.19.2/qa/` | QA Agent |
 | `src/common/content/` | Content Agent（按波次分） |
 | `src/client/`、`src/compat/` | Client Agent |
 | `src/datagen/` | Content Agent + Platform Agent |
@@ -42,13 +43,12 @@
 
 ## 3. 平台与版本（decisions.md A5）
 
-- 主基线 **NeoForge 1.21.1**（Java 21）：G5 内部切片和 G10 首发在此验收。
-- 同步目标 **NeoForge 26.1**：common 层不得 import 版本专属 API；版本差异收敛在 `src/neoforge/` 的版本子模块中。
-- 1.19.2 只是 parity 参考环境（跑原版 jar 采期望值），**不是发布目标**。
+- 本分支构建 Minecraft 1.19.2 / Forge 43.5.0，开发与运行均使用 Java 17。公共服务只依赖 Java 标准库和项目中立类型。
+- 目标实例、参考端的安装目录、存档、日志和运行结果分别保存。平台基座以[本分支验收记录](docs/gates/1.19.2-P2.md)为准。
 
 ## 4. 工程规约
 
-- Java 21；4 空格缩进；`final`/`record`/`sealed` 按宜使用。
+- Java 17；4 空格缩进；`final`/`record`/`sealed` 按宜使用。
 - 公开 API 必须有 javadoc；禁止 `System.out`（用 SLF4J）；核心层禁止 import 平台类（CI 检查）。
 - 所有新增逻辑必须有单测或 parity 场景；PR ≤ 400 行（生成代码/数据除外）。
 - 网络层禁止反射序列化与从网络数据加载类（decisions.md：不做 DataEncoder 复刻）。
