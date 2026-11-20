@@ -1,0 +1,50 @@
+// Pin the publishers' Modrinth version IDs. Both APIs are compile-only; no third-party
+// JAR goes into the production runtime classpath or the IC2 distribution.
+def versions = [
+        '1.19.2': [top: 'KCnKC3d7', curios: 'uUAY30IE'],
+        '1.21.1': [top: 'kxB9y8zd', curios: 'KJsZIQrT'],
+        '26.1.2': [top: 'xD8Yvxod', curios: 'dRnRThvD'],
+        '26.2': [top: 'igbuHaA1', curios: 'BI7D0sbK']
+][project.ext.has('minecraftVersion') ? minecraftVersion : minecraft_version]
+
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'ModrinthOptionalMods'
+                url = 'https://api.modrinth.com/maven'
+                metadataSources { artifact() }
+            }
+        }
+        filter { includeGroup('maven.modrinth') }
+    }
+}
+configurations {
+    compatTestMods {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
+    compileOnly.extendsFrom(compatTestMods)
+}
+dependencies {
+    compatTestMods "maven.modrinth:the-one-probe:${versions.top}"
+    compatTestMods "maven.modrinth:curios:${versions.curios}"
+}
+
+ext.compatMode = providers.gradleProperty('ic2.compat.mode').getOrElse('both')
+ext.compatModFiles = { String target ->
+    def prefixes = [none: [], top: ['theoneprobe', 'the-one-probe'], curios: ['curios'],
+                    both: ['theoneprobe', 'the-one-probe', 'curios']][compatMode]
+    if (prefixes == null) throw new GradleException("Unknown compat mode ${compatMode}")
+    if (prefixes.empty) return []
+    def vendor = providers.gradleProperty('ic2.compat.mods')
+    def files = vendor.isPresent()
+            ? fileTree(rootProject.file(vendor.get())).matching { include "${target}/*.jar" }.files
+            : configurations.compatTestMods.files
+    def selected = files.findAll { file -> prefixes.any { file.name.startsWith(it + '-') } }
+    if (selected.size() != (compatMode == 'both' ? 2 : 1)) {
+        throw new GradleException("Unexpected ${target} ${compatMode} optional JARs: ${selected*.name}")
+    }
+    selected
+}

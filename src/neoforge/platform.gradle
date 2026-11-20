@@ -3,6 +3,7 @@ base.archivesName = "ic2-neoforge-$minecraftVersion"
 sourceSets.main.java.srcDir('../shared/src/main/java')
 sourceSets.main.java.srcDir('../../minecraft/shared/src/main/java')
 dependencies { implementation project(':common') }
+apply from: rootProject.file('gradle/optional-mods.gradle')
 neoForge {
     enable {
         version = neoForgeVersion
