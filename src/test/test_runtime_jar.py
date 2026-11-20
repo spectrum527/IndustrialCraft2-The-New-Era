@@ -56,7 +56,9 @@ class RuntimeJarTests(unittest.TestCase):
         helper.parent.mkdir(parents=True)
         helper.write_bytes(b"test")
         self.entry.write_bytes(b"ic2:qa_platform_pillar")
+        (self.roots[1] / "machine.json").write_bytes(b'{"block":"ic2:qa_fuel_generator"}')
         self.package()
         problems = verify(self.jar, self.roots)["problems"]
         self.assertIn("Test-only content in production JAR: " + name, problems)
         self.assertIn("Test-only content in production JAR: Production.class", problems)
+        self.assertIn("Test-only content in production JAR: machine.json", problems)

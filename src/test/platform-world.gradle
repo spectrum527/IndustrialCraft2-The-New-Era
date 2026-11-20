@@ -4,9 +4,11 @@ import java.time.Duration
 def runDirectory = layout.buildDirectory.dir('run/platformWorld')
 def phases = ['write', 'read']
 def required = [write: ['observed-block-registration','placed-24','placed-28','destroy-action',
+                        'generator-placed-with-item','generator-rejected-lava','generator-coal-after-37-ticks',
                         'removed-provider','chunk-unloaded-before','chunk-unloaded-after','event-forwarded-once',
                         'external-block-tag','external-item-tag','removed-is-air','retained-axis-x'],
                 read: ['reloaded-world','reloaded-run','reloaded-dimension','reloaded-removed','reloaded-retained',
+                       'generator-cold-state','generator-finished-one-coal','generator-one-output-packet','generator-removed-port',
                        'external-block-tag','external-item-tag','removed-is-air','retained-axis-x']]
 def readReport = { File directory, String phase ->
     def file = new File(directory, "${phase}.properties")
