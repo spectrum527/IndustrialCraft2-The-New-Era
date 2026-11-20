@@ -7,3 +7,4 @@ apply from: '../platform.gradle'
 sourceSets.main.java.srcDir('../26.x/src/main/java')
 apply from: rootProject.file('src/test/modern-server-smoke.gradle')
 apply from: rootProject.file('src/test/native-gameplay.gradle')
+apply from: rootProject.file('src/test/optional-compat.gradle')
