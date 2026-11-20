@@ -64,6 +64,7 @@ tasks.named('processResources') {
     includeEmptyDirs = false
     doFirst { delete destinationDir }
     from(rootProject.file('assets')) {
+        exclude 'qa/**'  // Registered documentation figures stay outside the mod JAR.
         into 'assets'
         exclude '**/*.md', '**/*.csv', '**/.git*', '**/.DS_Store'
     }
