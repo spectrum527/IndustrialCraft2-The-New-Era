@@ -1,0 +1,45 @@
+{
+  "minecraft": "26.2",
+  "neoforge": "26.2.0.95",
+  "status": "passed",
+  "productionJarSha256": "8cbdf28d74f50372aebf2ea75fda345da406d1a29832f80a3d4b3c89b6c66274",
+  "runtime": "Ubuntu 24 aarch64, LLVM llvmpipe, X11 GLFW, OpenAL Soft 1.24.3",
+  "java": 25,
+  "productionContentSha256": "6f58460c31c6437f7589026a14abe39446133a57ce9d7341420d59ad5d3c41b1",
+  "verifiedProductionEntries": 5950,
+  "clientExit": 0,
+  "serverExit": 0,
+  "checks": [
+    "graphical-title",
+    "remote-world-joined",
+    "production-item-and-block-sprites",
+    "prepared-remote-held-macerator",
+    "survival-client-places-macerator",
+    "visual-active-machine-state",
+    "remote-machine-menu-opens",
+    "remote-machine-menu-closes",
+    "rider-view-ready",
+    "displays-rubber_boat",
+    "displays-carbon_boat",
+    "displays-electric_boat",
+    "returned-to-title"
+  ],
+  "atlas": {
+    "iconBaked": true,
+    "machineFacesBaked": true,
+    "vanillaStoneBaked": true
+  },
+  "boatRendering": {
+    "rubber_boat": "ic2:textures/entity/boat/boat_rubber.png",
+    "carbon_boat": "ic2:textures/entity/boat/boat_carbon.png",
+    "electric_boat": "ic2:textures/entity/boat/boat_electric.png"
+  },
+  "screenshotSha256": {
+    "active-macerator.png": "38d27057b6b32f99a5dca3d4ce203a4d313a279744060e9cf725136e57b5a539",
+    "carbon-boat.png": "6a0fe10553cbdcf098e0a77872387c4d180d8045abd31159a8a5ad901fc4e7d0",
+    "electric-boat.png": "cccf483f8baf231ebe3e16e1ac177a145c2bdfbdf481a93ce70037d60e05fcd1",
+    "macerator-screen.png": "1315114d6128878dd66070a3608182c684ee31896ca36a878a481e8a51a69598",
+    "placed-macerator.png": "62894bd92cf2c2500b4c9d49fc6cb5902c282cd34053ffb28ee2c04eedd8a445",
+    "rubber-boat.png": "b9d7476ba8220080d3a7d3308e6918e7f776950680c1948f52e769acbc7d932f"
+  }
+}

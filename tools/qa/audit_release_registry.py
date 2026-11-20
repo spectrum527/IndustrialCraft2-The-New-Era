@@ -60,7 +60,7 @@ def csv_table(archive, path):
     return csv.DictReader(archive.read('com/industrialage/ia2/content/' + path).decode().splitlines(), delimiter='\t')
 
 
-def unpack(archive, registry):
+def unpack(archive, registry, observed_checks=frozenset()):
     entries = set(archive.namelist())
     tags = {}
     fluids = {'ic2:' + row['path'] for row in csv_table(archive, 'industrial-fluids.tsv')}
@@ -189,6 +189,17 @@ def unpack(archive, registry):
     }
     for machine, products in direct_products.items():
         add('device', 'native ' + machine, items(*products), blocks(machine))
+    # Forge installs these named pools through LootTableLoadEvent. Require both the packaged
+    # distribution table and the installed world's sampled chest receipts for this implementation.
+    if ('com/industrialage/ia2/world/ForgeLootAdditions.class' in entries
+            and 'chest-loot-shipwreck_treasure' in observed_checks):
+        for row in csv_table(archive, 'chest-supplements.tsv'):
+            chest = row['chest']
+            if 'chest-loot-' + chest not in observed_checks:
+                continue
+            for column, item in [('shard_rolls', 'iridium_shard'), ('ore_rolls', 'iridium_ore')]:
+                if int(row[column]) > 0:
+                    add('exploration', 'observed structure chest minecraft:chests/' + chest, items(item), ())
     fluid_producers = {
         'compressor': ('air',), 'fermenter': ('biogas',), 'reactor_vessel': ('hot_coolant',),
         'steam_generator': ('steam', 'superheated_steam'), 'solar_distiller': ('distilled_water',),
@@ -201,6 +212,7 @@ def unpack(archive, registry):
     for liquid in sorted(fluids):
         path = liquid.removeprefix('ic2:')
         add('world-use', 'fill bucket from produced fluid', items(path + '_bucket'), blocks(path))
+        add('world-use', 'place registered source from its filled bucket', blocks(path), items(path + '_bucket'))
     for cell in ('water', 'lava', 'air'):
         requirements = items('empty_cell') if cell in ('water', 'lava') else items('empty_cell') + blocks(cell)
         add('world-use', 'fill cell with ' + cell, items(cell + '_cell'), requirements)
@@ -241,8 +253,11 @@ def read_instance(directory):
     if len(jars) != 1:
         raise ValueError(f'Expected one candidate JAR in {directory}, found {len(jars)}')
     jar = jars[0]
+    reports = [directory / 'worldDetails.properties', directory / 'world-details.properties']
+    observed_checks = {line.removesuffix('=passed') for report in reports if report.is_file()
+                       for line in report.read_text().splitlines() if line.endswith('=passed')}
     with ZipFile(jar) as archive:
-        routes = closure(unpack(archive, registry))
+        routes = closure(unpack(archive, registry, observed_checks))
         missing_art = []
         members = set(archive.namelist())
         for kind, ident in registry:

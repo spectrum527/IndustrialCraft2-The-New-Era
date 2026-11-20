@@ -1,0 +1,340 @@
+{
+  "forge": "43.5.0",
+  "minecraft": "1.19.2",
+  "sha256": "e67443e6050abe6039ad2856fe739637e654f46b8d806592820add2a675efcf6",
+  "installedScenarios": {
+    "cold-steel": {
+      "checks": [
+        "native_air_and_heat_started_steel",
+        "former_extrudes_three_copper_cables",
+        "former_rolls_one_copper_plate",
+        "former_cuts_two_copper_cables",
+        "former_paid_2000_eu_1",
+        "former_paid_2000_eu_4",
+        "former_paid_2000_eu_7",
+        "native_canner_enriched_1000_mb",
+        "pumped_washer_made_three_products",
+        "heated_iron_completed_6000_ticks_to_steel"
+      ],
+      "seconds": 395.95
+    },
+    "steam": {
+      "checks": [
+        "superheated_turbine_requires_an_exhaust_receiver",
+        "powered_repressurizer_moved_3200_mb_steam",
+        "turbine_delivered_distilled_water_and_real_eu",
+        "superheated_turbine_continued_when_condenser_connected",
+        "cold_boiler_made_exactly_5000_mb_steam",
+        "cold_boiler_made_exactly_5000_mb_superheated_steam"
+      ],
+      "seconds": 207.93
+    },
+    "advanced-workshop": {
+      "checks": [
+        "powered_dispenser_consumed_one_scrap_box_and_ejected_one_reward",
+        "full_coolant_output_blocked_heat_and_conserved_100_mb",
+        "breaking_refractory_formation_pauses_kiln_without_losing_the_log",
+        "exchanger_makes_10_hu_from_exactly_one_available_mb",
+        "classic_canner_preserved_measured_15288_fuel_value",
+        "uu_assembly_kept_template_and_made_eight_logs",
+        "classic_electrolyzer_stored_cell_removed_exactly_20000_eu",
+        "classic_electrolyzer_restored_cell_returned_exactly_18000_eu",
+        "daylight_preserved_exact_water_sum",
+        "refitted_coke_kiln_made_charcoal_and_250_mb_creosote",
+        "coke_kiln_made_coke_and_500_additional_mb_creosote"
+      ],
+      "seconds": 176.06
+    },
+    "thermal-kinetic": {
+      "checks": [
+        "wind_without_rotor_yields_no_eu",
+        "rotor_supplied_actual_kinetic_eu",
+        "wind_obstruction_stopped_rotor",
+        "solid_heat_stirling_actually_supplied_storage",
+        "pump_and_regulator_delivered_distinct_gases_to_real_tanks",
+        "heated_fermenter_made_20000_mb_biogas_and_two_fertilizer",
+        "semifluid_pumped_fermentation_gas_powered_bottler"
+      ],
+      "seconds": 164.68
+    },
+    "ore-solar-compressor": {
+      "checks": [
+        "solar_array_storage_furnace_former_exported_copper_cable",
+        "pump_from_tank_paired_compressor_made_snowball",
+        "macerator_washer_and_pipes_exported_every_product"
+      ],
+      "seconds": 129.2
+    },
+    "starter-logistics-restart": {
+      "checks": [],
+      "seconds": 122.48
+    },
+    "cross-chunk-bottler": {
+      "checks": [
+        "item_and_fluid_pipes_cross_chunk_boundaries",
+        "eu_cable_ran_32_ticks_and_stopped",
+        "both_production_chunks_unloaded",
+        "bottler_preserved_partial_work_after_restart",
+        "fuel_item_fluid_and_eu_line_exported_five_water_cells",
+        "recycler_received_blacklisted_feed",
+        "bottler_reverse_cell_operation",
+        "induction_preserved_two_equal_output_lanes",
+        "blacklisted_input_consumed_without_scrap"
+      ],
+      "seconds": 114.16
+    },
+    "matter-generation": {
+      "checks": [
+        "fabricator_does_not_spend_one_million_with_full_output",
+        "completed_fabricator_charges_exactly_one_million_after_clear",
+        "real_glass_grid_and_scrap_powered_uu_item_at_55",
+        "real_glass_grid_and_scrap_powered_uu_item_at_58",
+        "real_glass_grid_and_scrap_powered_one_mb_of_uu_fluid"
+      ],
+      "seconds": 37.91
+    },
+    "native-power-restart": {
+      "checks": {
+        "write": [
+          "real_reactor_generates_5",
+          "native_transformer_balanced",
+          "reactor_stopped",
+          "geothermal_delivered_10000",
+          "all_six_reactor_chambers",
+          "portable_drop_contains_last_of_126_slots",
+          "vending_shop_two_atomic_trades",
+          "injector_strict_threshold_and_payment",
+          "two_native_fuses_empty_device_stays",
+          "six_reference_cycles_48_hot_952_cold"
+        ],
+        "read": [
+          "exact_restart_heat_wear_eu",
+          "resumed_generation"
+        ]
+      },
+      "seconds": 90.34
+    },
+    "server-startup-restart": {
+      "checks": [],
+      "seconds": 50.67
+    }
+  },
+  "gameTests": [
+    "rubbertreeandtap",
+    "itempipenativeports",
+    "craftclassicrecipes",
+    "universalcellnativeworldandtank",
+    "generatorcorruptnbt",
+    "generatorfractionalnbt",
+    "containmentfilterandpersistence",
+    "generatornewstate",
+    "nativecontainerandcover",
+    "harnesssmoke",
+    "starterworkbenchandmenu",
+    "nativepumptransferrates",
+    "scrapboxopensbyhandanddispenser",
+    "portableenergythroughworkshopmenus",
+    "pumpfillscontainerswithbackpressure",
+    "overclockedformerpaysrealeu",
+    "metalformerwithnativegrid",
+    "nativesolidheatwithoutconsumer",
+    "preheatedcentrifugebatch",
+    "orewashernativewatergate",
+    "maceratorcontinuousm09",
+    "fullnativematterchain"
+  ],
+  "handCraftedRecipes": 37,
+  "pipeShapeCombinations": 1024,
+  "worldPhases": {
+    "world-program/world-program": {
+      "passed": [
+        "advanced-miner-allows-redstone-inverter",
+        "advanced-miner-filters-and-ejects",
+        "advanced-upgrade-damage-match",
+        "advanced-upgrade-energy-match",
+        "advanced-upgrade-exclusion",
+        "advanced-upgrade-nine-samples-do-not-consume",
+        "advanced-upgrade-reopens-with-filters-and-face",
+        "batch-accepts-live-template-change",
+        "batch-makes-four-planks",
+        "batch-output-protected",
+        "batch-pause-after-clearing-template",
+        "buffer-ejects-with-upgrade",
+        "charged-obscurator-camouflages-wall",
+        "chunk-released-after-shutdown",
+        "classic-matron-returns-cells",
+        "cross-breeding",
+        "crossed-sticks",
+        "deepslate-uranium-loot-is-raw-uranium",
+        "deepslate-uranium-mines-to-raw-uranium",
+        "distributor-page-shift-first",
+        "distributor-page-shift-second",
+        "experimental-matron-fluid-upgrade-slot",
+        "foam-cures-with-sand",
+        "foam-line-powers-harvester",
+        "four-native-upgrade-slots",
+        "genetic-seed-replanted",
+        "harvester-output-protected",
+        "installed-jar",
+        "iron-pickaxe-valid-for-lead",
+        "lava-sheet-covers-hardened-foam",
+        "lead-ore-loot-is-raw-lead",
+        "lead-ore-mines-to-raw-lead",
+        "legacy-processor-duration-field-optional",
+        "manual-fertilizer",
+        "manual-irrigation-returns-bucket",
+        "matron-fluid-pull-source-fills",
+        "matron-pulls-water-through-native-port",
+        "matron-uses-fluid-and-fertilizer",
+        "miner-drills-ore-and-halts-at-bedrock",
+        "mushroom-blueprint-changes-terrain",
+        "native-rubber-sign",
+        "native-rubber-wall-sign",
+        "potato-grew",
+        "potato-planting",
+        "powered-loader-holds-selected-chunk",
+        "processor-advanced-pull-and-selected-eject",
+        "processor-observed-upgrade",
+        "processor-only-io-automates-down",
+        "processor-only-io-automates-east",
+        "processor-only-io-automates-north",
+        "processor-only-io-automates-south",
+        "processor-only-io-automates-up",
+        "processor-only-io-automates-west",
+        "reinforced-foam-hardens",
+        "right-click-pick-potato",
+        "scaffold-reinforces",
+        "seed-analysis",
+        "single-block-foam-mode",
+        "soil-loss-cleans-plot",
+        "sorter-filters-east-and-defaults-down",
+        "sorter-page-shift-first",
+        "sorter-page-shift-second",
+        "sprayer-encloses-cable",
+        "sprayer-flood-fills-ten",
+        "sprayer-loads-foam-bucket",
+        "status",
+        "sticks-require-farmland",
+        "upgrade-preserves-paid-progress",
+        "upgraded-processor-pays-three-eu-per-tick",
+        "wall-recolors",
+        "water-sheet-covers-hardened-foam",
+        "weed-protection-returns-container",
+        "weighted-partial-fallback",
+        "world-saved"
+      ],
+      "pid": "22686"
+    },
+    "world-program/world-cold": {
+      "passed": [
+        "installed-jar",
+        "potato-and-genetics-reload",
+        "status",
+        "upgraded-processor-retains-eu-and-progress-on-restart"
+      ],
+      "pid": "22841"
+    },
+    "world-details/world-details": {
+      "passed": [
+        "bare-copper-refuses-dye",
+        "black-carries-eu-to-painted-wire",
+        "black-restores-both-arms",
+        "bobs_yer_uncle_ranks_berry-is-ingredient",
+        "canned-food-eaten-instantly",
+        "canned-food-last-serving-clears-stack",
+        "chest-loot-abandoned_mineshaft",
+        "chest-loot-desert_pyramid",
+        "chest-loot-end_city_treasure",
+        "chest-loot-jungle_temple",
+        "chest-loot-shipwreck_treasure",
+        "chest-loot-simple_dungeon",
+        "chest-loot-stronghold_corridor",
+        "chest-loot-stronghold_crossing",
+        "chest-loot-stronghold_library",
+        "coffee_mug-first-use-returns-mug",
+        "coffee_mug-observed-overdose",
+        "coffee_mug-observed-stacking-and-cap",
+        "coffee_mug-return-cup-2",
+        "coffee_mug-return-cup-3",
+        "coffee_mug-return-cup-4",
+        "coffee_mug-return-cup-5",
+        "coffee_mug-return-cup-6",
+        "coffee_mug-return-cup-7",
+        "coffee_mug-return-cup-8",
+        "cold_coffee_mug-first-use-returns-mug",
+        "cold_coffee_mug-observed-overdose",
+        "cold_coffee_mug-observed-stacking-and-cap",
+        "cold_coffee_mug-return-cup-2",
+        "cold_coffee_mug-return-cup-3",
+        "cold_coffee_mug-return-cup-4",
+        "cold_coffee_mug-return-cup-5",
+        "cold_coffee_mug-return-cup-6",
+        "cold_coffee_mug-return-cup-7",
+        "cold_coffee_mug-return-cup-8",
+        "dark_coffee_mug-first-use-returns-mug",
+        "dark_coffee_mug-observed-overdose",
+        "dark_coffee_mug-observed-stacking-and-cap",
+        "dark_coffee_mug-return-cup-2",
+        "dark_coffee_mug-return-cup-3",
+        "dark_coffee_mug-return-cup-4",
+        "dark_coffee_mug-return-cup-5",
+        "dark_coffee_mug-return-cup-6",
+        "dark_coffee_mug-return-cup-7",
+        "dark_coffee_mug-return-cup-8",
+        "foam-keeps-mixed-colors-isolated",
+        "foam-preserves-wire-dye",
+        "installed-jar",
+        "matching-colors-show-both-arms",
+        "milk_wart-is-ingredient",
+        "mixed-colors-isolate-eu",
+        "oil_berry-is-ingredient",
+        "painter-black",
+        "painter-blue",
+        "painter-brown",
+        "painter-cyan",
+        "painter-gray",
+        "painter-green",
+        "painter-light_blue",
+        "painter-light_gray",
+        "painter-lime",
+        "painter-magenta",
+        "painter-orange",
+        "painter-pink",
+        "painter-purple",
+        "painter-red",
+        "painter-returns-empty-brush",
+        "painter-white",
+        "painter-yellow",
+        "recolored-neighbor-carries-eu-through-foam",
+        "same-color-wire-supplies-eu",
+        "same-dye-preserves-brush",
+        "status",
+        "terra-wart-clears-only-harmful-effects",
+        "unequal-colors-hide-both-arms",
+        "world-saved"
+      ],
+      "pid": "22933"
+    },
+    "world-details/world-details-cold": {
+      "passed": [
+        "dye-persists-through-restart",
+        "installed-jar",
+        "status"
+      ],
+      "pid": "23211"
+    },
+    "world-natural/world-program": {
+      "passed": [
+        "installed-jar",
+        "naturally-generated-basalt",
+        "naturally-generated-deepslate_lead_ore",
+        "naturally-generated-deepslate_uranium_ore",
+        "naturally-generated-lead_ore",
+        "naturally-generated-uranium_ore",
+        "status",
+        "world-saved"
+      ],
+      "pid": "23283"
+    }
+  }
+}

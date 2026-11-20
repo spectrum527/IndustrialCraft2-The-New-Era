@@ -1,0 +1,39 @@
+{
+  "1.21.1": {
+    "jar": "ic2-neoforge-1.21.1-0.1.0.jar",
+    "sha256": "621731b352b01b68ddc9809de07566a0f2c0f482d577b6cea3175b63ef84a149",
+    "checks": {
+      "write": 87,
+      "read": 24
+    },
+    "freshJvmOnRestart": true
+  },
+  "26.1.2": {
+    "jar": "ic2-neoforge-26.1.2-0.1.0.jar",
+    "sha256": "db2a270b02ca23d72ae464eef3ce4a7c08f8fa2254e12d831d7ccc6f7b651c8f",
+    "checks": {
+      "write": 87,
+      "read": 24
+    },
+    "freshJvmOnRestart": true
+  },
+  "26.2": {
+    "jar": "ic2-neoforge-26.2-0.1.0.jar",
+    "sha256": "bade600bad8198b019f2f008a094f0543d9e2efb3f078fa73a881cbde8ae7d17",
+    "checks": {
+      "write": 87,
+      "read": 24
+    },
+    "freshJvmOnRestart": true
+  },
+  "1.19.2": {
+    "loader": "Forge 43.5.0",
+    "filename": "ic2-forge-1.19.2-0.1.0.jar",
+    "sha256": "50211e43b877be66974fd7ce2c360ed6d4bd6f4ea6063c81012890eeb0f90fd9",
+    "checks": {
+      "write": 71,
+      "read": 16
+    },
+    "freshJvmOnRestart": true
+  }
+}

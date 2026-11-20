@@ -88,15 +88,21 @@
       176,
       166
     ],
-    "anchors": [
-      [
-        8,
-        84
-      ],
-      [
-        8,
-        142
-      ]
+    "slots": 45,
+    "anchors": [[8, 84], [8, 142], [51, 53], [152, 8], [152, 26], [152, 44], [152, 62]],
+    "setup": [
+      "item replace entity {player} hotbar.1 with ic2:advanced_re_battery[ic2:eu=600.0d]"
+    ],
+    "clicks": [
+      {"at": [34, 150]},
+      {
+        "at": [59, 61],
+        "field": "machineEnergy",
+        "value": 600,
+        "expectSlot": {"at": [51, 53], "item": "ic2:advanced_re_battery", "count": 1},
+        "snapshot": "induction_furnace_battery",
+        "layout": {"size": [176, 166], "slots": 45}
+      }
     ]
   },
   {

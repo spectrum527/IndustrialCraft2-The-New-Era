@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.industrialage.ia2.equipment.MeterMenu;
 import com.industrialage.ia2.gameplay.MachineMenu;
+import com.industrialage.ia2.industrial.WorkshopMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -89,6 +90,9 @@ public final class UiProbe {
         } else if (container.getMenu() instanceof MeterMenu meter) {
             data.addProperty("meterMode", meter.mode());
             data.addProperty("meterSamples", meter.reading().count());
+        } else if (container.getMenu() instanceof WorkshopMenu workshop) {
+            data.addProperty("machineEnergy", workshop.energy());
+            data.addProperty("machineProgress", workshop.progress());
         }
         var slots = new JsonArray();
         for (var slot : container.getMenu().slots) {

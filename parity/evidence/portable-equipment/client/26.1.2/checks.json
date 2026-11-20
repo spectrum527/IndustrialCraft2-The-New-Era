@@ -1,0 +1,53 @@
+{
+  "minecraft": "26.1.2",
+  "neoforge": "26.1.2.128",
+  "status": "passed",
+  "productionJarSha256": "1408a75142f64147401d856c4149bc25d39935c4d0bf9e36d6e410e351b5a3b3",
+  "runtime": "Ubuntu 24 aarch64, LLVM llvmpipe, X11 GLFW, OpenAL Soft 1.24.3",
+  "java": 25,
+  "reactorMenu": {
+    "title": "Nuclear Reactor",
+    "reactorSlots": 54,
+    "inventorySlots": 36
+  },
+  "productionContentSha256": "285d5ee545f36f43ae66e883626debac7c3daffd07e591b6471542d5c5a019f8",
+  "verifiedProductionEntries": 5947,
+  "clientExit": 0,
+  "serverExit": 0,
+  "checks": [
+    "graphical-title",
+    "remote-world-joined",
+    "production-item-and-block-sprites",
+    "prepared-remote-held-macerator",
+    "survival-client-places-macerator",
+    "visual-active-machine-state",
+    "remote-machine-menu-opens",
+    "remote-machine-menu-closes",
+    "six-chambers-open-54-slots-and-inventory",
+    "remote-reactor-menu-closes",
+    "rider-view-ready",
+    "displays-rubber_boat",
+    "displays-carbon_boat",
+    "displays-electric_boat",
+    "returned-to-title"
+  ],
+  "atlas": {
+    "iconBaked": true,
+    "machineFacesBaked": true,
+    "vanillaStoneBaked": true
+  },
+  "boatRendering": {
+    "rubber_boat": "ic2:textures/entity/boat/boat_rubber.png",
+    "carbon_boat": "ic2:textures/entity/boat/boat_carbon.png",
+    "electric_boat": "ic2:textures/entity/boat/boat_electric.png"
+  },
+  "screenshotSha256": {
+    "active-macerator.png": "4876a8e523848f2f808d5019b25a06cccf8ff177e3047c0fb937bc5dcfe6058b",
+    "carbon-boat.png": "b11013bdfacdaf8c357fedbeb126b8ab842eb8ab3fd4db8c2d9d3f2d7e077ed1",
+    "electric-boat.png": "6a2239a8d7ab9b84100d48d529a3d2299f712ecf4f3e02582f34d62da5471317",
+    "macerator-screen.png": "1e2d0b44cd75308d876e7a21c88766593dc697c3cf08b763801246288bbe9338",
+    "placed-macerator.png": "19cb2684647694b51a5ad3801464cde19be21e0994cce2d1ea5ab86a161cb2c9",
+    "rubber-boat.png": "d14ca4f384f5602f12bb242b915c361b880c2ce554e09ab7f68504b892e6edf2",
+    "six-chamber-reactor-screen.png": "ab379512e70f89f30cf132a06ddaacbb54d8e90a2fe912067a75dd0c9445dd32"
+  }
+}

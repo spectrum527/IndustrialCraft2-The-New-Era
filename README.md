@@ -1,6 +1,6 @@
 # IndustrialCraft 2（IC2）
 
-按照 IC2 Experimental 的游戏表现独立重建的工业模组。0.1.0 包含发电、储能与变压、矿物加工、热能与动能、两类管道、作物与采矿、便携装备、UU 复制和核反应堆。机器与物品使用项目作者提供的重绘纹理。
+按照 IC2 Experimental 的游戏表现独立重建的工业模组。0.1.0 包含发电、储能与变压、矿物加工、热能与动能、两类管道、作物与采矿、便携装备、UU 复制和核反应堆。机器与物品使用项目作者提供的重绘纹理。 [0.1.0 四版下载](https://github.com/spectrum527/ic2/releases/tag/v0.1.0) · [实测记录](parity/evidence/first-playable-0.1.0/README.md)
 
 ## 安装与游玩
 

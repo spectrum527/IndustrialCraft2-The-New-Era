@@ -55,10 +55,30 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
     client.check('prepared-ui-dock', lambda state: state.get('uiY') == 100)
     screenshots = []
     failures = []
+    block_data = []
     stamp_file = session / 'server-jar-start.json'
     if not stamp_file.is_file():
         stamp_file = session / 'jar-start.json'
     stamp = json.loads(stamp_file.read_text(encoding='utf-8'))
+
+    def check_block_data(expected, label):
+        log = session / 'server.log'
+        for path, value in expected.items():
+            offset = log.stat().st_size
+            command(f'data get block {TARGET} {path}')
+            deadline = time.monotonic() + 6
+            while time.monotonic() < deadline:
+                with log.open('rb') as stream:
+                    stream.seek(offset)
+                    observed = stream.read().decode('utf-8', 'replace').splitlines()
+                line = next((entry for entry in observed if entry.endswith(value)), None)
+                if line:
+                    block_data.append({'scene': label, 'path': path, 'expected': value, 'actual': line})
+                    (session / 'authored-block-data.json').write_text(json.dumps(block_data, indent=2) + '\n')
+                    break
+                time.sleep(.1)
+            else:
+                raise AssertionError(f'{label} did not observe block data {path}: {observed[-4:]}')
 
     def record(case, name, state):
         if state.get('panel'):
@@ -86,11 +106,12 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
         target_id = target if ':' in target else 'ic2:' + target
         if target == 'stone':
             target_id = 'minecraft:stone'
+        command('fill 1 97 -3 8 103 3 minecraft:air')
+        command('kill @e[type=minecraft:item,x=2,y=100,z=0,distance=..10]')
         # A case can expose the test player to radiation while handling uranium.
         command(f'clear {player}')
         command(f'effect clear {player}')
         command(f'effect give {player} minecraft:instant_health 1 4 true')
-        command('fill 1 97 -3 8 103 3 minecraft:air')
         command('fill 1 99 -3 8 99 3 minecraft:stone')
         command(f'setblock {TARGET} {target_id}{case.get("state", "")}')
         held = 'ic2:' + name if item else case.get('held', 'minecraft:air')
@@ -116,6 +137,7 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
                 for it in value.get('panel', {}).get('slots', [])), timeout=12)
 
         state = open_screen('open-' + name)
+        check_block_data(case.get('blockData', {}), name)
         if 'atLeast' in case:
             state = client.check('active-' + name, lambda value: all(value.get(key, 0) >= required
                                  for key, required in case['atLeast'].items()), timeout=12)
@@ -126,6 +148,8 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
         for click in case.get('clicks', []):
             x, y = click['at']
             client.act(f'click-ui:{x},{y}')
+            if 'settle' in click:
+                time.sleep(click['settle'])
             if 'field' in click:
                 expected = click['value']
                 state = client.check(f'{name}-{click["field"]}-{expected}',
@@ -136,6 +160,7 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
             elif 'snapshot' in click:
                 time.sleep(.3)
                 state = client.act('state')
+            check_block_data(click.get('blockData', {}), click.get('snapshot', name))
             if 'snapshot' in click:
                 page = {'id': click['snapshot'], 'atlas': case.get('atlas')}
                 page.update(click.get('layout', {}))

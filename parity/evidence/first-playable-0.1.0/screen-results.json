@@ -1,0 +1,6032 @@
+{
+  "1.19.2": {
+    "sha256": "e67443e6050abe6039ad2856fe739637e654f46b8d806592820add2a675efcf6",
+    "requiredCases": 116,
+    "views": {
+      "metal_former": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "38b7f01861136d070ec917928191df8defec4dbdd1cc0554dbb8424ea8fbf6bc",
+        "allOpaqueExactPercent": 95.76,
+        "upperOpaqueExactPercent": 93.04
+      },
+      "ore_washing_plant": {
+        "atlas": "guiorewashingplant",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "8bd5406f6fef78c6f9b3035a1827d7b7ff760ea1c876f5e90f48d56f099ef8c6",
+        "allOpaqueExactPercent": 96.75,
+        "upperOpaqueExactPercent": 95.08
+      },
+      "centrifuge": {
+        "atlas": "guithermalcentrifuge",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "314e0b7280c189dc239426027af9b4223624c38ca6432cfa04cbc6bfd7833647",
+        "allOpaqueExactPercent": 98.08,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "blast_furnace": {
+        "atlas": "guiblastfurnacenew",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 41,
+        "frameSha256": "9c5293270a370ceaf3a772fce1678036284f51b294674287e84996bc01cb0113",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.23
+      },
+      "induction_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "5e7c1ffd5477ae034701a99a2b12079bce975ef781fbca07d247b1bcbbf13455",
+        "allOpaqueExactPercent": 95.31,
+        "upperOpaqueExactPercent": 92.11
+      },
+      "recycler": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "35a93c9753733990a705e8ced60cb24e02a2d0c9981bfd7ee55f1d86a1cca9b1",
+        "allOpaqueExactPercent": 96.0,
+        "upperOpaqueExactPercent": 93.54
+      },
+      "block_cutter": {
+        "atlas": "guiblockcutter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "4111b2dcf1abc9e9f2a90417779b95c5a636fb1d021b2f36371e293820f121c1",
+        "allOpaqueExactPercent": 97.98,
+        "upperOpaqueExactPercent": 97.66
+      },
+      "canner": {
+        "atlas": "guicanner",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "ee462da1c6bf919eee6c874c3fa810356efdca12976da12423a0ac4b06bcbaab",
+        "allOpaqueExactPercent": 95.67,
+        "upperOpaqueExactPercent": 91.89
+      },
+      "solid_canner": {
+        "atlas": "guisolidcanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "1bcae2cd8ce8cabca1f9083b65558cd38cc2d89ff7accde907346deed8baffea",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "classic_canner": {
+        "atlas": "gui_canner_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "5879c722ffd368a2f027480c3f30ccd94a624939007db80d0673d6f9b14e933d",
+        "allOpaqueExactPercent": 93.81,
+        "upperOpaqueExactPercent": 89.0
+      },
+      "coke_kiln": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "428bcedd173b104fdafc54bc2a87937cb793e3b490808cdd1fda8efbe70362df",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.64
+      },
+      "coke_kiln_grate": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "2ff21b6f997c0ccace3775f50f5df103e37e8f86b9bd6339a95c5b74d3e3a973",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.18
+      },
+      "coke_kiln_hatch": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "eac208bf8d0598bc44bda1ba3e21c1a3969ce9080da2d8c6a0577ec97e295653",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.17
+      },
+      "uu_assembly_bench": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "977eed458ca243d3d161e3046c0d3d08c373caf78c9d275837d7635920fdb2ba",
+        "allOpaqueExactPercent": 95.75,
+        "upperOpaqueExactPercent": 93.04
+      },
+      "solar_distiller": {
+        "atlas": "guisolardestiller",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "494eb13d2f9550ae5f89f912f7d301eee2bc47f34bf20b3afbdde9b3775a2d9e",
+        "allOpaqueExactPercent": 99.55,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "liquid_heat_exchanger": {
+        "atlas": "guiheatsourcefluid",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "0b8be9f373c90de24b6c10ea658835f4d6ccca0a4a80fef64a6cd38a2138334b",
+        "allOpaqueExactPercent": 98.75,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "weighted_fluid_distributor": {
+        "atlas": "guiweightedfluiddistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 36,
+        "frameSha256": "2b1608299bd666ea814a91e178aa6ee2809e99dd1b7b2a2c89ef7943bb52be45",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 97.62
+      },
+      "fluid_bottler": {
+        "atlas": "guibottler",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "acfb1a09e6185018a6cb96afd16e1845aa88af2f4f71e6f3797af36c7e47fd70",
+        "allOpaqueExactPercent": 99.54,
+        "upperOpaqueExactPercent": 99.14
+      },
+      "fluid_regulator": {
+        "atlas": "guifluidregulator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "1c90512454984746b706e129ff683e62d12baf02be4c7ba92a29ea94694cfd2f",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.77
+      },
+      "fluid_distributor": {
+        "atlas": "guifluiddistributor",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "a4e713df6c8ded8694cf8232b1182789922c6f1f1a10ff3fcca733a452a945f5",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "pump": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "5adaaa9251329598e33e2625cb1f3cc3e19ea65942b558ea77b05f25b6d11fd2",
+        "allOpaqueExactPercent": 93.87,
+        "upperOpaqueExactPercent": 89.13
+      },
+      "electrolyzer": {
+        "atlas": "guielectrolyzer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "f350d36e3fd3401d6696a7cb3ce971debd63a96d5a03a3f86139f3cca23a550c",
+        "allOpaqueExactPercent": 98.29,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "stirling_generator": {
+        "atlas": "guistirlinggenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "2f14c276dbd6397f7950deb3a50cdb58f1388898e3b4ae67a9fd054915e98591",
+        "allOpaqueExactPercent": 97.67,
+        "upperOpaqueExactPercent": 97.02
+      },
+      "fluid_heat_generator": {
+        "atlas": "guifluidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "37cf336053446c0d696cff56a7c745a14fd1acd3efb1b1514f9b2593a07b815c",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.87
+      },
+      "rt_heat_generator": {
+        "atlas": "guirtheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "5993dd53d146675d0c1f322e2dfdccfe719624f44d3c458a33abfef347f6953c",
+        "allOpaqueExactPercent": 97.68,
+        "upperOpaqueExactPercent": 97.0
+      },
+      "fermenter": {
+        "atlas": "guifermenter",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "f024dec58277477e1fc55e64bfab3a2552f8f67ae79c0d3169f5329fb794fb74",
+        "allOpaqueExactPercent": 94.81,
+        "upperOpaqueExactPercent": 90.25
+      },
+      "semifluid_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "e644399d8f79aff31e5296356b495a6b69f8ebd420351d9747b7ebee7d221de1",
+        "allOpaqueExactPercent": 98.0,
+        "upperOpaqueExactPercent": 97.69
+      },
+      "steam_generator": {
+        "atlas": "guisteamgenerator",
+        "size": [
+          176,
+          220
+        ],
+        "activeSlots": 0,
+        "frameSha256": "748b98ed13875049b98937440d1952d294fda84cad490712f4c1cb92c9262252",
+        "allOpaqueExactPercent": 99.2,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "steam_repressurizer": {
+        "atlas": "guisteamrepressurizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "99e59f5e79d14a31bf9a847280250a8387ddd38497bf85df685b6e1e8df22150",
+        "allOpaqueExactPercent": 97.97,
+        "upperOpaqueExactPercent": 97.64
+      },
+      "condenser": {
+        "atlas": "guicondenser",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "c1087ee0f3ebab2a17542d7c6a2258e8001227b2a4922aa3ed7999b4bd27c0ca",
+        "allOpaqueExactPercent": 98.87,
+        "upperOpaqueExactPercent": 97.9
+      },
+      "steam_kinetic_generator": {
+        "atlas": "guisteamkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "e017475827c1c042fe919ee83893e787757fed9c2e9b110cda10aa46634e0127",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.61
+      },
+      "kinetic_generator": {
+        "atlas": "guikineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "40b3bcca33023b577085c30183acd185bf4b7f3c189d5b4c4dcef591b500b941",
+        "allOpaqueExactPercent": 97.63,
+        "upperOpaqueExactPercent": 96.93
+      },
+      "electric_kinetic_generator": {
+        "atlas": "guielectrickineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "98d7ba6809d47a6f01a02c996aa2336f13f39ce9d1195863ca6275da4f8164c5",
+        "allOpaqueExactPercent": 98.46,
+        "upperOpaqueExactPercent": 98.63
+      },
+      "manual_kinetic_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "20d82d97a7e486314d0d90afff968af8c51ae073c0a792454123d9847264440b",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 97.08
+      },
+      "stirling_kinetic_generator": {
+        "atlas": "guistirlingkineticgenerator",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "8daec877a935715dac84dea6412c075c56ca22f4dc76d2921a02c7df1c76d393",
+        "allOpaqueExactPercent": 99.12,
+        "upperOpaqueExactPercent": 98.48
+      },
+      "wind_kinetic_generator": {
+        "atlas": "guiwindkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "a19ae238cc48d697b27e6166df6576d5239a538ff60068fe155fc5ee60e14065",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.83
+      },
+      "water_kinetic_generator": {
+        "atlas": "guiwaterkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "94437ca3227b18dd1c8f905965eebf52f1786d8922143f623b2770af8905c4e7",
+        "allOpaqueExactPercent": 97.54,
+        "upperOpaqueExactPercent": 96.74
+      },
+      "classic_electrolyzer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "b5ddd9b904d3dab7d4c4a4fcb76b966297be405789ccd895fbaa0e9cc6c51b74",
+        "allOpaqueExactPercent": 96.22,
+        "upperOpaqueExactPercent": 94.0
+      },
+      "mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "f684bce0998ed1294fdc3120a4ed642a9b507f5bb89965d509bc37c839570312",
+        "allOpaqueExactPercent": 95.19,
+        "upperOpaqueExactPercent": 91.86
+      },
+      "classic_mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "9263691a37b32f821c715d22dd0978d3ae35fe18f24703228f709a4f6e93c784",
+        "allOpaqueExactPercent": 94.92,
+        "upperOpaqueExactPercent": 91.31
+      },
+      "matter_generator": {
+        "atlas": "guimatter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "eea1d810a2458990fdb89fe4956513ba8e2e6ffce1dd47ca542456f40c5352a6",
+        "allOpaqueExactPercent": 98.49,
+        "upperOpaqueExactPercent": 98.68
+      },
+      "uu_scanner": {
+        "atlas": "guiscanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "521cf7b7a1e4bee06234311d7a86b3d3350ba44dadce9324f5c869296aa4ee2c",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "pattern_storage": {
+        "atlas": "guipatternstorage",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "d817ad1bd5bd9aecd3f1df059cbb3910134472de03588a54f9b10eff1412ac8a",
+        "allOpaqueExactPercent": 98.3,
+        "upperOpaqueExactPercent": 98.29
+      },
+      "replicator": {
+        "atlas": "guireplicator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 38,
+        "frameSha256": "b55ecae75e48949b72e09cf6a3ae50a1f8e0f1a7ffa2ee7530e99a831356c897",
+        "allOpaqueExactPercent": 95.18,
+        "upperOpaqueExactPercent": 90.96
+      },
+      "electric_heat_generator": {
+        "atlas": "guielectricheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "751b3ac165176b9d34c3fef6872425649c4af64594e6ec2cea71b1b2e2e9f346",
+        "allOpaqueExactPercent": 98.19,
+        "upperOpaqueExactPercent": 98.07
+      },
+      "solid_heat_generator": {
+        "atlas": "guisolidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "5100475fb574dcdc451fa940a70c9b40d4c676cd72a8eb9a88a4f5e6562ebbef",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.93
+      },
+      "generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "caba8adc21e2d2b97159ce152f8f46c71e30c9cdd4096f368240922696619a58",
+        "allOpaqueExactPercent": 96.17,
+        "upperOpaqueExactPercent": 93.88
+      },
+      "iron_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "0699feb828b0df0da2802137954f7a558126590c96039719aa58cc813d314625",
+        "allOpaqueExactPercent": 95.89,
+        "upperOpaqueExactPercent": 93.29
+      },
+      "macerator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "41efffc4c9157cef61a1dcc31e2efcb3e1123843abdbad9876159fe84123f1ab",
+        "allOpaqueExactPercent": 96.4,
+        "upperOpaqueExactPercent": 94.36
+      },
+      "compressor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "e5dab22dd6fca2962632edb88593e5891825b208aa65af182f1c1535dcbdb334",
+        "allOpaqueExactPercent": 96.03,
+        "upperOpaqueExactPercent": 93.59
+      },
+      "extractor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "c809ecb0c96cc232d8e15feec03ead09c0838522ea5a438a10b61a98c2427d97",
+        "allOpaqueExactPercent": 96.06,
+        "upperOpaqueExactPercent": 93.64
+      },
+      "electric_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "9025c34bf39623bb3578978dbd99441eec61f370e6257c0f24b2c5b535c721d5",
+        "allOpaqueExactPercent": 95.89,
+        "upperOpaqueExactPercent": 93.3
+      },
+      "batbox": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "25300f3f51db41d192240264b773f2f3e855027b706d3b2ab20f7387d83dfdf7",
+        "allOpaqueExactPercent": 99.4,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "cesu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "b4b7c5104857c58895b8c47209df7a5c9923304c9dedfad06a8e28038cc0c84d",
+        "allOpaqueExactPercent": 99.47,
+        "upperOpaqueExactPercent": 99.05
+      },
+      "mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "953f4ae6c4da44b37163488d2c5e3f24260857bc7cd52609171f1eaa3894b2cc",
+        "allOpaqueExactPercent": 99.51,
+        "upperOpaqueExactPercent": 99.12
+      },
+      "mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "d71ceddf6a9db5e4e08f1ef7a60942e3b7be266b52f9049e6833cf8b451684c0",
+        "allOpaqueExactPercent": 99.47,
+        "upperOpaqueExactPercent": 99.05
+      },
+      "batbox_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "6bff5c360613a1220f61c846d2a37b65eca1601f227cfce9cdec1c5504a34515",
+        "allOpaqueExactPercent": 97.87,
+        "upperOpaqueExactPercent": 97.37
+      },
+      "cesu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "9d7e5ffa8461a480e3c70244dc2b7d38176bd4c0a93623c8977976f57d67154c",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.55
+      },
+      "mfe_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "d5daad7778bf1f10e62ca4610ecd2055cb02da6445617449227c40ad828bc20c",
+        "allOpaqueExactPercent": 98.0,
+        "upperOpaqueExactPercent": 97.65
+      },
+      "mfsu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "7f2e75ebea7b5184d445eac6aff76ee6fa5ae04e405a53392f5b02369282287e",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.55
+      },
+      "meter": {
+        "atlas": "guitooleumeter",
+        "size": [
+          176,
+          217
+        ],
+        "activeSlots": 36,
+        "frameSha256": "f1385837c81934e9f0e82166fbebbdfb6c65d5fddeb12dafe620342abe66c7e1",
+        "allOpaqueExactPercent": 96.49,
+        "upperOpaqueExactPercent": 94.79
+      },
+      "nuclear_reactor": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 54,
+        "frameSha256": "d73fd014334fd64df8b1738624a7a3c7ebaff307e369aff4c7b71c07315dcaf8",
+        "allOpaqueExactPercent": 81.53,
+        "upperOpaqueExactPercent": 71.34
+      },
+      "nuclear_reactor_chambers": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 90,
+        "frameSha256": "bddaf9390e3432303777e58e378838b91c949a6c439eb2f82afa632fc1592002",
+        "allOpaqueExactPercent": 98.62,
+        "upperOpaqueExactPercent": 98.44
+      },
+      "nuclear_reactor_fluid": {
+        "atlas": "guinuclearreactorfluid",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 94,
+        "frameSha256": "82f6dc576208cfa786d061ae6291c3a35bd0fd96d2be9162f1a1c27ba288a9bb",
+        "allOpaqueExactPercent": 99.06,
+        "upperOpaqueExactPercent": 98.55
+      },
+      "reactor_fluid_port": {
+        "atlas": "guireactorfluidport",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "6109237769ccff1d735bbea308fba89535e9188d0aaf3a49cc36bb45547ecd6b",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.94
+      },
+      "nuke": {
+        "atlas": "guinuke",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 45,
+        "frameSha256": "95927eeac50bc79800841f1f1b32892a83a1af6d7fea52711122f18758a85c6f",
+        "allOpaqueExactPercent": 100.0,
+        "upperOpaqueExactPercent": 100.0
+      },
+      "lv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "2ecac896d4413815b7a1b521801becf85d1f2c615be01c9e48d6effa6642745f",
+        "allOpaqueExactPercent": 98.88,
+        "upperOpaqueExactPercent": 98.15
+      },
+      "mv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "115d487b362847605f3f42e45797c9e7d00fb6b9cca28185a989f8d414d23750",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "hv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "30d2611334a5e87c4d7af46c4e1ed1f526405f1c76998c6e6f5ad16f1f8c1e47",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "ev_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "fde5f7b2b302960c426468abfc5b1d56966472437264d8a7dbd5d009ee41905c",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "classic_mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "3dc9c8965ea7d3a45cc18068cc54ea13d59a6ec2c192abfe24db9b3776356275",
+        "allOpaqueExactPercent": 99.66,
+        "upperOpaqueExactPercent": 99.4
+      },
+      "classic_mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "8d8532c90cf82f0b9aa2abc812f017cf92a1b7ef8f64aaee6586ad70ccb275c0",
+        "allOpaqueExactPercent": 99.62,
+        "upperOpaqueExactPercent": 99.33
+      },
+      "geo_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "5e5f6fa53b3dd9fa1e287f3c8d3ff99599b168d5ff7e51a0eb871cce9ac22a75",
+        "allOpaqueExactPercent": 98.31,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "magnetizer": {
+        "atlas": "guimagnetizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "aca575b33bd4d05e1046aa56fcb847923afddbc5e8bfbe4c2abd4805b496b035",
+        "allOpaqueExactPercent": 98.32,
+        "upperOpaqueExactPercent": 98.33
+      },
+      "trade_o_mat": {
+        "atlas": "guitradeomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "6106aa98109235b268af7f9cc9ee22e6022783492b1add782b96d633a07b6226",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "trade_o_mat_guest": {
+        "atlas": "guitradeomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "7fdbbc4acf5cb30bf25b2f20dedee261516817d187529db7b2ca9351ae6b1f7d",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "energy_o_mat": {
+        "atlas": "guienergyomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "f0b04a3c1ea0be164651643fe08f404f6b33ca0fc6fa6fabfb52a488a84080d0",
+        "allOpaqueExactPercent": 98.21,
+        "upperOpaqueExactPercent": 98.11
+      },
+      "energy_o_mat_guest": {
+        "atlas": "guienergyomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "650175d2480b79eddb65ef4a9248fb7a902eb8aae2f3fe89e6222b935c84ca76",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "solar_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "b01f6445d53baa0bcb88350d52bd0905f55a9e5385a4faab6f07a223b073433e",
+        "allOpaqueExactPercent": 98.04,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "wind_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "e6dcdefed0685c017e50d82ca90e7683e026c322eba3cb85175a85adb61f8181",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "water_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "285a63395b10a35e4b5ffdb6169d57ceabe177928e8c7085ece26840514ce82f",
+        "allOpaqueExactPercent": 98.6,
+        "upperOpaqueExactPercent": 98.92
+      },
+      "rt_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "c33e92ae8de0fe79dcd2e92167f549dc06af088bb3ea1c3394b0a27052b2c9bc",
+        "allOpaqueExactPercent": 96.13,
+        "upperOpaqueExactPercent": 93.79
+      },
+      "rci_rsh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "1f0ae757d6eda52cfb859b4a2a2564153c9f009231b4c670e094dd4c6167c883",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "rci_lzh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "d16e2a53a561a761864ac8620fd749b32778772d3fc8f0cb231de1a1e5b60eb4",
+        "allOpaqueExactPercent": 97.84,
+        "upperOpaqueExactPercent": 97.34
+      },
+      "tesla_coil": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "f5e04ac7b518e4aa341bd20771e27ba113e9246b1a0f388922610d41523e7785",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "teleporter": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "df6f335ba9663057c2a3d4c7bb8e0a25b6b996c5d5dfee2aa52dccd058612fc1",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.77
+      },
+      "creative_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "14a1c6b6a6960df9038e4868e1c91290ec10527c37bb3b6a0005599eb764b8d9",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.2
+      },
+      "wooden_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 63,
+        "frameSha256": "06079138974264a8bf374a3f352e9730235f9cfd7a273faa6c14f6f0559938b6",
+        "allOpaqueExactPercent": 98.38,
+        "upperOpaqueExactPercent": 98.47
+      },
+      "iron_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "a4938a667ae9fda4de0c7865555d7733107c1ed516ed57336496bc4ade0208f0",
+        "allOpaqueExactPercent": 98.78,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "bronze_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "211a85f7fe214041ada1c9520f34195aac7930fb01adbd69ee1c3d2d0d362a41",
+        "allOpaqueExactPercent": 98.68,
+        "upperOpaqueExactPercent": 97.7
+      },
+      "steel_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          238
+        ],
+        "activeSlots": 99,
+        "frameSha256": "e4585e6fc872c84ee9ec79823a5c62730140d7cc6293480d622299f91c157009",
+        "allOpaqueExactPercent": 98.93,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "iridium_storage_box": {
+        "atlas": "common",
+        "size": [
+          338,
+          238
+        ],
+        "activeSlots": 162,
+        "frameSha256": "00dfd64148686ad1a5314b3f8a392f915d9e8bdff0b1c6515fe3fca2c85eabbb",
+        "allOpaqueExactPercent": 99.43,
+        "upperOpaqueExactPercent": 99.1
+      },
+      "personal_chest": {
+        "atlas": "common",
+        "size": [
+          176,
+          222
+        ],
+        "activeSlots": 90,
+        "frameSha256": "c41fa734dfa7979e6ed4c317f9d8302e6f92466070cbd15f3b6aae49e97216f9",
+        "allOpaqueExactPercent": 98.96,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "industrial_workbench": {
+        "atlas": "guiindustrialworkbench",
+        "size": [
+          194,
+          228
+        ],
+        "activeSlots": 70,
+        "frameSha256": "1bf63ec1a61fbdb49806a88b890d7f3f5e69e3494a188538e811cd2e017826aa",
+        "allOpaqueExactPercent": 98.39,
+        "upperOpaqueExactPercent": 97.49
+      },
+      "bronze_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "1aad753e33956f1c79abd8da9451760847caa01f8ae52be3866a6ea24917c550",
+        "allOpaqueExactPercent": 96.84,
+        "upperOpaqueExactPercent": 95.25
+      },
+      "iron_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "0dbe43594a8b65a493b2c513e48ebdc61f25536dd7bc16675b7fa363211e596c",
+        "allOpaqueExactPercent": 96.96,
+        "upperOpaqueExactPercent": 95.52
+      },
+      "steel_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "10ce327f054b5211384beae14b0e54da915e08ecca33e67248f839078ca86e5b",
+        "allOpaqueExactPercent": 96.85,
+        "upperOpaqueExactPercent": 95.29
+      },
+      "iridium_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "e54a44e805f1a6d685fa8ece66fdad1467f660d4bb1f7105e6b2580a80607c6c",
+        "allOpaqueExactPercent": 96.75,
+        "upperOpaqueExactPercent": 95.08
+      },
+      "tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "4acb189b087b996304c0c0c33574c540b9c21cad393e169868793b8c4e0986e4",
+        "allOpaqueExactPercent": 96.95,
+        "upperOpaqueExactPercent": 95.5
+      },
+      "crop_harvester": {
+        "atlas": "guicropharvester",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "2b36194660c81b277166a58a25a4f1d96f3af04248b80da2e2faf23ec6d39db6",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 98.88
+      },
+      "cropmatron": {
+        "atlas": "guicropmatron",
+        "size": [
+          176,
+          192
+        ],
+        "activeSlots": 52,
+        "frameSha256": "480e866a245ed99d696acf9d5cd75968af508310eef0fec7410e308dbeaa1454",
+        "allOpaqueExactPercent": 97.91,
+        "upperOpaqueExactPercent": 96.21
+      },
+      "classic_cropmatron": {
+        "atlas": "gui_cropmatron_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "6698eec7f733007884d0d53450027bcfda50a4292913cffa617d264a73c5b9a2",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.8
+      },
+      "terraformer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "ecc1b178fbba4ecd34198eb473b043c6e56bebdf22a239090b2479607b32f4ee",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "miner": {
+        "atlas": "guiminer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "1aa71ced107cd946c60db48ec90f98d6e1811eca9cb1387617d5a1e039d56350",
+        "allOpaqueExactPercent": 96.07,
+        "upperOpaqueExactPercent": 93.67
+      },
+      "advanced_miner": {
+        "atlas": "guiadvminer",
+        "size": [
+          176,
+          203
+        ],
+        "activeSlots": 54,
+        "frameSha256": "ce6e6173754e3839c61e22cdb84ac85c799b81da8ac86c4fdb5acc7c8217bb17",
+        "allOpaqueExactPercent": 99.26,
+        "upperOpaqueExactPercent": 98.71
+      },
+      "batch_crafter": {
+        "atlas": "guibatchcrafter",
+        "size": [
+          176,
+          206
+        ],
+        "activeSlots": 63,
+        "frameSha256": "b494cc8823ed07218d3ab33f24bc2ae2f80cd0a7b7ffdd7519b18364d13b596e",
+        "allOpaqueExactPercent": 98.89,
+        "upperOpaqueExactPercent": 98.09
+      },
+      "item_buffer": {
+        "atlas": "guiitembuffer",
+        "size": [
+          176,
+          233
+        ],
+        "activeSlots": 63,
+        "frameSha256": "a07b8f529fa9409f63409b28d3375bb4cfe7d78b0486013a3bc63588c3ce4db3",
+        "allOpaqueExactPercent": 99.69,
+        "upperOpaqueExactPercent": 99.51
+      },
+      "sorting_machine": {
+        "atlas": "guisortingmachine",
+        "size": [
+          212,
+          243
+        ],
+        "activeSlots": 52,
+        "frameSha256": "fc65ccae6b7c1046727312277da0928c25f37705d6a54b1a961cbc241cc438c2",
+        "allOpaqueExactPercent": 99.31,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "weighted_item_distributor": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 45,
+        "frameSha256": "eac22e99fd454945cf2f27fb781ea532ded52b8ec4a5babaddd162cabe99f9a9",
+        "allOpaqueExactPercent": 98.69,
+        "upperOpaqueExactPercent": 97.79
+      },
+      "chunk_loader": {
+        "atlas": "guichunkloader",
+        "size": [
+          176,
+          250
+        ],
+        "activeSlots": 37,
+        "frameSha256": "a6ca1ab4e4167dc3dd83a7632b6eae0635128653eb3cb00081b51d4a34d35d66",
+        "allOpaqueExactPercent": 99.81,
+        "upperOpaqueExactPercent": 99.71
+      },
+      "tool_box": {
+        "atlas": "guitoolbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "a6556a1b39ad72d7a31ff29772ed9b1bd53b079e198a0a1efddaf70f4d07cdca",
+        "allOpaqueExactPercent": 98.09,
+        "upperOpaqueExactPercent": 99.41
+      },
+      "containment_box": {
+        "atlas": "guicontainmentbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 48,
+        "frameSha256": "787ee88e4bf7e6004c1edfdc4b803297c120ad50b70f197023dbb61170cf85b7",
+        "allOpaqueExactPercent": 97.39,
+        "upperOpaqueExactPercent": 98.81
+      },
+      "cropnalyzer": {
+        "atlas": "guicropnalyzer",
+        "size": [
+          176,
+          223
+        ],
+        "activeSlots": 39,
+        "frameSha256": "ce89f6264854104c152989e1f17e3d8c24c9aff3810510d8b80c9fdf842f432a",
+        "allOpaqueExactPercent": 98.62,
+        "upperOpaqueExactPercent": 99.02
+      },
+      "advanced_ejector_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "edd1539d4226f45850b7388030352f0637961a2b3094e66d048c2e9e69390bd7",
+        "allOpaqueExactPercent": 84.78,
+        "upperOpaqueExactPercent": 72.64
+      },
+      "advanced_pulling_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "f23809c5f3b83a392952f0fbed683da63c529b12f9faf67fdf54de3070920b2b",
+        "allOpaqueExactPercent": 84.81,
+        "upperOpaqueExactPercent": 72.7
+      },
+      "scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 37,
+        "frameSha256": "0d00016f0c5aa190e73a550b435596e6eb34e9da28cb8753c5d0d7f9226e03a4",
+        "allOpaqueExactPercent": 98.79,
+        "upperOpaqueExactPercent": 98.79
+      },
+      "advanced_scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 38,
+        "frameSha256": "fb1a1a54d0fde1140b62dea01e144413f349a41a0f939c9efef33c220eac2dab",
+        "allOpaqueExactPercent": 98.35,
+        "upperOpaqueExactPercent": 98.09
+      }
+    }
+  },
+  "1.21.1": {
+    "sha256": "5796df6cfd9d9fd49a50b7c728cb61ab4839ba28d136828edf89069de1d6e6e5",
+    "requiredCases": 116,
+    "views": {
+      "generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "bd4bdd310f672c5729496ec6cc9e3009e03ef777f63ad2cbd6c2f21edcd201bb",
+        "allOpaqueExactPercent": 95.75,
+        "upperOpaqueExactPercent": 92.99
+      },
+      "iron_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "82420cb7bacdffd185c9e702640e68e866fb663719b3d9eb17167fde11c4d191",
+        "allOpaqueExactPercent": 94.84,
+        "upperOpaqueExactPercent": 91.11
+      },
+      "macerator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "cd2fb375a2ff4e4a8b0b94a87a122e6e8cade1ebff737f706ec7ffa354938228",
+        "allOpaqueExactPercent": 95.91,
+        "upperOpaqueExactPercent": 93.33
+      },
+      "compressor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "f5532d8ee12edf66cb8b1ee48338dcf75d8ef45fb22fb7a871d483d531c19565",
+        "allOpaqueExactPercent": 95.57,
+        "upperOpaqueExactPercent": 92.62
+      },
+      "extractor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "4b9421734d778d9b9aad4bfff37d7d87cdf3b7ff5cf4cb3f20ef242567b528e0",
+        "allOpaqueExactPercent": 95.68,
+        "upperOpaqueExactPercent": 92.84
+      },
+      "electric_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "ee3f8cf2dee73eb146628dd305a0e46cdc5b3736723eed08a1111e3d817436ae",
+        "allOpaqueExactPercent": 95.28,
+        "upperOpaqueExactPercent": 92.02
+      },
+      "batbox": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "c9a5e4410b5aaf861843fa4431a88674dec2cd0199ee4191956913dd9d6fc443",
+        "allOpaqueExactPercent": 97.9,
+        "upperOpaqueExactPercent": 96.26
+      },
+      "cesu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "4ac2f10cb9a141f1e830469fac6467f441c060d98e3209c64b1471a527fd352e",
+        "allOpaqueExactPercent": 99.16,
+        "upperOpaqueExactPercent": 98.5
+      },
+      "mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "678b5f17812436dfbedadc68c4d7e1ace99cd71a6f51386990f6ef042eeec99a",
+        "allOpaqueExactPercent": 99.19,
+        "upperOpaqueExactPercent": 98.56
+      },
+      "mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "c7d24453ada153035abd6ac3c7b45e0b6e3c4ac0c9aa3b16351e8e78c18fd090",
+        "allOpaqueExactPercent": 99.16,
+        "upperOpaqueExactPercent": 98.5
+      },
+      "batbox_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "e5cdfc64be4fb4b62ed3509d45e12487460d49d3354a353d002512754738b402",
+        "allOpaqueExactPercent": 97.49,
+        "upperOpaqueExactPercent": 96.55
+      },
+      "cesu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "10fd3f7f44aada8999b4d2cffd417bba4266f2bbb9947a17fb464b2798d71ffd",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.73
+      },
+      "mfe_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "103ca8dcec2b1a5cf849986fd483f0c644b4dd0594ff1fe198d9218b1d46ff49",
+        "allOpaqueExactPercent": 97.62,
+        "upperOpaqueExactPercent": 96.83
+      },
+      "mfsu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "3b258628d4c72f1f0732371b73710a28a0baa9389ee6e89a08e58a826e805f90",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.73
+      },
+      "meter": {
+        "atlas": "guitooleumeter",
+        "size": [
+          176,
+          217
+        ],
+        "activeSlots": 36,
+        "frameSha256": "1d4ca2df2c7bc7696763401526790e2798d7522df41287c9ef666acdacada784",
+        "allOpaqueExactPercent": 96.49,
+        "upperOpaqueExactPercent": 94.79
+      },
+      "metal_former": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "0abc92805d7a6ed9f54d42c5a46240be9665935a9d2b93434fe49295132492b1",
+        "allOpaqueExactPercent": 97.51,
+        "upperOpaqueExactPercent": 96.68
+      },
+      "ore_washing_plant": {
+        "atlas": "guiorewashingplant",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "7ffe6507793da1d504f8c911896c5ec273e0521947e73002617593ab8b6f751b",
+        "allOpaqueExactPercent": 98.48,
+        "upperOpaqueExactPercent": 98.66
+      },
+      "centrifuge": {
+        "atlas": "guithermalcentrifuge",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "0c44e878961928f16d32b5b63e3dd85a3f88a5d196a0e52c55c569c625728fa2",
+        "allOpaqueExactPercent": 98.08,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "blast_furnace": {
+        "atlas": "guiblastfurnacenew",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 41,
+        "frameSha256": "ca2d1a08b6d048638dbaff5d2cf8990dfb5ba029091b5b0697fef52f3c5e071f",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.23
+      },
+      "induction_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "e7adf57637cce0547647bbe8af844e96b70fb22a27593f45da2caeb32e75b3d2",
+        "allOpaqueExactPercent": 94.61,
+        "upperOpaqueExactPercent": 92.11
+      },
+      "induction_furnace_battery": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "c64cfaacd9fa1c2d9da04a102caf364791d7e6414ec40a9b30a832f7dd4007c3",
+        "allOpaqueExactPercent": 94.74,
+        "upperOpaqueExactPercent": 90.94
+      },
+      "recycler": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "2077417cb6b0586f5090b9b9a485000d731f7055f94b9befd69f150bd6fa93c7",
+        "allOpaqueExactPercent": 95.3,
+        "upperOpaqueExactPercent": 93.54
+      },
+      "block_cutter": {
+        "atlas": "guiblockcutter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "586958d94f6b77132bfe2349ab632050cb41a2d33baed609f0fcc67d925c2910",
+        "allOpaqueExactPercent": 97.98,
+        "upperOpaqueExactPercent": 97.66
+      },
+      "canner": {
+        "atlas": "guicanner",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "86bb2be5d226de21229662b73c3401379c3348ac9d3292675887507a00e5bf21",
+        "allOpaqueExactPercent": 95.67,
+        "upperOpaqueExactPercent": 91.89
+      },
+      "solid_canner": {
+        "atlas": "guisolidcanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "8952531de07f04528c09e6621ae9834d404a3a6288d123ba08bcdfbb1bc19ed2",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "classic_canner": {
+        "atlas": "gui_canner_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "59933268fd914155236cfeb408b06d3134d216356fb18ce544bafa609f56f143",
+        "allOpaqueExactPercent": 93.81,
+        "upperOpaqueExactPercent": 89.0
+      },
+      "coke_kiln": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "0dbaee5eb9cb8468f1a2874d56573740e96d02f3d4bf96766202002614569b54",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.64
+      },
+      "coke_kiln_grate": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "1e59d135379597d5e10ba88ebcd5142c2985e11f66e782e61ae9c6aaac7fcbdc",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.18
+      },
+      "coke_kiln_hatch": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "4170dae3bb9f6e91611420fbd30a9426f0843e86294d3696b2e21301a66bcc0b",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.17
+      },
+      "uu_assembly_bench": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "c3113c19eb38b29d79083d79f20c6be0423cd0a2a9351f156bd34c2757e0a95c",
+        "allOpaqueExactPercent": 95.75,
+        "upperOpaqueExactPercent": 93.04
+      },
+      "solar_distiller": {
+        "atlas": "guisolardestiller",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "b83534de92abb32d12b858c5e27c36119772bbb6e3bf4bf7c226444c64c630df",
+        "allOpaqueExactPercent": 99.55,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "liquid_heat_exchanger": {
+        "atlas": "guiheatsourcefluid",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "b8166ddcbe1548044b92b730552dae06f1a177e609832d3be9e8198b68651d44",
+        "allOpaqueExactPercent": 98.75,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "weighted_fluid_distributor": {
+        "atlas": "guiweightedfluiddistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 36,
+        "frameSha256": "1c2339485786ccbc2b2d48b0320f761c859486ce261eba4a9041475ec801ee99",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 97.62
+      },
+      "fluid_bottler": {
+        "atlas": "guibottler",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "e1957a18fa3a5f589600dba1da42c4956329d1a2970b29ba2e2fbf3ff838533c",
+        "allOpaqueExactPercent": 99.54,
+        "upperOpaqueExactPercent": 99.14
+      },
+      "fluid_regulator": {
+        "atlas": "guifluidregulator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "83cbb2c30df77dc6b932910b86137692b381f973d4657fda232675baa727806c",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.77
+      },
+      "fluid_distributor": {
+        "atlas": "guifluiddistributor",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "7b87d1d6fbfa96bab0b94d21a343f8f76b805aeadbe400e38aa8af83efaf42b4",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "pump": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "99a35e01d575023ed9533b9579c57919087785ddc7f2b9727137d12738729eff",
+        "allOpaqueExactPercent": 93.87,
+        "upperOpaqueExactPercent": 89.13
+      },
+      "electrolyzer": {
+        "atlas": "guielectrolyzer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "cdc77ccc1a81428688a756a0e405dce3699b5dc5ecc2cbb109d9a14330a80360",
+        "allOpaqueExactPercent": 98.29,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "stirling_generator": {
+        "atlas": "guistirlinggenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "916ae96814e8fa82eaf350918bbf3e186ad3b57ebf5510d872b23eb4be219764",
+        "allOpaqueExactPercent": 97.67,
+        "upperOpaqueExactPercent": 97.02
+      },
+      "fluid_heat_generator": {
+        "atlas": "guifluidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "b67acc1393bc5abf7709e5a7ef11c6528cba783d756f9850705cb4525a59850a",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.87
+      },
+      "rt_heat_generator": {
+        "atlas": "guirtheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "047b22a726a3a4b4246f54a4af795479d4ededbd38e431e54bd5fb7764608314",
+        "allOpaqueExactPercent": 97.68,
+        "upperOpaqueExactPercent": 97.0
+      },
+      "fermenter": {
+        "atlas": "guifermenter",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "5f9a44cce54753a432632d429ceb0f3516d1cd25f4f23d8ce781c6fb6e5ac41d",
+        "allOpaqueExactPercent": 94.81,
+        "upperOpaqueExactPercent": 90.25
+      },
+      "semifluid_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "25f6d10d8dd4209b9b7246a7e82ea4b43bbe9fbbe111b27577575f3257c6c322",
+        "allOpaqueExactPercent": 98.04,
+        "upperOpaqueExactPercent": 97.78
+      },
+      "steam_generator": {
+        "atlas": "guisteamgenerator",
+        "size": [
+          176,
+          220
+        ],
+        "activeSlots": 0,
+        "frameSha256": "0be0a7e5a304efc3640418851452da589ed33dbc828cee24b13df3011f6fc03a",
+        "allOpaqueExactPercent": 99.2,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "steam_repressurizer": {
+        "atlas": "guisteamrepressurizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "80c76a00f22729927ea01c54ac74a392143ba6dbf2f873bf0ea6c3c30409b308",
+        "allOpaqueExactPercent": 97.97,
+        "upperOpaqueExactPercent": 97.64
+      },
+      "condenser": {
+        "atlas": "guicondenser",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "d557107ac806233d3db293d24c33e44114cf2c1dabbbef86d231b61a112c8e1e",
+        "allOpaqueExactPercent": 98.87,
+        "upperOpaqueExactPercent": 97.9
+      },
+      "steam_kinetic_generator": {
+        "atlas": "guisteamkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "0b1c93808fdc1df2063929f343b10211e378a3275809511d8de8a2a27d8db75a",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.61
+      },
+      "kinetic_generator": {
+        "atlas": "guikineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "6fded289d92ba50a55b6168f98edb28eeba1bd39ce9b99347e2de365877a0475",
+        "allOpaqueExactPercent": 97.63,
+        "upperOpaqueExactPercent": 96.93
+      },
+      "electric_kinetic_generator": {
+        "atlas": "guielectrickineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "53f9d710f7ae12bb60ce19f80005a9432f3006e8296083eccf6dc906c620167b",
+        "allOpaqueExactPercent": 98.46,
+        "upperOpaqueExactPercent": 98.63
+      },
+      "manual_kinetic_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "4e123a6219ec76514653a93c12143c69d1dd5c367cff16d86aaf7f99cb469b31",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 97.08
+      },
+      "stirling_kinetic_generator": {
+        "atlas": "guistirlingkineticgenerator",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "0f1b2b3e8287fd3649bf39bc26e24697e7fa4b0020ab112c3d76b788fdbdab78",
+        "allOpaqueExactPercent": 99.12,
+        "upperOpaqueExactPercent": 98.48
+      },
+      "wind_kinetic_generator": {
+        "atlas": "guiwindkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "22f9abbd484d4dea6557b00767296f4a66e629dbe9fa9d43017b8cfa11bcd27d",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.83
+      },
+      "water_kinetic_generator": {
+        "atlas": "guiwaterkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "5e335050d76ac55244e79d19e09e5ea981dc26deb40b62473022824c65ce9b0e",
+        "allOpaqueExactPercent": 97.54,
+        "upperOpaqueExactPercent": 96.74
+      },
+      "classic_electrolyzer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "ff4b90a5f601d3c176965831fda0cd596f9c4be2fc6d5df3222b5da165c3fc83",
+        "allOpaqueExactPercent": 96.22,
+        "upperOpaqueExactPercent": 94.0
+      },
+      "mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "6f6821a2e129347d3344a730a9ea752f74bcb04d12d29993778ec9c0ead484a0",
+        "allOpaqueExactPercent": 95.19,
+        "upperOpaqueExactPercent": 91.86
+      },
+      "classic_mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "7a9713da0386fa60ad3879d8c1e50048434646f5c0504a4eea368666f1a550f3",
+        "allOpaqueExactPercent": 94.92,
+        "upperOpaqueExactPercent": 91.31
+      },
+      "matter_generator": {
+        "atlas": "guimatter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "26b5ab7c793b7403a9dfc4d8cbec811675cd7b37d433c9e0d6ac8b47064dab13",
+        "allOpaqueExactPercent": 98.49,
+        "upperOpaqueExactPercent": 98.68
+      },
+      "uu_scanner": {
+        "atlas": "guiscanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "dbf3aa68f26970f197f926bfe3f7bfbbd93a3e96c94657fbe74f060b8490eb91",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "pattern_storage": {
+        "atlas": "guipatternstorage",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "360481d594b56cab7b30f07b368b9c6dfd6bbf2595a212c1b854ac7ee6055e33",
+        "allOpaqueExactPercent": 98.3,
+        "upperOpaqueExactPercent": 98.29
+      },
+      "replicator": {
+        "atlas": "guireplicator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 38,
+        "frameSha256": "3f76df62de33433b8ef1cd0c2b38f1e1a54ee65eec380874cd3c89540b599920",
+        "allOpaqueExactPercent": 95.18,
+        "upperOpaqueExactPercent": 90.96
+      },
+      "electric_heat_generator": {
+        "atlas": "guielectricheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "6ef1d1c3de23b8afd0f62250f31165f667b5c2dbdcc92a86f69091b362fe15c2",
+        "allOpaqueExactPercent": 98.19,
+        "upperOpaqueExactPercent": 98.07
+      },
+      "solid_heat_generator": {
+        "atlas": "guisolidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "d97105a124813df662498842b677cb4268916a8888cd6d7ab5cd5614c0cb9da1",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.93
+      },
+      "nuclear_reactor": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 54,
+        "frameSha256": "5135edeb60aae8dbacaa7cb294f39861e18d32d03029be3ddefe7e88a10e4f65",
+        "allOpaqueExactPercent": 81.53,
+        "upperOpaqueExactPercent": 71.34
+      },
+      "nuclear_reactor_fluid": {
+        "atlas": "guinuclearreactorfluid",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 94,
+        "frameSha256": "148c54da63a8821ee8d9398756484464b224449a87aaa842addfebed3c80ec95",
+        "allOpaqueExactPercent": 99.06,
+        "upperOpaqueExactPercent": 98.55
+      },
+      "reactor_fluid_port": {
+        "atlas": "guireactorfluidport",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "e6432d5e477e02c1a7d087b0e2dbb0a144c862d8e688dd354b98ed79385f6980",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.94
+      },
+      "nuke": {
+        "atlas": "guinuke",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 45,
+        "frameSha256": "c31fda6a0c7c02d462f0fdec308fc0136cf7ba3beffce7165f1ba6542a125dc7",
+        "allOpaqueExactPercent": 100.0,
+        "upperOpaqueExactPercent": 100.0
+      },
+      "lv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "5c4c0951c2b14f2f5cd1baed7b8ef89b57e2a5f62fca03ea417cc88d76af91a9",
+        "allOpaqueExactPercent": 98.88,
+        "upperOpaqueExactPercent": 98.15
+      },
+      "lv_transformer_step_down": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "a95318f69fbf1efcf61e3b9d1447f8df935a21961c306cf65da2bcddc41760fc",
+        "allOpaqueExactPercent": 99.18,
+        "upperOpaqueExactPercent": 98.65
+      },
+      "mv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "14b04cb55b2f72a9c47b948adaad1e60b3b677d79a21f5cc03b8222cc0c0c6d8",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "hv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "f4e1d56d1b826e26811424a9381e09fc994481585b5b22a48596400e8c52b871",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "ev_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "509186e935b9e87faf8afb248e9f601090697c1ad58b1741ee1a3597f5f48615",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "classic_mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "3df4a1717304af7e19a078d6422259590e17887bd0077a634c25ec887f039a92",
+        "allOpaqueExactPercent": 99.66,
+        "upperOpaqueExactPercent": 99.4
+      },
+      "classic_mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "b986890816758c588b8f0682610c3ed75e0fa56c901d97ebe766251e4991c442",
+        "allOpaqueExactPercent": 99.62,
+        "upperOpaqueExactPercent": 99.33
+      },
+      "geo_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "e57b8d708b63f702400fcebb3558bcd8cc6c0d1bb353bc512dc3196b92156a7c",
+        "allOpaqueExactPercent": 98.31,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "magnetizer": {
+        "atlas": "guimagnetizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "4b7a04a6d4db32ef8ea6a542e22f7447def7b52c492a2e24b144390938bdcc3a",
+        "allOpaqueExactPercent": 98.32,
+        "upperOpaqueExactPercent": 98.33
+      },
+      "trade_o_mat": {
+        "atlas": "guitradeomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "c92db5cfc75d5c1850a1971840dafe7ea31bb02ceb0b77d2c7ebff69d7052468",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "trade_o_mat_guest": {
+        "atlas": "guitradeomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "5742fea5bfa8ef73352a39fc8e1753981dcc73c5d2099202689b5526d875140d",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "energy_o_mat": {
+        "atlas": "guienergyomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "a6e22bce33554b2f233c2fe1e391bc4830766d75c36e2a5b8f19032a0288c787",
+        "allOpaqueExactPercent": 98.21,
+        "upperOpaqueExactPercent": 98.11
+      },
+      "energy_o_mat_5000": {
+        "atlas": "guienergyomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "4b789481c2445f3e38af29c8e6128142c6ef7f1fee48e25b98b38e26e89ce1c7",
+        "allOpaqueExactPercent": 98.2,
+        "upperOpaqueExactPercent": 98.07
+      },
+      "energy_o_mat_guest": {
+        "atlas": "guienergyomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "0dd28c0568bbf02e493879416a486e74424bc7f29d710a644b1953af7abd4aa5",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "solar_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "117263ec4ae5f3504c8b505b394ba284a49f4bde960d69baacf4da801230e8a9",
+        "allOpaqueExactPercent": 98.04,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "wind_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "b4979e064b56853d0fef19fef205dc53fe166d13448792f668d9b65f4205a829",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "water_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "5624500f09267dfc4045d89c149ffc4b4335cd7987653e7bacf4d0de834c8c1a",
+        "allOpaqueExactPercent": 98.6,
+        "upperOpaqueExactPercent": 98.92
+      },
+      "rt_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "792c4c3c73d46accf1589c20a110ad499f3a6c70c872b9a632843edebbdddba6",
+        "allOpaqueExactPercent": 96.36,
+        "upperOpaqueExactPercent": 94.27
+      },
+      "rci_rsh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "cfaada6a7eaf63beb0444c30c6888614883d30cc53586b0ff967fd1f0c92ed98",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "rci_lzh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "abbdfe4a13f5db35d7b3ffbe2f3f5e95ac286e118451ce2ff8f50289856249de",
+        "allOpaqueExactPercent": 97.84,
+        "upperOpaqueExactPercent": 97.34
+      },
+      "tesla_coil": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "aceb99eaa47b8b24644787ca3edbfe0a8989521641496e0891f38d952fe40de6",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "teleporter": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "1b9618257068df88690396bb139742b883ab33c8ceed031411336f4417e4a362",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.77
+      },
+      "creative_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "928b288be8e794f63b9e518a3da79ba32246d923919928f4b86ed91ae63f77b5",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.2
+      },
+      "wooden_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 63,
+        "frameSha256": "49ece1e15483346c3bfcdbf4a764c10a6ff162a6718987123bdff45b287af9b1",
+        "allOpaqueExactPercent": 98.38,
+        "upperOpaqueExactPercent": 98.47
+      },
+      "iron_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "0752890d0a55abff1cc861002155cc7895a1ef45f5999b4048ec2d4f00c53f1b",
+        "allOpaqueExactPercent": 98.78,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "bronze_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "9a1adaebfd372e0a90d1624c39410ee374bf2bb78354d5d66a2f1ba358dac056",
+        "allOpaqueExactPercent": 98.68,
+        "upperOpaqueExactPercent": 97.7
+      },
+      "steel_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          238
+        ],
+        "activeSlots": 99,
+        "frameSha256": "d5c9816a4431db356cf7ae991485a4283d9450268995281d4186c62083c51752",
+        "allOpaqueExactPercent": 98.93,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "iridium_storage_box": {
+        "atlas": "common",
+        "size": [
+          338,
+          238
+        ],
+        "activeSlots": 162,
+        "frameSha256": "7079eb232e9b64a812d2f5aa6a752474e3d38a453b4613c0a06b4deb470f65f1",
+        "allOpaqueExactPercent": 99.43,
+        "upperOpaqueExactPercent": 99.1
+      },
+      "personal_chest": {
+        "atlas": "common",
+        "size": [
+          176,
+          222
+        ],
+        "activeSlots": 90,
+        "frameSha256": "ed2ad06952e3f4714a07c6cb4b57fb018446cf977a06d675519f76cca4d84726",
+        "allOpaqueExactPercent": 98.96,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "industrial_workbench": {
+        "atlas": "guiindustrialworkbench",
+        "size": [
+          194,
+          228
+        ],
+        "activeSlots": 70,
+        "frameSha256": "8eddc20aaf5bee8c94a1d7f04aea05170477ef425df424fba25028f12c9a495b",
+        "allOpaqueExactPercent": 98.39,
+        "upperOpaqueExactPercent": 97.49
+      },
+      "bronze_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "f024c00d6aafccdc994cb006fad21631c1f79a10edc1e07f4ed639b5ba465a5d",
+        "allOpaqueExactPercent": 96.84,
+        "upperOpaqueExactPercent": 95.25
+      },
+      "iron_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "6a4e27ed29da6ac3360f58f39c139dc31296a3ff9a01046da964a7d7318dd98e",
+        "allOpaqueExactPercent": 96.96,
+        "upperOpaqueExactPercent": 95.52
+      },
+      "steel_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "0622a4e5d780215b42bbf245dbedd28173416d236976fa5ef93a6abdd7606482",
+        "allOpaqueExactPercent": 96.85,
+        "upperOpaqueExactPercent": 95.29
+      },
+      "iridium_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "02df74436f772cda7dae7103264c3b0e0b7c88850848d453fb826cc588924213",
+        "allOpaqueExactPercent": 96.75,
+        "upperOpaqueExactPercent": 95.08
+      },
+      "tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "d20eaf5ec1df7a8510216ce33f7128343181a9e01f5c89f74f74697f89219502",
+        "allOpaqueExactPercent": 97.11,
+        "upperOpaqueExactPercent": 95.82
+      },
+      "crop_harvester": {
+        "atlas": "guicropharvester",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "656b77214661cc89d514d626b87dcd5b0f98297f658d1825205710e21fa613bd",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 98.88
+      },
+      "cropmatron": {
+        "atlas": "guicropmatron",
+        "size": [
+          176,
+          192
+        ],
+        "activeSlots": 52,
+        "frameSha256": "0b25476123a0792bd812225b52753321d157a7991ce92d8de0eccb5955117aff",
+        "allOpaqueExactPercent": 97.91,
+        "upperOpaqueExactPercent": 96.21
+      },
+      "classic_cropmatron": {
+        "atlas": "gui_cropmatron_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "f18b566a65e0f8996d726e7f9c6d2dc719460f7b16fc082804c1576ff00ab3b9",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.8
+      },
+      "terraformer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "6bf5f9e74333b255519cabe344c3008c20352e4d8e9d071c7f7227a85432eeff",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "miner": {
+        "atlas": "guiminer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "9253466755c3b1e9acdf1358fe77ba76a12b8da755f08553e1da0a67d49e8758",
+        "allOpaqueExactPercent": 96.07,
+        "upperOpaqueExactPercent": 93.67
+      },
+      "advanced_miner": {
+        "atlas": "guiadvminer",
+        "size": [
+          176,
+          203
+        ],
+        "activeSlots": 54,
+        "frameSha256": "c42441b1aa368e4a8e4764967a8a435321afb41e2b8db9aa170664cd4743b001",
+        "allOpaqueExactPercent": 99.26,
+        "upperOpaqueExactPercent": 98.71
+      },
+      "batch_crafter": {
+        "atlas": "guibatchcrafter",
+        "size": [
+          176,
+          206
+        ],
+        "activeSlots": 63,
+        "frameSha256": "dada3c5c0ce9e4c8465cdbf2c1e71e13e11e6af394becb652b6b016c47c72863",
+        "allOpaqueExactPercent": 98.89,
+        "upperOpaqueExactPercent": 98.09
+      },
+      "item_buffer": {
+        "atlas": "guiitembuffer",
+        "size": [
+          176,
+          233
+        ],
+        "activeSlots": 63,
+        "frameSha256": "898ac1e0ab49072c4d54b79977e29b43948ee9ec960ad3b9e4961865e44353dd",
+        "allOpaqueExactPercent": 99.69,
+        "upperOpaqueExactPercent": 99.51
+      },
+      "sorting_machine": {
+        "atlas": "guisortingmachine",
+        "size": [
+          212,
+          243
+        ],
+        "activeSlots": 52,
+        "frameSha256": "a8ec3e82a36d796f24bfac3963096869205fc1eab9ae98559b0c5f79c1a3b18f",
+        "allOpaqueExactPercent": 99.31,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "sorting_machine_page_2": {
+        "atlas": "guisortingmachine",
+        "size": [
+          212,
+          243
+        ],
+        "activeSlots": 52,
+        "frameSha256": "d2e853dea5832f99542fbbd7515e838f0c56b904a74d6baf3cf85b0102dadd43",
+        "allOpaqueExactPercent": 99.3,
+        "upperOpaqueExactPercent": 98.92
+      },
+      "weighted_item_distributor": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 45,
+        "frameSha256": "0feaa16139d91c8b3be1caf23db377e65cdc5d2fe8253c134eec3a5bb8e6068f",
+        "allOpaqueExactPercent": 98.69,
+        "upperOpaqueExactPercent": 97.79
+      },
+      "weighted_item_distributor_page_2": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 45,
+        "frameSha256": "a534eb9aca04516e91814255d73148208b7dc08f907ae7dab540593d1c44557f",
+        "allOpaqueExactPercent": 98.68,
+        "upperOpaqueExactPercent": 97.77
+      },
+      "weighted_item_distributor_page_3": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 43,
+        "frameSha256": "c398e9b2eb99fac49be1bcfed95483c30ecf49e6806057d97e9145c3d1730e49",
+        "allOpaqueExactPercent": 92.54,
+        "upperOpaqueExactPercent": 87.41
+      },
+      "chunk_loader": {
+        "atlas": "guichunkloader",
+        "size": [
+          176,
+          250
+        ],
+        "activeSlots": 37,
+        "frameSha256": "27a70b1f66bb49f6264d6fb2768af36c5283ffe177de5bea3779bea2ad0381b3",
+        "allOpaqueExactPercent": 99.81,
+        "upperOpaqueExactPercent": 99.71
+      },
+      "tool_box": {
+        "atlas": "guitoolbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "ec6e0250fce906ed963dad29451a546cf6afe0bb400b9d384bd887f0547ee7cd",
+        "allOpaqueExactPercent": 98.09,
+        "upperOpaqueExactPercent": 99.41
+      },
+      "tool_box_reopened": {
+        "atlas": "guitoolbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "f0580d5e849c46ba21ccfba19ec06e3484b672af27f5ae1193a09ae36c30dd4c",
+        "allOpaqueExactPercent": 98.09,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "containment_box": {
+        "atlas": "guicontainmentbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 48,
+        "frameSha256": "d9cd37bb41b23c6875b02501e5d5c9b2cfb3bd53bf88fcafc19ded5fb15bd7a7",
+        "allOpaqueExactPercent": 97.39,
+        "upperOpaqueExactPercent": 98.81
+      },
+      "containment_box_reopened": {
+        "atlas": "guicontainmentbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 48,
+        "frameSha256": "84070215636362f70c4fdb32e8160fe5050a2fbe1fc9f77a7b18dec6577d9ec3",
+        "allOpaqueExactPercent": 97.39,
+        "upperOpaqueExactPercent": 97.78
+      },
+      "cropnalyzer": {
+        "atlas": "guicropnalyzer",
+        "size": [
+          176,
+          223
+        ],
+        "activeSlots": 39,
+        "frameSha256": "9ad17b7a0d6f8118412c0a7eb3d1135d45c6b7b1b5098c2dba2ffbc85bf5fa67",
+        "allOpaqueExactPercent": 98.62,
+        "upperOpaqueExactPercent": 99.02
+      },
+      "cropnalyzer_scanned": {
+        "atlas": "guicropnalyzer",
+        "size": [
+          176,
+          223
+        ],
+        "activeSlots": 39,
+        "frameSha256": "7b5723b4833c6080b8b11025bb14c08c8d8dff51c724098b18bb9852d12de762",
+        "allOpaqueExactPercent": 98.03,
+        "upperOpaqueExactPercent": 97.53
+      },
+      "scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 37,
+        "frameSha256": "cf917f35726dcc0f98a3ca4485dd5df8a7abb02525f695303c0a355939c4e2bc",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 98.81
+      },
+      "advanced_scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 38,
+        "frameSha256": "45b4c1567c445207eda0ea48803bc0c4e56f88f9461ad1d38ac16e5785f535ac",
+        "allOpaqueExactPercent": 98.37,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "advanced_ejector_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "c1954ee9ccc27f1be9cc1573f65f362a19cf4a443c286a4d794fe461e685364f",
+        "allOpaqueExactPercent": 85.19,
+        "upperOpaqueExactPercent": 72.64
+      },
+      "advanced_pulling_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "b7a5ff456f94a38f7a5d1a82cd73591bff731917e425ef9a52cb8aca2a6bcc32",
+        "allOpaqueExactPercent": 85.22,
+        "upperOpaqueExactPercent": 72.7
+      },
+      "nuclear_reactor_six_chambers": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 90,
+        "frameSha256": "e8ddb14b8420b1dc27f9edd276835dc88a8f27eb6e10edfe00ca562627af716d",
+        "allOpaqueExactPercent": 98.99,
+        "upperOpaqueExactPercent": 98.44
+      },
+      "tank_water": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "5870e0c7d0df2209a50d8dcf621613b991ea06fec4a8a6a94396c01bd6832df1",
+        "allOpaqueExactPercent": 96.95,
+        "upperOpaqueExactPercent": 95.5
+      },
+      "classic_mfe_zh_cn": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "973ad33f6a96234f9dd9bb53401c8af1f49b1dac020272bb11726958f7ee73d5",
+        "allOpaqueExactPercent": 99.48,
+        "upperOpaqueExactPercent": 99.07
+      },
+      "water_generator_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "cc60dbc8d14318a622194113b3ae1b24c1c63812e263f00ab8c54c33f2dc9bea",
+        "allOpaqueExactPercent": 98.69,
+        "upperOpaqueExactPercent": 99.1
+      },
+      "rt_generator_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "ecd6adf8278900beb61192cff0e805e64fd9aad95140739af373dfa99c1bc466",
+        "allOpaqueExactPercent": 96.59,
+        "upperOpaqueExactPercent": 94.75
+      },
+      "rci_lzh_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "ca9d0f6e29fc7e2887ad66fd5d3948c05e13a48062fe83362ef9bdd7ed4868de",
+        "allOpaqueExactPercent": 98.27,
+        "upperOpaqueExactPercent": 98.22
+      },
+      "tank_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "648ccf9f6b26a6756475fee52e9eef72437228ef43d9feefab23bbc196bb3713",
+        "allOpaqueExactPercent": 97.15,
+        "upperOpaqueExactPercent": 95.9
+      },
+      "nuclear_reactor_six_chambers_zh_cn": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 90,
+        "frameSha256": "af0ca283a985fb51132fbb9dcedf312df13f311c32d1c83796a8d40a9e2cb9ba",
+        "allOpaqueExactPercent": 99.22,
+        "upperOpaqueExactPercent": 98.78
+      },
+      "tank_water_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "9ba368043a24e11aa908c12631cde4eb9c5a5323d5e73770d6e15ff7e2641654",
+        "allOpaqueExactPercent": 96.96,
+        "upperOpaqueExactPercent": 95.5
+      },
+      "metal_former_power": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "a4022789053f4cec80f7e867e25d2f45b143356cfef646e2af5ee16c39179c73",
+        "allOpaqueExactPercent": 96.87,
+        "upperOpaqueExactPercent": 96.43
+      },
+      "metal_former_power_transferred": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "01765228f722e6c7d84c446964693585823404b08100042b80bb7d6ad01a4e4f",
+        "allOpaqueExactPercent": 96.89,
+        "upperOpaqueExactPercent": 95.39
+      },
+      "induction_furnace_power": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "1385ac5800ae120aec9ef0ddaca0794d5ac2755786ddab8e7f7b64010752f486",
+        "allOpaqueExactPercent": 94.61,
+        "upperOpaqueExactPercent": 92.11
+      },
+      "induction_furnace_power_transferred": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "d1e6b401f1cdf34234bd6f0116364448f7d376f876bce5fa1b1ce71bb9114a8c",
+        "allOpaqueExactPercent": 94.74,
+        "upperOpaqueExactPercent": 90.94
+      },
+      "semifluid_generator_charge": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "88e3aad0d08771591359a9cde3475f115b1a74f86d7594ac6f7071448b4de7c5",
+        "allOpaqueExactPercent": 97.48,
+        "upperOpaqueExactPercent": 97.69
+      },
+      "semifluid_generator_charge_transferred": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "789f1c86f6cc57593193b5d3110c6d03b45307b1ab147fe3d65a64266ecd922c",
+        "allOpaqueExactPercent": 97.48,
+        "upperOpaqueExactPercent": 96.61
+      },
+      "pump_power_transfer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "a73f0505717e70b52294aa48b002731ece37ee4295fbf9fd71556aa67152079c",
+        "allOpaqueExactPercent": 92.87,
+        "upperOpaqueExactPercent": 88.09
+      },
+      "pump_blocked_output": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "b8f5a056f6b98af4ba9594c500d8d92fb300ec60411a6c081d45f855d3fcb4eb",
+        "allOpaqueExactPercent": 92.87,
+        "upperOpaqueExactPercent": 87.05
+      },
+      "pump_cleared_output": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "324bee62b86d9436e2691d2217388bd2d20ee1ecd201a9ddd60683793193535c",
+        "allOpaqueExactPercent": 93.07,
+        "upperOpaqueExactPercent": 87.81
+      }
+    }
+  },
+  "26.1.2": {
+    "sha256": "54ff6e1e7411b40cfe3b2c795611fdf216d56ee6663469bf6d83a1fb84eb29eb",
+    "requiredCases": 116,
+    "views": {
+      "generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "23c3f39d9b5657843cf19d67ba463884eee6403bffb751e74ed74395e7631338",
+        "allOpaqueExactPercent": 95.75,
+        "upperOpaqueExactPercent": 92.99
+      },
+      "iron_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "509d9b3b4cfe1b8da8e1e8edf73224b463e18482595736f96f3b9698edb4d457",
+        "allOpaqueExactPercent": 94.84,
+        "upperOpaqueExactPercent": 91.11
+      },
+      "macerator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "4bfa58824fb2b1450bf04b2ee4eb65982ff8f3bee4b5e48b3312b68895f939e3",
+        "allOpaqueExactPercent": 95.91,
+        "upperOpaqueExactPercent": 93.33
+      },
+      "compressor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "624c3ddc85b20555e4dc810e01be00e4cf35d572199388c93bb17f84b82bcc4e",
+        "allOpaqueExactPercent": 95.57,
+        "upperOpaqueExactPercent": 92.62
+      },
+      "extractor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "3c33358632cf16e12b619f24418b7c6e7039cc1c216166bfa6a8dbbc856c41b1",
+        "allOpaqueExactPercent": 95.68,
+        "upperOpaqueExactPercent": 92.84
+      },
+      "electric_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "22479e2991b567b3e720321b204bf972974c4e1746ce015ed38e033d40789512",
+        "allOpaqueExactPercent": 95.28,
+        "upperOpaqueExactPercent": 92.02
+      },
+      "batbox": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "27afb29929a7bf7300431bd973d2caf04383d6c9ee4936f111d960053fef4ada",
+        "allOpaqueExactPercent": 97.9,
+        "upperOpaqueExactPercent": 96.26
+      },
+      "cesu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "8ea57ab128cdd7a3df5c8d4582c91a574a70e058dc62f3e8c911ec562c9b3363",
+        "allOpaqueExactPercent": 99.16,
+        "upperOpaqueExactPercent": 98.5
+      },
+      "mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "c07dfe044445f641014d264dda45728fde873721c3a9b2b9f8e4e05aae5e3c1c",
+        "allOpaqueExactPercent": 99.19,
+        "upperOpaqueExactPercent": 98.56
+      },
+      "mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "7c382df096f21a43ad5a55ab685903aefc8cac9164930439200261c6b2a4b828",
+        "allOpaqueExactPercent": 99.16,
+        "upperOpaqueExactPercent": 98.5
+      },
+      "batbox_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "cfb59136b11456926d1445a2b17a1e18ec883867f4a456532ad2806020d44c4d",
+        "allOpaqueExactPercent": 97.49,
+        "upperOpaqueExactPercent": 96.55
+      },
+      "cesu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "0e11957aecd3eaec841b0294b2e8689c8d85f2d3259777fc99872ad867a1649e",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.73
+      },
+      "mfe_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "4423e0445ed582da42729df08636ec40b8b2f46a45d85a539afb8a98ea6792d4",
+        "allOpaqueExactPercent": 97.62,
+        "upperOpaqueExactPercent": 96.83
+      },
+      "mfsu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "5324e345eefa19b916e1f2339fdc7241b4116c76b6429dd730dcb48b2aaa5223",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.73
+      },
+      "meter": {
+        "atlas": "guitooleumeter",
+        "size": [
+          176,
+          217
+        ],
+        "activeSlots": 36,
+        "frameSha256": "6aa4007edd51ba0cbbc6e117c8438c8e3e74f328b64f13b0919ad565f0ccd13e",
+        "allOpaqueExactPercent": 96.48,
+        "upperOpaqueExactPercent": 94.76
+      },
+      "metal_former": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "18caaa090ae0903e54b4b3a458374cc5521bc1291f99e0273eaa8256e1baf4be",
+        "allOpaqueExactPercent": 97.51,
+        "upperOpaqueExactPercent": 96.68
+      },
+      "ore_washing_plant": {
+        "atlas": "guiorewashingplant",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "0155a700b8ce05070e8365208c8aa99e9ef02d9b791a2c0882046dc05cb84974",
+        "allOpaqueExactPercent": 98.48,
+        "upperOpaqueExactPercent": 98.66
+      },
+      "centrifuge": {
+        "atlas": "guithermalcentrifuge",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "7b915179d83941242585734482b91f654d4370b8e8c22fdecec34e827babd9d2",
+        "allOpaqueExactPercent": 98.08,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "blast_furnace": {
+        "atlas": "guiblastfurnacenew",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 41,
+        "frameSha256": "7d263e3a5c9c77623d6f8e78c0e6f3f05c0fbe509bdbac4713b298b85f8572c3",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.23
+      },
+      "induction_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "579f9d799102fa7891f2bf0db5ff279166ae3c0437de1dc9ab8db21bb7980ffe",
+        "allOpaqueExactPercent": 94.61,
+        "upperOpaqueExactPercent": 92.11
+      },
+      "induction_furnace_battery": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "f459107d8f54c53f1bdca4cddb0a7a8b761584d9dce9bb7f66a7cd1190d07b9b",
+        "allOpaqueExactPercent": 94.74,
+        "upperOpaqueExactPercent": 90.94
+      },
+      "recycler": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "5b531b73ad888eea4a3f3299ab501e816aaef3f1b62a679bb5d583b18728948b",
+        "allOpaqueExactPercent": 96.0,
+        "upperOpaqueExactPercent": 93.54
+      },
+      "block_cutter": {
+        "atlas": "guiblockcutter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "f88ac79201e1ebaa683bd3c1ef2a4ceb8d8455098c9cebaa618642a4779eb20a",
+        "allOpaqueExactPercent": 97.98,
+        "upperOpaqueExactPercent": 97.66
+      },
+      "canner": {
+        "atlas": "guicanner",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "41923438cda89aaf262572fc26410cd7a6849057d47163dc0313b8200c9777b1",
+        "allOpaqueExactPercent": 95.67,
+        "upperOpaqueExactPercent": 91.89
+      },
+      "solid_canner": {
+        "atlas": "guisolidcanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "7d7543ad84830e31ccfacdc381032f63d52447d10485bd2664f2e5899ac5b2f2",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "classic_canner": {
+        "atlas": "gui_canner_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "70224b793cc5bd383b15adb92149f1dc1bc38de98d0fea06d5536ce9c1547333",
+        "allOpaqueExactPercent": 93.81,
+        "upperOpaqueExactPercent": 89.0
+      },
+      "coke_kiln": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "83d9362b545b2cb6f41b6f107f364349047b529ff665ca9f330473f8e605378f",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.64
+      },
+      "coke_kiln_grate": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "5014d7fd565171e6723fa72307b93c1c56c09a35416ab05a602acf1b143bd008",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.18
+      },
+      "coke_kiln_hatch": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "68d8c853a7d7f3b7aeeedd457239930674058d5ee19abfc0a32e2649caa67b7a",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.17
+      },
+      "uu_assembly_bench": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "4f017ec1538cf7d3da163da987f8c7324ab63dee74b58f73e26faa5fe30eceaa",
+        "allOpaqueExactPercent": 95.75,
+        "upperOpaqueExactPercent": 93.04
+      },
+      "solar_distiller": {
+        "atlas": "guisolardestiller",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "efd15ea1d8e8f1f3ffb32357928705dbb111fb2f4dff9727bbf54cf5a7b4a4f6",
+        "allOpaqueExactPercent": 99.55,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "liquid_heat_exchanger": {
+        "atlas": "guiheatsourcefluid",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "46c0937fa032268ed4a2de5d0a51eb1d7f07ae462c78999e4cf4e55346fc0cba",
+        "allOpaqueExactPercent": 98.75,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "weighted_fluid_distributor": {
+        "atlas": "guiweightedfluiddistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 36,
+        "frameSha256": "eb364683237994f6d7e23e926e48d4b248bf9b55808830cb92cc4134f01a572a",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 97.62
+      },
+      "fluid_bottler": {
+        "atlas": "guibottler",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "7d05765c4ac1d6f45428927aaab12e05c365b61ad39e63cd18eb8463210d786f",
+        "allOpaqueExactPercent": 99.54,
+        "upperOpaqueExactPercent": 99.14
+      },
+      "fluid_regulator": {
+        "atlas": "guifluidregulator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "e6d4592b505a3eae33e98324be3f4ef349e4cddcc87ac6757d109e4e1d1e3bcb",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.77
+      },
+      "fluid_distributor": {
+        "atlas": "guifluiddistributor",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "c314f4431a1fe563f03bc8508243a1b1d728c3464cb74acdd70cb54cc2a9e1a6",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "pump": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "c3e607e7f167d509dd412a61778db3229e35b7c01c17f5100145590497d63272",
+        "allOpaqueExactPercent": 93.87,
+        "upperOpaqueExactPercent": 89.13
+      },
+      "electrolyzer": {
+        "atlas": "guielectrolyzer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "0c35d279a78bcd69936af36dd891eca00273b6f3b958ed17c0750846b3d95a35",
+        "allOpaqueExactPercent": 98.29,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "stirling_generator": {
+        "atlas": "guistirlinggenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "925029517bc549e950010279b5ecbe45714e8f2f101cf9d75789bdbdf01e9558",
+        "allOpaqueExactPercent": 97.67,
+        "upperOpaqueExactPercent": 97.02
+      },
+      "fluid_heat_generator": {
+        "atlas": "guifluidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "20a43dae58cc22719475eb1e0cb63e82412909358e54cfb4d4a9e0918ff38726",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.87
+      },
+      "rt_heat_generator": {
+        "atlas": "guirtheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "3121816c2b9ed7b3c3f854dddba6a6a617347486ad22a45cda687172cc3a874f",
+        "allOpaqueExactPercent": 97.68,
+        "upperOpaqueExactPercent": 97.0
+      },
+      "fermenter": {
+        "atlas": "guifermenter",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "b308a1e2764d5526f286a360e9b31b399ed36cab1d21e7ebc3838f2295d52230",
+        "allOpaqueExactPercent": 94.81,
+        "upperOpaqueExactPercent": 90.25
+      },
+      "semifluid_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "93b893e3eb319470fc9e48e13942f30dc68a2d90774ab0a588a15768b8d14894",
+        "allOpaqueExactPercent": 98.04,
+        "upperOpaqueExactPercent": 97.78
+      },
+      "steam_generator": {
+        "atlas": "guisteamgenerator",
+        "size": [
+          176,
+          220
+        ],
+        "activeSlots": 0,
+        "frameSha256": "dc1d7bb716f20d4610a572307f450d2302f7786c7a4b07c7c1422eb42dfaea7c",
+        "allOpaqueExactPercent": 99.2,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "steam_repressurizer": {
+        "atlas": "guisteamrepressurizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "0eb4bea084fe87b142b084c6595be0d4c56702033cf576615254539874eed57b",
+        "allOpaqueExactPercent": 97.97,
+        "upperOpaqueExactPercent": 97.64
+      },
+      "condenser": {
+        "atlas": "guicondenser",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "2c7d2d43c41f60163b5e40715eda6a8c23873a364707040c5146f27261631e95",
+        "allOpaqueExactPercent": 98.87,
+        "upperOpaqueExactPercent": 97.9
+      },
+      "steam_kinetic_generator": {
+        "atlas": "guisteamkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "0bde304075e91994752d8f7da5a77b5fc4afedbc5e63cb37fb2c8de861de3684",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.61
+      },
+      "kinetic_generator": {
+        "atlas": "guikineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "33752ac4122c305ca4a78137d6adab42943db6832653797caa7a648fba94aa11",
+        "allOpaqueExactPercent": 97.63,
+        "upperOpaqueExactPercent": 96.93
+      },
+      "electric_kinetic_generator": {
+        "atlas": "guielectrickineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "38378c48c03bc78e94f987447687acf28d3fa5f4f32c6f0345840c90df4eed55",
+        "allOpaqueExactPercent": 98.46,
+        "upperOpaqueExactPercent": 98.63
+      },
+      "manual_kinetic_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "fab758b718d2c8f7cecd8587ec0b50e7ee3b17b1d8889056d826f20d53598dcc",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 97.08
+      },
+      "stirling_kinetic_generator": {
+        "atlas": "guistirlingkineticgenerator",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "4ebd00b77ac2e6890c4eedbf414bfd020dca05fc3b7acc46fb3076ad378459e3",
+        "allOpaqueExactPercent": 99.12,
+        "upperOpaqueExactPercent": 98.48
+      },
+      "wind_kinetic_generator": {
+        "atlas": "guiwindkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "a60cb3359e118cb2e05462a2edefa0b4842c4d03ac991e35da5acfa53d948af8",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.83
+      },
+      "water_kinetic_generator": {
+        "atlas": "guiwaterkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "b02884beca441b1413451a44d6a6f965d76892c3e6b8a4a60450b2448eb01c36",
+        "allOpaqueExactPercent": 97.54,
+        "upperOpaqueExactPercent": 96.74
+      },
+      "classic_electrolyzer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "0b4c67e10244a04fa90b469d613a549793944951bae01494afa119b8baa0ab7c",
+        "allOpaqueExactPercent": 96.22,
+        "upperOpaqueExactPercent": 94.0
+      },
+      "mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "90c9475bcd02d91f9d32eb3bf33658334779e80c203d376bdae00dcb76e41844",
+        "allOpaqueExactPercent": 95.19,
+        "upperOpaqueExactPercent": 91.86
+      },
+      "classic_mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "5ed8d637a229e59f4d0623343fb1dde9aaf0789a3913e85993470003d7dee179",
+        "allOpaqueExactPercent": 94.92,
+        "upperOpaqueExactPercent": 91.31
+      },
+      "matter_generator": {
+        "atlas": "guimatter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "53e42395d51e4fc91100aade583845fa6d065a29d67406a0d3b259e16e07ebc6",
+        "allOpaqueExactPercent": 98.49,
+        "upperOpaqueExactPercent": 98.68
+      },
+      "uu_scanner": {
+        "atlas": "guiscanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "4eff5c236d94db2ce657209bf56a6c93813020e8633d068a498bfc015348f77a",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "pattern_storage": {
+        "atlas": "guipatternstorage",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "2cf10dd1a5322f9a11b2b3dae4ccfea7519dc5ddaf3079fb366e001e0db45554",
+        "allOpaqueExactPercent": 98.3,
+        "upperOpaqueExactPercent": 98.29
+      },
+      "replicator": {
+        "atlas": "guireplicator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 38,
+        "frameSha256": "6ea47209a56bfceecc18befb436be6696724aecffb9ec4f725a6b4ce3685eb44",
+        "allOpaqueExactPercent": 95.18,
+        "upperOpaqueExactPercent": 90.96
+      },
+      "electric_heat_generator": {
+        "atlas": "guielectricheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "13f19fc3882daa0fecdbc92f136f15ef86157c6b8e09f5e1c347b7edd690e18c",
+        "allOpaqueExactPercent": 98.19,
+        "upperOpaqueExactPercent": 98.07
+      },
+      "solid_heat_generator": {
+        "atlas": "guisolidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "743ee6132751deea03f7a158a00df4f24139abd25dad1e0fd8aec579bf53219b",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.93
+      },
+      "nuclear_reactor": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 54,
+        "frameSha256": "4f2c7f9b380f6fd7419ab0baae4390b288e5cda80436dd7a2bf803fa84009c12",
+        "allOpaqueExactPercent": 81.53,
+        "upperOpaqueExactPercent": 71.34
+      },
+      "nuclear_reactor_fluid": {
+        "atlas": "guinuclearreactorfluid",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 94,
+        "frameSha256": "a1eddaae0dba766f71ce1826bd42489bd255dd304442f83f559b14d2379563a2",
+        "allOpaqueExactPercent": 99.06,
+        "upperOpaqueExactPercent": 98.55
+      },
+      "reactor_fluid_port": {
+        "atlas": "guireactorfluidport",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "1755f6df7db9e3f65364a32a2f0f373a487e97883e5316b27785c8a1ee3f86a9",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.94
+      },
+      "nuke": {
+        "atlas": "guinuke",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 45,
+        "frameSha256": "b2061204cc2dcf12305afc0411116276d0412813bb77c99d7abb933c05b1829c",
+        "allOpaqueExactPercent": 100.0,
+        "upperOpaqueExactPercent": 100.0
+      },
+      "lv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "8e8493ba1d9cb26d2550910a7b38b77eb7072414fa6ba4cfe8b7e0b923b95fac",
+        "allOpaqueExactPercent": 98.88,
+        "upperOpaqueExactPercent": 98.15
+      },
+      "lv_transformer_step_down": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "027478b70ba48dd2c58e7b5915f8475999213fcb3d71aaf03aa1116e776e85a6",
+        "allOpaqueExactPercent": 99.18,
+        "upperOpaqueExactPercent": 98.65
+      },
+      "mv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "f9ba5de2159c0627842a404cba3a5bd84cbcc2434c43604f6195d47f99703ff4",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "hv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "8059a9631d7aa1aa76583f9069aadbbfd803f8b4c3e59ba6c9291a2f1b531d31",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "ev_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "a15161cf83de3498fe63436dbd9b55f309c632b4a436fdb3df87d6a416140ce2",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "classic_mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "31a1e078609ff5f02bfb9d24c28a7f73da3e39f399c1fd906ef6d08afc49aec9",
+        "allOpaqueExactPercent": 99.66,
+        "upperOpaqueExactPercent": 99.4
+      },
+      "classic_mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "07b3d2521a4fda2f8a3ebce4d866a3e51793d510dac793d80f0bc40bb372fc90",
+        "allOpaqueExactPercent": 99.62,
+        "upperOpaqueExactPercent": 99.33
+      },
+      "geo_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "6d516d5028e0d2c328b5964abe78628580678502c12a674cce0ee993ea3664d2",
+        "allOpaqueExactPercent": 98.31,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "magnetizer": {
+        "atlas": "guimagnetizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "1b29c974c9faa9976fe6bb6e707992e857f2b300ca97f56ec8c20b62822beff2",
+        "allOpaqueExactPercent": 98.32,
+        "upperOpaqueExactPercent": 98.33
+      },
+      "trade_o_mat": {
+        "atlas": "guitradeomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "392a35422b11d5786295ec3fb06f5a206790ed35148b74d4bb1d38b3520abfa6",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "trade_o_mat_guest": {
+        "atlas": "guitradeomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "e50d35a2a62aeae8c5817402c8108199c9e3fd91560fa9524ad6eb29aeaf8969",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "energy_o_mat": {
+        "atlas": "guienergyomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "1e036cf8e48f03b144ed997e587e94013f65fbe8e8b00bab8e349f17e191c4d0",
+        "allOpaqueExactPercent": 98.21,
+        "upperOpaqueExactPercent": 98.11
+      },
+      "energy_o_mat_5000": {
+        "atlas": "guienergyomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "b4eaeafea1f39da0b473303a966180278e1aa043319f2878717a991354e7a0b4",
+        "allOpaqueExactPercent": 98.2,
+        "upperOpaqueExactPercent": 98.07
+      },
+      "energy_o_mat_guest": {
+        "atlas": "guienergyomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "7efbb4029abcb817f0e61bc332c14160e2a0290c4c24d00aa13237e861c64051",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "solar_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "e32a408cd4e1b81a22d181aba0594757db7d6b8e21cf4ef582b9cb293e9df1d5",
+        "allOpaqueExactPercent": 98.04,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "wind_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "0e639428382a52af51ffdb9fbbb2befb3daa9279705ec6684c0280830d53e19c",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "water_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "2f3fee8a832b85c55e0f0e0562233b42c4726888f78c24b1bcfd8449712cc963",
+        "allOpaqueExactPercent": 98.6,
+        "upperOpaqueExactPercent": 98.92
+      },
+      "rt_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "a520c5000f977bc0ef9ee87ac0f0c2b74424d1cb83a75dcb98a29f496b1f1da5",
+        "allOpaqueExactPercent": 96.36,
+        "upperOpaqueExactPercent": 94.27
+      },
+      "rci_rsh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "bf803ccd540d30d34e0c3556878aef328e7ab4aa6f9baa57d120f7582e39a0e0",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "rci_lzh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "10afde8a0cc687894546800df38321639a6adb478ac3d7d2ca17ce58640363bc",
+        "allOpaqueExactPercent": 97.84,
+        "upperOpaqueExactPercent": 97.34
+      },
+      "tesla_coil": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "92eee371deff27f07c09e5d912a83d26515b8b4dda3c2f928d0c9ba78c431a76",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "teleporter": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "429ed90b12aa9b38eda8bfc90d944996d78d5e810cf0ccb6af113dadb5e6214c",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.77
+      },
+      "creative_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "737299923f8c227607c3662274647359f637e967a433517028b64e9e13fe12e3",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.2
+      },
+      "wooden_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 63,
+        "frameSha256": "75e0b350ff38068f3e001a7f8c5034f2236fc875a06b77d3972bfa614d45be18",
+        "allOpaqueExactPercent": 98.38,
+        "upperOpaqueExactPercent": 98.47
+      },
+      "iron_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "2775cabb14da4ba384c51f55ff70b572948238cd707b4919dcdc92317e4c83c5",
+        "allOpaqueExactPercent": 98.78,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "bronze_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "61aa12459705560d878b4b79d1f302f7816c66653731994d7af7d9a7ea0438ce",
+        "allOpaqueExactPercent": 98.68,
+        "upperOpaqueExactPercent": 97.7
+      },
+      "steel_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          238
+        ],
+        "activeSlots": 99,
+        "frameSha256": "417d5d8dcfbddf3b874033277c51a0372e53e1f0dbfd78213c00a75a27af265c",
+        "allOpaqueExactPercent": 98.93,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "iridium_storage_box": {
+        "atlas": "common",
+        "size": [
+          338,
+          238
+        ],
+        "activeSlots": 162,
+        "frameSha256": "bf43b27d3249f3521c958e106c02c17b06875666bc71003466ea39b86908fdf1",
+        "allOpaqueExactPercent": 99.43,
+        "upperOpaqueExactPercent": 99.1
+      },
+      "personal_chest": {
+        "atlas": "common",
+        "size": [
+          176,
+          222
+        ],
+        "activeSlots": 90,
+        "frameSha256": "a2644160ea34b2a43ffd40c594a0da0028a5626a3241f992ab635283a7ec462f",
+        "allOpaqueExactPercent": 98.96,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "industrial_workbench": {
+        "atlas": "guiindustrialworkbench",
+        "size": [
+          194,
+          228
+        ],
+        "activeSlots": 70,
+        "frameSha256": "82fd3ed27cf3d380049a8ba552695df058374cb5d74bcf74d757460e16c95390",
+        "allOpaqueExactPercent": 98.39,
+        "upperOpaqueExactPercent": 97.49
+      },
+      "bronze_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "40640df121bd108f2ab2d7ea38b1366740cd1fc8067605ae562fffad4db75ed4",
+        "allOpaqueExactPercent": 96.84,
+        "upperOpaqueExactPercent": 95.25
+      },
+      "iron_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "c13e9b6c2ff03212652a3367791c1cb0cf4b65f13ccd299643a2e5c00485b49e",
+        "allOpaqueExactPercent": 96.96,
+        "upperOpaqueExactPercent": 95.52
+      },
+      "steel_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "4289c33c21501c5187b2ea788cb95e05c90cdd62cbbb5053ca98e8b65d5394f2",
+        "allOpaqueExactPercent": 96.85,
+        "upperOpaqueExactPercent": 95.29
+      },
+      "iridium_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "4ee6a3461aa0f82e6e59628eea70c965561442038eb63ea22da2cb4135dc5ada",
+        "allOpaqueExactPercent": 96.75,
+        "upperOpaqueExactPercent": 95.08
+      },
+      "tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "57a3c09ad6cd8538d9f54253e35709ebe995da06e398b3065a7b13e4f2658db0",
+        "allOpaqueExactPercent": 97.11,
+        "upperOpaqueExactPercent": 95.82
+      },
+      "crop_harvester": {
+        "atlas": "guicropharvester",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "1a0bbf174d8abdfcae286765845c9be7f35d61eec56dc82c1a7e085ccc0e112f",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 98.88
+      },
+      "cropmatron": {
+        "atlas": "guicropmatron",
+        "size": [
+          176,
+          192
+        ],
+        "activeSlots": 52,
+        "frameSha256": "53c9a3a7d32f3d1c356c7e9c0354cdfd37eb86718f3b478dda753112d4b838f5",
+        "allOpaqueExactPercent": 97.91,
+        "upperOpaqueExactPercent": 96.21
+      },
+      "classic_cropmatron": {
+        "atlas": "gui_cropmatron_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "db312dfa51856413c426623c972a4ac8afc0a8b17f3b2e30b541da0a5ff82010",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.8
+      },
+      "terraformer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "6672a525f101857c77382a61338a04dbe3a3a6c19510944f1b95d40adf48821b",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "miner": {
+        "atlas": "guiminer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "0a5edf33c54b7d5a0b869cb266388fd2137329bbee37f746e9239af07997ed50",
+        "allOpaqueExactPercent": 96.07,
+        "upperOpaqueExactPercent": 93.67
+      },
+      "advanced_miner": {
+        "atlas": "guiadvminer",
+        "size": [
+          176,
+          203
+        ],
+        "activeSlots": 54,
+        "frameSha256": "178942b720963d272ccf2fd25116e848b2fae409857e7b8c2b33e36ec8e85544",
+        "allOpaqueExactPercent": 99.26,
+        "upperOpaqueExactPercent": 98.71
+      },
+      "batch_crafter": {
+        "atlas": "guibatchcrafter",
+        "size": [
+          176,
+          206
+        ],
+        "activeSlots": 63,
+        "frameSha256": "5e0f0dbabf9a55ecac513714af5676485605b03549744bd268743392cc86c7a5",
+        "allOpaqueExactPercent": 98.89,
+        "upperOpaqueExactPercent": 98.09
+      },
+      "item_buffer": {
+        "atlas": "guiitembuffer",
+        "size": [
+          176,
+          233
+        ],
+        "activeSlots": 63,
+        "frameSha256": "772d8f02c026415757f3da1c05e567353dd9dfc7ea9322c2fc91ae07955d1a6d",
+        "allOpaqueExactPercent": 99.69,
+        "upperOpaqueExactPercent": 99.51
+      },
+      "sorting_machine": {
+        "atlas": "guisortingmachine",
+        "size": [
+          212,
+          243
+        ],
+        "activeSlots": 52,
+        "frameSha256": "8a89d5fc281f5ab38a4616ad60ec8050f9267b77c47139b71218c146b9369084",
+        "allOpaqueExactPercent": 99.31,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "sorting_machine_page_2": {
+        "atlas": "guisortingmachine",
+        "size": [
+          212,
+          243
+        ],
+        "activeSlots": 52,
+        "frameSha256": "9e59602dbb13b4a0f3c2a6114060cee3c4b2918e5ec317d1af453b036d2fc525",
+        "allOpaqueExactPercent": 99.3,
+        "upperOpaqueExactPercent": 98.92
+      },
+      "weighted_item_distributor": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 45,
+        "frameSha256": "2b0714d034f4079fbc13e99cdbdb2fa1d542436419e44bed88c0eb9b22915748",
+        "allOpaqueExactPercent": 98.69,
+        "upperOpaqueExactPercent": 97.79
+      },
+      "weighted_item_distributor_page_2": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 45,
+        "frameSha256": "47c1033c2b91951301cfd9b1442b33fdb6565200baf1e1d0b110fe603515d064",
+        "allOpaqueExactPercent": 98.68,
+        "upperOpaqueExactPercent": 97.77
+      },
+      "weighted_item_distributor_page_3": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 43,
+        "frameSha256": "fc4359b2ac12bb59e4ff47ea04338a8f75d8649379268a8d7a5b8762276b6de6",
+        "allOpaqueExactPercent": 92.54,
+        "upperOpaqueExactPercent": 87.41
+      },
+      "chunk_loader": {
+        "atlas": "guichunkloader",
+        "size": [
+          176,
+          250
+        ],
+        "activeSlots": 37,
+        "frameSha256": "5b675649a9314162f3bf1bf29f0c2406b23945b1492aa129d3c874ec21a85a82",
+        "allOpaqueExactPercent": 99.81,
+        "upperOpaqueExactPercent": 99.71
+      },
+      "tool_box": {
+        "atlas": "guitoolbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "41149c2af9b16614fb3b17754bf6e4c8dcab6c4fe90fba958e5e8391ff30c885",
+        "allOpaqueExactPercent": 98.09,
+        "upperOpaqueExactPercent": 99.41
+      },
+      "tool_box_reopened": {
+        "atlas": "guitoolbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "f49a3d338a6deb0c1c928472fcddab633bbd46ab7813956d798277642bdbf82c",
+        "allOpaqueExactPercent": 98.09,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "containment_box": {
+        "atlas": "guicontainmentbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 48,
+        "frameSha256": "c2896aef40962a6272708dcf516874b1953d428e98ed80f1972f6a6ae0e79379",
+        "allOpaqueExactPercent": 97.39,
+        "upperOpaqueExactPercent": 98.81
+      },
+      "containment_box_reopened": {
+        "atlas": "guicontainmentbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 48,
+        "frameSha256": "3967e007e69baefb36e636434f4a40bc796370ddd6fa13fa523fe351035c6dda",
+        "allOpaqueExactPercent": 97.39,
+        "upperOpaqueExactPercent": 97.78
+      },
+      "cropnalyzer": {
+        "atlas": "guicropnalyzer",
+        "size": [
+          176,
+          223
+        ],
+        "activeSlots": 39,
+        "frameSha256": "c49cc497a80e87d71c90b54a04864ba2e6440ae5470b53fe3bb96a256ba66aaa",
+        "allOpaqueExactPercent": 98.62,
+        "upperOpaqueExactPercent": 99.02
+      },
+      "cropnalyzer_scanned": {
+        "atlas": "guicropnalyzer",
+        "size": [
+          176,
+          223
+        ],
+        "activeSlots": 39,
+        "frameSha256": "fb83423be094f4f318557704eec025b0fa23f85346aa22fbed9c3efb2431ff97",
+        "allOpaqueExactPercent": 98.03,
+        "upperOpaqueExactPercent": 97.53
+      },
+      "scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 37,
+        "frameSha256": "ed625b3473c8b3b8574dbb2e6732dd808c66b0527fd33cc6e4a887bc3b2079e0",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 98.81
+      },
+      "advanced_scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 38,
+        "frameSha256": "8cbde97b57010fe71a3761947fa3fe7492927c4261020d0e4ab44087b0a1bc37",
+        "allOpaqueExactPercent": 98.37,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "advanced_ejector_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "0923fa34c8d159c633ba108b8be1626b61773d82210a88cd4027a8eb78ef9e4a",
+        "allOpaqueExactPercent": 85.19,
+        "upperOpaqueExactPercent": 72.64
+      },
+      "advanced_pulling_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "4fde283fac7d9e1acfbcc1f3545d971c46ef7660778828aeaea8332e1204a99a",
+        "allOpaqueExactPercent": 85.22,
+        "upperOpaqueExactPercent": 72.7
+      },
+      "nuclear_reactor_six_chambers": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 90,
+        "frameSha256": "b566be245873f93907fa035948c869c22b59ab42f4b4e57ea62d61e8e19496be",
+        "allOpaqueExactPercent": 98.99,
+        "upperOpaqueExactPercent": 98.44
+      },
+      "tank_water": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "9972a0e9c9378f17de6b06d177bc1afc0162e5254c165dad1d9c7fff6a44f840",
+        "allOpaqueExactPercent": 96.95,
+        "upperOpaqueExactPercent": 95.5
+      },
+      "classic_mfe_zh_cn": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "a5717c79d3c0ac5494bdefece1956e1659941ad5ec678b1e8888c18fba2deace",
+        "allOpaqueExactPercent": 99.48,
+        "upperOpaqueExactPercent": 99.07
+      },
+      "water_generator_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "c1e448cd0b2088e1ea7c7beb73e9955bc3eca6905f5390529abc75de039f4c60",
+        "allOpaqueExactPercent": 98.69,
+        "upperOpaqueExactPercent": 99.1
+      },
+      "rt_generator_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "b830a0e3b222e52520d2796b85b45d28d27db73e1b87d072cf6ec4c5f4e57e4d",
+        "allOpaqueExactPercent": 96.59,
+        "upperOpaqueExactPercent": 94.75
+      },
+      "rci_lzh_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "215e1ee1cae7c18fd17424a0b90953f755c51d01f53e422fe7983ad48683f2f8",
+        "allOpaqueExactPercent": 98.27,
+        "upperOpaqueExactPercent": 98.22
+      },
+      "tank_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "729f6baa8bd84978908527c90af11f3298d0683042d9529a452378181215c260",
+        "allOpaqueExactPercent": 97.15,
+        "upperOpaqueExactPercent": 95.9
+      },
+      "nuclear_reactor_six_chambers_zh_cn": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 90,
+        "frameSha256": "cf28c372481cdedcb66447166b1de2af137fc13b122d259a0cdf8807fea3fadb",
+        "allOpaqueExactPercent": 99.22,
+        "upperOpaqueExactPercent": 98.78
+      },
+      "tank_water_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "82f593e590ac48adfadd131d1d857ca5f143bb500a8e782590afad3ce9dd1a0d",
+        "allOpaqueExactPercent": 96.96,
+        "upperOpaqueExactPercent": 95.5
+      },
+      "metal_former_power": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "09276c3cff5d9a66b4b8c5c3bc496d91f7ad75c667384d71af3320a3b0ff1d7b",
+        "allOpaqueExactPercent": 96.87,
+        "upperOpaqueExactPercent": 96.43
+      },
+      "metal_former_power_transferred": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "a6a02ed58b8af98ef665ffe119d54b3f42b32c7645b6a963b961abb5f1ac2657",
+        "allOpaqueExactPercent": 96.89,
+        "upperOpaqueExactPercent": 95.39
+      },
+      "induction_furnace_power": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "5579838f0bd23c61157b79fdba654252cd0880943c2f823e48bbe9c4cbe58e14",
+        "allOpaqueExactPercent": 94.61,
+        "upperOpaqueExactPercent": 92.11
+      },
+      "induction_furnace_power_transferred": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "cac1237798d1c507b1c5bfa7ab56a45db87e8c285897601133e9b917f6b8b4b6",
+        "allOpaqueExactPercent": 94.74,
+        "upperOpaqueExactPercent": 90.94
+      },
+      "semifluid_generator_charge": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "0a21614f02390562ebece62945920478b309cce4b4106dd6402348d834c546ec",
+        "allOpaqueExactPercent": 97.48,
+        "upperOpaqueExactPercent": 97.69
+      },
+      "semifluid_generator_charge_transferred": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "b1a128f2be8164d2f80e3e6ec8457f3342bbc580be84225e491beeea07c0dc9a",
+        "allOpaqueExactPercent": 97.48,
+        "upperOpaqueExactPercent": 96.61
+      },
+      "pump_power_transfer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "52edc67f5dfcab178814a2a85278afc2e4212fbee7ba9a7c14357380f007374c",
+        "allOpaqueExactPercent": 92.87,
+        "upperOpaqueExactPercent": 88.09
+      },
+      "pump_blocked_output": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "65b4f99b7afab84fe6d54e01dfbc39bf215ba0a7a4890b7a99dbe2c61468057b",
+        "allOpaqueExactPercent": 92.87,
+        "upperOpaqueExactPercent": 87.05
+      },
+      "pump_cleared_output": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "8a6f35dabfd073ced200937e646444495f64275b659b188e74613a09e5cee29c",
+        "allOpaqueExactPercent": 93.07,
+        "upperOpaqueExactPercent": 87.81
+      }
+    }
+  },
+  "26.2": {
+    "sha256": "cfbbe089dc9529c0b8a8fb41af42382e0de76410be474f3c74b27de64a71c453",
+    "requiredCases": 116,
+    "views": {
+      "generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "0e1fa91f8045f29e5401a378b41c68f64709f5c051df81197f45c33b20b564ce",
+        "allOpaqueExactPercent": 95.75,
+        "upperOpaqueExactPercent": 92.99
+      },
+      "iron_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "84ec0048b8d5551b551f38ef725722c291b32f2dc620ae40a829091a42b70f31",
+        "allOpaqueExactPercent": 94.84,
+        "upperOpaqueExactPercent": 91.11
+      },
+      "macerator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "c442feda9e1032d6006de7ba6b3fb379987ca969635ac354012c936c798e9950",
+        "allOpaqueExactPercent": 95.91,
+        "upperOpaqueExactPercent": 93.33
+      },
+      "compressor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "8cfe8ffdee36bd9d9fe4ce21d0117dd2c981fcc7b759d29f94414035a045036c",
+        "allOpaqueExactPercent": 95.57,
+        "upperOpaqueExactPercent": 92.62
+      },
+      "extractor": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "0af0bcbdee4077866734570d697114dd6ed4a949783d35e5a620f7453307e73b",
+        "allOpaqueExactPercent": 95.68,
+        "upperOpaqueExactPercent": 92.84
+      },
+      "electric_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "b731099098fa5fbd8b47936e937459ec6214a368f435918f0d5612bef278b03f",
+        "allOpaqueExactPercent": 95.28,
+        "upperOpaqueExactPercent": 92.02
+      },
+      "batbox": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "659026978ceedb35e722102688f1a064384c68d534ba7c54a5570b916553cfe0",
+        "allOpaqueExactPercent": 97.9,
+        "upperOpaqueExactPercent": 96.26
+      },
+      "cesu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "38c15606eaa914025aec2763cf258f06f97373f188ddbea558de7efb607b8b06",
+        "allOpaqueExactPercent": 99.16,
+        "upperOpaqueExactPercent": 98.5
+      },
+      "mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "31dfbeb6b916e1067742e034d63950ce607880a3b8ddf31010c913e2d78923cd",
+        "allOpaqueExactPercent": 99.19,
+        "upperOpaqueExactPercent": 98.56
+      },
+      "mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "950326614507d819824d4be501d9d978e11c90dd6a771061107fe66fc02f37b1",
+        "allOpaqueExactPercent": 99.16,
+        "upperOpaqueExactPercent": 98.5
+      },
+      "batbox_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "460e77564e04af1965c8776ead01eac4a112ddfd375c24809f0025e6040f77e4",
+        "allOpaqueExactPercent": 97.49,
+        "upperOpaqueExactPercent": 96.55
+      },
+      "cesu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "418664df04cc40b6380ad2b684d07bd59c6ff3abc138b2312322ae06ccfde664",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.73
+      },
+      "mfe_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "9158cab05410db00c8452a9e64c2bdf9a0f8656111a9273a21d480112c654412",
+        "allOpaqueExactPercent": 97.62,
+        "upperOpaqueExactPercent": 96.83
+      },
+      "mfsu_chargepad": {
+        "atlas": "guichargepadblock",
+        "size": [
+          176,
+          161
+        ],
+        "activeSlots": 38,
+        "frameSha256": "698829eb85c501260a709003e190deccbcbac803c1eb918735650e1be5fab661",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.73
+      },
+      "meter": {
+        "atlas": "guitooleumeter",
+        "size": [
+          176,
+          217
+        ],
+        "activeSlots": 36,
+        "frameSha256": "0373372c611836f0d292d685d6792ff0375579f0639d92faadf51f729967c03b",
+        "allOpaqueExactPercent": 96.5,
+        "upperOpaqueExactPercent": 94.79
+      },
+      "metal_former": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "b63326356c890ef477a0823db7a664eb72bf6021534cb09734c68bb4ed736337",
+        "allOpaqueExactPercent": 97.51,
+        "upperOpaqueExactPercent": 96.68
+      },
+      "ore_washing_plant": {
+        "atlas": "guiorewashingplant",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "8e2904025231b62c2542a47c455ff0eb75e75a2b2128923b447556211752047b",
+        "allOpaqueExactPercent": 98.48,
+        "upperOpaqueExactPercent": 98.66
+      },
+      "centrifuge": {
+        "atlas": "guithermalcentrifuge",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "a28db7fec8606c52d536097cf3328a5a1d9aa0bf834db8b3742a786cf60a4288",
+        "allOpaqueExactPercent": 98.08,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "blast_furnace": {
+        "atlas": "guiblastfurnacenew",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 41,
+        "frameSha256": "8df67d70dced2954baf08c97660825fde910231cf2a077dd795e6373efa5240f",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.23
+      },
+      "induction_furnace": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "a6221450868648958a433b44c5d8e54e335001a284156c9b89602046e2b0e1b4",
+        "allOpaqueExactPercent": 94.61,
+        "upperOpaqueExactPercent": 92.11
+      },
+      "induction_furnace_battery": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "ea370639b3615ae161d2ef18d78d0c0989bee39c9895ec1c8159f3501536bd91",
+        "allOpaqueExactPercent": 94.74,
+        "upperOpaqueExactPercent": 90.94
+      },
+      "recycler": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "e843d48ce0a15bd2291f41d8a9bf7a2861cb7150ccda3d2df2363313317c5293",
+        "allOpaqueExactPercent": 96.0,
+        "upperOpaqueExactPercent": 93.54
+      },
+      "block_cutter": {
+        "atlas": "guiblockcutter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "ceeded2adab7af18dc6f03026e451d6eacb235e9deb0147337a320b1d9b46229",
+        "allOpaqueExactPercent": 97.98,
+        "upperOpaqueExactPercent": 97.66
+      },
+      "canner": {
+        "atlas": "guicanner",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "629965f02d5c2283a443277f5e4b74bb835555eacb0f569ce24d64e946f27dd6",
+        "allOpaqueExactPercent": 95.67,
+        "upperOpaqueExactPercent": 91.89
+      },
+      "solid_canner": {
+        "atlas": "guisolidcanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "b84e69ab7bbc520941b829d53065b55fbd43d9ab4df666a3007a69151eef6ffc",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "classic_canner": {
+        "atlas": "gui_canner_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 44,
+        "frameSha256": "652b0c3764992a572e8426e19addfe0b68919b889e18d15a0f5097213d2fdc52",
+        "allOpaqueExactPercent": 93.81,
+        "upperOpaqueExactPercent": 89.0
+      },
+      "coke_kiln": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "60944e5a600a1417f5260eecd2b342382e393295480f779f5b7c92fb0c677f22",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.64
+      },
+      "coke_kiln_grate": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "173716ecb8a7d078922e4c714f14d6e1f9bfa2ff5095a5e38fca870318c1b567",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.18
+      },
+      "coke_kiln_hatch": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "155a24446d99237343523fbccbdfcf574df584761bd5f9e358c14c92d5bbbabe",
+        "allOpaqueExactPercent": 98.23,
+        "upperOpaqueExactPercent": 98.17
+      },
+      "uu_assembly_bench": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "3e8adc9525b7352479391e617384861c1e6198a10555b3dfdda9f9804d7c3293",
+        "allOpaqueExactPercent": 95.75,
+        "upperOpaqueExactPercent": 93.04
+      },
+      "solar_distiller": {
+        "atlas": "guisolardestiller",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "ece606da4d5b7f61291344a8dbe0815165dc2e40721192706079bc2dd0655083",
+        "allOpaqueExactPercent": 99.55,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "liquid_heat_exchanger": {
+        "atlas": "guiheatsourcefluid",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "f1bb635466a4aedfcc9d67a1862b009b75afdb906057f45d1c343496d7999b2e",
+        "allOpaqueExactPercent": 98.75,
+        "upperOpaqueExactPercent": 97.85
+      },
+      "weighted_fluid_distributor": {
+        "atlas": "guiweightedfluiddistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 36,
+        "frameSha256": "9c789088517ee668b2077c96188c694d8c88ebfed2c76109e4f1af813a5bd32d",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 97.62
+      },
+      "fluid_bottler": {
+        "atlas": "guibottler",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 44,
+        "frameSha256": "8f0e526d136f547c9b85727b29b13dab5aef6c8c002ef832160191049a1b8933",
+        "allOpaqueExactPercent": 99.54,
+        "upperOpaqueExactPercent": 99.14
+      },
+      "fluid_regulator": {
+        "atlas": "guifluidregulator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "9cc1551c2db7693c61c963fb8a0957239283817006ec6c6b94498eb285429e22",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.77
+      },
+      "fluid_distributor": {
+        "atlas": "guifluiddistributor",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 36,
+        "frameSha256": "b4fdebda6aca621e67a447f651468c476b1287c94dece7291be3770532a4b50b",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "pump": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "21628efc2fcd99f2bfd26c35ae7fcdca471ceea8e8423f7f2ba2a8b6f90c338f",
+        "allOpaqueExactPercent": 93.87,
+        "upperOpaqueExactPercent": 89.13
+      },
+      "electrolyzer": {
+        "atlas": "guielectrolyzer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "69315d9d5b7e27d2340bdd7248d0b5788ee43517754027459a1f1ba12d25e2da",
+        "allOpaqueExactPercent": 98.29,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "stirling_generator": {
+        "atlas": "guistirlinggenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "98fbc85cd3e66b7f1e20b95fa977b5dfe0bc7d2a3014fc87c6abafeaa99b0b22",
+        "allOpaqueExactPercent": 97.67,
+        "upperOpaqueExactPercent": 97.02
+      },
+      "fluid_heat_generator": {
+        "atlas": "guifluidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "466695d34acdaf4961cd0aa1e52f88c5379ea8070fe501104f09b65c5ad0682c",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.87
+      },
+      "rt_heat_generator": {
+        "atlas": "guirtheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "02767454ee731bd2ca4f34a68f4cbdb889c81f32299822abd55efb85c97da762",
+        "allOpaqueExactPercent": 97.68,
+        "upperOpaqueExactPercent": 97.0
+      },
+      "fermenter": {
+        "atlas": "guifermenter",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "43088dfd0ddde7db660d9237726261bb4eb4c500d370a475de811b5c4eb6d8be",
+        "allOpaqueExactPercent": 94.81,
+        "upperOpaqueExactPercent": 90.25
+      },
+      "semifluid_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "b71f083c372ddf34949d0db786d3803ecb28eefc0c8ddc760cc2c29861860c6d",
+        "allOpaqueExactPercent": 98.04,
+        "upperOpaqueExactPercent": 97.78
+      },
+      "steam_generator": {
+        "atlas": "guisteamgenerator",
+        "size": [
+          176,
+          220
+        ],
+        "activeSlots": 0,
+        "frameSha256": "ab3c7d46a4c31312b3886b570b09fc1c9b30fe0496e9402c4e1059b94055a990",
+        "allOpaqueExactPercent": 99.2,
+        "upperOpaqueExactPercent": 99.15
+      },
+      "steam_repressurizer": {
+        "atlas": "guisteamrepressurizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "dbc918a500bcd982749c77d20955d3ffdcde264d65fca3344e293ec8756ee022",
+        "allOpaqueExactPercent": 97.97,
+        "upperOpaqueExactPercent": 97.64
+      },
+      "condenser": {
+        "atlas": "guicondenser",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 37,
+        "frameSha256": "eaaf12073bc6aae75d2e040b6620ed4a909680e7421754bef5a69a0a872dbfb9",
+        "allOpaqueExactPercent": 98.87,
+        "upperOpaqueExactPercent": 97.9
+      },
+      "steam_kinetic_generator": {
+        "atlas": "guisteamkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "aaece17af334dccb7892e60d677db92e17f920e565d6b125d5a4a83fd4ded217",
+        "allOpaqueExactPercent": 98.45,
+        "upperOpaqueExactPercent": 98.61
+      },
+      "kinetic_generator": {
+        "atlas": "guikineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "cdf3facc4fc1c5e35b5f776c840c6034bff7283103d54aaa832fda6858174b92",
+        "allOpaqueExactPercent": 97.63,
+        "upperOpaqueExactPercent": 96.93
+      },
+      "electric_kinetic_generator": {
+        "atlas": "guielectrickineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "a3278ba1608938e3c02c2023cd4e191c82a81599ed5c37365c4d9256b6536230",
+        "allOpaqueExactPercent": 98.46,
+        "upperOpaqueExactPercent": 98.63
+      },
+      "manual_kinetic_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "176d21743556f708690887ab0331adcafa798b602c4666e4bc479d1914609ebb",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 97.08
+      },
+      "stirling_kinetic_generator": {
+        "atlas": "guistirlingkineticgenerator",
+        "size": [
+          176,
+          204
+        ],
+        "activeSlots": 36,
+        "frameSha256": "d3798af499bddea832551d593c1a04f477142a0a76dc605c0654c65d2cf898e0",
+        "allOpaqueExactPercent": 99.12,
+        "upperOpaqueExactPercent": 98.48
+      },
+      "wind_kinetic_generator": {
+        "atlas": "guiwindkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "1e511cc170b9d7061bb036920a5e177cf39e847a34ea52caf45ef508ad68ab6d",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.83
+      },
+      "water_kinetic_generator": {
+        "atlas": "guiwaterkineticgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "93f32ce9ec9c30a7ade7535bbc92c95e11bc508db9ac360b0289c5d0f218ade1",
+        "allOpaqueExactPercent": 97.54,
+        "upperOpaqueExactPercent": 96.74
+      },
+      "classic_electrolyzer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "99ef3512649c0f5a4a2249305db7e115a9b400d667f63265cddf3bcbb593b054",
+        "allOpaqueExactPercent": 96.22,
+        "upperOpaqueExactPercent": 94.0
+      },
+      "mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "97e203d9f187a038c9ac5eba92db99c0a79a15439e7e61ebd981860a015a4fec",
+        "allOpaqueExactPercent": 95.19,
+        "upperOpaqueExactPercent": 91.86
+      },
+      "classic_mass_fabricator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "e463caa7f367d959e3e496c236cdd714cea9d64f0ad03518e7120ecd19988a61",
+        "allOpaqueExactPercent": 94.92,
+        "upperOpaqueExactPercent": 91.31
+      },
+      "matter_generator": {
+        "atlas": "guimatter",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "6bd7c95bc09b3a73ff2c432d8fd9475b5cc49748edeaf2fadef0f0b58d12ce34",
+        "allOpaqueExactPercent": 98.49,
+        "upperOpaqueExactPercent": 98.68
+      },
+      "uu_scanner": {
+        "atlas": "guiscanner",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "dd745220396a212d784c707ab456c016504629c97e66430fc1f3ea3da65f9069",
+        "allOpaqueExactPercent": 98.1,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "pattern_storage": {
+        "atlas": "guipatternstorage",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "44867721b60390339dac9d6ad0773a7809a08419c93a3aeec8e06ad5d5d07586",
+        "allOpaqueExactPercent": 98.3,
+        "upperOpaqueExactPercent": 98.29
+      },
+      "replicator": {
+        "atlas": "guireplicator",
+        "size": [
+          176,
+          184
+        ],
+        "activeSlots": 38,
+        "frameSha256": "d15d1183fade31ee6382edabbd9dc283fcbce7233c4e87b6c22f4ea3cc1a08d3",
+        "allOpaqueExactPercent": 95.18,
+        "upperOpaqueExactPercent": 90.96
+      },
+      "electric_heat_generator": {
+        "atlas": "guielectricheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 47,
+        "frameSha256": "0481b3e0aed76c5c64b39c08b1e6df8c78eb2429c5e64ee36f5e2d379ad07d89",
+        "allOpaqueExactPercent": 98.19,
+        "upperOpaqueExactPercent": 98.07
+      },
+      "solid_heat_generator": {
+        "atlas": "guisolidheatgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "ca7cc5f5132d095b227a053a0101647a35d3434965c73b736b2f2df1961cb83f",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.93
+      },
+      "nuclear_reactor": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 54,
+        "frameSha256": "a3f490fa1a74542d1a6e19e094358347ef0a9b676229018993e986086a8ada7a",
+        "allOpaqueExactPercent": 81.53,
+        "upperOpaqueExactPercent": 71.34
+      },
+      "nuclear_reactor_fluid": {
+        "atlas": "guinuclearreactorfluid",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 94,
+        "frameSha256": "16228254d10bf9f2e2cce1b456f3afc1729fda2e6ca72065dd0e6a29b021f138",
+        "allOpaqueExactPercent": 99.06,
+        "upperOpaqueExactPercent": 98.55
+      },
+      "reactor_fluid_port": {
+        "atlas": "guireactorfluidport",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "07f4185d50c05db7cf50cf5548630ed2579ccab50750bc26fbca3608a7fa2272",
+        "allOpaqueExactPercent": 98.13,
+        "upperOpaqueExactPercent": 97.94
+      },
+      "nuke": {
+        "atlas": "guinuke",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 45,
+        "frameSha256": "8817c199de4726754f2cd5ef852bfb25906ab65b5cd492ed78849e021e662969",
+        "allOpaqueExactPercent": 100.0,
+        "upperOpaqueExactPercent": 100.0
+      },
+      "lv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "dd5bd40248c2ccade08c75ce5ea04955c309a9e2d58af6e2c0b02f3d1f74dcf6",
+        "allOpaqueExactPercent": 98.88,
+        "upperOpaqueExactPercent": 98.15
+      },
+      "lv_transformer_step_down": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "df9a83cdf2a728845ecf12f3a50fcd41b1179d2daa592c341eb3e9c97bd07076",
+        "allOpaqueExactPercent": 99.18,
+        "upperOpaqueExactPercent": 98.65
+      },
+      "mv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "45348fbacd4248af945ef6c33f728bec48a88c513f82d2fcf14837935976eb3c",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "hv_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "d7707a6921922ac926885057ad75876ddcfa976b99728b8221a822932efb61f8",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "ev_transformer": {
+        "atlas": "guitransfomer",
+        "size": [
+          176,
+          219
+        ],
+        "activeSlots": 36,
+        "frameSha256": "214a3bb7bffad103206695067d252a948863f2416457ac32c31d3324efe92641",
+        "allOpaqueExactPercent": 98.86,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "classic_mfe": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "d0d616d7cff2467ac3b1c821dfc01bc2d297131aaa43ff2f790619cd7ebfc429",
+        "allOpaqueExactPercent": 99.66,
+        "upperOpaqueExactPercent": 99.4
+      },
+      "classic_mfsu": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "849803f20ab1f17b1e8a74cf77fd3a0cae8c2e7ed72c7ea8f02e35c8a44bf3ed",
+        "allOpaqueExactPercent": 99.62,
+        "upperOpaqueExactPercent": 99.33
+      },
+      "geo_generator": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "36309bc3a0708ee89afb12676d55786f57eb848b431b0427a5f2d53e55e446c7",
+        "allOpaqueExactPercent": 98.31,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "magnetizer": {
+        "atlas": "guimagnetizer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 42,
+        "frameSha256": "2e3f20af9b7d881a1542f8cf157b711830ab064725ec0327c71c083b2c28ce4e",
+        "allOpaqueExactPercent": 98.32,
+        "upperOpaqueExactPercent": 98.33
+      },
+      "trade_o_mat": {
+        "atlas": "guitradeomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "d9a3820db2e6bfcf179438d201d63a9cc184d5451176af46bc9f520cc25964b7",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "trade_o_mat_guest": {
+        "atlas": "guitradeomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "54bfc738c853c4150431375646ef5dbe26a1eb207ea2508089c32c3768479127",
+        "allOpaqueExactPercent": 97.96,
+        "upperOpaqueExactPercent": 97.58
+      },
+      "energy_o_mat": {
+        "atlas": "guienergyomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "ca334eb7293e8797429b827b43873590443485ed4f52ecb6597c1662a5547ad9",
+        "allOpaqueExactPercent": 98.21,
+        "upperOpaqueExactPercent": 98.11
+      },
+      "energy_o_mat_5000": {
+        "atlas": "guienergyomatopen",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "8d13dc7c6212b4092f63d6bde9658b792cba211f49ead7a76f31efc290025a4c",
+        "allOpaqueExactPercent": 98.2,
+        "upperOpaqueExactPercent": 98.07
+      },
+      "energy_o_mat_guest": {
+        "atlas": "guienergyomatclosed",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "dbc0f0824b10d8f51ae7afbfce4320c245cceebc203d3afd68b1c336cae7fc4e",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "solar_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "b15668bc6006dc273bebec4376cdeef60cbb25a9c2ba12ed522d0844070f7c78",
+        "allOpaqueExactPercent": 98.04,
+        "upperOpaqueExactPercent": 97.76
+      },
+      "wind_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 37,
+        "frameSha256": "a672faf4de95e1eb19376fec063f24ad6d48a3817420c24bd24eeaeb1150c928",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "water_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "60add9245d011135a44620d15a40d25f4306a50287f77f1f8db3f7028d49b29c",
+        "allOpaqueExactPercent": 98.6,
+        "upperOpaqueExactPercent": 98.92
+      },
+      "rt_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "63a765b03ab2e3f9f16a8046dc2dbd4b19689fc83d980c9730f30ce6ce9b8d99",
+        "allOpaqueExactPercent": 96.36,
+        "upperOpaqueExactPercent": 94.27
+      },
+      "rci_rsh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "1835547d1739fa9ab76b425b569501146050ef7ca0d90dbcb03da2181b24ced6",
+        "allOpaqueExactPercent": 97.82,
+        "upperOpaqueExactPercent": 97.29
+      },
+      "rci_lzh": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "2adb1ebfdb4ad242744748bfc1305cd1406a867b2079df9370f3ecc737bce620",
+        "allOpaqueExactPercent": 97.84,
+        "upperOpaqueExactPercent": 97.34
+      },
+      "tesla_coil": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "cfa7d2e01d6345ba7a0e1a9bd028e58206f8cbaf9a8f254e16cda81b3e593cb0",
+        "allOpaqueExactPercent": 98.61,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "teleporter": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "92ff01787d8bd356148a40caed83a64c798f77ec3c85aff71105da531c0778e5",
+        "allOpaqueExactPercent": 97.57,
+        "upperOpaqueExactPercent": 96.77
+      },
+      "creative_generator": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "6d0b892e39b78dc519cf00927f514f94e1d65e1da193ee74018a810f16824b35",
+        "allOpaqueExactPercent": 98.26,
+        "upperOpaqueExactPercent": 98.2
+      },
+      "wooden_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 63,
+        "frameSha256": "36771a850693e3605ce7382c90a3cac843010d068990996ea8b813b01f0030d7",
+        "allOpaqueExactPercent": 98.38,
+        "upperOpaqueExactPercent": 98.47
+      },
+      "iron_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "8e021abc0df00c27e88118a2020d3a39f9bf043b02a00ee1b9e87cfb8fe79e18",
+        "allOpaqueExactPercent": 98.78,
+        "upperOpaqueExactPercent": 97.88
+      },
+      "bronze_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          202
+        ],
+        "activeSlots": 81,
+        "frameSha256": "b42a979ed3cc24e6ff6cd0f380ff27209b7bfb4f5e0e99e0b3e355c1f924fb3a",
+        "allOpaqueExactPercent": 98.68,
+        "upperOpaqueExactPercent": 97.7
+      },
+      "steel_storage_box": {
+        "atlas": "common",
+        "size": [
+          176,
+          238
+        ],
+        "activeSlots": 99,
+        "frameSha256": "08834f2620c539d292160a3107714e89e357ac385ce7b2a774039c9bb48087f0",
+        "allOpaqueExactPercent": 98.93,
+        "upperOpaqueExactPercent": 98.32
+      },
+      "iridium_storage_box": {
+        "atlas": "common",
+        "size": [
+          338,
+          238
+        ],
+        "activeSlots": 162,
+        "frameSha256": "47a4489cd242868252910acecd30144ad61e097d1fb6d5200b3d781a8945eb3a",
+        "allOpaqueExactPercent": 99.43,
+        "upperOpaqueExactPercent": 99.1
+      },
+      "personal_chest": {
+        "atlas": "common",
+        "size": [
+          176,
+          222
+        ],
+        "activeSlots": 90,
+        "frameSha256": "da63b2ce61917c35a08bccd94291b52c766f7dae3237646fe034eea71d735c3b",
+        "allOpaqueExactPercent": 98.96,
+        "upperOpaqueExactPercent": 98.3
+      },
+      "industrial_workbench": {
+        "atlas": "guiindustrialworkbench",
+        "size": [
+          194,
+          228
+        ],
+        "activeSlots": 70,
+        "frameSha256": "f6da1b25b36500952c438c6908fc025735ffbabaa36500d96917f3f7b67d73da",
+        "allOpaqueExactPercent": 98.39,
+        "upperOpaqueExactPercent": 97.49
+      },
+      "bronze_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "7eb21fafbca8084b5d12d96216d66e9e0fa63564fcc483c3635ffef7b2baf97a",
+        "allOpaqueExactPercent": 96.84,
+        "upperOpaqueExactPercent": 95.25
+      },
+      "iron_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "4bcfb3221723666e862bc3367bf823591680e629a819825a8c346f96a6678c08",
+        "allOpaqueExactPercent": 96.96,
+        "upperOpaqueExactPercent": 95.52
+      },
+      "steel_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "477450d0c39140ee319bad9dcb375913d1ea197d2164653d20544c0cf5851e98",
+        "allOpaqueExactPercent": 96.85,
+        "upperOpaqueExactPercent": 95.29
+      },
+      "iridium_tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 36,
+        "frameSha256": "1a0085c809a3357668a1eb2ec9ede7371ea0dad81c8ff215703f7f81402d13cb",
+        "allOpaqueExactPercent": 96.75,
+        "upperOpaqueExactPercent": 95.08
+      },
+      "tank": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "63db1cb565726e0435126f59ab5d9336f3fb2cb2ed221165cc35be96765337b7",
+        "allOpaqueExactPercent": 97.11,
+        "upperOpaqueExactPercent": 95.82
+      },
+      "crop_harvester": {
+        "atlas": "guicropharvester",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "28291338b943d3161a13a3af25f7de08d5a06d279c5d1b1b68bba321c6092954",
+        "allOpaqueExactPercent": 98.58,
+        "upperOpaqueExactPercent": 98.88
+      },
+      "cropmatron": {
+        "atlas": "guicropmatron",
+        "size": [
+          176,
+          192
+        ],
+        "activeSlots": 52,
+        "frameSha256": "728e515dcff8f1b64fb21f117651f5f468c5546aee355f56bd863917b2e97432",
+        "allOpaqueExactPercent": 97.91,
+        "upperOpaqueExactPercent": 96.21
+      },
+      "classic_cropmatron": {
+        "atlas": "gui_cropmatron_classic",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "18e921ccac0b12a167b327c3b55312571c1ba4762c76824ea59c2968c2b25910",
+        "allOpaqueExactPercent": 97.58,
+        "upperOpaqueExactPercent": 96.8
+      },
+      "terraformer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 38,
+        "frameSha256": "7c1bbb50906f9c290601d3514121878b11b9360066846236ec63e2bc45104351",
+        "allOpaqueExactPercent": 98.33,
+        "upperOpaqueExactPercent": 98.36
+      },
+      "miner": {
+        "atlas": "guiminer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "5132cc556c100f4c2594836704b3c0bbbc0372c3cffa12c8723b1ca59b13434c",
+        "allOpaqueExactPercent": 96.07,
+        "upperOpaqueExactPercent": 93.67
+      },
+      "advanced_miner": {
+        "atlas": "guiadvminer",
+        "size": [
+          176,
+          203
+        ],
+        "activeSlots": 54,
+        "frameSha256": "07a18bca3999aa4ec3ad527d5b3f494d845af3b894f4e28090b3520356ec33fd",
+        "allOpaqueExactPercent": 99.26,
+        "upperOpaqueExactPercent": 98.71
+      },
+      "batch_crafter": {
+        "atlas": "guibatchcrafter",
+        "size": [
+          176,
+          206
+        ],
+        "activeSlots": 63,
+        "frameSha256": "864b11ab612bdcc13c82b39da1b84145c0bf74ac5658d352e92840a800d4a915",
+        "allOpaqueExactPercent": 98.89,
+        "upperOpaqueExactPercent": 98.09
+      },
+      "item_buffer": {
+        "atlas": "guiitembuffer",
+        "size": [
+          176,
+          233
+        ],
+        "activeSlots": 63,
+        "frameSha256": "3c32e0eadd3c52c8c172259288fe6bb902057937df7a9d7f6d6f97533adab6c4",
+        "allOpaqueExactPercent": 99.69,
+        "upperOpaqueExactPercent": 99.51
+      },
+      "sorting_machine": {
+        "atlas": "guisortingmachine",
+        "size": [
+          212,
+          243
+        ],
+        "activeSlots": 52,
+        "frameSha256": "30494528c6f31e734d3535c7e2dcf39d0f0fb18ced08d27e47733a8ffc6229d0",
+        "allOpaqueExactPercent": 99.31,
+        "upperOpaqueExactPercent": 98.94
+      },
+      "sorting_machine_page_2": {
+        "atlas": "guisortingmachine",
+        "size": [
+          212,
+          243
+        ],
+        "activeSlots": 52,
+        "frameSha256": "477534139ab6d5601477221501de5b622d07221f3aae024696bec8f71fc6fc54",
+        "allOpaqueExactPercent": 99.3,
+        "upperOpaqueExactPercent": 98.92
+      },
+      "weighted_item_distributor": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 45,
+        "frameSha256": "79f12b1d3f4ef0b04c30da5881820a16474577321290a9758588d1e1c43277fc",
+        "allOpaqueExactPercent": 98.69,
+        "upperOpaqueExactPercent": 97.79
+      },
+      "weighted_item_distributor_page_2": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 45,
+        "frameSha256": "7b7f101d4dd941e8a2896513151cb3c6c5667241eeab1d65fd996843196a3f68",
+        "allOpaqueExactPercent": 98.68,
+        "upperOpaqueExactPercent": 97.77
+      },
+      "weighted_item_distributor_page_3": {
+        "atlas": "guiweighteditemdistributor",
+        "size": [
+          176,
+          211
+        ],
+        "activeSlots": 43,
+        "frameSha256": "a3691c282812d803bf65063564e6f7c7f61fb7b110c28d7615559b1b402ab776",
+        "allOpaqueExactPercent": 92.54,
+        "upperOpaqueExactPercent": 87.41
+      },
+      "chunk_loader": {
+        "atlas": "guichunkloader",
+        "size": [
+          176,
+          250
+        ],
+        "activeSlots": 37,
+        "frameSha256": "c7c30503c8ba2a18bf54ce0718731ae215bedd3158f04647bc4868c11a622c04",
+        "allOpaqueExactPercent": 99.81,
+        "upperOpaqueExactPercent": 99.71
+      },
+      "tool_box": {
+        "atlas": "guitoolbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "70623b366335f7e6807528168d9f8942e825c0c11b21599a278a457879f139c9",
+        "allOpaqueExactPercent": 98.09,
+        "upperOpaqueExactPercent": 99.41
+      },
+      "tool_box_reopened": {
+        "atlas": "guitoolbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "28d1741a16662f509a2fa1863d09fbb617a574e2abff0748dea95edddfd4000a",
+        "allOpaqueExactPercent": 98.09,
+        "upperOpaqueExactPercent": 98.93
+      },
+      "containment_box": {
+        "atlas": "guicontainmentbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 48,
+        "frameSha256": "d87de3a90a6a99e509bd62c06109d485b3b89e314a587783c7a891fa60844d31",
+        "allOpaqueExactPercent": 97.39,
+        "upperOpaqueExactPercent": 98.81
+      },
+      "containment_box_reopened": {
+        "atlas": "guicontainmentbox",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 48,
+        "frameSha256": "e3201c656b322f3c19d716945227cf75c56e3e24f66dd52081d0ae028decf134",
+        "allOpaqueExactPercent": 97.39,
+        "upperOpaqueExactPercent": 97.78
+      },
+      "cropnalyzer": {
+        "atlas": "guicropnalyzer",
+        "size": [
+          176,
+          223
+        ],
+        "activeSlots": 39,
+        "frameSha256": "46e1c21084f943b32aabc7e9a3fa7d2757652eef4986e49b8d5dc71e0da6d631",
+        "allOpaqueExactPercent": 98.62,
+        "upperOpaqueExactPercent": 99.02
+      },
+      "cropnalyzer_scanned": {
+        "atlas": "guicropnalyzer",
+        "size": [
+          176,
+          223
+        ],
+        "activeSlots": 39,
+        "frameSha256": "5a9d7ffebf81e7bf1dd3723994c7d4010f2563fa72401ed29fd7bfc676eab66e",
+        "allOpaqueExactPercent": 98.03,
+        "upperOpaqueExactPercent": 97.53
+      },
+      "scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 37,
+        "frameSha256": "19368fff55dee656e401ae1f7327d4e2d4e4b36873395b6a927e1e8feb7aefe1",
+        "allOpaqueExactPercent": 98.8,
+        "upperOpaqueExactPercent": 98.81
+      },
+      "advanced_scanner": {
+        "atlas": "guitoolscanner",
+        "size": [
+          176,
+          230
+        ],
+        "activeSlots": 38,
+        "frameSha256": "6b6f9ac82505f25afca82175b6bb7a7bd8627f0311a6a64ada2633ca0c097a59",
+        "allOpaqueExactPercent": 98.37,
+        "upperOpaqueExactPercent": 98.12
+      },
+      "advanced_ejector_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "5abc43d97f0c088e24db9140614465d396df9f9e8f5be29f30d537fd73703e14",
+        "allOpaqueExactPercent": 85.19,
+        "upperOpaqueExactPercent": 72.64
+      },
+      "advanced_pulling_upgrade": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "c7efb1946fa491e90a0b298156e0a55caae3585aaabaabe4ab0dc2e517da4b1f",
+        "allOpaqueExactPercent": 85.22,
+        "upperOpaqueExactPercent": 72.7
+      },
+      "nuclear_reactor_six_chambers": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 90,
+        "frameSha256": "bc692fb35bc140763aca4e08777fdb596a64e64e140a959b4e900b7a13be33eb",
+        "allOpaqueExactPercent": 98.99,
+        "upperOpaqueExactPercent": 98.44
+      },
+      "tank_water": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "fc29b169b5a7d4d002f0c9254f02cf2427a1a0f43230e72b779f1c4fa7a39540",
+        "allOpaqueExactPercent": 96.95,
+        "upperOpaqueExactPercent": 95.5
+      },
+      "classic_mfe_zh_cn": {
+        "atlas": "guielectricblock",
+        "size": [
+          176,
+          196
+        ],
+        "activeSlots": 42,
+        "frameSha256": "f9496bc38360b51608854596346d62400965607fee1466182bfb65faaa529641",
+        "allOpaqueExactPercent": 99.48,
+        "upperOpaqueExactPercent": 99.07
+      },
+      "water_generator_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "5ac969f322a3f75890ae1c5864b5b8f9215a591e98ad7b10500dc7e2a0cd0454",
+        "allOpaqueExactPercent": 98.69,
+        "upperOpaqueExactPercent": 99.1
+      },
+      "rt_generator_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "e8bf533d2b280eb3745b6356bdf46705bfe887ea3e8544ec58566e6e99f4fb26",
+        "allOpaqueExactPercent": 96.59,
+        "upperOpaqueExactPercent": 94.75
+      },
+      "rci_lzh_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 50,
+        "frameSha256": "31c0468a83e5e13ef0dacef9e9b4012fef69227de1cbbb647680d5de2d4b8a8d",
+        "allOpaqueExactPercent": 98.27,
+        "upperOpaqueExactPercent": 98.22
+      },
+      "tank_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "1f1a4c6ce00d036dfd7432c127025fd341bc257fc2c34a6d23ebf5e0bee46073",
+        "allOpaqueExactPercent": 97.15,
+        "upperOpaqueExactPercent": 95.9
+      },
+      "nuclear_reactor_six_chambers_zh_cn": {
+        "atlas": "guinuclearreactor",
+        "size": [
+          212,
+          242
+        ],
+        "activeSlots": 90,
+        "frameSha256": "08cde6536e0534fd82c71b00e8cc0ff8404f2a374fe9342b1bd60186ab6be8f9",
+        "allOpaqueExactPercent": 99.22,
+        "upperOpaqueExactPercent": 98.78
+      },
+      "tank_water_zh_cn": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 40,
+        "frameSha256": "81427dc36647d5f0d863a64604c9ebf70c1d22b63626c408845751c18cfa91a5",
+        "allOpaqueExactPercent": 96.96,
+        "upperOpaqueExactPercent": 95.5
+      },
+      "metal_former_power": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "1cc86e53a6a18831593fbc8be478d36c136e6cafeb28b9f61fcf2d52aaa8d805",
+        "allOpaqueExactPercent": 96.87,
+        "upperOpaqueExactPercent": 96.43
+      },
+      "metal_former_power_transferred": {
+        "atlas": "guimetalformer",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "513821575d99d5a766707ff0e2ce800262ea1460164e53671835d4b595b22f22",
+        "allOpaqueExactPercent": 96.89,
+        "upperOpaqueExactPercent": 95.39
+      },
+      "induction_furnace_power": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "1909d2048ac21fb2d906f2d76be1aa846a8dcc3d39bae51b0e780bb3edbceb26",
+        "allOpaqueExactPercent": 94.61,
+        "upperOpaqueExactPercent": 92.11
+      },
+      "induction_furnace_power_transferred": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 45,
+        "frameSha256": "d74bb8a565b6c9c62b25a6436ebaa4d054c0f3d7c75eede542989bc7d46b7e23",
+        "allOpaqueExactPercent": 94.74,
+        "upperOpaqueExactPercent": 90.94
+      },
+      "semifluid_generator_charge": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "209c4bfed6728059e7a5e3072dba8494c112fa0b6053e63f6dfd97a071fe8018",
+        "allOpaqueExactPercent": 97.48,
+        "upperOpaqueExactPercent": 97.69
+      },
+      "semifluid_generator_charge_transferred": {
+        "atlas": "guifluidgenerator",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 39,
+        "frameSha256": "5b89b34ef4897b550c7827e3a9e1567b3744eb1f3baa7fca9a298e4d5cff496c",
+        "allOpaqueExactPercent": 97.48,
+        "upperOpaqueExactPercent": 96.61
+      },
+      "pump_power_transfer": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "ab05d6bfc4eca62c4682cb8cf33ec432c139c7db8cae3a6c377a48a45d7657ff",
+        "allOpaqueExactPercent": 92.87,
+        "upperOpaqueExactPercent": 88.09
+      },
+      "pump_blocked_output": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "edfef360fec68a35149e945234d6d89e334e3ed15228ca95e0e80d581567811e",
+        "allOpaqueExactPercent": 92.87,
+        "upperOpaqueExactPercent": 87.05
+      },
+      "pump_cleared_output": {
+        "atlas": "common",
+        "size": [
+          176,
+          166
+        ],
+        "activeSlots": 43,
+        "frameSha256": "d1a72ada8ec822e44a9a91fac3956ac0f2936964ca2c0f593475491fbfef3651",
+        "allOpaqueExactPercent": 93.07,
+        "upperOpaqueExactPercent": 87.81
+      }
+    }
+  }
+}
