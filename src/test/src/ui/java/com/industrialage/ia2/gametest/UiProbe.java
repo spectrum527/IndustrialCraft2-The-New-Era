@@ -80,6 +80,7 @@ public final class UiProbe {
         panel.addProperty("height", container.getYSize());
         panel.addProperty("scale", mc.getWindow().getGuiScale());
         panel.addProperty("menuId", container.getMenu().containerId);
+        panel.addProperty("titleWidth", mc.font.width(container.getTitle()));
         if (container.getMenu() instanceof MachineMenu machine) {
             data.addProperty("redstoneMode", machine.redstoneMode());
             data.addProperty("machineEnergy", machine.energy());

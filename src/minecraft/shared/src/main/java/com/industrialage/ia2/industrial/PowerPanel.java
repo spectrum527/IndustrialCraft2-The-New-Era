@@ -19,7 +19,10 @@ final class PowerPanel {
             g.frame(0, 0, width, layout.height());
             for (var slot : menu.slots) if (slot.isActive()) g.slot(slot.x, slot.y);
         } else g.background(layout.texture(), width, layout.height());
-        if (menu.kind != PowerKind.NUKE) g.text(title, width / 2, 6, INK, true);
+        if (menu.kind != PowerKind.NUKE) {
+            int headingWidth = width - (menu.kind.storage() ? 56 : menu.core() ? 76 : 16);
+            g.fittedText(title, width / 2, 6, headingWidth, INK);
+        }
         if (menu.core()) {
             for (int i = 0; i < 54; i++)
                 if (!menu.exposed(i)) {

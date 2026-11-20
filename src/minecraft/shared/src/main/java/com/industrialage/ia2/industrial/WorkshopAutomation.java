@@ -21,6 +21,7 @@ final class WorkshopAutomation {
                     CLASSIC_CANNER,
                     SOLID_CANNER,
                     FLUID_BOTTLER,
+                    PUMP,
                     UU_ASSEMBLY ->
                     true;
             default -> false;
@@ -33,7 +34,8 @@ final class WorkshopAutomation {
         }
         String id = WorkshopPlatform.itemId(item);
         return switch (id) {
-            case "ic2:fluid_pulling_upgrade" -> node.inlet.capacity > 0;
+            case "ic2:fluid_pulling_upgrade" ->
+                    node.kind != WorkshopKind.PUMP && node.inlet.capacity > 0;
             case "ic2:fluid_ejector_upgrade" -> node.outlet.capacity > 0;
             case "ic2:redstone_inverter_upgrade" -> node.kind == WorkshopKind.INDUCTION;
             case "ic2:overclocker_upgrade" -> node.kind != WorkshopKind.INDUCTION;

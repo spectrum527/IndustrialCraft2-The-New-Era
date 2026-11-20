@@ -191,7 +191,7 @@ final class WorkshopPlans {
         }
         return switch (node.kind) {
             case INDUCTION -> !WorkshopPlatform.smelt(level, item).isEmpty();
-            case FLUID_BOTTLER, RECYCLER, UU_ASSEMBLY -> true;
+            case FLUID_BOTTLER, PUMP, RECYCLER, UU_ASSEMBLY -> true;
             case CANNER ->
                     (node.mode == 1 || node.mode == 2)
                             ? WorkshopPlatform.canSupplyContainer(item, node.mode == 1)

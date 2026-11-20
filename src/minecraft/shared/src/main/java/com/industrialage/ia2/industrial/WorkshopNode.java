@@ -77,9 +77,16 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
 
     void tick(ServerLevel level) {
         lastServerTick = level.getGameTime();
+        servicePowerItem();
         WorkshopAutomation.tick(this, level);
         if (kind == WorkshopKind.ORE_WASHER) {
-            refillWasher();
+            serviceContainer(
+                    WorkshopInventory.WASHER_WATER_SLOT,
+                    WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT,
+                    false,
+                    "minecraft:water");
+        } else if (kind == WorkshopKind.PUMP) {
+            serviceContainer(0, WorkshopInventory.OUTPUT_START, true, "");
         }
         if (kind == WorkshopKind.SOLID_HEAT) {
             tickSolidHeat(level);
@@ -368,13 +375,24 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
         }
     }
 
-    private void refillWasher() {
-        var water = inventory.getItem(WorkshopInventory.WASHER_WATER_SLOT);
-        if (water.isEmpty() || inlet.amount >= inlet.capacity) return;
-        var drain = WorkshopPlatform.containerRecipe(inlet, water, false);
-        if (drain == null || !drain.liquid().id().equals("minecraft:water")) return;
-        var remainder = drain.stack();
-        int returnSlot = WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT;
+    private void servicePowerItem() {
+        var stack = inventory.getItem(WorkshopInventory.POWER_ITEM_SLOT);
+        if (stack.isEmpty()) return;
+        int tier = energyTier();
+        if (kind.chargesItem()) {
+            draw(PowerPlatform.charge(stack, energy, tier));
+        } else if (kind.dischargesItem()) {
+            double room = energyCapacity() - energy;
+            if (room > 0) receive(PowerPlatform.discharge(stack, room, tier));
+        }
+    }
+
+    private void serviceContainer(int inputSlot, int returnSlot, boolean filling, String allowed) {
+        var input = inventory.getItem(inputSlot);
+        if (input.isEmpty()) return;
+        var moved = WorkshopPlatform.containerRecipe(inlet, input, filling);
+        if (moved == null || (!allowed.isEmpty() && !allowed.equals(moved.liquid().id()))) return;
+        var remainder = moved.stack();
         var previous = inventory.getItem(returnSlot);
         if (!remainder.isEmpty()
                 && !previous.isEmpty()
@@ -383,10 +401,16 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
                                 > previous.getMaxStackSize())) {
             return;
         }
-        int amount = drain.liquid().amount();
-        if (inlet.fill("minecraft:water", amount, true) != amount) return;
-        inlet.fill("minecraft:water", amount, false);
-        inventory.removeItem(WorkshopInventory.WASHER_WATER_SLOT, 1);
+        int amount = moved.liquid().amount();
+        String fluid = moved.liquid().id();
+        if (filling) {
+            if (!inlet.has(fluid, amount)) return;
+            inlet.drain(amount, false);
+        } else {
+            if (inlet.fill(fluid, amount, true) != amount) return;
+            inlet.fill(fluid, amount, false);
+        }
+        inventory.removeItem(inputSlot, 1);
         if (previous.isEmpty()) {
             inventory.setItem(returnSlot, remainder);
         } else if (!remainder.isEmpty()) {
@@ -669,7 +693,11 @@ public final class WorkshopNode extends WorkshopSaveBase implements WorldPowerPo
 
     @Override
     public double packetLimit() {
-        return PacketBudget.packetSize(kind.tier + WorkshopAutomation.basic(this).transformers());
+        return PacketBudget.packetSize(energyTier());
+    }
+
+    int energyTier() {
+        return kind.tier + WorkshopAutomation.basic(this).transformers();
     }
 
     @Override

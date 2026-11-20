@@ -81,6 +81,25 @@ public final class PanelGraphics {
                         colour,
                         false);
             }
+
+            @Override
+            public void fittedText(Component value, int centerX, int y, int maxWidth, int colour) {
+                int width = font.width(value);
+                if (width <= maxWidth) {
+                    text(value, centerX, y, colour, true);
+                    return;
+                }
+                float scale = (float) maxWidth / width;
+                var pose = g.pose();
+                pose.pushPose();
+                try {
+                    pose.translate(left + centerX, top + y, 0);
+                    pose.scale(scale, scale, 1);
+                    g.drawString(font, value, -width / 2, 0, colour, false);
+                } finally {
+                    pose.popPose();
+                }
+            }
         };
     }
 }

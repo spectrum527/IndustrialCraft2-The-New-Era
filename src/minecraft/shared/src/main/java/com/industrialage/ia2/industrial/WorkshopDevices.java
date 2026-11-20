@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.content.ProcessingUpgrades;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -99,7 +100,9 @@ final class WorkshopDevices {
                 push(node, node.outlet, level, side, WorkshopCells.VOLUME);
             }
         }
-        if (node.energy < node.kind.workingEu || node.inlet.amount >= node.inlet.capacity) {
+        var stats =
+                WorkshopAutomation.stats(node, node.kind.duration, WorkshopAutomation.basic(node));
+        if (node.energy < stats.energyPerTick() || node.inlet.amount >= node.inlet.capacity) {
             return false;
         }
         var input = node.getBlockPos().relative(facing);
@@ -125,7 +128,13 @@ final class WorkshopDevices {
         if (available.amount() == 0 && !fromWorld) {
             return false;
         }
-        if (node.progress + 1 == node.kind.duration) {
+        if (node.cycleDuration != stats.duration()) {
+            node.progress =
+                    ProcessingUpgrades.progress(
+                            node.progress, node.cycleDuration, stats.duration());
+            node.cycleDuration = stats.duration();
+        }
+        if (node.progress + 1 >= stats.duration()) {
             Liquid extracted;
             if (fromWorld && level.setBlockAndUpdate(input, Blocks.AIR.defaultBlockState())) {
                 extracted = new Liquid(worldFluid, WorkshopCells.VOLUME);
@@ -142,7 +151,7 @@ final class WorkshopDevices {
         } else {
             node.progress++;
         }
-        node.energy -= node.kind.workingEu;
+        node.energy -= stats.energyPerTick();
         node.setChanged();
         return true;
     }

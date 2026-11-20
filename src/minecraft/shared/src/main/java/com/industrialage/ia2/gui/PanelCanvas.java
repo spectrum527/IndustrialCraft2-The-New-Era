@@ -30,6 +30,9 @@ public interface PanelCanvas {
     /** Render a localized label in the given alignment. */
     void text(Component value, int x, int y, int argb, boolean centered);
 
+    /** Center a full localized label, scaling it down when its native width exceeds the space. */
+    void fittedText(Component value, int centerX, int y, int maxWidth, int argb);
+
     /** Copy a named, already-painted full panel from the top-left region of its atlas. */
     default void background(String gui, int width, int height) {
         blit(gui, 0, 0, 0, 0, width, height);

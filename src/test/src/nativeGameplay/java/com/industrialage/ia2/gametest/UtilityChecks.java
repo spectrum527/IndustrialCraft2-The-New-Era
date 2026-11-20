@@ -103,6 +103,23 @@ final class UtilityChecks {
         block(level, SHELL.east(2), "reactor_access_hatch");
         block(level, SHELL.above(2), "reactor_fluid_port");
         var player = FakePlayerFactory.getMinecraft(level);
+        for (String fluid : new String[] {"heavy_water", "weed_ex"}) {
+            var support = new BlockPos(11, 227, 7);
+            var filled = stack(fluid + "_bucket");
+            level.setBlockAndUpdate(support, Blocks.STONE.defaultBlockState());
+            level.setBlockAndUpdate(support.above(), Blocks.AIR.defaultBlockState());
+            player.setPos(support.getX() + .5, support.getY() + 2.2, support.getZ() + .5);
+            player.setXRot(90);
+            player.setYRot(0);
+            player.setItemInHand(InteractionHand.MAIN_HAND, filled);
+            player.gameMode.useItem(player, level, filled, InteractionHand.MAIN_HAND);
+            check.accept(
+                    "survival-bucket-places-" + fluid,
+                    level.getBlockState(support.above()).is(NativeGameplayFixture.block(fluid))
+                            && level.getFluidState(support.above()).isSource()
+                            && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.BUCKET));
+            level.setBlockAndUpdate(support.above(), Blocks.AIR.defaultBlockState());
+        }
         block(level, STORE, "trade_o_mat");
         level.setBlockAndUpdate(STORE.east(), Blocks.CHEST.defaultBlockState());
         var stock = (Container) level.getBlockEntity(STORE.east());

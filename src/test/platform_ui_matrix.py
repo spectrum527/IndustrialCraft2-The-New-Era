@@ -63,7 +63,11 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
     def record(case, name, state):
         if state.get('panel'):
             client.act('move-ui:-8,-8')
-        client.act(clear)
+        current = client.act(clear)
+        if (current['screen'] != state['screen'] or
+                current.get('panel', {}).get('menuId') != state.get('panel', {}).get('menuId')):
+            raise AssertionError(f'{name} changed screens before capture: {current}')
+        state = current
         screenshot = capture(name)
         screenshots.append({'id': name, 'screen': state['screen'], 'title': state['title'],
                             'panel': state.get('panel'), 'atlas': case.get('atlas'),
@@ -82,6 +86,10 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
         target_id = target if ':' in target else 'ic2:' + target
         if target == 'stone':
             target_id = 'minecraft:stone'
+        # A case can expose the test player to radiation while handling uranium.
+        command(f'clear {player}')
+        command(f'effect clear {player}')
+        command(f'effect give {player} minecraft:instant_health 1 4 true')
         command('fill 1 97 -3 8 103 3 minecraft:air')
         command('fill 1 99 -3 8 99 3 minecraft:stone')
         command(f'setblock {TARGET} {target_id}{case.get("state", "")}')
@@ -168,10 +176,11 @@ def main():
     parser.add_argument('--spec', required=True, type=Path)
     parser.add_argument('--directory', required=True, type=Path)
     parser.add_argument('--prepared', action='store_true')
+    parser.add_argument('--language', choices=['en_us', 'zh_cn'], default='en_us')
     args = parser.parse_args()
     cases = load_cases(args.spec)
     session = args.directory.resolve()
-    with launch(session, mode='normal', prepared=args.prepared) as run:
+    with launch(session, mode='normal', prepared=args.prepared, language=args.language) as run:
         client = Client(run)
         client.check('graphical-title', lambda state: state['screen'] == 'TitleScreen' and not state['overlay'])
         client.enter('connect', 'dedicated-join')
