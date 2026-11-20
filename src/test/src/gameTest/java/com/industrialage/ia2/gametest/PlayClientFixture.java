@@ -373,6 +373,10 @@ public final class PlayClientFixture {
                     screen.mouseReleased(center[0], center[1], GLFW.GLFW_MOUSE_BUTTON_LEFT);
                 }
             }
+            case "gui-scale" -> {
+                mc.options.guiScale().set(Integer.parseInt(argument));
+                mc.resizeDisplay();
+            }
             default -> throw new IllegalArgumentException("Unknown action " + action);
         }
     }
