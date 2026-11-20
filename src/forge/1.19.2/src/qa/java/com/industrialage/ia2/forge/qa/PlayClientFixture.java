@@ -137,6 +137,7 @@ final class PlayClientFixture {
                                 });
             }
             if (mc.player != null) {
+                result.addProperty("height", mc.player.getY());
                 result.addProperty("menuId", mc.player.containerMenu.containerId);
                 if (mc.level != null) {
                     var block = mc.level.getBlockState(MACHINE_POS).getBlock();

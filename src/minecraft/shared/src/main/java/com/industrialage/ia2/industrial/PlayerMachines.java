@@ -2,10 +2,15 @@ package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.power.WorldPowerStorage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -293,11 +298,29 @@ final class PlayerMachines {
         return false;
     }
 
+    static final class LiftContacts {
+        private record Sample(long tick, double y) {}
+
+        private final Map<UUID, Sample> positions = new HashMap<>();
+
+        double verticalStep(Player player, long tick) {
+            var previous = positions.put(player.getUUID(), new Sample(tick, player.getY()));
+            if (previous != null && previous.tick == tick - 1) return player.getY() - previous.y;
+            // At rest the server can retain a small downward velocity from its gravity step.
+            return player.fallDistance > 0 ? player.getDeltaMovement().y : 0;
+        }
+
+        void finish(long tick) {
+            positions.values().removeIf(sample -> sample.tick != tick);
+        }
+    }
+
     private static boolean lift(PowerNode magnet, ServerLevel level) {
         boolean active = false;
         var p = magnet.getBlockPos();
-        for (Player user :
-                level.getEntitiesOfClass(Player.class, new AABB(p).inflate(1.2, 12, 1.2))) {
+        long tick = level.getGameTime();
+        for (ServerPlayer user :
+                level.getEntitiesOfClass(ServerPlayer.class, new AABB(p).inflate(1.2, 12, 1.2))) {
             var boots = user.getItemBySlot(EquipmentSlot.FEET);
             if (boots.isEmpty()) continue;
             var userPos = user.blockPosition();
@@ -312,18 +335,24 @@ final class PlayerMachines {
             }
             if (!onPost && !userPos.below().equals(p)) continue;
             var motion = user.getDeltaMovement();
+            double vertical = magnet.liftContacts.verticalStep(user, tick);
             boolean powered = magnet.energy >= 2;
-            if (user.isShiftKeyDown() && motion.y < 0) {
-                user.setDeltaMovement(motion.multiply(1, powered ? .8 : .9, 1));
+            if (user.isShiftKeyDown() && vertical < 0) {
+                user.setDeltaMovement(motion.x, vertical * (powered ? .8 : .9), motion.z);
             } else if (powered) {
-                user.setDeltaMovement(motion.x, Math.min(.6, motion.y + .07725), motion.z);
+                user.setDeltaMovement(motion.x, Math.min(.6, vertical + .07725), motion.z);
                 user.fallDistance = 0;
+            } else {
+                continue;
             }
+            // This block ticks after entities. Send the impulse before the next player tick applies gravity.
+            user.connection.send(new ClientboundSetEntityMotionPacket(user));
             if (powered) {
                 magnet.energy -= 2;
                 active = true;
             }
         }
+        magnet.liftContacts.finish(tick);
         if (active) magnet.setChanged();
         return active;
     }
