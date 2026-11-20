@@ -216,7 +216,11 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                         switch (metric) {
                             case ENERGY -> (int) machine.energy;
                             case CAPACITY -> machine.energyCapacity();
-                            case PROGRESS -> machine.progress;
+                            case PROGRESS ->
+                                    machine.kind == WorkshopKind.ELECTROLYZER
+                                                    && machine.cycleDuration == 0
+                                            ? machine.progress / 2
+                                            : machine.progress;
                             case DURATION ->
                                     machine.cycleDuration > 0
                                             ? machine.cycleDuration
