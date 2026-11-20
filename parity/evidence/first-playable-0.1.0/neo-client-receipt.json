@@ -1,0 +1,41 @@
+{
+  "sourceCommit": "6812c472c0774bb0a9ea8941066f11a121699e7a",
+  "platforms": {
+    "1.21.1": {
+      "productionJarSha256": "5796df6cfd9d9fd49a50b7c728cb61ab4839ba28d136828edf89069de1d6e6e5",
+      "verifiedProductionEntries": 5452,
+      "productionContentSha256": "15e2fdb9286d8a36475edf88cc64b6c59e6d1aed5ed90a498f1b718014f89ff1",
+      "dedicatedClientChecks": 389,
+      "fullEnglishScreens": 127,
+      "chineseRepresentativeScreens": 7,
+      "chineseDedicatedClientChecks": 25,
+      "minOpaqueUpperMatchPercent": 71.34,
+      "clientExit": 0,
+      "serverExit": 0
+    },
+    "26.1.2": {
+      "productionJarSha256": "54ff6e1e7411b40cfe3b2c795611fdf216d56ee6663469bf6d83a1fb84eb29eb",
+      "verifiedProductionEntries": 6004,
+      "productionContentSha256": "41bac6448cc52202fe7073db44eb34b684e7ab955d1af1b1721389f1a956ed6a",
+      "dedicatedClientChecks": 390,
+      "fullEnglishScreens": 127,
+      "chineseRepresentativeScreens": 7,
+      "chineseDedicatedClientChecks": 26,
+      "minOpaqueUpperMatchPercent": 71.34,
+      "clientExit": 0,
+      "serverExit": 0
+    },
+    "26.2": {
+      "productionJarSha256": "cfbbe089dc9529c0b8a8fb41af42382e0de76410be474f3c74b27de64a71c453",
+      "verifiedProductionEntries": 6007,
+      "productionContentSha256": "62435ed843439480ee3466b1aaa64017032ed440a06ff7a63204f0088c73e58e",
+      "dedicatedClientChecks": 390,
+      "fullEnglishScreens": 127,
+      "chineseRepresentativeScreens": 7,
+      "chineseDedicatedClientChecks": 26,
+      "minOpaqueUpperMatchPercent": 71.34,
+      "clientExit": 0,
+      "serverExit": 0
+    }
+  }
+}

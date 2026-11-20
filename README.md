@@ -1,6 +1,6 @@
 # IndustrialCraft 2（IC2） · Forge 1.19.2
 
-0.1.0 是 IC2 Experimental 的独立重建。此分支为 Minecraft 1.19.2、Forge 43.5.0 和 Java 17 提供重混淆 JAR。新存档中可从橡胶树和基础加工起步，发展热能、动能、作物、UU 复制与游戏内核工业。[安装与第一条生产线](docs/first-playable.md)
+0.1.0 是 IC2 Experimental 的独立重建。此分支为 Minecraft 1.19.2、Forge 43.5.0 和 Java 17 提供重混淆 JAR。新存档中可从橡胶树和基础加工起步，发展热能、动能、作物、UU 复制与游戏内核工业。[安装与第一条生产线](docs/first-playable.md) [0.1.0 四版下载](https://github.com/spectrum527/ic2/releases/tag/v0.1.0) · [实测记录](parity/evidence/first-playable-0.1.0/README.md)
 
 ## 构建与验证
 

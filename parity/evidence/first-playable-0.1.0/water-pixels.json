@@ -1,0 +1,59 @@
+{
+  "1.21.1": {
+    "jarSha256": "5796df6cfd9d9fd49a50b7c728cb61ab4839ba28d136828edf89069de1d6e6e5",
+    "fluid": "minecraft:water",
+    "filledMillibuckets": 1000,
+    "nativeRect": [
+      80,
+      36,
+      16,
+      16
+    ],
+    "differingLogicalPixels": 256,
+    "sampledPixels": 256,
+    "meanWaterRGB": [
+      64.43,
+      94.56,
+      152.19
+    ],
+    "distinctWaterColors": 16
+  },
+  "26.1.2": {
+    "jarSha256": "54ff6e1e7411b40cfe3b2c795611fdf216d56ee6663469bf6d83a1fb84eb29eb",
+    "fluid": "minecraft:water",
+    "filledMillibuckets": 1000,
+    "nativeRect": [
+      80,
+      36,
+      16,
+      16
+    ],
+    "differingLogicalPixels": 256,
+    "sampledPixels": 256,
+    "meanWaterRGB": [
+      64.78,
+      95.2,
+      153.42
+    ],
+    "distinctWaterColors": 18
+  },
+  "26.2": {
+    "jarSha256": "cfbbe089dc9529c0b8a8fb41af42382e0de76410be474f3c74b27de64a71c453",
+    "fluid": "minecraft:water",
+    "filledMillibuckets": 1000,
+    "nativeRect": [
+      80,
+      36,
+      16,
+      16
+    ],
+    "differingLogicalPixels": 256,
+    "sampledPixels": 256,
+    "meanWaterRGB": [
+      64.75,
+      95.16,
+      153.36
+    ],
+    "distinctWaterColors": 19
+  }
+}

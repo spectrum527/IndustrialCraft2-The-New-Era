@@ -6,6 +6,7 @@ from itertools import combinations
 import json
 import re
 from pathlib import Path
+from struct import unpack
 import time
 
 from physical_play import exercise, logs, until
@@ -134,10 +135,17 @@ def complete_png(file):
 def capture(client, name):
     client.act("move-ui:-15,-15")
     client.act("state")
-    client.act("snapshot-ui:" + name)
-    file = client.directory / f"screenshots/authored-{name}.png"
-    until(lambda: complete_png(file), f"Native screenshot of {name}", client.run.client, timeout=20)
-    return file
+    for attempt in range(3):
+        key = name if attempt == 0 else f"{name}_frame_{attempt + 1}"
+        frame = client.act("snapshot-ui:" + key)["uiPanel"]
+        file = client.directory / f"screenshots/authored-{key}.png"
+        until(lambda: complete_png(file), f"Native screenshot of {key}", client.run.client, timeout=20)
+        with file.open("rb") as png:
+            png.seek(16)
+            width, height = unpack(">II", png.read(8))
+        if (width, height) == (frame["framebufferWidth"], frame["framebufferHeight"]):
+            return file, frame
+    raise AssertionError(f"Client framebuffer kept resizing while capturing {name}")
 
 
 def validate_slot_rectangles(panel, name):
@@ -180,9 +188,10 @@ def energize_workshop(client, path, layout):
                 and (float(charge[1]) if charge else 0) == final)
 
     client.check(path + "-real-battery-exchanged-exact-eu", matches, timeout=8)
+    file, frame = capture(client, path + "_battery")
     return {"item": item, "slot": corner, "itemBefore": initial, "itemAfter": final,
             "machineBefore": before, "machineAfter": before + delta,
-            "png": str(capture(client, path + "_battery"))}
+            "png": str(file), "geometry": frame}
 
 
 def click_steps(client, name, steps):
@@ -214,10 +223,10 @@ def click_steps(client, name, steps):
                     and all(state.get(key) == value for key, value in check.items()))
 
         label = step["name"]
-        current = client.check(name + "-" + label, matches, timeout=10)
-        validate_slot_rectangles(current["uiPanel"], name + "-" + label)
-        png = capture(client, name + "_" + label)
-        outputs.append({"geometry": current["uiPanel"], "png": str(png)})
+        client.check(name + "-" + label, matches, timeout=10)
+        png, frame = capture(client, name + "_" + label)
+        validate_slot_rectangles(frame, name + "-" + label)
+        outputs.append({"geometry": frame, "png": str(png)})
     return outputs
 
 
@@ -313,10 +322,9 @@ def inspect(client, device, layouts):
             any([slot["x"], slot["y"]] == item["at"] and item_matches(slot, item)
                 for slot in state.get("uiPanel", {}).get("slots", []))
             for item in device["items"]), timeout=10)
-    geometry = state["uiPanel"]
+    file, geometry = capture(client, path)
     validate_slot_rectangles(geometry, path)
     layout = layouts.get(path, {"atlas": device.get("atlas"), "inventory": device.get("inventory")})
-    file = capture(client, path)
     closed_cells = None
     if path in ("nuclear_reactor", "nuclear_reactor_chambers"):
         core_layout = json.loads(POWER_LAYOUTS.read_text())["nuclear_reactor"]
@@ -383,9 +391,10 @@ def inspect(client, device, layouts):
                      lambda state: state.get("workshopFluid") == 0 and any(
                          slot["index"] == 9 and slot["item"] == "minecraft:water_bucket"
                          for slot in state.get("uiPanel", {}).get("slots", [])), timeout=8)
+        file, frame = capture(client, path + "_container")
         result["container"] = {"input": "minecraft:bucket", "consumedWaterMb": 1000,
                                "output": "minecraft:water_bucket",
-                               "png": str(capture(client, path + "_container"))}
+                               "png": str(file), "geometry": frame}
     return result
 
 
