@@ -1,19 +1,20 @@
 # NeoForge 注册、事件与能力适配（P2-T3）
 
-## §1 两个版本的宿主边界
+## §1 三个目标的宿主边界
 
 各版本入口持有本实例的适配器，将中立门面注入消费方。物理客户端和专用服务器均登记方块、物品及能力提供者。集成服务器运行在物理客户端内，其逻辑服务端线程处理世界操作。专服加载这些入口时不得解析客户端专属类。[共同契约 §1–§5](services.md)
 
 | Minecraft / NeoForge | 工具链与宿主 ID | 本阶段验收及公开依据 |
 | --- | --- | --- |
-| 1.21.1 / 21.1.265 | JDK 21，`ResourceLocation` | 编译、打包并运行开发专服。[锁定版源码包](https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.265/neoforge-21.1.265-sources.jar) |
-| 26.1 / 26.1.0.19-beta | JDK 25，`Identifier` | 编译并打包，运行验收自 P6 起。[锁定版源码包](https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.0.19-beta/neoforge-26.1.0.19-beta-sources.jar) |
+| 1.21.1 / 21.1.265 | JDK 21，`ResourceLocation` | 编译、打包并运行开发专服。[固定版本 POM](https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.265/neoforge-21.1.265.pom) |
+| 26.1.2 / 26.1.2.128 | JDK 25，使用目标版宿主 ID 类型 | 编译并打包，运行验收自 P6 起。[固定版本 POM](https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.128/neoforge-26.1.2.128.pom) |
+| 26.2 / 26.2.0.95 | JDK 25，使用目标版宿主 ID 类型 | 编译并打包，运行验收自 P6 起。[固定版本 POM](https://maven.neoforged.net/releases/net/neoforged/neoforge/26.2.0.95/neoforge-26.2.0.95.pom) |
 
-两版的 `RegisterEvent`、`RegisterCapabilitiesEvent` 都在 mod 事件总线上接收。需要转发的游戏事件由版本层从 `NeoForge.EVENT_BUS` 接入并转换为中立值。`common` 仅依赖 Java 21 和本项目的中立类型。生命周期顺序属 P2-T4，配置装载属 P2-T5，通信、握手及收发线程属 P2-T6，客户端入口属 P2-T7。具体业务能力由相应内容任务定义。
+各目标的适配层须在相应 mod 事件总线完成注册与能力登记，具体 API 以目标版本编译验证。需要转发的游戏事件由版本层从 `NeoForge.EVENT_BUS` 接入并转换为中立值。`common` 仅依赖 Java 21 和本项目的中立类型。生命周期顺序属 P2-T4，配置装载属 P2-T5，通信、握手及收发线程属 P2-T6，客户端入口属 P2-T7。具体业务能力由相应内容任务定义。
 
 ## §2 注册阶段、句柄与目标端验收
 
-两版均识别 `block` 和 `item`，分别对应 `minecraft:block` 和 `minecraft:item`。版本层把完整的 `RegistryFacade.Id` 映射到对应表的键，核对 `Kind` 的类型令牌，并将 `DeferredRegister` 接到 mod 事件总线，由它承接匹配该表的 `RegisterEvent`。宿主类型与句柄留在版本层及其开发夹具。登记队列、订阅和中立句柄归实例持有，不以静态可变表共享。测试可用同一 `ic2:` ID 登记方块与放置它的 `BlockItem`。
+三个目标均识别 `block` 和 `item`，分别对应 `minecraft:block` 和 `minecraft:item`。版本层把完整的 `RegistryFacade.Id` 映射到对应表的键，核对 `Kind` 的类型令牌，并将 `DeferredRegister` 接到 mod 事件总线，由它承接匹配该表的 `RegisterEvent`。宿主类型与句柄留在版本层及其开发夹具。登记队列、订阅和中立句柄归实例持有，不以静态可变表共享。测试可用同一 `ic2:` ID 登记方块与放置它的 `BlockItem`。
 
 | 可观察阶段 | 调用与结果 |
 | --- | --- |
@@ -23,7 +24,7 @@
 
 **拟验收顺序**（本规格仅核对依赖与契约，以下结果由 Platform 与 QA 实测）。
 
-1. 在同一提交用 Gradle Wrapper 9.2.1、ModDevGradle 2.0.148 运行 `./gradlew :neoforge:1.21.1:build :neoforge:26.1:build --rerun-tasks --no-build-cache`。两项编译、打包均成功。逐包核对测试专用 ID、注册入口、夹具类、资源、模板及测试 mod 声明，命中均为 0。测试对象仅由开发测试 mod 显式登记。[版本锁定记录](../../docs/02-platform.md) · [构建与取证契约](verification.md)
+1. 在 `26.2` 集成分支的同一提交用 Gradle Wrapper 9.2.1、ModDevGradle 2.0.148 运行 `./gradlew :neoforge:1.21.1:build :neoforge:26.1.2:build :neoforge:26.2:build --rerun-tasks --no-build-cache`。三项编译、打包均须成功。逐包核对测试专用 ID、注册入口、夹具类、资源、模板及测试 mod 声明，命中均为 0。测试对象仅由开发测试 mod 显式登记。[版本锁定记录](../../docs/02-platform.md) · [构建与取证契约](verification.md)
 2. 以 1.21.1 开发专服进程 A 新建隔离存档。通过实际适配器登记一对测试对象，在两张宿主表中按精确键查询，各命中一次，两个句柄分别与宿主值同一。用该物品在两处实际放置并读回测试方块，通过宿主破坏动作清除第一处，确认第一处为空气、第二处仍为该方块。记录存档、维度、坐标和两处状态。
 3. 保存世界，正常停止 A 并确认退出。启动独立专服进程 B，启用同一开发夹具、打开同一存档，在任何重新放置或破坏前读取原坐标。第一处须为空气，第二处须为原 ID 及保存的方块状态。记录两次运行标识、断言及退出状态。
 4. `./gradlew :test:runGameTest` 的现有入口每次会清理运行目录。QA 可在该入口断言单次放置和破坏，跨进程重载须使用保留测试存档的开发专服入口。按用例记录执行数、通过数与失败数，全部指定断言实际执行且失败为 0 方可通过。

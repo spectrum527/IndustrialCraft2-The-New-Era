@@ -96,16 +96,13 @@ public final class ClientServices {
 
     private boolean openStatus(InputConstants.Key key) {
         var client = Minecraft.getInstance();
-        if (client.screen != null
-                || client.getOverlay() != null
+        if (ClientScreenAccess.hasScreenOrOverlay(client)
                 || client.level == null
                 || !binding.isActiveAndMatches(key)
                 || !connected(client.getConnection())) {
             return false;
         }
-        var screen = new StatusScreen(resources, echo);
-        client.setScreen(screen);
-        return client.screen == screen;
+        return ClientScreenAccess.open(client, new StatusScreen(resources, echo));
     }
 
     static boolean connected(ClientPacketListener listener) {
