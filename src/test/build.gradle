@@ -31,11 +31,21 @@ tasks.register('requireJUnitExecution') {
     }
 }
 
-tasks.register('runGameTest') {
-    group = 'verification'
-    dependsOn ':forge:1.19.2:runQaGameTestServer'
+def forgeModule = rootProject.project(':forge:1.19.2')
+def serverLaunch = forgeModule.layout.buildDirectory.file('qa-machine/server-launch.json')
+['runGameTest': 'smoke', 'runPlatformWorldTest': 'world'].each { name, suite ->
+    tasks.register(name, Exec) {
+        group = 'verification'
+        dependsOn ':forge:1.19.2:prepareQaWorld'
+        workingDir rootProject.projectDir
+        commandLine 'python3', forgeModule.file('qa/verify.py'), suite,
+                '--server-launch', serverLaunch.get().asFile
+        def evidence = providers.gradleProperty("ic2.${suite}EvidenceDir")
+        if (evidence.isPresent()) { args '--output', rootProject.file(evidence.get()) }
+    }
 }
+
 tasks.register('runPlatformHostTest') {
     group = 'verification'
-    dependsOn junit
+    dependsOn junit, 'runGameTest'
 }

@@ -40,6 +40,26 @@ def stageMismatch = tasks.register('stageQaProtocolMismatch', Sync) {
 
 // Expand the very same tokens as ForgeGradle's MinecraftRunTask.exec, after its preparation tasks
 // have resolved assets, natives, and the Minecraft and library classpath files.
+ext.qaHostLaunch = { run, side ->
+    def generator = plugins.getPlugin('net.minecraftforge.gradle').class.classLoader.loadClass(
+            'net.minecraftforge.gradle.common.util.runs.RunConfigGenerator')
+    def config = run.runConfig.get()
+    def folders = generator.mapModClassesToGradle(project, config)
+    def tokens = generator.configureTokensLazy(project, config, folders,
+            run.minecraftArtifacts, run.runtimeClasspathArtifacts)
+    def expand = { value -> config.replace(tokens, value.toString()) }
+    def jvm = config.jvmArgs.collect(expand)
+    if (side == 'client') {
+        jvm += run.additionalClientArgs.get().collect(expand)
+    }
+    jvm += config.properties.collect { key, value -> "-D${key}=${expand(value)}" }
+    def env = config.environment.collectEntries { key, value -> [(key): expand(value)] }
+    return [java: run.javaLauncher.get().executablePath.asFile.absolutePath,
+              main: run.mainClass.get(), jvm: jvm,
+              args: config.args.collect(expand), env: env,
+              classpath: files(run.classpath, config.allSources*.runtimeClasspath).asPath]
+}
+
 tasks.register('prepareQaPlay') {
     group = 'verification'
     description = 'Export real Forge launch arguments for the isolated two-JVM acceptance run.'
@@ -53,25 +73,8 @@ tasks.register('prepareQaPlay') {
     outputs.file(output.map { it.file('launch.json') })
     outputs.upToDateWhen { false }
     doLast {
-        def generator = plugins.getPlugin('net.minecraftforge.gradle').class.classLoader.loadClass(
-                'net.minecraftforge.gradle.common.util.runs.RunConfigGenerator')
         def manifest = ['client', 'server'].collectEntries { side ->
-            def run = tasks.getByName("runQaPlay${side.capitalize()}")
-            def config = run.runConfig.get()
-            def folders = generator.mapModClassesToGradle(project, config)
-            def tokens = generator.configureTokensLazy(project, config, folders,
-                    run.minecraftArtifacts, run.runtimeClasspathArtifacts)
-            def expand = { value -> config.replace(tokens, value.toString()) }
-            def jvm = config.jvmArgs.collect(expand)
-            if (side == 'client') {
-                jvm += run.additionalClientArgs.get().collect(expand)
-            }
-            jvm += config.properties.collect { key, value -> "-D${key}=${expand(value)}" }
-            def env = config.environment.collectEntries { key, value -> [(key): expand(value)] }
-            [(side): [java: run.javaLauncher.get().executablePath.asFile.absolutePath,
-                      main: run.mainClass.get(), jvm: jvm,
-                      args: config.args.collect(expand), env: env,
-                      classpath: files(run.classpath, config.allSources*.runtimeClasspath).asPath]]
+            [(side): qaHostLaunch(tasks.getByName("runQaPlay${side.capitalize()}"), side)]
         }
         manifest.productionClasses = sourceSets.main.output.classesDirs.singleFile.absolutePath
         manifest.mismatchClasses = stageMismatch.get().destinationDir.absolutePath

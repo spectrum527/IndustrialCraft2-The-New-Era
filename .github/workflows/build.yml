@@ -25,10 +25,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Build the production JAR and run common contracts
         run: ./gradlew build --console=plain
-      - name: Run required Forge GameTest
-        run: python3 src/forge/1.19.2/qa/verify.py smoke --output build/evidence-smoke
-      - name: Reopen the same Forge world in another server JVM
-        run: python3 src/forge/1.19.2/qa/verify.py world --output build/evidence-world
+      - name: Run Forge GameTests and native generator storage contracts
+        run: ./gradlew :test:runGameTest :forge:1.19.2:reobfQaFixtureJar -Pic2.smokeEvidenceDir=build/evidence-smoke
+      - name: Restart the Forge world and resume the same generator
+        run: ./gradlew :test:runPlatformWorldTest -Pic2.worldEvidenceDir=build/evidence-world
       - name: Check the matching and mismatching clients
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -44,6 +44,7 @@ jobs:
           name: forge-1.19.2-verification
           path: |
             src/forge/1.19.2/build/libs/*.jar
+            src/forge/1.19.2/build/qa-machine/fixtures/*.jar
             src/test/build/test-results/test/TEST-*.xml
             build/evidence-*/**/result.json
             build/evidence-*/**/*.properties
@@ -51,6 +52,8 @@ jobs:
             build/evidence-*/**/lifecycle-*.txt
             build/evidence-*/**/config-*.txt
             build/evidence-*/**/capability-*.txt
+            build/evidence-*/**/generator-*.nbt
+            build/evidence-*/**/generator-*.txt
             build/evidence-*/**/process-exits.json
             build/evidence-*/**/*.log
             build/evidence-*/**/*checks*.json
