@@ -52,7 +52,7 @@ def options(ingredient, tags, visited=frozenset()):
         if tag in visited:
             return ()
         members = tags.get(tag)
-        return options(members, tags, visited | {tag}) if members else (('tag', tag),)
+        return options(members, tags, visited | {tag}) if members is not None else (('tag', tag),)
     return (('item', namespace(ingredient)),)
 
 
@@ -222,7 +222,7 @@ def closure(routes):
 
     def reachable(key):
         kind, name = key
-        return key in available or name.startswith('minecraft:') or kind == 'tag' and not name.startswith('ic2:')
+        return key in available or name.startswith('minecraft:')
 
     pending = set(routes)
     while pending:
