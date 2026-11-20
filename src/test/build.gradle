@@ -32,6 +32,8 @@ def junit = tasks.named('test', Test) {
     dependsOn targets.collect { ":neoforge:$it:verifyDevelopmentJar" }
     systemProperty 'ia2.testClassesDirs', testClassesDirs.asPath
     systemProperty 'ic2.activeKeysTable', rootProject.file('spec/config/active-keys.tsv').absolutePath
+    systemProperty 'ic2.modVersion', rootProject.version.toString()
+    systemProperty 'ic2.notice', rootProject.file('NOTICE.md').absolutePath
 }
 tasks.register('requireJUnitExecution') {
     doLast {

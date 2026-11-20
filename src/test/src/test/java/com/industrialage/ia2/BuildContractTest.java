@@ -1,5 +1,6 @@
 package com.industrialage.ia2;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -48,7 +49,11 @@ class BuildContractTest {
                     text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
                 }
                 assertTrue(text.contains("modId=\"ic2\""));
-                assertTrue(text.contains("displayName=\"IndustrialCraft 2\""));
+                assertTrue(text.contains("version=\"" + requiredProperty("ic2.modVersion") + "\""));
+                assertTrue(text.contains("displayName=\"IndustrialCraft²: The New Era\""));
+                assertTrue(
+                        text.contains(
+                                "displayURL=\"https://github.com/spectrum527/IndustrialCraft2-The-New-Era\""));
                 assertTrue(text.contains("[[dependencies.ic2]]"));
                 assertFalse(text.contains("modId=\"ia2\""));
                 var dependencies = dependencies(text, platform.target());
@@ -59,6 +64,25 @@ class BuildContractTest {
                 assertNotNull(jar.getJarEntry("LICENSE"));
                 assertNotNull(jar.getJarEntry("COPYING"));
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));
+                for (var language : List.of("en_us", "zh_cn")) {
+                    var translation = jar.getJarEntry("assets/ic2/lang/" + language + ".json");
+                    assertNotNull(translation, platform.target() + ": " + language);
+                    try (var stream = jar.getInputStream(translation)) {
+                        var locale = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                        assertTrue(
+                                locale.contains(
+                                        "\"itemGroup.ic2\": \"IndustrialCraft²: The New Era\""),
+                                platform.target() + ": " + language);
+                    }
+                }
+                var notice = jar.getJarEntry("NOTICE.md");
+                assertNotNull(notice);
+                try (var stream = jar.getInputStream(notice)) {
+                    assertArrayEquals(
+                            Files.readAllBytes(Path.of(requiredProperty("ic2.notice"))),
+                            stream.readAllBytes(),
+                            platform.target());
+                }
             }
         }
     }
@@ -77,6 +101,7 @@ class BuildContractTest {
                                                         || name.startsWith("data/ic2_gametest/")
                                                         || name.startsWith("data/ia2_gametest/")
                                                         || name.startsWith("assets/ia2/")
+                                                        || name.startsWith("assets/brand/")
                                                         || name.startsWith("data/ia2/")
                                                         || compiledTests.contains(name)
                                                         || name.startsWith("org/junit/")

@@ -51,6 +51,9 @@ jobs:
       - name: Test the production JAR comparison
         if: matrix.target == '1.21.1'
         run: python3 -m unittest discover -s src/test -p test_runtime_jar.py
+      - name: Test installed release JAR discovery
+        if: matrix.target == '1.21.1'
+        run: python3 -m unittest discover -s tools/qa -p 'test_*.py'
       - name: Similarity tool tests
         run: python3 -m unittest discover -s tools/similarity -p 'test_*.py'
       - name: Similarity gate without private comparison input
