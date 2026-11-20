@@ -5,3 +5,4 @@ ext.platformJava = 25
 ext.loaderMetadata = ''
 apply from: '../platform.gradle'
 sourceSets.main.java.srcDir('../26.x/src/main/java')
+apply from: rootProject.file('src/test/modern-server-smoke.gradle')

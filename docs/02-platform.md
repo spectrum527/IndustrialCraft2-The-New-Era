@@ -13,7 +13,7 @@
 | 补充参考 | Minecraft 1.12.2 / Forge | A25 要求 JDK 8；P0-T9 待执行，用于已批准缺失功能与交叉核对，不阻塞本次 G0 |
 
 - 构建插件：**ModDevGradle**（A19）。
-- 当前固定组合：1.21.1 使用 NeoForge **21.1.265**；26.1.2 使用 **26.1.2.128**；26.2 使用 **26.2.0.95**；ModDevGradle 暂用 **2.0.148**；Gradle Wrapper 暂用 **9.2.1**。固定值不使用动态版本；兼容性须由新目标实际构建和运行验证。
+- 当前固定组合：1.21.1 使用 NeoForge **21.1.265**；26.1.2 使用 **26.1.2.128**；26.2 使用 **26.2.0.95**；ModDevGradle **2.0.148**，Gradle Wrapper **9.2.1**。三个目标均使用仓库锁定的工具链。
 - 官方固定版本工件：[NeoForge 26.1.2.128 POM](https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.128/neoforge-26.1.2.128.pom)、[NeoForge 26.2.0.95 POM](https://maven.neoforged.net/releases/net/neoforged/neoforge/26.2.0.95/neoforge-26.2.0.95.pom)。这些是选定值，不宣称始终为最新版。
 - 1.21.1 与 common 采用 Java 21，26.1.2 和 26.2 采用 Java 25。各目标的构建和运行证据须分别保存，后续升级须重新验证。
 - Fabric 在 v1.0 后按需求评估；当前 MVP 至 v1.0 仅发布 NeoForge（A6）。
@@ -66,7 +66,17 @@ src/
 
 ## 迁移验证
 
-待按各分支的实际执行结果记录构建、CI 和运行证据。
+2026-11-20 在集成分支从干净目录执行了 73 个 Gradle 任务。共同及构建 JUnit 40/40，主基线宿主契约 5/5。每个 JAR 的 83 个生产条目均与实测的开发类和资源逐字节一致。
+
+| Minecraft | JAR SHA-256 前 12 位 | 专服与存档 | 图形客户端 |
+| --- | --- | --- | --- |
+| 1.21.1 | `586863b25825` | GameTest 1/1，两个独立进程同档写入和读回通过 37、16 项检查 | 34 项通过。协议不匹配的客户端被拒绝，登录和回显均为 0 |
+| 26.1.2 | `9598e02125fb` | 燃烧、原生存档往返、32 EU 出包和保存关服共 6 项通过 | 状态页、输入焦点和专服回显 15 项通过 |
+| 26.2 | `023277800f72` | 同一组 6 项通过 | 同一组 15 项通过，覆盖新 `Gui` 屏幕接口 |
+
+两个 26.x 专服分别将一块煤转换成 4,000 EU。工作中通过本版原生方块实体格式保存并读回 363 个余燃料刻和 370 EU，单进程完成往返。两版客户端均连接本机独立专服，通过合成键盘输入打开状态页，并通过按钮回调触发回显。P6 继续按版本验收完整玩家路线。
+
+在仓库根运行 `./gradlew clean build :test:runGameTest :test:runPlatformHostTest :test:runPlatformWorldTest :neoforge:26.1.2:runModernServerSmoke :neoforge:26.2:runModernServerSmoke` 可复跑集成分支的构建和专服回归。生产包位于各目标模块的 `build/libs/`。
 
 ## 历史验证与交接（P0-T4）
 
