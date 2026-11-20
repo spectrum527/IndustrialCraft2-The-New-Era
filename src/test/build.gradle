@@ -6,20 +6,32 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
 }
-def targets = providers.gradleProperty('ic2.testTarget')
-        .orElse(providers.gradleProperty('ia2.testTarget')).map { [it] }.getOrElse(['1.21.1', '26.1'])
+def platformProjects = rootProject.project(':neoforge').childProjects
+def requestedTarget = providers.gradleProperty('ic2.testTarget')
+        .orElse(providers.gradleProperty('ia2.testTarget'))
+def targets = requestedTarget.isPresent() ? [requestedTarget.get()] :
+        platformProjects.values().findAll { it.buildFile.isFile() }.collect { it.name }.sort()
+if (targets.isEmpty() || targets.any { !platformProjects.containsKey(it) }) {
+    throw new GradleException("Unknown or empty NeoForge test targets: ${targets}")
+}
 def junit = tasks.named('test', Test) {
     useJUnitPlatform()
     outputs.upToDateWhen { false }
     outputs.doNotCacheIf('JUnit evidence must come from the current run') { true }
-    doFirst { delete reports.junitXml.outputLocation }
+    doFirst {
+        delete reports.junitXml.outputLocation
+        systemProperty 'ia2.targets', targets.join(',')
+        targets.each { target ->
+            def platform = platformProjects[target]
+            systemProperty "ia2.target.${target}.jar", platform.tasks.named('jar').get()
+                    .archiveFile.get().asFile.absolutePath
+            systemProperty "ia2.target.${target}.neoForgeVersion", platform.ext.neoForgeVersion
+        }
+    }
     finalizedBy 'requireJUnitExecution'
     dependsOn targets.collect { ":neoforge:$it:verifyDevelopmentJar" }
     systemProperty 'ia2.testClassesDirs', testClassesDirs.asPath
     systemProperty 'ic2.activeKeysTable', rootProject.file('spec/config/active-keys.tsv').absolutePath
-    systemProperty 'ia2.jars', targets.collect {
-        rootProject.project(":neoforge:$it").tasks.named('jar').get().archiveFile.get().asFile.absolutePath
-    }.join(File.pathSeparator)
 }
 tasks.register('requireJUnitExecution') {
     doLast {
