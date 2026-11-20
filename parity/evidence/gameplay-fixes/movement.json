@@ -1,0 +1,77 @@
+{
+  "stage": "Targeted installed-JAR regression before the combined GUI and integration build. At normal game speed the server readings follow the client sample within each observation.",
+  "versions": {
+    "1.21.1": {
+      "jarSha256": "263b4bb9b8d60ce89921ca2b1874f8dcb2edcad80d96c7734e9b384e1e56eeba",
+      "emptyFeetY": 151.0,
+      "noPowerY": 151.0,
+      "startY": 151,
+      "initialEU": 500,
+      "samples": [
+        {
+          "clientY": 151.0,
+          "serverY": 151.07725,
+          "eu": 494.0
+        },
+        {
+          "clientY": 151.771875,
+          "serverY": 152.157875,
+          "eu": 486.0
+        },
+        {
+          "clientY": 153.76124999999996,
+          "serverY": 154.36124999999996,
+          "eu": 478.0
+        }
+      ]
+    },
+    "26.1.2": {
+      "jarSha256": "2fba8e91687b9eca85656a38622b32661be77e87c180a293864dfc749079cfd6",
+      "emptyFeetY": 151.0,
+      "noPowerY": 151.0,
+      "startY": 151,
+      "initialEU": 500,
+      "samples": [
+        {
+          "clientY": 151.0,
+          "serverY": 151.0,
+          "eu": 492.0
+        },
+        {
+          "clientY": 151.54092657022525,
+          "serverY": 151.8500274674968,
+          "eu": 484.0
+        },
+        {
+          "clientY": 153.24098150521883,
+          "serverY": 153.84099371299519,
+          "eu": 476.0
+        }
+      ]
+    },
+    "26.2": {
+      "jarSha256": "6b4fef2595ee3b21018daa4a195906fa0cc00bef9b5ad6643b66161d94b01c33",
+      "emptyFeetY": 151.0,
+      "noPowerY": 151.0,
+      "startY": 151,
+      "initialEU": 500,
+      "samples": [
+        {
+          "clientY": 151.0,
+          "serverY": 151.0772752243179,
+          "eu": 494.0
+        },
+        {
+          "clientY": 151.7727522431789,
+          "serverY": 152.15912836476835,
+          "eu": 484.0
+        },
+        {
+          "clientY": 153.76371848867728,
+          "serverY": 154.96374290423,
+          "eu": 476.0
+        }
+      ]
+    }
+  }
+}
