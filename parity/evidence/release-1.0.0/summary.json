@@ -1,0 +1,196 @@
+{
+  "name": "IndustrialCraft²: The New Era",
+  "release": "1.0.0",
+  "reviewDate": "2026-11-21",
+  "reviewer": "ChatGPT (Codex)",
+  "formulaAndRecipeSource": {
+    "publisher": "MC百科",
+    "modEntry": "https://www.mcmod.cn/class/2.html",
+    "example": "https://www.mcmod.cn/item/241.html"
+  },
+  "referenceVersions": [
+    "IndustrialCraft² Experimental 2.9.40",
+    "IndustrialCraft² Experimental 2.8.222",
+    "1.2.4-port.20261120 repair"
+  ],
+  "sourceAudit": {
+    "targetInputOccurrences": 859,
+    "distinctPathAndContentPairs": 353,
+    "currentFromFullReview": 300,
+    "currentFromIncrementalReview": 53,
+    "targets": {
+      "neoforge-1.21.1": {
+        "javaInputCount": 216,
+        "sourceSha256": "823240b338258cb3a64c5f9a689701471e48b4d81900aaf5b9848471ea6efe33",
+        "releaseSourceCommit": "060fc7f3c82bf27bca0d189b544efc9758a367b7",
+        "priorFullAuditCoverage": 184,
+        "incrementalAuditCoverage": 32,
+        "newUnauditedInputs": 0,
+        "archivedRawChecker": {
+          "warn": 153,
+          "pass": 43,
+          "fail": 20
+        }
+      },
+      "neoforge-26.1.2": {
+        "javaInputCount": 216,
+        "sourceSha256": "74143b31cf9071407dc9773b034b400594936b8431a0cf5cf436104fd6e633d1",
+        "releaseSourceCommit": "060fc7f3c82bf27bca0d189b544efc9758a367b7",
+        "priorFullAuditCoverage": 184,
+        "incrementalAuditCoverage": 32,
+        "newUnauditedInputs": 0,
+        "archivedRawChecker": {
+          "warn": 152,
+          "pass": 44,
+          "fail": 20
+        }
+      },
+      "neoforge-26.2": {
+        "javaInputCount": 216,
+        "sourceSha256": "0dcb00c543431996e1a6b08dbb3c181eddde4d03868a61d279deea0ea3351536",
+        "releaseSourceCommit": "060fc7f3c82bf27bca0d189b544efc9758a367b7",
+        "priorFullAuditCoverage": 184,
+        "incrementalAuditCoverage": 32,
+        "newUnauditedInputs": 0,
+        "archivedRawChecker": {
+          "warn": 151,
+          "pass": 44,
+          "fail": 21
+        }
+      },
+      "forge-1.19.2": {
+        "javaInputCount": 211,
+        "sourceSha256": "3fb85add1c697895955cee844d7a183f89990a09c797eec2b96fbe791cea9f55",
+        "releaseSourceCommit": "3fa052a32d44888e49ea09089a57efe69d546959",
+        "priorFullAuditCoverage": 177,
+        "incrementalAuditCoverage": 34,
+        "newUnauditedInputs": 0,
+        "archivedRawChecker": {
+          "warn": 146,
+          "pass": 42,
+          "fail": 23
+        }
+      }
+    }
+  },
+  "releasedJars": {
+    "1.19.2": {
+      "file": "ic2-forge-1.19.2-1.0.0.jar",
+      "sha256": "cc6d05f03ed0c45d64c2138cbbcc0e1429a6d08eeef33698de4258a6b252d16c",
+      "previousTestedCandidateSha256": "17f9ab9c5811b5d3391da0439dd92982e25cc6fc25b054d13a37a4f4bd85c633",
+      "identicalGameClasses": 459,
+      "gameTextures": 1632,
+      "redrawArchiveByteMatches": 1612,
+      "authorGuiByteMatches": 77,
+      "noticeSha256": "6e04168faaaea293ad6902d6fea934944845f686a0fbaed7eb6190ae26f29907",
+      "installedSmoke": {
+        "status": "passed",
+        "version": "1.0.0",
+        "displayName": "IndustrialCraft²: The New Era",
+        "screens": [
+          "macerator",
+          "uu_scanner"
+        ],
+        "exitCodes": {
+          "server": 0,
+          "client": 0
+        }
+      }
+    },
+    "1.21.1": {
+      "file": "ic2-neoforge-1.21.1-1.0.0.jar",
+      "sha256": "c96dff75e14191fa348464f4040178fc9cd8494274f87a7113431aa48b82b363",
+      "previousTestedCandidateSha256": "042f4307410110da6e0bff6d4c81a9a4515a2b95fa752b9c29e428d3f9699ede",
+      "identicalGameClasses": 442,
+      "gameTextures": 1644,
+      "redrawArchiveByteMatches": 1624,
+      "authorGuiByteMatches": 77,
+      "noticeSha256": "6e04168faaaea293ad6902d6fea934944845f686a0fbaed7eb6190ae26f29907",
+      "installedSmoke": {
+        "status": "passed",
+        "version": "1.0.0",
+        "displayName": "IndustrialCraft²: The New Era",
+        "screens": [
+          "macerator",
+          "uu_scanner"
+        ],
+        "exitCodes": {
+          "server": 0,
+          "client": 0
+        }
+      }
+    },
+    "26.1.2": {
+      "file": "ic2-neoforge-26.1.2-1.0.0.jar",
+      "sha256": "13cbca48db3acfa4370244d03c148c7a8835d8350b28a2a865b98e16c106c203",
+      "previousTestedCandidateSha256": "584b35ac777b81a3a5d4250e4c38f532b62ef216d377e699b050f9202b8b6051",
+      "identicalGameClasses": 440,
+      "gameTextures": 1644,
+      "redrawArchiveByteMatches": 1624,
+      "authorGuiByteMatches": 77,
+      "noticeSha256": "6e04168faaaea293ad6902d6fea934944845f686a0fbaed7eb6190ae26f29907",
+      "installedSmoke": {
+        "status": "passed",
+        "version": "1.0.0",
+        "displayName": "IndustrialCraft²: The New Era",
+        "screens": [
+          "macerator",
+          "uu_scanner"
+        ],
+        "exitCodes": {
+          "server": 0,
+          "client": 0
+        }
+      }
+    },
+    "26.2": {
+      "file": "ic2-neoforge-26.2-1.0.0.jar",
+      "sha256": "53bbf3ae121a294d686d9296fad1c0997580f128dab5fe776f1ee1e7b8adb2f5",
+      "previousTestedCandidateSha256": "d93363f4a629ebd965396d57cc39de567c344d8cc561d6fe2e503409f91983d0",
+      "identicalGameClasses": 440,
+      "gameTextures": 1644,
+      "redrawArchiveByteMatches": 1624,
+      "authorGuiByteMatches": 77,
+      "noticeSha256": "6e04168faaaea293ad6902d6fea934944845f686a0fbaed7eb6190ae26f29907",
+      "installedSmoke": {
+        "status": "passed",
+        "version": "1.0.0",
+        "displayName": "IndustrialCraft²: The New Era",
+        "screens": [
+          "macerator",
+          "uu_scanner"
+        ],
+        "exitCodes": {
+          "server": 0,
+          "client": 0
+        }
+      }
+    }
+  },
+  "gameMedia": {
+    "redrawArchiveSha256": "2ac848f7874700311f1e887a1717c5d5a83c9a0a3f8d72eb20d0daf36eb87cba",
+    "projectDerivedImagesPerTarget": 19,
+    "newRubberLeafImagesPerTarget": 1,
+    "identicalOriginalTextureAndSoundFilesFound": 0,
+    "comparison": "All 1.0.0 PNG, OGG and animation metadata entry paths and bytes match the previously audited candidate for the same target.",
+    "animationMetadataFilesPerTarget": 15,
+    "simpleModelBindingsWithEquivalentJSON": 32,
+    "brandMedia": {
+      "cover.jpg": "3629f33b96d0caff04a18e1721af7d2a9d4a63fdbef7d444980a96bb4c2d3059",
+      "icon.jpg": "1339c4e395cc5a62207c869df3eb6b197e630dc9b97da2b63e099f8ad0668d44"
+    },
+    "projectSynthesizedOggPerTarget": 59
+  },
+  "prePublicationHistoryAudit": {
+    "snapshot": "Before the release documentation and brand commits",
+    "branchCount": 9,
+    "tagCount": 1,
+    "prHeadCount": 61,
+    "reachableCommits": 206,
+    "uniqueGitBlobs": 2900,
+    "exactLegacyJavaBlobs": 0,
+    "exactOriginalOrRepairGameJarBlobs": 0,
+    "exactOriginalMediaBlobs": 0,
+    "highConfidenceCredentialMatches": 0
+  }
+}
