@@ -71,6 +71,25 @@ def assert_artwork(file, panel, artwork, limit, layout, strict):
             "staticCompared": protected, "staticExact": protected_matches}
 
 
+def water_well(file, panel):
+    """A filled tank's native water texture must be visible inside the authored 16px well."""
+    from PIL import Image
+
+    scale = panel["guiScale"]
+    left, top = panel["left"] + 80, panel["top"] + 36
+    pixels = 0
+    with Image.open(file) as screenshot:
+        screen = screenshot.convert("RGB")
+        for y in range(16):
+            for x in range(16):
+                red, green, blue = screen.getpixel((int((left + x + 0.5) * scale),
+                                                    int((top + y + 0.5) * scale)))
+                pixels += blue - red > 40 and blue - green > 25
+    if pixels < 16 * 16 * 3 // 4:
+        raise AssertionError(f"Native water well contained only {pixels}/256 blue water pixels")
+    return {"blueLiquidPixels": pixels, "sampledPixels": 16 * 16}
+
+
 def reactor_tiles(file, panel, layout):
     """Compare each of the 36 blocked slots to the independently authored 18px overlay."""
     from PIL import Image
@@ -276,6 +295,8 @@ def inspect(client, device, layouts):
               "geometry": geometry, "atlas": atlas, "pixels": pixel_audit}
     if closed_cells is not None:
         result["closedChamberPixels"] = closed_cells
+    if path == "tank":
+        result["nativeFluidPixels"] = water_well(file, geometry)
     actions = list(device.get("steps", []))
     for click in device.get("clicks", []):
         number = len(actions) + 1

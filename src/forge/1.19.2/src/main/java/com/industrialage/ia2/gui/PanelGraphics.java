@@ -53,16 +53,15 @@ public final class PanelGraphics {
                                 fluid);
                 var texture = appearance.getStillTexture();
                 if (texture == null) return;
+                var atlas = net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS;
                 var sprite =
-                        net.minecraft.client.Minecraft.getInstance()
-                                .getTextureAtlas(
-                                        net.minecraft.world.inventory.InventoryMenu.BLOCK_ATLAS)
-                                .apply(texture);
+                        net.minecraft.client.Minecraft.getInstance().getTextureAtlas(atlas).apply(texture);
                 int tint = appearance.getTintColor();
                 float red = (tint >> 16 & 255) / 255f,
                         green = (tint >> 8 & 255) / 255f,
                         blue = (tint & 255) / 255f,
                         alpha = (tint >>> 24) / 255f;
+                com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(0, atlas);
                 com.mojang.blaze3d.systems.RenderSystem.setShaderColor(red, green, blue, alpha);
                 net.minecraft.client.gui.GuiComponent.blit(
                         g, left + x, top + y, 0, width, height, sprite);
