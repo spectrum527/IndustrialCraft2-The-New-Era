@@ -1,6 +1,7 @@
 package com.industrialage.ia2;
 
 import com.industrialage.ia2.audio.SoundPlatform;
+import com.industrialage.ia2.compat.OptionalMods;
 import com.industrialage.ia2.fluids.FluidContent;
 import com.industrialage.ia2.forge.ForgePlatform;
 import com.industrialage.ia2.forge.content.ForgeContent;
@@ -29,6 +30,7 @@ public final class IndustrialAge2 {
 
     /** Constructs one platform and wires the logical server lifecycle on either physical side. */
     public IndustrialAge2(FMLJavaModLoadingContext context) {
+        OptionalMods.install(context.getModEventBus());
         var container = context.getContainer();
         var gameBus = MinecraftForge.EVENT_BUS;
         var platform =
