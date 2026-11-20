@@ -1,0 +1,38 @@
+{
+  "stage": "Targeted installed-JAR regression before the combined GUI and integration build. At normal game speed the server readings follow the client sample within each observation.",
+  "versions": {
+    "1.19.2": {
+      "jarSha256": "069b251d5fafe95104631ab21cf284f75df3f21bc819300a7d01bdd4993b1de8",
+      "emptyFeetY": 151.0,
+      "noPowerY": 151.0,
+      "startY": 151,
+      "initialEU": 500,
+      "samples": [
+        {
+          "clientY": 151.0,
+          "serverY": 151.07725,
+          "eu": 494.0
+        },
+        {
+          "clientY": 151.463125,
+          "serverY": 152.157875,
+          "eu": 486.0
+        },
+        {
+          "clientY": 153.16124999999997,
+          "serverY": 154.36124999999996,
+          "eu": 478.0
+        }
+      ]
+    }
+  },
+  "kineticRoutes": {
+    "jar": "ic2-forge-1.19.2-0.1.0.jar",
+    "sha256": "069b251d5fafe95104631ab21cf284f75df3f21bc819300a7d01bdd4993b1de8",
+    "checks": [
+      "motor_paid_and_mfe_received_800_east",
+      "one_crank_added_10_eu_on_same_cable",
+      "motor_paid_and_mfe_received_800_west"
+    ]
+  }
+}

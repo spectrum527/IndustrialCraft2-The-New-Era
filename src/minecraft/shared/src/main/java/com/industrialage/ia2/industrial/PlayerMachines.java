@@ -345,7 +345,7 @@ final class PlayerMachines {
             } else {
                 continue;
             }
-            // This block ticks after entities. Send the impulse before the next player tick applies gravity.
+            // Send from the block tick before player gravity can overwrite this impulse.
             user.connection.send(new ClientboundSetEntityMotionPacket(user));
             if (powered) {
                 magnet.energy -= 2;
