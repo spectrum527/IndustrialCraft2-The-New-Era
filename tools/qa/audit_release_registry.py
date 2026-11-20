@@ -247,12 +247,19 @@ def closure(routes):
     return available
 
 
+def find_production_jar(directory):
+    jars = sorted(item for prefix in ('ic2-forge-', 'ic2-neoforge-')
+                  for item in (directory / 'mods').glob(prefix + '*.jar')
+                  if item.is_file() and not item.name.endswith(('-qa.jar', '-sources.jar', '-javadoc.jar')))
+    if len(jars) != 1:
+        raise ValueError(f'Expected one candidate JAR in {directory}, found {len(jars)}: '
+                         f'{[jar.name for jar in jars]}')
+    return jars[0]
+
+
 def read_instance(directory):
     registry = {tuple(line.split('\t')) for line in (directory / 'registry.tsv').read_text().splitlines()}
-    jars = [item for item in (directory / 'mods').glob('ic2-*-0.1.0.jar')]
-    if len(jars) != 1:
-        raise ValueError(f'Expected one candidate JAR in {directory}, found {len(jars)}')
-    jar = jars[0]
+    jar = find_production_jar(directory)
     reports = [directory / 'worldDetails.properties', directory / 'world-details.properties']
     observed_checks = {line.removesuffix('=passed') for report in reports if report.is_file()
                        for line in report.read_text().splitlines() if line.endswith('=passed')}

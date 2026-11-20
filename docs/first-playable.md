@@ -1,4 +1,4 @@
-# IndustrialCraft 2 0.1.0 游玩指南
+# IndustrialCraft²: The New Era 1.0.0 游玩指南
 
 ## 安装
 
@@ -6,10 +6,12 @@
 
 | Minecraft | 加载器实测版本 | Java | 文件名 |
 |---|---|---|---|
-| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-0.1.0.jar` |
-| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-0.1.0.jar` |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-0.1.0.jar` |
-| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-0.1.0.jar` |
+| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.0.jar` |
+| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.0.jar` |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.0.jar` |
+| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.0.jar` |
+
+机器参数、公式和配方资料来自 MC 百科。实际游玩数值按对应版本复核。 [MC 百科 · 工业时代 2](https://www.mcmod.cn/class/2.html) · [打粉机配方条目](https://www.mcmod.cn/item/241.html)
 
 ## 第一条生产线
 

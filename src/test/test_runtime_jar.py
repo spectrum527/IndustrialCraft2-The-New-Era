@@ -33,7 +33,7 @@ class RuntimeJarTests(unittest.TestCase):
                 archive.writestr(name, value)
 
     def test_equal_outputs_pass_and_a_rebuilt_candidate_must_still_match_its_record(self):
-        self.package()
+        self.package({"NOTICE.md": b"Attribution for the release"})
         first = verify(self.jar, self.roots)
         self.assertEqual(first["problems"], [])
         report = self.jar.parent / "first.json"
@@ -51,7 +51,7 @@ class RuntimeJarTests(unittest.TestCase):
         self.assertIn("Missing from production JAR: Current.class", problems)
 
     def test_test_content_in_both_outputs_cannot_pass_by_matching_itself(self):
-        name = "com/industrialage/ia2/platform/NeoForgeEventContractTest$1.class"
+        name = "com/industrialage/ia2/platform/RegistryEventContractTest$1.class"
         helper = self.roots[0] / name
         helper.parent.mkdir(parents=True)
         helper.write_bytes(b"test")

@@ -1,5 +1,6 @@
 package com.industrialage.ia2;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,7 +37,14 @@ class BuildContractTest {
                                 jar.getInputStream(metadata).readAllBytes(),
                                 StandardCharsets.UTF_8);
                 assertTrue(text.contains("modId=\"ic2\""));
-                assertTrue(text.contains("displayName=\"IndustrialCraft 2\""));
+                var version = System.getProperty("ic2.modVersion");
+                assertNotNull(version);
+                assertFalse(version.isBlank());
+                assertTrue(text.contains("version=\"" + version + "\""));
+                assertTrue(text.contains("displayName=\"IndustrialCraft²: The New Era\""));
+                assertTrue(
+                        text.contains(
+                                "displayURL=\"https://github.com/spectrum527/IndustrialCraft2-The-New-Era\""));
                 assertTrue(text.contains("[[dependencies.ic2]]"));
                 assertFalse(text.contains("modId=\"ia2\""));
                 assertTrue(text.contains("modLoader=\"javafml\""));
@@ -57,6 +65,25 @@ class BuildContractTest {
                 assertNotNull(jar.getJarEntry("LICENSE"));
                 assertNotNull(jar.getJarEntry("COPYING"));
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));
+                for (var language : Set.of("en_us", "zh_cn")) {
+                    var translation = jar.getJarEntry("assets/ic2/lang/" + language + ".json");
+                    assertNotNull(translation, language);
+                    try (var stream = jar.getInputStream(translation)) {
+                        var locale = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                        assertTrue(
+                                locale.contains(
+                                        "\"itemGroup.ic2\": \"IndustrialCraft²: The New Era\""),
+                                language);
+                    }
+                }
+                var notice = jar.getJarEntry("NOTICE.md");
+                assertNotNull(notice);
+                var noticePath = System.getProperty("ic2.notice");
+                assertNotNull(noticePath);
+                try (var stream = jar.getInputStream(notice)) {
+                    assertArrayEquals(
+                            Files.readAllBytes(Path.of(noticePath)), stream.readAllBytes());
+                }
             }
         }
     }
@@ -79,6 +106,7 @@ class BuildContractTest {
                                                         || name.startsWith("data/ic2_gametest/")
                                                         || name.startsWith("data/ia2_gametest/")
                                                         || name.startsWith("assets/ia2/")
+                                                        || name.startsWith("assets/brand/")
                                                         || name.startsWith("data/ia2/")
                                                         || compiledTests.contains(name)
                                                         || name.startsWith("org/junit/")
