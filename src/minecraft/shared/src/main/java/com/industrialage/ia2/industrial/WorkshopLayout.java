@@ -181,9 +181,12 @@ final class WorkshopLayout {
         }
     }
 
-    record Label(Readout value, Area area) {
+    record Label(Readout value, Area area, boolean light) {
         static Label read(JsonObject row) {
-            return new Label(Readout.read(row.get("text").getAsString()), Area.read(row));
+            return new Label(
+                    Readout.read(row.get("text").getAsString()),
+                    Area.read(row),
+                    !row.has("light") || row.get("light").getAsBoolean());
         }
     }
 

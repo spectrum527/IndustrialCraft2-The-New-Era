@@ -75,12 +75,12 @@
       "atlas": "guicanner",
       "panel": [176,184],
       "inventory": [8,102,160],
-      "inventoryTitle": true,
+      "inventoryTitle": false,
       "source": "Authored IC2 redraw guicanner.png",
       "slots": {"0": [41,17],"1": [80,44],"9": [119,17],"18": [152,25],"19": [152,43],"20": [152,61],"21": [152,79],"26": [8,80]},
-      "meters": [{"value": "energy","rect": [5,57,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [75,22,20,14],"direction": "right","sprite": ["guicanner",234,0]},{"value": "inlet","rect": [63,80,23,4],"direction": "right"},{"value": "outlet","rect": [89,80,22,4],"direction": "right"}],
-      "controls": [{"action": 0,"label": "mode","rect": [77,64,22,12]}],
-      "labels": [{"text": "mode","rect": [62,84,52,10]}]
+      "draw": [{"atlas":"guicanner","rect":[33,61,26,18],"uv":[196,0]},{"atlas":"guicanner","rect":[118,61,26,18],"uv":[196,0]}],
+      "meters": [{"value": "energy","rect": [12,62,7,13],"direction": "up","sprite": ["guicanner",179,1]},{"value": "progress","rect": [75,22,20,14],"direction": "right","sprite": ["guicanner",234,0]},{"value": "inlet","rect": [34,68,24,4],"direction": "right"},{"value": "outlet","rect": [119,68,24,4],"direction": "right"}],
+      "controls": [{"action": 0,"label": "mode","rect": [77,64,22,12]}]
     },
     "solid_canner": {
       "atlas": "guisolidcanner",
@@ -89,7 +89,7 @@
       "inventoryTitle": false,
       "source": "Authored guisolidcanner.png; Published repair 1.2.4 guidef solid_canner.xml",
       "slots": {"0": [37,36],"1": [67,36],"9": [116,36],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [8,62]},
-      "meters": [{"value": "energy","rect": [11,46,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [89,36,21,15],"direction": "right","sprite": ["common",166,16]}]
+      "meters": [{"value": "energy","rect": [11,46,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [89,36,22,15],"direction": "right","sprite": ["guisolidcanner",176,15]}]
     },
     "classic_canner": {
       "atlas": "gui_canner_classic",
@@ -161,11 +161,11 @@
       "atlas": "guiweightedfluiddistributor",
       "panel": [176,211],
       "inventory": [8,129,187],
-      "inventoryTitle": true,
+      "inventoryTitle": false,
       "source": "Authored IC2 redraw guiweightedfluiddistributor.png",
       "slots": {},
       "meters": [{"value": "inlet","rect": [32,110,111,11],"direction": "right"}],
-      "labels": [{"text": "active","rect": [59,9,101,10]}]
+      "labels": [{"text": "active","rect": [8,25,51,10],"light": false}]
     },
     "fluid_bottler": {
       "atlas": "guibottler",
@@ -213,10 +213,10 @@
       "atlas": "guielectrolyzer",
       "panel": [176,166],
       "inventory": [8,84,142],
-      "inventoryTitle": true,
+      "inventoryTitle": false,
       "source": "Authored IC2 redraw guielectrolyzer.png",
-      "slots": {"26": [8,62]},
-      "meters": [{"value": "energy","rect": [12,40,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [31,47,32,5],"direction": "right"},{"value": "outlet","rect": [70,47,32,5],"direction": "right"},{"value": "byproduct","rect": [109,47,32,5],"direction": "right"},{"value": "progress","rect": [52,57,76,4],"direction": "right"}]
+      "slots": {"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [8,62]},
+      "meters": [{"value": "energy","rect": [12,44,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [45,45,84,2],"direction": "right","color": "ff3175c4"}]
     },
     "stirling_generator": {
       "atlas": "guistirlinggenerator",
@@ -275,7 +275,7 @@
       "slots": {},
       "meters": [{"value": "inlet","rect": [10,155,74,46],"direction": "up"},{"value": "outlet","rect": [155,60,5,56],"direction": "up"},{"value": "heat","rect": [164,60,6,53],"direction": "up","maximum": 5000,"sprite": ["guisteamgenerator",178,0]}],
       "controls": [{"action": 0,"label": "mode","rect": [23,25,9,9]}],
-      "labels": [{"text": "mode","rect": [68,27,79,10]},{"text": "heat","rect": [34,139,106,10]}]
+      "labels": [{"text": "mode","rect": [68,27,79,10]},{"text": "heat","rect": [34,135,106,10]}]
     },
     "steam_repressurizer": {
       "atlas": "guisteamrepressurizer",
@@ -333,7 +333,7 @@
       "inventoryTitle": true,
       "source": "No dedicated manual kinetic atlas or public guidef. Shared authored Common frame for its supplemental readout.",
       "slots": {},
-      "labels": [{"text": "kinetic","rect": [26,52,124,10]}]
+      "labels": [{"text": "kinetic","rect": [26,52,124,10],"light": false}]
     },
     "stirling_kinetic_generator": {
       "atlas": "guistirlingkineticgenerator",
@@ -343,7 +343,7 @@
       "source": "Authored IC2 redraw guistirlingkineticgenerator.png",
       "slots": {},
       "meters": [{"value": "inlet","rect": [18,46,13,45],"direction": "up"},{"value": "outlet","rect": [144,46,13,45],"direction": "up"}],
-      "labels": [{"text": "kinetic","rect": [33,24,112,9]}]
+      "labels": [{"text": "kinetic","rect": [33,24,112,9],"light": false}]
     },
     "wind_kinetic_generator": {
       "atlas": "guiwindkineticgenerator",
@@ -384,7 +384,7 @@
       "frames": [0],
       "draw": [{"atlas": "common","rect": [110,18,26,26],"uv": [99,35]}],
       "meters": [{"value": "energy","rect": [119,46,7,13],"direction": "up","sprite": ["common",116,65]}],
-      "labels": [{"text": "energy","rect": [18,22,86,10]},{"text": "recipe","rect": [18,34,86,10]}]
+      "labels": [{"text": "energy","rect": [10,22,97,10],"light": false},{"text": "recipe","rect": [10,34,97,10],"light": false}]
     },
     "classic_mass_fabricator": {
       "atlas": "common",
@@ -396,7 +396,7 @@
       "frames": [0],
       "draw": [{"atlas": "common","rect": [110,18,26,26],"uv": [99,35]}],
       "meters": [{"value": "energy","rect": [119,46,7,13],"direction": "up","sprite": ["common",116,65]}],
-      "labels": [{"text": "energy","rect": [8,22,94,10]},{"text": "recipe","rect": [8,34,94,10]}]
+      "labels": [{"text": "energy","rect": [10,22,97,10],"light": false},{"text": "recipe","rect": [10,34,97,10],"light": false}]
     },
     "matter_generator": {
       "atlas": "guimatter",
@@ -414,9 +414,9 @@
       "inventoryTitle": false,
       "source": "Authored IC2 redraw guiscanner.png",
       "slots": {"0": [55,35],"14": [55,35],"26": [8,43]},
-      "meters": [{"value": "energy","rect": [12,28,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [9,66,138,13],"direction": "right"}],
+      "meters": [{"value": "energy","rect": [12,28,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "progress","rect": [10,77,136,2],"direction": "right"}],
       "controls": [{"action": 0,"label": "record","rect": [151,62,19,16]}],
-      "labels": [{"text": "recipe","rect": [101,26,65,10]},{"text": "progress","rect": [101,45,65,10]}]
+      "labels": [{"text": "recipe","rect": [101,26,65,10]},{"text": "progress","rect": [9,68,138,9]}]
     },
     "pattern_storage": {
       "atlas": "guipatternstorage",
