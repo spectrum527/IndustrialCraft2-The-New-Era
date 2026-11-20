@@ -74,10 +74,18 @@ public final class FuelGenerator implements BlockEntityBase.Component {
 
     /** Debits one lossless packet for a finite, nonnegative request. The host controls cadence. */
     public double extractEnergy(double requested) {
+        if (!Double.isFinite(requested)) {
+            throw new IllegalArgumentException("Invalid generator output request");
+        }
+        return extractLocalEnergy(Math.min(requested, OUTPUT_PACKET_LIMIT));
+    }
+
+    /** Debits a local item charge. The charging slot enforces the item's transfer limit. */
+    public double extractLocalEnergy(double requested) {
         if (!Double.isFinite(requested) || requested < 0) {
             throw new IllegalArgumentException("Invalid generator output request");
         }
-        double sent = Math.min(storedEnergy, Math.min(requested, OUTPUT_PACKET_LIMIT));
+        double sent = Math.min(storedEnergy, requested);
         storedEnergy -= sent;
         return sent;
     }

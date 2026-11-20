@@ -1,0 +1,170 @@
+{
+  "reference": {
+    "game": "1.19.2",
+    "loader": "Forge 43.5.0",
+    "repair_build": "1.2.4 / 1.19.2-port.20261120.3",
+    "jar_sha256": "c3801301c8f32f957dd879413d33826438004f5a54f56fb17a2903da820efc5e",
+    "raw_snapshot_sha256": "f08f02c179e58a06e13f80a5937c0a74ffa8fdc855c9eec8b4ab942eafc0d6f9",
+    "method": "Independent commands with loaded chunks and timed snapshots; no upgrades; default settings."
+  },
+  "ore_washing_plant": {
+    "sample_input": {
+      "item": "ic2:crushed_tin",
+      "count": 1,
+      "water_mb": 1000
+    },
+    "sample_output": [
+      {
+        "item": "ic2:purified_tin",
+        "count": 1
+      },
+      {
+        "item": "ic2:small_tin_dust",
+        "count": 2
+      },
+      {
+        "item": "ic2:stone_dust",
+        "count": 1
+      }
+    ],
+    "work_ticks": 500,
+    "eu_per_work_tick": 16,
+    "energy_per_batch_eu": 8000,
+    "timing": {
+      "t100": {
+        "progress": 99,
+        "energy_eu": 8416,
+        "water_mb": 1000
+      },
+      "t500": {
+        "progress": 499,
+        "energy_eu": 2016,
+        "water_mb": 1000
+      },
+      "t501": {
+        "progress": 0,
+        "energy_eu": 2000,
+        "water_mb": 0,
+        "outputs_complete": true
+      }
+    },
+    "blocked": {
+      "no_water": "After 100 ticks input and 10000 EU unchanged, progress 0.",
+      "all_three_output_slots_full": "After 1200 ticks input, 1000 mB water, output stacks and 10000 EU unchanged, progress 0."
+    },
+    "idle_capacity_eu": 16000
+  },
+  "centrifuge": {
+    "sample_input": {
+      "item": "ic2:crushed_tin",
+      "count": 1
+    },
+    "sample_output": [
+      {
+        "item": "ic2:tin_dust",
+        "count": 1
+      },
+      {
+        "item": "ic2:small_iron_dust",
+        "count": 1
+      },
+      {
+        "item": "ic2:stone_dust",
+        "count": 1
+      }
+    ],
+    "preheated_fixture": {
+      "initial_heat": 1000,
+      "initial_energy_eu": 150000,
+      "work_ticks": 500,
+      "processing_eu_per_tick": 48,
+      "additional_maintenance_energy_eu": 499,
+      "total_eu": 24499,
+      "t100": {
+        "heat": 1001,
+        "progress": 99,
+        "energy_eu": 145149
+      },
+      "t500": {
+        "heat": 1001,
+        "progress": 499,
+        "energy_eu": 125549
+      },
+      "t501": {
+        "heat": 1000,
+        "progress": 0,
+        "energy_eu": 125501,
+        "outputs_complete": true
+      }
+    },
+    "cold_fixture": {
+      "t100": {
+        "heat": 99,
+        "energy_eu": 19901,
+        "progress": 0
+      },
+      "t500": {
+        "heat": 499,
+        "energy_eu": 19501,
+        "progress": 0
+      },
+      "t1200": {
+        "heat": 1001,
+        "energy_eu": 9249,
+        "progress": 199
+      }
+    },
+    "interruption": "In the initially hot, 20000-EU sample, work reached progress 399 with 449 EU left; after running out of energy the progress reset to 0 and the input remained. Heat then declined.",
+    "caveat": "The 150000-EU value was directly seeded to observe the full operation and is not a measurement of the machine's actual storage capacity.",
+    "idle_capacity_eu": 48000,
+    "blocked": "With all three output stacks full, an initially cold machine remains cold without spending energy; a 1000-heat machine falls to 901 over 100 ticks without spending its 10000 EU; input and progress remain."
+  },
+  "blast_furnace": {
+    "input": "minecraft:iron_ingot",
+    "output": [
+      {
+        "item": "ic2:steel_ingot",
+        "count": 1
+      },
+      {
+        "item": "ic2:slag",
+        "count": 1
+      }
+    ],
+    "heat_threshold_boundary": {
+      "seed_50000": "Next tick heat 49999, no progress or air consumption.",
+      "seed_50001": "Next tick heat 50000, progress 1, air -1 mB."
+    },
+    "air_and_completion": "With ample heat and air, progress 5999 completes on the next working tick, consumes 1 mB air and produces both outputs; direct seeded-boundary result, not a complete continuous-run duration measurement.",
+    "alignment": "A solid heat generator west of the furnace facing east supplies heat when the furnace faces west; north/south/east furnace orientations at the same relation did not heat in the 100-tick sample.",
+    "status": "Cold-start continuous heat supply, compressed air and successful full steel batch observed. The 6000-tick full natural duration was not directly timed from first to last working tick.",
+    "natural_run": {
+      "initial_iron_ingot": 1,
+      "initial_tank_air_mb": 6000,
+      "subsequently_inserted_air_cells": 6,
+      "final_output": {
+        "steel_ingot": 1,
+        "slag": 1
+      },
+      "final_tank_air_mb": 6000,
+      "final_empty_cells": 6,
+      "total_air_consumed_mb": 6000,
+      "initial_furnace_heat": 0,
+      "heat_source": "solid_heat_generator west, facing east; furnace facing west",
+      "duration": "Full natural operation completed; individual first-to-last work ticks were not measured."
+    },
+    "air_tank_capacity_mb": 8000,
+    "blocked": "Full two-slot output: input and 6000 mB air remain, progress 0 after 100 ticks. Even preset progress 5999 resets to 0. With no air, input and progress remain but active flag may be true at high heat.",
+    "solid_heat_source": {
+      "fuel": "minecraft:coal",
+      "observed_item_fuel_time": 400,
+      "connected_furnace_heat_increase_per_tick": 20,
+      "idle_after_one_coal": {
+        "internal_heatbuffer": 7980,
+        "output_heat_buffer": 20,
+        "sample_ashes": 1
+      },
+      "caveat": "A single ash outcome is not a probability estimate."
+    }
+  }
+}

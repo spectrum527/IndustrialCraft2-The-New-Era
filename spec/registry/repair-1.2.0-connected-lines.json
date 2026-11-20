@@ -1,0 +1,2285 @@
+{
+  "release": "1.2.0-port.20261119",
+  "sha256": "580075096fffcd80e01283ce8da8d85f9ef915bbb7368367544823d28c8c63bc",
+  "layouts": {
+    "ore": {
+      "coal": {
+        "pos": [
+          410,
+          120,
+          400
+        ],
+        "initial_block": "ic2:generator"
+      },
+      "fuelbin": {
+        "pos": [
+          410,
+          120,
+          398
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "coal_feed": {
+        "pos": [
+          410,
+          120,
+          399
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "geo": {
+        "pos": [
+          412,
+          120,
+          400
+        ],
+        "initial_block": "ic2:geo_generator"
+      },
+      "lava": {
+        "pos": [
+          412,
+          120,
+          397
+        ],
+        "initial_block": "ic2:bronze_tank"
+      },
+      "lava_pump": {
+        "pos": [
+          412,
+          120,
+          398
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "lava_pipe": {
+        "pos": [
+          412,
+          120,
+          399
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "source_wire0": {
+        "pos": [
+          410,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "source_wire1": {
+        "pos": [
+          411,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "source_wire2": {
+        "pos": [
+          412,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "source_wire3": {
+        "pos": [
+          413,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "storage": {
+        "pos": [
+          414,
+          120,
+          401
+        ],
+        "initial_block": "ic2:batbox"
+      },
+      "wire5": {
+        "pos": [
+          415,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire6": {
+        "pos": [
+          416,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire7": {
+        "pos": [
+          417,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire8": {
+        "pos": [
+          418,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire9": {
+        "pos": [
+          419,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire10": {
+        "pos": [
+          420,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire11": {
+        "pos": [
+          421,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire12": {
+        "pos": [
+          422,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire13": {
+        "pos": [
+          423,
+          120,
+          401
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "feed": {
+        "pos": [
+          414,
+          120,
+          402
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "belt5": {
+        "pos": [
+          415,
+          120,
+          402
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "belt6": {
+        "pos": [
+          416,
+          120,
+          402
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "belt8": {
+        "pos": [
+          418,
+          120,
+          402
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "belt9": {
+        "pos": [
+          419,
+          120,
+          402
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "belt11": {
+        "pos": [
+          421,
+          120,
+          402
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "mill": {
+        "pos": [
+          417,
+          120,
+          402
+        ],
+        "initial_block": "ic2:macerator"
+      },
+      "washer": {
+        "pos": [
+          420,
+          120,
+          402
+        ],
+        "initial_block": "ic2:ore_washing_plant"
+      },
+      "sink": {
+        "pos": [
+          422,
+          120,
+          402
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "pump": {
+        "pos": [
+          423,
+          120,
+          402
+        ],
+        "initial_block": "ic2:pump"
+      },
+      "water": {
+        "pos": [
+          423,
+          119,
+          402
+        ],
+        "initial_block": "ic2:bronze_tank"
+      },
+      "water_pipe10": {
+        "pos": [
+          420,
+          120,
+          403
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "water_pipe11": {
+        "pos": [
+          421,
+          120,
+          403
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "water_pipe12": {
+        "pos": [
+          422,
+          120,
+          403
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "water_pipe13": {
+        "pos": [
+          423,
+          120,
+          403
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      }
+    },
+    "solar": {
+      "solar_bus0": {
+        "pos": [
+          410,
+          120,
+          416
+        ],
+        "initial_block": "ic2:tin_cable"
+      },
+      "solar0_-1": {
+        "pos": [
+          410,
+          120,
+          415
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "solar0_1": {
+        "pos": [
+          410,
+          120,
+          417
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "solar_bus1": {
+        "pos": [
+          411,
+          120,
+          416
+        ],
+        "initial_block": "ic2:tin_cable"
+      },
+      "solar1_-1": {
+        "pos": [
+          411,
+          120,
+          415
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "solar1_1": {
+        "pos": [
+          411,
+          120,
+          417
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "solar_bus2": {
+        "pos": [
+          412,
+          120,
+          416
+        ],
+        "initial_block": "ic2:tin_cable"
+      },
+      "solar2_-1": {
+        "pos": [
+          412,
+          120,
+          415
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "solar2_1": {
+        "pos": [
+          412,
+          120,
+          417
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "solar_bus3": {
+        "pos": [
+          413,
+          120,
+          416
+        ],
+        "initial_block": "ic2:tin_cable"
+      },
+      "solar3_-1": {
+        "pos": [
+          413,
+          120,
+          415
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "solar3_1": {
+        "pos": [
+          413,
+          120,
+          417
+        ],
+        "initial_block": "ic2:solar_generator"
+      },
+      "storage": {
+        "pos": [
+          414,
+          120,
+          416
+        ],
+        "initial_block": "ic2:batbox"
+      },
+      "wire5": {
+        "pos": [
+          415,
+          120,
+          416
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire6": {
+        "pos": [
+          416,
+          120,
+          416
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire7": {
+        "pos": [
+          417,
+          120,
+          416
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire8": {
+        "pos": [
+          418,
+          120,
+          416
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire9": {
+        "pos": [
+          419,
+          120,
+          416
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire10": {
+        "pos": [
+          420,
+          120,
+          416
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire11": {
+        "pos": [
+          421,
+          120,
+          416
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "feed": {
+        "pos": [
+          416,
+          120,
+          417
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "belt7": {
+        "pos": [
+          417,
+          120,
+          417
+        ],
+        "initial_block": "ic2:steel_item_pipe_small"
+      },
+      "belt9": {
+        "pos": [
+          419,
+          120,
+          417
+        ],
+        "initial_block": "ic2:steel_item_pipe_small"
+      },
+      "belt10": {
+        "pos": [
+          420,
+          120,
+          417
+        ],
+        "initial_block": "ic2:steel_item_pipe_small"
+      },
+      "belt12": {
+        "pos": [
+          422,
+          120,
+          417
+        ],
+        "initial_block": "ic2:steel_item_pipe_small"
+      },
+      "furnace": {
+        "pos": [
+          418,
+          120,
+          417
+        ],
+        "initial_block": "ic2:electric_furnace"
+      },
+      "former": {
+        "pos": [
+          421,
+          120,
+          417
+        ],
+        "initial_block": "ic2:metal_former"
+      },
+      "sink": {
+        "pos": [
+          423,
+          120,
+          417
+        ],
+        "initial_block": "minecraft:barrel"
+      }
+    },
+    "biogas": {
+      "engine": {
+        "pos": [
+          410,
+          120,
+          432
+        ],
+        "initial_block": "ic2:semifluid_generator"
+      },
+      "bad_supply": {
+        "pos": [
+          407,
+          120,
+          432
+        ],
+        "initial_block": "ic2:bronze_tank"
+      },
+      "bad_pump": {
+        "pos": [
+          408,
+          120,
+          432
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "bad_end": {
+        "pos": [
+          409,
+          120,
+          432
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "fuel": {
+        "pos": [
+          410,
+          120,
+          429
+        ],
+        "initial_block": "ic2:bronze_tank"
+      },
+      "gas_pump": {
+        "pos": [
+          410,
+          120,
+          430
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "gas_end": {
+        "pos": [
+          410,
+          120,
+          431
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "wire1": {
+        "pos": [
+          411,
+          120,
+          432
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire2": {
+        "pos": [
+          412,
+          120,
+          432
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire3": {
+        "pos": [
+          413,
+          120,
+          432
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire4": {
+        "pos": [
+          414,
+          120,
+          432
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire5": {
+        "pos": [
+          415,
+          120,
+          432
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "bottler": {
+        "pos": [
+          415,
+          120,
+          433
+        ],
+        "initial_block": "ic2:fluid_bottler"
+      },
+      "feed": {
+        "pos": [
+          412,
+          120,
+          433
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "belt3": {
+        "pos": [
+          413,
+          120,
+          433
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "belt4": {
+        "pos": [
+          414,
+          120,
+          433
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "belt6": {
+        "pos": [
+          416,
+          120,
+          433
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "sink": {
+        "pos": [
+          417,
+          120,
+          433
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "water": {
+        "pos": [
+          415,
+          120,
+          436
+        ],
+        "initial_block": "ic2:bronze_tank"
+      },
+      "water_pump": {
+        "pos": [
+          415,
+          120,
+          435
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "water_end": {
+        "pos": [
+          415,
+          120,
+          434
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      }
+    },
+    "transformers": {
+      "rtg": {
+        "pos": [
+          410,
+          120,
+          448
+        ],
+        "initial_block": "ic2:rt_generator"
+      },
+      "in_wire": {
+        "pos": [
+          411,
+          120,
+          448
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "mfe": {
+        "pos": [
+          412,
+          120,
+          448
+        ],
+        "initial_block": "ic2:mfe"
+      },
+      "glass": {
+        "pos": [
+          413,
+          120,
+          448
+        ],
+        "initial_block": "ic2:glass_fibre_cable"
+      },
+      "mv": {
+        "pos": [
+          414,
+          120,
+          448
+        ],
+        "initial_block": "ic2:mv_transformer"
+      },
+      "gold": {
+        "pos": [
+          415,
+          120,
+          448
+        ],
+        "initial_block": "ic2:double_insulated_gold_cable"
+      },
+      "lv": {
+        "pos": [
+          416,
+          120,
+          448
+        ],
+        "initial_block": "ic2:lv_transformer"
+      },
+      "wire7": {
+        "pos": [
+          417,
+          120,
+          448
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire8": {
+        "pos": [
+          418,
+          120,
+          448
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire9": {
+        "pos": [
+          419,
+          120,
+          448
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire10": {
+        "pos": [
+          420,
+          120,
+          448
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire11": {
+        "pos": [
+          421,
+          120,
+          448
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "compressor": {
+        "pos": [
+          421,
+          120,
+          449
+        ],
+        "initial_block": "ic2:compressor"
+      },
+      "hopper_in": {
+        "pos": [
+          421,
+          121,
+          449
+        ],
+        "initial_block": "minecraft:hopper"
+      },
+      "feed": {
+        "pos": [
+          421,
+          122,
+          449
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "hopper_out": {
+        "pos": [
+          421,
+          119,
+          449
+        ],
+        "initial_block": "minecraft:hopper"
+      },
+      "sink": {
+        "pos": [
+          422,
+          119,
+          449
+        ],
+        "initial_block": "minecraft:barrel"
+      }
+    },
+    "heat": {
+      "heater": {
+        "pos": [
+          410,
+          119,
+          464
+        ],
+        "initial_block": "ic2:solid_heat_generator"
+      },
+      "fuelbin": {
+        "pos": [
+          408,
+          119,
+          464
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "fuelpipe": {
+        "pos": [
+          409,
+          119,
+          464
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "stirling": {
+        "pos": [
+          410,
+          120,
+          464
+        ],
+        "initial_block": "ic2:stirling_generator"
+      },
+      "wire1": {
+        "pos": [
+          411,
+          120,
+          464
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire2": {
+        "pos": [
+          412,
+          120,
+          464
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire3": {
+        "pos": [
+          413,
+          120,
+          464
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire4": {
+        "pos": [
+          414,
+          120,
+          464
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire5": {
+        "pos": [
+          415,
+          120,
+          464
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire6": {
+        "pos": [
+          416,
+          120,
+          464
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "feed": {
+        "pos": [
+          414,
+          120,
+          465
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "mill": {
+        "pos": [
+          415,
+          120,
+          465
+        ],
+        "initial_block": "ic2:macerator"
+      },
+      "furnace": {
+        "pos": [
+          416,
+          120,
+          465
+        ],
+        "initial_block": "ic2:electric_furnace"
+      },
+      "sink": {
+        "pos": [
+          417,
+          120,
+          465
+        ],
+        "initial_block": "minecraft:barrel"
+      }
+    },
+    "electrolysis": {
+      "rtg": {
+        "pos": [
+          410,
+          120,
+          480
+        ],
+        "initial_block": "ic2:rt_generator"
+      },
+      "coal": {
+        "pos": [
+          412,
+          120,
+          479
+        ],
+        "initial_block": "ic2:generator"
+      },
+      "fuelbin": {
+        "pos": [
+          412,
+          120,
+          477
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "fuelbelt": {
+        "pos": [
+          412,
+          120,
+          478
+        ],
+        "initial_block": "ic2:bronze_item_pipe_small"
+      },
+      "wire1": {
+        "pos": [
+          411,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "wire2": {
+        "pos": [
+          412,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "wire3": {
+        "pos": [
+          413,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "wire4": {
+        "pos": [
+          414,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "wire5": {
+        "pos": [
+          415,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "wire6": {
+        "pos": [
+          416,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "wire7": {
+        "pos": [
+          417,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "wire8": {
+        "pos": [
+          418,
+          120,
+          480
+        ],
+        "initial_block": "ic2:insulated_gold_cable"
+      },
+      "pump": {
+        "pos": [
+          415,
+          120,
+          481
+        ],
+        "initial_block": "ic2:pump"
+      },
+      "raw_water": {
+        "pos": [
+          415,
+          119,
+          481
+        ],
+        "initial_block": "ic2:bronze_tank"
+      },
+      "regulator": {
+        "pos": [
+          416,
+          120,
+          481
+        ],
+        "initial_block": "ic2:fluid_regulator"
+      },
+      "supply_pipe": {
+        "pos": [
+          417,
+          120,
+          481
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "cell": {
+        "pos": [
+          418,
+          120,
+          481
+        ],
+        "initial_block": "ic2:electrolyzer"
+      },
+      "h_out": {
+        "pos": [
+          418,
+          119,
+          481
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "h_line": {
+        "pos": [
+          419,
+          119,
+          481
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "hydrogen": {
+        "pos": [
+          420,
+          119,
+          481
+        ],
+        "initial_block": "ic2:bronze_tank"
+      },
+      "o_out": {
+        "pos": [
+          418,
+          121,
+          481
+        ],
+        "initial_block": "minecraft:air"
+      },
+      "o_line": {
+        "pos": [
+          419,
+          121,
+          481
+        ],
+        "initial_block": "ic2:bronze_fluid_pipe_small"
+      },
+      "oxygen": {
+        "pos": [
+          420,
+          121,
+          481
+        ],
+        "initial_block": "ic2:bronze_tank"
+      }
+    },
+    "wind": {
+      "rotor": {
+        "pos": [
+          410,
+          180,
+          496
+        ],
+        "initial_block": "ic2:wind_kinetic_generator"
+      },
+      "generator": {
+        "pos": [
+          410,
+          180,
+          497
+        ],
+        "initial_block": "ic2:kinetic_generator"
+      },
+      "in_wire": {
+        "pos": [
+          411,
+          180,
+          497
+        ],
+        "initial_block": "ic2:glass_fibre_cable"
+      },
+      "lv": {
+        "pos": [
+          412,
+          180,
+          497
+        ],
+        "initial_block": "ic2:lv_transformer"
+      },
+      "storage": {
+        "pos": [
+          413,
+          180,
+          497
+        ],
+        "initial_block": "ic2:batbox"
+      },
+      "wire4": {
+        "pos": [
+          414,
+          180,
+          497
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire5": {
+        "pos": [
+          415,
+          180,
+          497
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "wire6": {
+        "pos": [
+          416,
+          180,
+          497
+        ],
+        "initial_block": "ic2:insulated_copper_cable"
+      },
+      "extractor": {
+        "pos": [
+          416,
+          180,
+          498
+        ],
+        "initial_block": "ic2:extractor"
+      },
+      "feed": {
+        "pos": [
+          413,
+          180,
+          498
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "belt4": {
+        "pos": [
+          414,
+          180,
+          498
+        ],
+        "initial_block": "ic2:steel_item_pipe_tiny"
+      },
+      "belt5": {
+        "pos": [
+          415,
+          180,
+          498
+        ],
+        "initial_block": "ic2:steel_item_pipe_tiny"
+      },
+      "belt7": {
+        "pos": [
+          417,
+          180,
+          498
+        ],
+        "initial_block": "ic2:steel_item_pipe_tiny"
+      },
+      "sink": {
+        "pos": [
+          418,
+          180,
+          498
+        ],
+        "initial_block": "minecraft:barrel"
+      },
+      "direct_rotor": {
+        "pos": [
+          474,
+          180,
+          496
+        ],
+        "initial_block": "ic2:wind_kinetic_generator"
+      },
+      "direct_gen": {
+        "pos": [
+          474,
+          180,
+          497
+        ],
+        "initial_block": "ic2:kinetic_generator"
+      },
+      "direct_wire": {
+        "pos": [
+          475,
+          180,
+          497
+        ],
+        "initial_block": "ic2:glass_fibre_cable"
+      },
+      "direct_batbox": {
+        "pos": [
+          476,
+          180,
+          497
+        ],
+        "initial_block": "ic2:batbox"
+      }
+    }
+  },
+  "readings": [
+    {
+      "name": "fresh machine EU before fuel is converted",
+      "passed": true,
+      "actual": {
+        "ore": 0.0,
+        "solar": 0.0,
+        "biogas": 0.0,
+        "transformers": 0.0,
+        "heat": 0.0,
+        "electrolysis": 0.0,
+        "wind": 0.0
+      }
+    },
+    {
+      "name": "colored cable isolates active solar supply",
+      "passed": true,
+      "actual": [
+        912.0,
+        0.0,
+        0.0,
+        3
+      ]
+    },
+    {
+      "name": "semifluid rejects water without losing it or making EU",
+      "passed": true,
+      "actual": {
+        "rejected_water_mB": 1000,
+        "generator_tank": [
+          null,
+          0
+        ],
+        "bottler_EU": 0.0
+      }
+    },
+    {
+      "name": "missing oxygen outlet holds water and does not emit hydrogen",
+      "passed": true,
+      "actual": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "broken LV cable stops production with inputs waiting",
+      "passed": true,
+      "actual": {
+        "earlier": [
+          248,
+          0
+        ],
+        "later": [
+          248,
+          0
+        ],
+        "raw_remaining": 16,
+        "ticks": 109
+      }
+    },
+    {
+      "name": "coal and geothermal line washes all iron and recovers both byproducts",
+      "passed": true,
+      "actual": {
+        "ic2:purified_iron": 2,
+        "ic2:small_iron_dust": 4,
+        "ic2:stone_dust": 2
+      }
+    },
+    {
+      "name": "wash water balance from finite reservoir through powered pump and pipes",
+      "passed": true,
+      "actual": {
+        "remaining_mB": 0,
+        "washed": 2
+      }
+    },
+    {
+      "name": "both generators supplied the shared bus and BatBox supplied machines",
+      "passed": true,
+      "actual": {
+        "coal_left": 0,
+        "lava_left_mB": 0,
+        "sampled_EU_out": {
+          "coal": 10.0,
+          "geo": 20.0,
+          "storage": 32.0
+        }
+      }
+    },
+    {
+      "name": "one free output slot accepted one plate and buffered the other two",
+      "passed": true,
+      "actual": {
+        "sink": 64,
+        "buffered": 2
+      }
+    },
+    {
+      "name": "three empty cells bottled by biogas EU using only input water",
+      "passed": true,
+      "actual": {
+        "water_cells": 3,
+        "all_water_left_mB": 1000,
+        "biogas_left_mB": 0
+      }
+    },
+    {
+      "name": "MV to LV stepped feed and hoppers complete both clay batches",
+      "passed": true,
+      "actual": {
+        "clay": 4,
+        "tier_fields": [
+          1,
+          1
+        ],
+        "sampled_MFE_out": 6.0
+      }
+    },
+    {
+      "name": "HU to Stirling to native pulling and ejector upgrades delivers four ingots",
+      "passed": true,
+      "actual": {
+        "ingots": 4,
+        "coal_left": 4,
+        "sampled_Stirling_out": 9.0
+      }
+    },
+    {
+      "name": "regulated pipe feed and separate hydrogen and oxygen outlets match two recipes",
+      "passed": true,
+      "actual": {
+        "hydrogen": [
+          "ic2:hydrogen",
+          52
+        ],
+        "oxygen": [
+          "ic2:oxygen",
+          26
+        ],
+        "water_remaining": 0
+      }
+    },
+    {
+      "name": "wind line steps down, retains BatBox and delivers bamboo extraction through tiny pipes",
+      "passed": true,
+      "actual": {
+        "sticks": 3,
+        "peak_generator_EU_out": 34.25,
+        "BatBox": "ic2:batbox",
+        "peak_BatBox_EU_out": 32.0
+      }
+    },
+    {
+      "name": "same wind without a step-down exceeds 32 EU and removes the unprotected BatBox",
+      "passed": true,
+      "actual": {
+        "measured_rotor_kU": 138,
+        "available_EU_at_0.25_per_kU": 34.5,
+        "receiver": "minecraft:air"
+      }
+    },
+    {
+      "name": "no loose item entities around the seven running lines",
+      "passed": true,
+      "actual": {
+        "value": 0,
+        "messages": [
+          "Test failed"
+        ]
+      }
+    },
+    {
+      "name": "normal cold restart retains finished materials and jammed plates",
+      "passed": true,
+      "actual": {
+        "before": {
+          "ore": {
+            "ic2:purified_iron": 2,
+            "ic2:small_iron_dust": 4,
+            "ic2:stone_dust": 2
+          },
+          "ore_water": 0,
+          "plates": 66,
+          "plates_sink": 64,
+          "cells": 3,
+          "clay": 4,
+          "ingots": 4,
+          "sticks": 3,
+          "hydrogen": 52,
+          "oxygen": 26
+        },
+        "after": {
+          "ore": {
+            "ic2:purified_iron": 2,
+            "ic2:small_iron_dust": 4,
+            "ic2:stone_dust": 2
+          },
+          "ore_water": 0,
+          "plates": 66,
+          "plates_sink": 64,
+          "cells": 3,
+          "clay": 4,
+          "ingots": 4,
+          "sticks": 3,
+          "hydrogen": 52,
+          "oxygen": 26
+        }
+      }
+    },
+    {
+      "name": "all three newly rolled plates reach destination after space is freed",
+      "passed": true,
+      "actual": {
+        "final_sink": 66,
+        "all_plates": 66
+      }
+    }
+  ],
+  "maxima": {
+    "ore/coal": {
+      "local_eu": 0.0,
+      "eu_in": 0.0,
+      "eu_out": 10.0
+    },
+    "ore/fuelbin": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/coal_feed": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/geo": {
+      "local_eu": 0.0,
+      "eu_in": 0.0,
+      "eu_out": 20.0
+    },
+    "ore/lava": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/lava_pump": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/lava_pipe": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/source_wire0": {
+      "local_eu": 0,
+      "eu_in": 10.0,
+      "eu_out": 10.0
+    },
+    "ore/source_wire1": {
+      "local_eu": 0,
+      "eu_in": 10.0,
+      "eu_out": 10.0
+    },
+    "ore/source_wire2": {
+      "local_eu": 0,
+      "eu_in": 30.0,
+      "eu_out": 30.0
+    },
+    "ore/source_wire3": {
+      "local_eu": 0,
+      "eu_in": 30.0,
+      "eu_out": 30.0
+    },
+    "ore/storage": {
+      "local_eu": 4899.0,
+      "eu_in": 30.0,
+      "eu_out": 32.0
+    },
+    "ore/wire5": {
+      "local_eu": 0,
+      "eu_in": 32.0,
+      "eu_out": 32.0
+    },
+    "ore/wire6": {
+      "local_eu": 0,
+      "eu_in": 32.0,
+      "eu_out": 32.0
+    },
+    "ore/wire7": {
+      "local_eu": 0,
+      "eu_in": 32.0,
+      "eu_out": 32.0
+    },
+    "ore/wire8": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "ore/wire9": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "ore/wire10": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "ore/wire11": {
+      "local_eu": 0,
+      "eu_in": 8.0,
+      "eu_out": 8.0
+    },
+    "ore/wire12": {
+      "local_eu": 0,
+      "eu_in": 8.0,
+      "eu_out": 8.0
+    },
+    "ore/wire13": {
+      "local_eu": 0,
+      "eu_in": 8.0,
+      "eu_out": 8.0
+    },
+    "ore/feed": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/belt5": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/belt6": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/belt8": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/belt9": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/belt11": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/mill": {
+      "local_eu": 1200.0,
+      "eu_in": 32.0,
+      "eu_out": 0.0
+    },
+    "ore/washer": {
+      "local_eu": 16000.0,
+      "eu_in": 31.0,
+      "eu_out": 0.0
+    },
+    "ore/sink": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/pump": {
+      "local_eu": 40.0,
+      "eu_in": 8.0,
+      "eu_out": 0.0
+    },
+    "ore/water": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/water_pipe10": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/water_pipe11": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/water_pipe12": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "ore/water_pipe13": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "solar/solar_bus0": {
+      "local_eu": 0,
+      "eu_in": 6.0,
+      "eu_out": 6.0
+    },
+    "solar/solar0_-1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/solar0_1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/solar_bus1": {
+      "local_eu": 0,
+      "eu_in": 6.0,
+      "eu_out": 6.0
+    },
+    "solar/solar1_-1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/solar1_1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/solar_bus2": {
+      "local_eu": 0,
+      "eu_in": 6.0,
+      "eu_out": 6.0
+    },
+    "solar/solar2_-1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/solar2_1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/solar_bus3": {
+      "local_eu": 0,
+      "eu_in": 8.0,
+      "eu_out": 8.0
+    },
+    "solar/solar3_-1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/solar3_1": {
+      "local_eu": 1.0,
+      "eu_in": 0.0,
+      "eu_out": 1.0
+    },
+    "solar/storage": {
+      "local_eu": 1953.0,
+      "eu_in": 8.0,
+      "eu_out": 31.0
+    },
+    "solar/wire5": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "solar/wire6": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "solar/wire7": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "solar/wire8": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "solar/wire9": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "solar/wire10": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "solar/wire11": {
+      "local_eu": 0,
+      "eu_in": 31.0,
+      "eu_out": 31.0
+    },
+    "solar/feed": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "solar/belt7": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "solar/belt9": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "solar/belt10": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "solar/belt12": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "solar/furnace": {
+      "local_eu": 600.0,
+      "eu_in": 12.0,
+      "eu_out": 0.0
+    },
+    "solar/former": {
+      "local_eu": 4000.0,
+      "eu_in": 31.0,
+      "eu_out": 0.0
+    },
+    "solar/sink": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/engine": {
+      "local_eu": 14695.0,
+      "eu_in": 0.0,
+      "eu_out": 15.0
+    },
+    "biogas/bad_supply": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/bad_pump": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/bad_end": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/fuel": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/gas_pump": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/gas_end": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/wire1": {
+      "local_eu": 0,
+      "eu_in": 15.0,
+      "eu_out": 15.0
+    },
+    "biogas/wire2": {
+      "local_eu": 0,
+      "eu_in": 15.0,
+      "eu_out": 15.0
+    },
+    "biogas/wire3": {
+      "local_eu": 0,
+      "eu_in": 15.0,
+      "eu_out": 15.0
+    },
+    "biogas/wire4": {
+      "local_eu": 0,
+      "eu_in": 15.0,
+      "eu_out": 15.0
+    },
+    "biogas/wire5": {
+      "local_eu": 0,
+      "eu_in": 15.0,
+      "eu_out": 15.0
+    },
+    "biogas/bottler": {
+      "local_eu": 400.0,
+      "eu_in": 15.0,
+      "eu_out": 0.0
+    },
+    "biogas/feed": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/belt3": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/belt4": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/belt6": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/sink": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/water": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/water_pump": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "biogas/water_end": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "transformers/rtg": {
+      "local_eu": 8.0,
+      "eu_in": 0.0,
+      "eu_out": 8.0
+    },
+    "transformers/in_wire": {
+      "local_eu": 0,
+      "eu_in": 8.0,
+      "eu_out": 8.0
+    },
+    "transformers/mfe": {
+      "local_eu": 7934.0,
+      "eu_in": 8.0,
+      "eu_out": 6.0
+    },
+    "transformers/glass": {
+      "local_eu": 0,
+      "eu_in": 6.0,
+      "eu_out": 6.0
+    },
+    "transformers/mv": {
+      "local_eu": 1024.0,
+      "eu_in": 6.0,
+      "eu_out": 6.0
+    },
+    "transformers/gold": {
+      "local_eu": 0,
+      "eu_in": 6.0,
+      "eu_out": 6.0
+    },
+    "transformers/lv": {
+      "local_eu": 512.0,
+      "eu_in": 6.0,
+      "eu_out": 2.0
+    },
+    "transformers/wire7": {
+      "local_eu": 0,
+      "eu_in": 2.0,
+      "eu_out": 2.0
+    },
+    "transformers/wire8": {
+      "local_eu": 0,
+      "eu_in": 2.0,
+      "eu_out": 2.0
+    },
+    "transformers/wire9": {
+      "local_eu": 0,
+      "eu_in": 2.0,
+      "eu_out": 2.0
+    },
+    "transformers/wire10": {
+      "local_eu": 0,
+      "eu_in": 2.0,
+      "eu_out": 2.0
+    },
+    "transformers/wire11": {
+      "local_eu": 0,
+      "eu_in": 2.0,
+      "eu_out": 2.0
+    },
+    "transformers/compressor": {
+      "local_eu": 1204.0,
+      "eu_in": 2.0,
+      "eu_out": 0.0
+    },
+    "transformers/hopper_in": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "transformers/feed": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "transformers/hopper_out": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "transformers/sink": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "heat/heater": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "heat/fuelbin": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "heat/fuelpipe": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "heat/stirling": {
+      "local_eu": 0,
+      "eu_in": 0.0,
+      "eu_out": 9.0
+    },
+    "heat/wire1": {
+      "local_eu": 0,
+      "eu_in": 9.0,
+      "eu_out": 9.0
+    },
+    "heat/wire2": {
+      "local_eu": 0,
+      "eu_in": 9.0,
+      "eu_out": 9.0
+    },
+    "heat/wire3": {
+      "local_eu": 0,
+      "eu_in": 9.0,
+      "eu_out": 9.0
+    },
+    "heat/wire4": {
+      "local_eu": 0,
+      "eu_in": 9.0,
+      "eu_out": 9.0
+    },
+    "heat/wire5": {
+      "local_eu": 0,
+      "eu_in": 9.0,
+      "eu_out": 9.0
+    },
+    "heat/wire6": {
+      "local_eu": 0,
+      "eu_in": 9.0,
+      "eu_out": 9.0
+    },
+    "heat/feed": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "heat/mill": {
+      "local_eu": 1200.0,
+      "eu_in": 9.0,
+      "eu_out": 0.0
+    },
+    "heat/furnace": {
+      "local_eu": 600.0,
+      "eu_in": 9.0,
+      "eu_out": 0.0
+    },
+    "heat/sink": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/rtg": {
+      "local_eu": 3862.0,
+      "eu_in": 0.0,
+      "eu_out": 30.0
+    },
+    "electrolysis/coal": {
+      "local_eu": 0.0,
+      "eu_in": 0.0,
+      "eu_out": 8.0
+    },
+    "electrolysis/fuelbin": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/fuelbelt": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/wire1": {
+      "local_eu": 0,
+      "eu_in": 38.0,
+      "eu_out": 38.0
+    },
+    "electrolysis/wire2": {
+      "local_eu": 0,
+      "eu_in": 38.0,
+      "eu_out": 38.0
+    },
+    "electrolysis/wire3": {
+      "local_eu": 0,
+      "eu_in": 38.0,
+      "eu_out": 38.0
+    },
+    "electrolysis/wire4": {
+      "local_eu": 0,
+      "eu_in": 38.0,
+      "eu_out": 38.0
+    },
+    "electrolysis/wire5": {
+      "local_eu": 0,
+      "eu_in": 38.0,
+      "eu_out": 38.0
+    },
+    "electrolysis/wire6": {
+      "local_eu": 0,
+      "eu_in": 38.0,
+      "eu_out": 38.0
+    },
+    "electrolysis/wire7": {
+      "local_eu": 0,
+      "eu_in": 36.0,
+      "eu_out": 36.0
+    },
+    "electrolysis/wire8": {
+      "local_eu": 0,
+      "eu_in": 36.0,
+      "eu_out": 36.0
+    },
+    "electrolysis/pump": {
+      "local_eu": 40.0,
+      "eu_in": 0.0,
+      "eu_out": 0.0
+    },
+    "electrolysis/raw_water": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/regulator": {
+      "local_eu": 10006.0,
+      "eu_in": 38.0,
+      "eu_out": 0.0
+    },
+    "electrolysis/supply_pipe": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/cell": {
+      "local_eu": 32000.0,
+      "eu_in": 36.0,
+      "eu_out": 0.0
+    },
+    "electrolysis/h_out": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/h_line": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/hydrogen": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/o_out": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/o_line": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "electrolysis/oxygen": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "wind/rotor": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0,
+      "rotor_kU": 137
+    },
+    "wind/generator": {
+      "local_eu": 0,
+      "eu_in": 0.0,
+      "eu_out": 34.25
+    },
+    "wind/in_wire": {
+      "local_eu": 0,
+      "eu_in": 34.25,
+      "eu_out": 34.25
+    },
+    "wind/lv": {
+      "local_eu": 256.0,
+      "eu_in": 34.25,
+      "eu_out": 64.0
+    },
+    "wind/storage": {
+      "local_eu": 40000.0,
+      "eu_in": 64.0,
+      "eu_out": 32.0
+    },
+    "wind/wire4": {
+      "local_eu": 0,
+      "eu_in": 32.0,
+      "eu_out": 32.0
+    },
+    "wind/wire5": {
+      "local_eu": 0,
+      "eu_in": 32.0,
+      "eu_out": 32.0
+    },
+    "wind/wire6": {
+      "local_eu": 0,
+      "eu_in": 32.0,
+      "eu_out": 32.0
+    },
+    "wind/extractor": {
+      "local_eu": 1200.0,
+      "eu_in": 32.0,
+      "eu_out": 0.0
+    },
+    "wind/feed": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "wind/belt4": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "wind/belt5": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "wind/belt7": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "wind/sink": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    },
+    "wind/direct_rotor": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0,
+      "rotor_kU": 138
+    },
+    "wind/direct_gen": {
+      "local_eu": 0,
+      "eu_in": 0.0,
+      "eu_out": 0.0
+    },
+    "wind/direct_wire": {
+      "local_eu": 0,
+      "eu_in": 0.0,
+      "eu_out": 0.0
+    },
+    "wind/direct_batbox": {
+      "local_eu": 0,
+      "eu_in": 0,
+      "eu_out": 0
+    }
+  }
+}
