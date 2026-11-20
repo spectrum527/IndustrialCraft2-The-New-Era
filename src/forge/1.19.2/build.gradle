@@ -79,6 +79,8 @@ def generateResources = tasks.register('generatePlayableResources', Exec) {
 }
 
 tasks.named('processResources') {
+    // Removed generated models must also disappear from the processed pack on incremental builds.
+    doFirst { delete destinationDir }
     from(rootProject.file('spec/registry/sounds.txt')) { into 'com/industrialage/ia2/audio' }
     from(rootProject.file('spec/registry')) {
         include 'industrial-materials.tsv', 'chest-supplements.tsv', 'processing-recipes.tsv', 'classic-processing.tsv', 'processing-tags.tsv', 'workshop-recipes.tsv', 'industrial-fluids.tsv', 'wind-height.tsv', 'radioactive-items.tsv'

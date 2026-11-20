@@ -10,6 +10,8 @@
 
 使用 64 位 JDK 17。在仓库根目录运行以下命令，Windows 使用 `gradlew.bat`。首次构建会下载 Forge 和 Minecraft 开发依赖。
 
+复现发行 JAR 时，可在全新检出目录运行打包命令，确保所含的类和资源均来自当前提交。
+
 ```sh
 ./gradlew build
 ./gradlew :forge:1.19.2:runClient
