@@ -79,6 +79,7 @@ def generateResources = tasks.register('generatePlayableResources', Exec) {
 }
 
 tasks.named('processResources') {
+    filteringCharset = 'UTF-8'
     // Removed generated models must also disappear from the processed pack on incremental builds.
     doFirst { delete destinationDir }
     from(rootProject.file('spec/registry/sounds.txt')) { into 'com/industrialage/ia2/audio' }
@@ -94,14 +95,15 @@ tasks.named('processResources') {
     }
     from(rootProject.file('spec/config/active-keys.tsv')) { into 'com/industrialage/ia2/config' }
     from(rootProject.file('assets')) {
-        exclude 'qa/**'  // Registered documentation figures stay outside the mod JAR.
+        exclude 'qa/**', 'brand/**'  // Documentation and project branding stay outside the mod JAR.
         into 'assets'
         exclude '**/*.md', '**/.git*', '**/.DS_Store'
         includeEmptyDirs = false
     }
 }
 tasks.named('jar') {
-    from rootProject.files('LICENSE', 'COPYING', 'LICENSE-ASSETS')
+    inputs.file(rootProject.file('NOTICE.md'))
+    from rootProject.files('LICENSE', 'COPYING', 'LICENSE-ASSETS', 'NOTICE.md')
     finalizedBy 'reobfJar'
 }
 

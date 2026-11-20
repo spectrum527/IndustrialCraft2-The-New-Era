@@ -52,6 +52,8 @@ jobs:
           done
       - name: Test the similarity checker
         run: python3 -m unittest discover -s tools/similarity -p 'test_*.py'
+      - name: Test installed release JAR discovery
+        run: python3 -m unittest discover -s tools/qa -p 'test_*.py'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
