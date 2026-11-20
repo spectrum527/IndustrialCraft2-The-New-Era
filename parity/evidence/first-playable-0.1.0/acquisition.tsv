@@ -1,0 +1,845 @@
+registry	id	reference_recipe	reference_creative_tab	Forge-1.19.2	NeoForge-1.21.1	NeoForge-26.1.2	NeoForge-26.2	candidate_routes
+block	ic2:acacia_sapling_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:advanced_machine	False	False	placement	placement	placement	placement	placement=ic2:advanced_machine
+block	ic2:advanced_miner	False	False	placement	placement	placement	placement	placement=ic2:advanced_miner
+block	ic2:air	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of compressor | world-use=place registered source from its filled bucket
+block	ic2:aurelia_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:basalt	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:basalt | worldgen=configured_feature/basalt
+block	ic2:batbox	False	False	placement	placement	placement	placement	placement=ic2:batbox
+block	ic2:batbox_chargepad	False	False	placement	placement	placement	placement	placement=ic2:batbox_chargepad
+block	ic2:batch_crafter	False	False	placement	placement	placement	placement	placement=ic2:batch_crafter
+block	ic2:beetroots_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:biogas	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of fermenter | world-use=place registered source from its filled bucket
+block	ic2:biomass	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=canner_enrich/biomass | world-use=place registered source from its filled bucket
+block	ic2:birch_sapling_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:black_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:black_wall | world-use=paint hardened foam
+block	ic2:blackthorn_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:blast_furnace	False	False	placement	placement	placement	placement	placement=ic2:blast_furnace
+block	ic2:blazereed_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:block_cutter	False	False	placement	placement	placement	placement	placement=ic2:block_cutter
+block	ic2:blue_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:blue_wall | world-use=paint hardened foam
+block	ic2:bobs_yer_uncle_ranks_berries_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:bronze_block	False	False	placement	placement	placement	placement	placement=ic2:bronze_block
+block	ic2:bronze_fluid_pipe_large	False	False	placement	placement	placement	placement	placement=ic2:bronze_fluid_pipe_large
+block	ic2:bronze_fluid_pipe_medium	False	False	placement	placement	placement	placement	placement=ic2:bronze_fluid_pipe_medium
+block	ic2:bronze_fluid_pipe_small	False	False	placement	placement	placement	placement	placement=ic2:bronze_fluid_pipe_small
+block	ic2:bronze_fluid_pipe_tiny	False	False	placement	placement	placement	placement	placement=ic2:bronze_fluid_pipe_tiny
+block	ic2:bronze_item_pipe_large	False	False	placement	placement	placement	placement	placement=ic2:bronze_item_pipe_large
+block	ic2:bronze_item_pipe_medium	False	False	placement	placement	placement	placement	placement=ic2:bronze_item_pipe_medium
+block	ic2:bronze_item_pipe_small	False	False	placement	placement	placement	placement	placement=ic2:bronze_item_pipe_small
+block	ic2:bronze_item_pipe_tiny	False	False	placement	placement	placement	placement	placement=ic2:bronze_item_pipe_tiny
+block	ic2:bronze_storage_box	False	False	placement	placement	placement	placement	placement=ic2:bronze_storage_box
+block	ic2:bronze_tank	False	False	placement	placement	placement	placement	placement=ic2:bronze_tank
+block	ic2:brown_mushroom_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:brown_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:brown_wall | world-use=paint hardened foam
+block	ic2:canner	False	False	placement	placement	placement	placement	placement=ic2:canner
+block	ic2:carrots_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:centrifuge	False	False	placement	placement	placement	placement	placement=ic2:centrifuge
+block	ic2:cesu	False	False	placement	placement	placement	placement	placement=ic2:cesu
+block	ic2:cesu_chargepad	False	False	placement	placement	placement	placement	placement=ic2:cesu_chargepad
+block	ic2:chunk_loader	False	False	placement	placement	placement	placement	placement=ic2:chunk_loader
+block	ic2:classic_canner	False	False	placement	placement	placement	placement	placement=ic2:classic_canner
+block	ic2:classic_cropmatron	False	False	placement	placement	placement	placement	placement=ic2:classic_cropmatron
+block	ic2:classic_electrolyzer	False	False	placement	placement	placement	placement	placement=ic2:classic_electrolyzer
+block	ic2:classic_mass_fabricator	False	False	placement	placement	placement	placement	placement=ic2:classic_mass_fabricator
+block	ic2:classic_mfe	False	False	placement	placement	placement	placement	placement=ic2:classic_mfe
+block	ic2:classic_mfsu	False	False	placement	placement	placement	placement	placement=ic2:classic_mfsu
+block	ic2:classic_nuke	False	False	placement	placement	placement	placement	placement=ic2:classic_nuke
+block	ic2:cocoa_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:coffee_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:coke_kiln	False	False	placement	placement	placement	placement	placement=ic2:coke_kiln
+block	ic2:coke_kiln_grate	False	False	placement	placement	placement	placement	placement=ic2:coke_kiln_grate
+block	ic2:coke_kiln_hatch	False	False	placement	placement	placement	placement	placement=ic2:coke_kiln_hatch
+block	ic2:compressor	False	False	placement	placement	placement	placement	placement=ic2:compressor
+block	ic2:condenser	False	False	placement	placement	placement	placement	placement=ic2:condenser
+block	ic2:construction_foam	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=canner_enrich/construction_foam | world-use=place registered source from its filled bucket
+block	ic2:coolant	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=canner_enrich/coolant_from_distilled_water | device=canner_enrich/coolant_from_water | device=fluid output of liquid_heat_exchanger | world-use=place registered source from its filled bucket
+block	ic2:copper_cable	False	False	placement	placement	placement	placement	placement=ic2:copper_cable
+block	ic2:copper_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:corium_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:corpse_plant_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:creative_generator	False	False	creative-only	creative-only	creative-only	creative-only	
+block	ic2:creeper_weed_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:creosote	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of coke_kiln | world-use=place registered source from its filled bucket
+block	ic2:crop_harvester	False	False	placement	placement	placement	placement	placement=ic2:crop_harvester
+block	ic2:crop_stick	False	False	placement	placement	placement	placement	placement=ic2:crop_stick
+block	ic2:cropmatron	False	False	placement	placement	placement	placement	placement=ic2:cropmatron
+block	ic2:cyan_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:cyan_wall | world-use=paint hardened foam
+block	ic2:cyazint_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:cyprium_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:dandelion_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:dark_oak_sapling_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:deepslate_lead_ore	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:deepslate_lead_ore | worldgen=configured_feature/lead_ore
+block	ic2:deepslate_tin_ore	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:deepslate_tin_ore | worldgen=configured_feature/tin_ore
+block	ic2:deepslate_uranium_ore	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:deepslate_uranium_ore | worldgen=configured_feature/uranium_ore
+block	ic2:detector_cable	False	False	placement	placement	placement	placement	placement=ic2:detector_cable
+block	ic2:detector_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:diareed_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:distilled_water	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of condenser | device=fluid output of solar_distiller | world-use=place registered source from its filled bucket
+block	ic2:double_insulated_gold_cable	False	False	placement	placement	placement	placement	placement=ic2:double_insulated_gold_cable
+block	ic2:double_insulated_gold_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:double_insulated_iron_cable	False	False	placement	placement	placement	placement	placement=ic2:double_insulated_iron_cable
+block	ic2:double_insulated_iron_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:eating_plant_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:egg_plant_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:electric_furnace	False	False	placement	placement	placement	placement	placement=ic2:electric_furnace
+block	ic2:electric_heat_generator	False	False	placement	placement	placement	placement	placement=ic2:electric_heat_generator
+block	ic2:electric_kinetic_generator	False	False	placement	placement	placement	placement	placement=ic2:electric_kinetic_generator
+block	ic2:electrolyzer	False	False	placement	placement	placement	placement	placement=ic2:electrolyzer
+block	ic2:ender_blossom_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:energy_o_mat	False	False	placement	placement	placement	placement	placement=ic2:energy_o_mat
+block	ic2:ev_transformer	False	False	placement	placement	placement	placement	placement=ic2:ev_transformer
+block	ic2:extractor	False	False	placement	placement	placement	placement	placement=ic2:extractor
+block	ic2:fermenter	False	False	placement	placement	placement	placement	placement=ic2:fermenter
+block	ic2:ferru_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:flax_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:fluid_bottler	False	False	placement	placement	placement	placement	placement=ic2:fluid_bottler
+block	ic2:fluid_distributor	False	False	placement	placement	placement	placement	placement=ic2:fluid_distributor
+block	ic2:fluid_heat_generator	False	False	placement	placement	placement	placement	placement=ic2:fluid_heat_generator
+block	ic2:fluid_regulator	False	False	placement	placement	placement	placement	placement=ic2:fluid_regulator
+block	ic2:foam	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:foam | world-use=spray mixed foam
+block	ic2:generator	False	False	placement	placement	placement	placement	placement=ic2:generator
+block	ic2:geo_generator	False	False	placement	placement	placement	placement	placement=ic2:geo_generator
+block	ic2:glass_fibre_cable	False	False	placement	placement	placement	placement	placement=ic2:glass_fibre_cable
+block	ic2:glass_fibre_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:gold_cable	False	False	placement	placement	placement	placement	placement=ic2:gold_cable
+block	ic2:gold_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:gray_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:gray_wall | world-use=paint hardened foam
+block	ic2:green_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:green_wall | world-use=paint hardened foam
+block	ic2:heavy_water	False	False	world-use	world-use	world-use	world-use	world-use=place registered source from its filled bucket
+block	ic2:hops_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:hot_coolant	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of reactor_vessel | world-use=place registered source from its filled bucket
+block	ic2:hot_water	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of stirling_kinetic_generator | world-use=place registered source from its filled bucket
+block	ic2:hv_transformer	False	False	placement	placement	placement	placement	placement=ic2:hv_transformer
+block	ic2:hydrogen	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of electrolyzer | world-use=place registered source from its filled bucket
+block	ic2:induction_furnace	False	False	placement	placement	placement	placement	placement=ic2:induction_furnace
+block	ic2:industrial_workbench	False	False	placement	placement	placement	placement	placement=ic2:industrial_workbench
+block	ic2:insulated_copper_cable	False	False	placement	placement	placement	placement	placement=ic2:insulated_copper_cable
+block	ic2:insulated_copper_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:insulated_gold_cable	False	False	placement	placement	placement	placement	placement=ic2:insulated_gold_cable
+block	ic2:insulated_gold_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:insulated_iron_cable	False	False	placement	placement	placement	placement	placement=ic2:insulated_iron_cable
+block	ic2:insulated_iron_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:insulated_tin_cable	False	False	placement	placement	placement	placement	placement=ic2:insulated_tin_cable
+block	ic2:insulated_tin_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:iridium_storage_box	False	False	placement	placement	placement	placement	placement=ic2:iridium_storage_box
+block	ic2:iridium_tank	False	False	placement	placement	placement	placement	placement=ic2:iridium_tank
+block	ic2:iron_cable	False	False	placement	placement	placement	placement	placement=ic2:iron_cable
+block	ic2:iron_fence	False	False	placement	placement	placement	placement	placement=ic2:iron_fence
+block	ic2:iron_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:iron_furnace	False	False	placement	placement	placement	placement	placement=ic2:iron_furnace
+block	ic2:iron_scaffold	False	False	placement	placement	placement	placement	placement=ic2:iron_scaffold
+block	ic2:iron_storage_box	False	False	placement	placement	placement	placement	placement=ic2:iron_storage_box
+block	ic2:iron_tank	False	False	placement	placement	placement	placement	placement=ic2:iron_tank
+block	ic2:item_buffer	False	False	placement	placement	placement	placement	placement=ic2:item_buffer
+block	ic2:itnt	False	False	placement	placement	placement	placement	placement=ic2:itnt
+block	ic2:jungle_sapling_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:kinetic_generator	False	False	placement	placement	placement	placement	placement=ic2:kinetic_generator
+block	ic2:lead_block	False	False	placement	placement	placement	placement	placement=ic2:lead_block
+block	ic2:lead_ore	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:lead_ore | worldgen=configured_feature/lead_ore
+block	ic2:light_blue_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:light_blue_wall | world-use=paint hardened foam
+block	ic2:light_gray_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:light_gray_wall | world-use=paint hardened foam
+block	ic2:lime_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:lime_wall | world-use=paint hardened foam
+block	ic2:liquid_heat_exchanger	False	False	placement	placement	placement	placement	placement=ic2:liquid_heat_exchanger
+block	ic2:lv_transformer	False	False	placement	placement	placement	placement	placement=ic2:lv_transformer
+block	ic2:macerator	False	False	placement	placement	placement	placement	placement=ic2:macerator
+block	ic2:machine	False	False	placement	placement	placement	placement	placement=ic2:machine
+block	ic2:magenta_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:magenta_wall | world-use=paint hardened foam
+block	ic2:magnetizer	False	False	placement	placement	placement	placement	placement=ic2:magnetizer
+block	ic2:manual_kinetic_generator	False	False	placement	placement	placement	placement	placement=ic2:manual_kinetic_generator
+block	ic2:mass_fabricator	False	False	placement	placement	placement	placement	placement=ic2:mass_fabricator
+block	ic2:matter_generator	False	False	placement	placement	placement	placement	placement=ic2:matter_generator
+block	ic2:meat_rose_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:melon_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:metal_former	False	False	placement	placement	placement	placement	placement=ic2:metal_former
+block	ic2:mfe	False	False	placement	placement	placement	placement	placement=ic2:mfe
+block	ic2:mfe_chargepad	False	False	placement	placement	placement	placement	placement=ic2:mfe_chargepad
+block	ic2:mfsu	False	False	placement	placement	placement	placement	placement=ic2:mfsu
+block	ic2:mfsu_chargepad	False	False	placement	placement	placement	placement	placement=ic2:mfsu_chargepad
+block	ic2:milk_wart_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:miner	False	False	placement	placement	placement	placement	placement=ic2:miner
+block	ic2:mining_pipe	False	False	placement	placement	placement	placement	placement=ic2:mining_pipe
+block	ic2:mining_pipe_tip	False	False	world-use	world-use	world-use	world-use	world-use=deployed miner pipe end
+block	ic2:mv_transformer	False	False	placement	placement	placement	placement	placement=ic2:mv_transformer
+block	ic2:nether_wart_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:nuclear_reactor	False	False	placement	placement	placement	placement	placement=ic2:nuclear_reactor
+block	ic2:nuke	False	False	placement	placement	placement	placement	placement=ic2:nuke
+block	ic2:oak_sapling_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:obscured_wall	False	False	world-use	world-use	world-use	world-use	world-use=camouflage hardened foam
+block	ic2:oil_berries_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:orange_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:orange_wall | world-use=paint hardened foam
+block	ic2:ore_washing_plant	False	False	placement	placement	placement	placement	placement=ic2:ore_washing_plant
+block	ic2:oxygen	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of electrolyzer | world-use=place registered source from its filled bucket
+block	ic2:pahoehoe_lava	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of liquid_heat_exchanger | world-use=place registered source from its filled bucket
+block	ic2:pattern_storage	False	False	placement	placement	placement	placement	placement=ic2:pattern_storage
+block	ic2:personal_chest	False	False	placement	placement	placement	placement	placement=ic2:personal_chest
+block	ic2:pink_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:pink_wall | world-use=paint hardened foam
+block	ic2:plumbiscus_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:poppy_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:potato_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:pump	False	False	placement	placement	placement	placement	placement=ic2:pump
+block	ic2:pumpkin_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:purple_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:purple_wall | world-use=paint hardened foam
+block	ic2:raw_lead_block	False	False	placement	placement	placement	placement	placement=ic2:raw_lead_block
+block	ic2:raw_tin_block	False	False	placement	placement	placement	placement	placement=ic2:raw_tin_block
+block	ic2:raw_uranium_block	False	False	placement	placement	placement	placement	placement=ic2:raw_uranium_block
+block	ic2:rci_lzh	False	False	placement	placement	placement	placement	placement=ic2:rci_lzh
+block	ic2:rci_rsh	False	False	placement	placement	placement	placement	placement=ic2:rci_rsh
+block	ic2:reactor_access_hatch	False	False	placement	placement	placement	placement	placement=ic2:reactor_access_hatch
+block	ic2:reactor_chamber	False	False	placement	placement	placement	placement	placement=ic2:reactor_chamber
+block	ic2:reactor_fluid_port	False	False	placement	placement	placement	placement	placement=ic2:reactor_fluid_port
+block	ic2:reactor_redstone_port	False	False	placement	placement	placement	placement	placement=ic2:reactor_redstone_port
+block	ic2:reactor_vessel	False	False	placement	placement	placement	placement	placement=ic2:reactor_vessel
+block	ic2:recycler	False	False	placement	placement	placement	placement	placement=ic2:recycler
+block	ic2:red_mushroom_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:red_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:red_wall | world-use=paint hardened foam
+block	ic2:red_wheat_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:reed_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:refractory_bricks	False	False	placement	placement	placement	placement	placement=ic2:refractory_bricks
+block	ic2:reinforced_door	False	False	placement	placement	placement	placement	placement=ic2:reinforced_door
+block	ic2:reinforced_glass	False	False	placement	placement	placement	placement	placement=ic2:reinforced_glass
+block	ic2:reinforced_iron_scaffold	False	False	placement	placement	placement	placement	placement=ic2:reinforced_iron_scaffold
+block	ic2:reinforced_stone	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:reinforced_stone | world-use=cure the foam around reinforced iron scaffold
+block	ic2:reinforced_wooden_scaffold	False	False	placement	placement	placement	placement	placement=ic2:reinforced_wooden_scaffold
+block	ic2:replicator	False	False	placement	placement	placement	placement	placement=ic2:replicator
+block	ic2:resin_sheet	False	False	placement	placement	placement	placement	placement=ic2:resin_sheet
+block	ic2:rt_generator	False	False	placement	placement	placement	placement	placement=ic2:rt_generator
+block	ic2:rt_heat_generator	False	False	placement	placement	placement	placement	placement=ic2:rt_heat_generator
+block	ic2:rubber_button	False	False	placement	placement	placement	placement	placement=ic2:rubber_button
+block	ic2:rubber_door	False	False	placement	placement	placement	placement	placement=ic2:rubber_door
+block	ic2:rubber_fence	False	False	placement	placement	placement	placement	placement=ic2:rubber_fence
+block	ic2:rubber_fence_gate	False	False	placement	placement	placement	placement	placement=ic2:rubber_fence_gate
+block	ic2:rubber_leaves	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:rubber_leaves | worldgen=configured_feature/rubber_tree
+block	ic2:rubber_log	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:rubber_log | worldgen=configured_feature/rubber_tree
+block	ic2:rubber_planks	False	False	placement	placement	placement	placement	placement=ic2:rubber_planks
+block	ic2:rubber_pressure_plate	False	False	placement	placement	placement	placement	placement=ic2:rubber_pressure_plate
+block	ic2:rubber_sapling	False	False	placement	placement	placement	placement	placement=ic2:rubber_sapling
+block	ic2:rubber_sheet	False	False	placement	placement	placement	placement	placement=ic2:rubber_sheet
+block	ic2:rubber_sign	False	False	placement	placement	placement	placement	placement=ic2:rubber_sign
+block	ic2:rubber_slab	False	False	placement	placement	placement	placement	placement=ic2:rubber_slab
+block	ic2:rubber_stairs	False	False	placement	placement	placement	placement	placement=ic2:rubber_stairs
+block	ic2:rubber_trapdoor	False	False	placement	placement	placement	placement	placement=ic2:rubber_trapdoor
+block	ic2:rubber_wall_sign	False	False	world-use	world-use	world-use	world-use	world-use=place rubber sign on a wall
+block	ic2:rubber_wood	False	False	placement	placement	placement	placement	placement=ic2:rubber_wood
+block	ic2:semifluid_generator	False	False	placement	placement	placement	placement	placement=ic2:semifluid_generator
+block	ic2:shining_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:silver_block	False	False	placement	placement	placement	placement	placement=ic2:silver_block
+block	ic2:slime_plant_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:solar_distiller	False	False	placement	placement	placement	placement	placement=ic2:solar_distiller
+block	ic2:solar_generator	False	False	placement	placement	placement	placement	placement=ic2:solar_generator
+block	ic2:solid_canner	False	False	placement	placement	placement	placement	placement=ic2:solid_canner
+block	ic2:solid_heat_generator	False	False	placement	placement	placement	placement	placement=ic2:solid_heat_generator
+block	ic2:sorting_machine	False	False	placement	placement	placement	placement	placement=ic2:sorting_machine
+block	ic2:spidernip_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:splitter_cable	False	False	placement	placement	placement	placement	placement=ic2:splitter_cable
+block	ic2:splitter_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:spruce_sapling_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:stagnium_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:steam	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of steam_generator | world-use=place registered source from its filled bucket
+block	ic2:steam_generator	False	False	placement	placement	placement	placement	placement=ic2:steam_generator
+block	ic2:steam_kinetic_generator	False	False	placement	placement	placement	placement	placement=ic2:steam_kinetic_generator
+block	ic2:steam_repressurizer	False	False	placement	placement	placement	placement	placement=ic2:steam_repressurizer
+block	ic2:steel_block	False	False	placement	placement	placement	placement	placement=ic2:steel_block
+block	ic2:steel_fluid_pipe_large	False	False	placement	placement	placement	placement	placement=ic2:steel_fluid_pipe_large
+block	ic2:steel_fluid_pipe_medium	False	False	placement	placement	placement	placement	placement=ic2:steel_fluid_pipe_medium
+block	ic2:steel_fluid_pipe_small	False	False	placement	placement	placement	placement	placement=ic2:steel_fluid_pipe_small
+block	ic2:steel_fluid_pipe_tiny	False	False	placement	placement	placement	placement	placement=ic2:steel_fluid_pipe_tiny
+block	ic2:steel_item_pipe_large	False	False	placement	placement	placement	placement	placement=ic2:steel_item_pipe_large
+block	ic2:steel_item_pipe_medium	False	False	placement	placement	placement	placement	placement=ic2:steel_item_pipe_medium
+block	ic2:steel_item_pipe_small	False	False	placement	placement	placement	placement	placement=ic2:steel_item_pipe_small
+block	ic2:steel_item_pipe_tiny	False	False	placement	placement	placement	placement	placement=ic2:steel_item_pipe_tiny
+block	ic2:steel_storage_box	False	False	placement	placement	placement	placement	placement=ic2:steel_storage_box
+block	ic2:steel_tank	False	False	placement	placement	placement	placement	placement=ic2:steel_tank
+block	ic2:sticky_reed_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:stirling_generator	False	False	placement	placement	placement	placement	placement=ic2:stirling_generator
+block	ic2:stirling_kinetic_generator	False	False	placement	placement	placement	placement	placement=ic2:stirling_kinetic_generator
+block	ic2:stripped_rubber_log	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:stripped_rubber_log | world-use=axe strip
+block	ic2:stripped_rubber_wood	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:stripped_rubber_wood | world-use=axe strip
+block	ic2:superheated_steam	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of steam_generator | world-use=place registered source from its filled bucket
+block	ic2:tank	False	False	placement	placement	placement	placement	placement=ic2:tank
+block	ic2:tearstalks_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:teleporter	False	False	placement	placement	placement	placement	placement=ic2:teleporter
+block	ic2:terra_wart_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:terraformer	False	False	placement	placement	placement	placement	placement=ic2:terraformer
+block	ic2:tesla_coil	False	False	placement	placement	placement	placement	placement=ic2:tesla_coil
+block	ic2:tin_block	False	False	placement	placement	placement	placement	placement=ic2:tin_block
+block	ic2:tin_cable	False	False	placement	placement	placement	placement	placement=ic2:tin_cable
+block	ic2:tin_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:tin_ore	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:tin_ore | worldgen=configured_feature/tin_ore
+block	ic2:trade_o_mat	False	False	placement	placement	placement	placement	placement=ic2:trade_o_mat
+block	ic2:triple_insulated_iron_cable	False	False	placement	placement	placement	placement	placement=ic2:triple_insulated_iron_cable
+block	ic2:triple_insulated_iron_foam_cable	False	False	world-use	world-use	world-use	world-use	world-use=spray placed cable with construction foam
+block	ic2:tulip_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:uranium_block	False	False	placement	placement	placement	placement	placement=ic2:uranium_block
+block	ic2:uranium_ore	False	False	placement,worldgen	placement,worldgen	placement,worldgen	placement,worldgen	placement=ic2:uranium_ore | worldgen=configured_feature/uranium_ore
+block	ic2:uu_assembly_bench	False	False	placement	placement	placement	placement	placement=ic2:uu_assembly_bench
+block	ic2:uu_matter	False	False	device,world-use	device,world-use	device,world-use	device,world-use	device=fluid output of matter_generator | world-use=place registered source from its filled bucket
+block	ic2:uu_scanner	False	False	placement	placement	placement	placement	placement=ic2:uu_scanner
+block	ic2:venomilia_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:water_generator	False	False	placement	placement	placement	placement	placement=ic2:water_generator
+block	ic2:water_kinetic_generator	False	False	placement	placement	placement	placement	placement=ic2:water_kinetic_generator
+block	ic2:weed_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:weed_ex	False	False	world-use	world-use	world-use	world-use	world-use=place registered source from its filled bucket
+block	ic2:weighted_fluid_distributor	False	False	placement	placement	placement	placement	placement=ic2:weighted_fluid_distributor
+block	ic2:weighted_item_distributor	False	False	placement	placement	placement	placement	placement=ic2:weighted_item_distributor
+block	ic2:wheat_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:white_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:white_wall | world-use=paint hardened foam
+block	ic2:wind_generator	False	False	placement	placement	placement	placement	placement=ic2:wind_generator
+block	ic2:wind_kinetic_generator	False	False	placement	placement	placement	placement	placement=ic2:wind_kinetic_generator
+block	ic2:withereed_crop	False	False	world-use	world-use	world-use	world-use	world-use=plant, grow or cross crop sticks
+block	ic2:wooden_scaffold	False	False	placement	placement	placement	placement	placement=ic2:wooden_scaffold
+block	ic2:wooden_storage_box	False	False	placement	placement	placement	placement	placement=ic2:wooden_storage_box
+block	ic2:wool_sheet	False	False	placement	placement	placement	placement	placement=ic2:wool_sheet
+block	ic2:yellow_wall	False	False	placement,world-use	placement,world-use	placement,world-use	placement,world-use	placement=ic2:yellow_wall | world-use=paint hardened foam
+item	ic2:advanced_batpack	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/advanced_batpack
+item	ic2:advanced_charging_re_battery	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/advanced_charging_re_battery
+item	ic2:advanced_circuit	True	True	recipe	recipe	recipe	recipe	recipe=observed/advanced_circuit | recipe=observed/advanced_circuit_vertical
+item	ic2:advanced_ejector_upgrade	False	True	recipe	recipe	recipe	recipe	recipe=classic/advanced_ejector_upgrade
+item	ic2:advanced_heat_exchanger	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/advanced_heat_exchanger
+item	ic2:advanced_heat_vent	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/advanced_heat_vent
+item	ic2:advanced_machine	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:advanced_machine | recipe=industry/shaped/advanced_machine | recipe=industry/shaped/advanced_machine_vertical
+item	ic2:advanced_miner	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:advanced_miner | recipe=industry/shaped/advanced_miner
+item	ic2:advanced_pulling_upgrade	False	True	recipe	recipe	recipe	recipe	recipe=classic/advanced_pulling_upgrade
+item	ic2:advanced_re_battery	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/advanced_re_battery
+item	ic2:advanced_scanner	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/advanced_scanner
+item	ic2:air_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:air_cell	False	True	device,world-use	device,world-use	device,world-use	device,world-use	device=compressor/empty_cell_to_air_cell | world-use=fill cell with air
+item	ic2:alloy	False	True	device	device	device	device	device=compressor/mixed_metal_ingot_to_alloy
+item	ic2:alloy_chestplate	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/alloy_chestplate | recipe=industry/shaped/alloy_chestplate_2
+item	ic2:ashes	False	True	device	device	device	device	device=native solid_heat_generator
+item	ic2:basalt	False	True	loot	loot	loot	loot	loot=ic2:basalt
+item	ic2:batbox	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:batbox | recipe=batbox
+item	ic2:batbox_chargepad	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:batbox_chargepad | recipe=industry/shaped/batbox_chargepad
+item	ic2:batch_crafter	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:batch_crafter | recipe=industry/shaped/batch_crafter
+item	ic2:batpack	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/batpack
+item	ic2:bio_cell	False	True	recipe	recipe	recipe	recipe	recipe=classic/bio_cell
+item	ic2:bio_chaff	False	True	device	device	device	device	device=macerator/cactus_to_bio_chaff | device=macerator/carrot_to_bio_chaff | device=macerator/leaves_to_bio_chaff | device=macerator/melon_seeds_to_bio_chaff
+item	ic2:biofuel_cell	False	True	device	device	device	device	device=classic/bio_cell_to_biofuel_cell
+item	ic2:biogas_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:biomass_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:black_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/black_painter
+item	ic2:black_wall	False	True	loot	loot	loot	loot	loot=ic2:black_wall
+item	ic2:blank_tfbp	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/blank_tfbp
+item	ic2:blast_furnace	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:blast_furnace | recipe=industry/shaped/blast_furnace
+item	ic2:block_cutter	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:block_cutter | recipe=industry/shaped/block_cutter
+item	ic2:blue_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/blue_painter
+item	ic2:blue_wall	False	True	loot	loot	loot	loot	loot=ic2:blue_wall
+item	ic2:bobs_yer_uncle_ranks_berry	False	True	world-use	world-use	world-use	world-use	world-use=crop harvest
+item	ic2:broken_rubber_boat	False	True	world-use	world-use	world-use	world-use	world-use=recover wrecked rubber dinghy
+item	ic2:bronze_axe	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/bronze_axe
+item	ic2:bronze_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/ingots_bronze_to_bronze_block | loot=ic2:bronze_block | recipe=industry/shaped/bronze_block
+item	ic2:bronze_boots	True	True	recipe	recipe	recipe	recipe	recipe=bronze_boots
+item	ic2:bronze_casing	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/plates_bronze_to_bronze_casing | recipe=bronze_casing
+item	ic2:bronze_chestplate	True	True	recipe	recipe	recipe	recipe	recipe=bronze_chestplate
+item	ic2:bronze_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=compressor/small_bronze_dust_to_bronze_dust | device=macerator/dense_bronze_plate_to_bronze_dust | device=macerator/ingots_bronze_to_bronze_dust | device=macerator/plates_bronze_to_bronze_dust
+item	ic2:bronze_fluid_pipe_large	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_fluid_pipe_large | recipe=bronze_fluid_pipe_large
+item	ic2:bronze_fluid_pipe_medium	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_fluid_pipe_medium | recipe=bronze_fluid_pipe_medium
+item	ic2:bronze_fluid_pipe_small	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_fluid_pipe_small | recipe=bronze_fluid_pipe_small
+item	ic2:bronze_fluid_pipe_tiny	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_fluid_pipe_tiny | recipe=bronze_fluid_pipe_tiny
+item	ic2:bronze_helmet	True	True	recipe	recipe	recipe	recipe	recipe=bronze_helmet
+item	ic2:bronze_hoe	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/bronze_hoe
+item	ic2:bronze_ingot	True	True	recipe	recipe	recipe	recipe	recipe=bronze_ingot_from_bronze_dust | recipe=industry/shaped/bronze_ingot | recipe=industry/smelting/bronze_ingot_from_bronze_dust
+item	ic2:bronze_item_pipe_large	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_item_pipe_large | recipe=bronze_item_pipe_large
+item	ic2:bronze_item_pipe_medium	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_item_pipe_medium | recipe=bronze_item_pipe_medium
+item	ic2:bronze_item_pipe_small	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_item_pipe_small | recipe=bronze_item_pipe_small
+item	ic2:bronze_item_pipe_tiny	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_item_pipe_tiny | recipe=bronze_item_pipe_tiny
+item	ic2:bronze_leggings	True	True	recipe	recipe	recipe	recipe	recipe=bronze_leggings
+item	ic2:bronze_pickaxe	True	True	recipe	recipe	recipe	recipe	recipe=bronze_pickaxe
+item	ic2:bronze_plate	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=block_cutter/blocks_bronze_to_bronze_plate | device=metal_former_rolling/ingots_bronze_to_bronze_plate | recipe=bronze_plate
+item	ic2:bronze_rotor	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/bronze_rotor
+item	ic2:bronze_rotor_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/bronze_rotor_blade
+item	ic2:bronze_shaft	False	True	device	device	device	device	device=metal_former_extruding/blocks_bronze_to_bronze_shaft
+item	ic2:bronze_shovel	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/bronze_shovel
+item	ic2:bronze_storage_box	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_storage_box | recipe=industry/shaped/bronze_storage_box
+item	ic2:bronze_sword	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/bronze_sword
+item	ic2:bronze_tank	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:bronze_tank | recipe=bronze_tank
+item	ic2:brown_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/brown_painter
+item	ic2:brown_wall	False	True	loot	loot	loot	loot	loot=ic2:brown_wall
+item	ic2:canner	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:canner | recipe=industry/shaped/canner
+item	ic2:carbon_boat	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/carbon_boat
+item	ic2:carbon_fibre	True	True	recipe	recipe	recipe	recipe	recipe=observed/carbon_fibre
+item	ic2:carbon_mesh	True	True	recipe	recipe	recipe	recipe	recipe=observed/carbon_mesh
+item	ic2:carbon_plate	False	True	device	device	device	device	device=compressor/carbon_mesh_to_carbon_plate
+item	ic2:carbon_rotor	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/carbon_rotor
+item	ic2:carbon_rotor_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/carbon_rotor_blade
+item	ic2:centrifuge	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:centrifuge | recipe=industry/shaped/centrifuge
+item	ic2:cesu	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:cesu | recipe=industry/shaped/cesu
+item	ic2:cesu_chargepad	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:cesu_chargepad | recipe=industry/shaped/cesu_chargepad
+item	ic2:cf_pack	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/cf_pack
+item	ic2:cf_powder	True	True	recipe	recipe	recipe	recipe	recipe=classic/cf_powder | recipe=observed/cf_powder
+item	ic2:chainsaw	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/chainsaw
+item	ic2:charging_energy_crystal	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/charging_energy_crystal
+item	ic2:charging_lapotron_crystal	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/charging_lapotron_crystal
+item	ic2:charging_re_battery	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/charging_re_battery
+item	ic2:chilling_tfbp	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/chilling_tfbp
+item	ic2:chunk_loader	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:chunk_loader | recipe=industry/shaped/chunk_loader
+item	ic2:circuit	True	True	recipe	recipe	recipe	recipe	recipe=circuit
+item	ic2:classic_canner	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:classic_canner | recipe=classic/classic_canner
+item	ic2:classic_cropmatron	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:classic_cropmatron | recipe=classic/classic_cropmatron | recipe=world/classic_cropmatron
+item	ic2:classic_electrolyzer	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:classic_electrolyzer | recipe=classic/classic_electrolyzer
+item	ic2:classic_mass_fabricator	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:classic_mass_fabricator | recipe=classic/classic_mass_fabricator
+item	ic2:classic_mfe	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:classic_mfe | recipe=classic/classic_mfe
+item	ic2:classic_mfsu	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:classic_mfsu | recipe=classic/classic_mfsu
+item	ic2:classic_nuke	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:classic_nuke | recipe=classic/classic_nuke
+item	ic2:clay_dust	False	True	device	device	device	device	device=macerator/clay_to_clay_dust
+item	ic2:coal_ball	True	True	recipe	recipe	recipe	recipe	recipe=observed/coal_ball
+item	ic2:coal_block	False	True	device	device	device	device	device=compressor/coal_ball_to_coal_block
+item	ic2:coal_chunk	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/coal_chunk
+item	ic2:coal_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/slag_to_small_gold_dust | device=macerator/coal_block_to_coal_dust | device=macerator/coal_to_coal_dust | recipe=observed/coal_dust
+item	ic2:coal_fuel_dust	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/coal_fuel_dust | recipe=industry/shapeless/coal_fuel_dust
+item	ic2:coalfuel_cell	False	True	device	device	device	device	device=classic/hydrated_coal_cell_to_coalfuel_cell
+item	ic2:coffee_beans	False	True	world-use	world-use	world-use	world-use	world-use=crop harvest
+item	ic2:coffee_mug	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/coffee_mug
+item	ic2:coffee_powder	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=macerator/coffee_beans_to_coffee_powder | recipe=industry/shapeless/coffee_powder
+item	ic2:coil	True	True	recipe	recipe	recipe	recipe	recipe=observed/coil
+item	ic2:coin	False	True	device	device	device	device	device=metal_former_cutting/iron_casing_to_coin
+item	ic2:coke	False	True	device	device	device	device	device=native coke_kiln
+item	ic2:coke_kiln	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:coke_kiln | recipe=industry/shapeless/coke_kiln
+item	ic2:coke_kiln_grate	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:coke_kiln_grate | recipe=industry/shapeless/coke_kiln_grate
+item	ic2:coke_kiln_hatch	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:coke_kiln_hatch | recipe=industry/shapeless/coke_kiln_hatch
+item	ic2:cold_coffee_mug	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/cold_coffee_mug
+item	ic2:component_heat_exchanger	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/component_heat_exchanger
+item	ic2:component_heat_vent	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/component_heat_vent
+item	ic2:compressed_hydrated_coal	False	True	device	device	device	device	device=classic/coal_fuel_dust_to_compressed_hydrated_coal
+item	ic2:compressed_plants	False	True	device	device	device	device	device=classic/plant_ball_to_compressed_plants
+item	ic2:compressor	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:compressor | recipe=compressor
+item	ic2:condenser	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:condenser | recipe=industry/shaped/condenser
+item	ic2:construction_foam_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:containment_box	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/containment_box
+item	ic2:containment_reactor_plating	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/containment_reactor_plating
+item	ic2:coolant_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:copper_boiler	True	True	recipe	recipe	recipe	recipe	recipe=observed/copper_boiler
+item	ic2:copper_cable	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=metal_former_cutting/plates_copper_to_copper_cable | device=metal_former_extruding/copper_ingot_to_copper_cable | loot=ic2:copper_cable | loot=ic2:copper_foam_cable
+item	ic2:copper_casing	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/plates_copper_to_copper_casing | recipe=observed/copper_casing
+item	ic2:copper_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_copper_to_copper_dust | device=centrifuge/purified_copper_to_copper_dust | device=compressor/small_copper_dust_to_copper_dust | device=macerator/copper_ingot_to_copper_dust
+item	ic2:copper_ingot	False	True	recipe	recipe	recipe	recipe	recipe=classic/copper_ingot
+item	ic2:copper_plate	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=block_cutter/copper_block_to_copper_plate | device=metal_former_rolling/copper_ingot_to_copper_plate | recipe=copper_plate
+item	ic2:creative_generator	False	True	creative-only	creative-only	creative-only	creative-only	
+item	ic2:creosote_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:crop_harvester	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:crop_harvester | recipe=industry/shaped/crop_harvester
+item	ic2:crop_seed_bag	False	True	world-use	world-use	world-use	world-use	world-use=breeding and mature crop break
+item	ic2:crop_stick	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/crop_stick
+item	ic2:cropmatron	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:cropmatron | recipe=industry/shaped/cropmatron
+item	ic2:cropnalyzer	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/cropnalyzer
+item	ic2:crowbar	True	True	recipe	recipe	recipe	recipe	recipe=crowbar
+item	ic2:crushed_copper	False	True	device	device	device	device	device=macerator/raw_copper_to_crushed_copper
+item	ic2:crushed_gold	False	True	device	device	device	device	device=macerator/raw_gold_to_crushed_gold
+item	ic2:crushed_iron	False	True	device	device	device	device	device=macerator/raw_iron_to_crushed_iron
+item	ic2:crushed_lead	False	True	device	device	device	device	device=macerator/raw_ores_lead_to_crushed_lead
+item	ic2:crushed_silver	False	True	recipe	recipe	recipe	recipe	recipe=classic/crushed_silver
+item	ic2:crushed_tin	False	True	device	device	device	device	device=macerator/raw_ores_tin_to_crushed_tin
+item	ic2:crushed_uranium	False	True	device	device	device	device	device=macerator/raw_ores_uranium_to_crushed_uranium
+item	ic2:crystal_memory	True	True	recipe	recipe	recipe	recipe	recipe=industry/smelting/crystal_memory
+item	ic2:cultivation_tfbp	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/cultivation_tfbp
+item	ic2:cutter	True	True	recipe	recipe	recipe	recipe	recipe=cutter
+item	ic2:cyan_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/cyan_painter
+item	ic2:cyan_wall	False	True	loot	loot	loot	loot	loot=ic2:cyan_wall
+item	ic2:dark_coffee_mug	True	True	recipe	recipe	recipe	recipe	recipe=industry/smelting/dark_coffee_mug
+item	ic2:debug_item	False	False	internal	internal	internal	internal	
+item	ic2:deepslate_lead_ore	False	True	loot	loot	loot	loot	loot=ic2:deepslate_lead_ore
+item	ic2:deepslate_tin_ore	False	True	loot	loot	loot	loot	loot=ic2:deepslate_tin_ore
+item	ic2:deepslate_uranium_ore	False	True	loot	loot	loot	loot	loot=ic2:deepslate_uranium_ore
+item	ic2:dense_bronze_plate	False	True	device	device	device	device	device=compressor/plates_bronze_to_dense_bronze_plate
+item	ic2:dense_copper_plate	False	True	device	device	device	device	device=compressor/plates_copper_to_dense_copper_plate
+item	ic2:dense_gold_plate	False	True	device	device	device	device	device=compressor/plates_gold_to_dense_gold_plate
+item	ic2:dense_iron_plate	False	True	device	device	device	device	device=compressor/plates_iron_to_dense_iron_plate
+item	ic2:dense_lapis_plate	False	True	device	device	device	device	device=compressor/plates_lapis_to_dense_lapis_plate
+item	ic2:dense_lead_plate	False	True	device	device	device	device	device=compressor/plates_lead_to_dense_lead_plate
+item	ic2:dense_obsidian_plate	False	True	device	device	device	device	device=compressor/plates_obsidian_to_dense_obsidian_plate
+item	ic2:dense_steel_plate	False	True	device	device	device	device	device=compressor/plates_steel_to_dense_steel_plate
+item	ic2:dense_tin_plate	False	True	device	device	device	device	device=compressor/plates_tin_to_dense_tin_plate
+item	ic2:depleted_dual_mox_fuel_rod	False	True	world-use	world-use	world-use	world-use	world-use=process and deplete uranium fuel in an active reactor
+item	ic2:depleted_dual_uranium_fuel_rod	False	True	world-use	world-use	world-use	world-use	world-use=process and deplete uranium fuel in an active reactor
+item	ic2:depleted_isotope_fuel_rod	False	True	recipe	recipe	recipe	recipe	recipe=classic/depleted_isotope_fuel_rod
+item	ic2:depleted_mox_fuel_rod	False	True	world-use	world-use	world-use	world-use	world-use=process and deplete uranium fuel in an active reactor
+item	ic2:depleted_quad_mox_fuel_rod	False	True	world-use	world-use	world-use	world-use	world-use=process and deplete uranium fuel in an active reactor
+item	ic2:depleted_quad_uranium_fuel_rod	False	True	world-use	world-use	world-use	world-use	world-use=process and deplete uranium fuel in an active reactor
+item	ic2:depleted_uranium_fuel_rod	False	True	world-use	world-use	world-use	world-use	world-use=process and deplete uranium fuel in an active reactor
+item	ic2:desertification_tfbp	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/desertification_tfbp
+item	ic2:detector_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:detector_cable | loot=ic2:detector_foam_cable | recipe=detector_cable
+item	ic2:diamond_cutting_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/diamond_cutting_blade
+item	ic2:diamond_drill	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/diamond_drill
+item	ic2:diamond_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=macerator/diamond_to_diamond_dust | recipe=observed/diamond_dust_from_small_dust
+item	ic2:distilled_water_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:double_insulated_gold_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:double_insulated_gold_cable | loot=ic2:double_insulated_gold_foam_cable | recipe=double_insulated_gold_cable
+item	ic2:double_insulated_iron_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:double_insulated_iron_cable | loot=ic2:double_insulated_iron_foam_cable | recipe=double_insulated_iron_cable
+item	ic2:drill	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/drill
+item	ic2:dual_mox_fuel_rod	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/dual_mox_fuel_rod
+item	ic2:dual_uranium_fuel_rod	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/dual_uranium_fuel_rod
+item	ic2:ejector_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/ejector_upgrade | recipe=industry/shaped/ejector_upgrade_9
+item	ic2:electric_boat	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/electric_boat
+item	ic2:electric_furnace	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:electric_furnace | recipe=electric_furnace
+item	ic2:electric_heat_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:electric_heat_generator | recipe=industry/shaped/electric_heat_generator
+item	ic2:electric_jetpack	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/electric_jetpack
+item	ic2:electric_kinetic_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:electric_kinetic_generator | recipe=industry/shaped/electric_kinetic_generator
+item	ic2:electric_motor	True	True	recipe	recipe	recipe	recipe	recipe=observed/electric_motor | recipe=observed/electric_motor_vertical
+item	ic2:electric_treetap	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/electric_treetap
+item	ic2:electric_wrench	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/electric_wrench
+item	ic2:electrolyzed_water_cell	False	True	device	device	device	device	device=classic electrolyzer water cell | device=native classic_electrolyzer
+item	ic2:electrolyzer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:electrolyzer | recipe=industry/shaped/electrolyzer
+item	ic2:emerald_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=macerator/emerald_to_emerald_dust | recipe=observed/emerald_dust_from_small_dust
+item	ic2:empty_cell	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=extractor/air_cell_to_empty_cell | recipe=empty_cell
+item	ic2:empty_fuel_can	False	True	recipe	recipe	recipe	recipe	recipe=classic/empty_fuel_can
+item	ic2:empty_mug	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/empty_mug | recipe=world/empty_mug
+item	ic2:ender_pearl_dust	False	True	device	device	device	device	device=macerator/ender_pearl_to_ender_pearl_dust
+item	ic2:energium_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=macerator/energy_crystal_to_energium_dust | recipe=observed/energium_dust
+item	ic2:energy_crystal	False	True	device	device	device	device	device=compressor/energium_dust_to_energy_crystal
+item	ic2:energy_o_mat	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:energy_o_mat | recipe=industry/shaped/energy_o_mat
+item	ic2:energy_pack	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/energy_pack
+item	ic2:energy_storage_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/energy_storage_upgrade
+item	ic2:ev_transformer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:ev_transformer | recipe=industry/shaped/ev_transformer
+item	ic2:extractor	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:extractor | recipe=extractor
+item	ic2:fermenter	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:fermenter | recipe=industry/shaped/fermenter
+item	ic2:fertilizer	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=native fermenter | recipe=industry/shapeless/fertilizer | recipe=industry/shapeless/fertilizer_2
+item	ic2:filled_fuel_can	False	True	device	device	device	device	device=classic canner fuel can | device=native classic_canner
+item	ic2:filled_tin_can	False	True	device	device	device	device	device=canner_bottle/apple_filled_tin_can | device=canner_bottle/baked_potato_filled_tin_can | device=canner_bottle/beef_filled_tin_can | device=canner_bottle/beetroot_filled_tin_can
+item	ic2:flatification_tfbp	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/flatification_tfbp
+item	ic2:fluid_bottler	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:fluid_bottler | recipe=industry/shaped/fluid_bottler
+item	ic2:fluid_cell	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/fluid_cell
+item	ic2:fluid_distributor	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:fluid_distributor | recipe=industry/shaped/fluid_distributor
+item	ic2:fluid_ejector_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/fluid_ejector_upgrade | recipe=industry/shaped/fluid_ejector_upgrade_9
+item	ic2:fluid_heat_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:fluid_heat_generator | recipe=industry/shaped/fluid_heat_generator
+item	ic2:fluid_pulling_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/fluid_pulling_upgrade | recipe=industry/shaped/fluid_pulling_upgrade_9
+item	ic2:fluid_regulator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:fluid_regulator | recipe=industry/shaped/fluid_regulator
+item	ic2:foam	False	True	loot	loot	loot	loot	loot=ic2:foam
+item	ic2:forge_hammer	True	True	recipe	recipe	recipe	recipe	recipe=forge_hammer
+item	ic2:frequency_transmitter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/frequency_transmitter
+item	ic2:fuel_rod	False	True	device	device	device	device	device=metal_former_extruding/plates_iron_to_fuel_rod
+item	ic2:generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:generator | recipe=generator
+item	ic2:geo_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:geo_generator | recipe=industry/shaped/geo_generator
+item	ic2:glass_fibre_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:glass_fibre_cable | loot=ic2:glass_fibre_foam_cable | recipe=industry/shaped/glass_fibre_cable
+item	ic2:gold_cable	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=metal_former_cutting/plates_gold_to_gold_cable | device=metal_former_extruding/gold_ingot_to_gold_cable | loot=ic2:gold_cable | loot=ic2:gold_foam_cable
+item	ic2:gold_casing	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/plates_gold_to_gold_casing | recipe=gold_casing
+item	ic2:gold_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_gold_to_gold_dust | device=centrifuge/purified_gold_to_gold_dust | device=compressor/small_gold_dust_to_gold_dust | device=macerator/crushed_gold_to_gold_dust
+item	ic2:gold_plate	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=block_cutter/gold_block_to_gold_plate | device=metal_former_rolling/gold_ingot_to_gold_plate | recipe=gold_plate
+item	ic2:gray_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/gray_painter
+item	ic2:gray_wall	False	True	loot	loot	loot	loot	loot=ic2:gray_wall
+item	ic2:green_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/green_painter
+item	ic2:green_wall	False	True	loot	loot	loot	loot	loot=ic2:green_wall
+item	ic2:grin_powder	False	True	device,world-use	device,world-use	device,world-use	device,world-use	device=macerator/poisonous_potato_to_grin_powder | device=macerator/spider_eye_to_grin_powder | world-use=crop harvest
+item	ic2:hazmat_chestplate	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/hazmat_chestplate
+item	ic2:hazmat_helmet	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/hazmat_helmet
+item	ic2:hazmat_leggings	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/hazmat_leggings
+item	ic2:heat_conductor	True	True	recipe	recipe	recipe	recipe	recipe=observed/heat_conductor
+item	ic2:heat_exchanger	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/heat_exchanger_from_copper | recipe=industry/shaped/heat_exchanger_from_gold
+item	ic2:heat_vent	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/heat_vent
+item	ic2:heatpack	False	True	recipe	recipe	recipe	recipe	recipe=classic/heatpack
+item	ic2:heavy_water_bucket	False	True	recipe,world-use	recipe,world-use	recipe,world-use	recipe,world-use	recipe=classic/heavy_water_bucket | world-use=fill bucket from produced fluid
+item	ic2:hops	False	True	world-use	world-use	world-use	world-use	world-use=crop harvest
+item	ic2:hot_coolant_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:hot_water_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:hv_transformer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:hv_transformer | recipe=industry/shaped/hv_transformer
+item	ic2:hydrated_coal_cell	False	True	recipe	recipe	recipe	recipe	recipe=classic/hydrated_coal_cell
+item	ic2:hydrated_tin_dust	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/hydrated_tin_dust
+item	ic2:hydration_cell	False	True	recipe	recipe	recipe	recipe	recipe=world/hydration_cell
+item	ic2:hydrogen_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:induction_furnace	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:induction_furnace | recipe=industry/shaped/induction_furnace
+item	ic2:industrial_diamond	False	True	device	device	device	device	device=compressor/coal_chunk_to_industrial_diamond
+item	ic2:industrial_workbench	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:industrial_workbench | recipe=industry/shaped/industrial_workbench
+item	ic2:insulated_copper_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:insulated_copper_cable | loot=ic2:insulated_copper_foam_cable | recipe=insulated_copper_cable
+item	ic2:insulated_gold_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:insulated_gold_cable | loot=ic2:insulated_gold_foam_cable | recipe=insulated_gold_cable
+item	ic2:insulated_iron_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:insulated_iron_cable | loot=ic2:insulated_iron_foam_cable | recipe=insulated_iron_cable
+item	ic2:insulated_tin_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:insulated_tin_cable | loot=ic2:insulated_tin_foam_cable | recipe=insulated_tin_cable
+item	ic2:iodine	False	True	device	device	device	device	device=extractor/hydrated_tin_dust_to_iodine
+item	ic2:iodine_tablet	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/iodine_tablet
+item	ic2:iridium	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/iridium
+item	ic2:iridium_drill	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/iridium_drill
+item	ic2:iridium_neutron_reflector	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/iridium_neutron_reflector | recipe=industry/shaped/iridium_neutron_reflector_vertical
+item	ic2:iridium_ore	False	True	device,exploration	device,exploration	device,exploration	device,exploration	device=compressor/iridium_shard_to_iridium_ore | exploration=minecraft:chests/simple_dungeon | exploration=minecraft:chests/stronghold_corridor | exploration=minecraft:chests/stronghold_crossing
+item	ic2:iridium_shard	False	True	device,exploration	device,exploration	device,exploration	device,exploration	device=macerator/iridium_to_iridium_shard | exploration=minecraft:chests/abandoned_mineshaft | exploration=minecraft:chests/desert_pyramid | exploration=minecraft:chests/end_city_treasure
+item	ic2:iridium_storage_box	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:iridium_storage_box | recipe=industry/shaped/iridium_storage_box
+item	ic2:iridium_tank	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:iridium_tank | recipe=industry/shaped/iridium_tank
+item	ic2:iron_cable	False	True	device,loot	device,loot	device,loot	device,loot	device=metal_former_cutting/plates_iron_to_iron_cable | device=metal_former_extruding/iron_ingot_to_iron_cable | loot=ic2:iron_cable | loot=ic2:iron_foam_cable
+item	ic2:iron_casing	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/plates_iron_to_iron_casing | recipe=observed/iron_casing
+item	ic2:iron_cutting_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/iron_cutting_blade
+item	ic2:iron_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_iron_to_iron_dust | device=centrifuge/depleted_dual_mox_fuel_rod_to_small_plutonium | device=centrifuge/depleted_dual_uranium_fuel_rod_to_small_plutonium | device=centrifuge/depleted_mox_fuel_rod_to_small_plutonium
+item	ic2:iron_fence	False	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=metal_former_extruding/iron_casing_to_iron_fence | loot=ic2:iron_fence | recipe=world/iron_fence
+item	ic2:iron_furnace	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:iron_furnace | recipe=iron_furnace
+item	ic2:iron_plate	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=block_cutter/iron_block_to_iron_plate | device=metal_former_rolling/iron_ingot_to_iron_plate | recipe=iron_plate
+item	ic2:iron_rotor	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/iron_rotor
+item	ic2:iron_rotor_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/iron_rotor_blade
+item	ic2:iron_scaffold	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:iron_scaffold | recipe=industry/shaped/iron_scaffold
+item	ic2:iron_shaft	False	True	device	device	device	device	device=metal_former_extruding/iron_block_to_iron_shaft
+item	ic2:iron_storage_box	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:iron_storage_box | recipe=industry/shaped/iron_storage_box
+item	ic2:iron_tank	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:iron_tank | recipe=iron_tank
+item	ic2:irrigation_tfbp	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/irrigation_tfbp
+item	ic2:item_buffer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:item_buffer | recipe=industry/shaped/item_buffer
+item	ic2:itnt	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:itnt | recipe=industry/shaped/itnt | recipe=industry/shaped/itnt_vertical
+item	ic2:jetpack	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/jetpack
+item	ic2:jetpack_attachment_plate	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/jetpack_attachment_plate
+item	ic2:kinetic_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:kinetic_generator | recipe=industry/shaped/kinetic_generator
+item	ic2:lapis_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=compressor/small_lapis_dust_to_lapis_dust | device=macerator/dense_lapis_plate_to_lapis_dust | device=macerator/lapis_lazuli_to_lapis_dust | device=macerator/plates_lapis_to_lapis_dust
+item	ic2:lapis_plate	False	True	device	device	device	device	device=block_cutter/lapis_block_to_lapis_plate | device=compressor/dusts_lapis_to_lapis_plate
+item	ic2:lapotron_crystal	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/lapotron_crystal
+item	ic2:lava_cell	True	True	recipe,world-use	recipe,world-use	recipe,world-use	recipe,world-use	recipe=industry/shapeless/lava_cell | world-use=fill cell with lava
+item	ic2:lava_sheet	False	True	recipe	recipe	recipe	recipe	recipe=world/lava_sheet
+item	ic2:lead_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/ingots_lead_to_lead_block | loot=ic2:lead_block | recipe=industry/shaped/lead_block
+item	ic2:lead_casing	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/plates_lead_to_lead_casing | recipe=observed/lead_casing
+item	ic2:lead_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_lead_to_lead_dust | device=centrifuge/purified_lead_to_lead_dust | device=compressor/small_lead_dust_to_lead_dust | device=macerator/crushed_lead_to_lead_dust
+item	ic2:lead_ingot	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=macerator/lead_block_to_lead_ingot | recipe=industry/shaped/lead_ingot | recipe=industry/smelting/lead_ingot | recipe=industry/smelting/lead_ingot_from_crushed_lead
+item	ic2:lead_ore	False	True	loot	loot	loot	loot	loot=ic2:lead_ore
+item	ic2:lead_plate	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/ingots_lead_to_lead_plate | recipe=observed/lead_plate
+item	ic2:light_blue_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/light_blue_painter
+item	ic2:light_blue_wall	False	True	loot	loot	loot	loot	loot=ic2:light_blue_wall
+item	ic2:light_gray_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/light_gray_painter
+item	ic2:light_gray_wall	False	True	loot	loot	loot	loot	loot=ic2:light_gray_wall
+item	ic2:lime_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/lime_painter
+item	ic2:lime_wall	False	True	loot	loot	loot	loot	loot=ic2:lime_wall
+item	ic2:liquid_heat_exchanger	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:liquid_heat_exchanger | recipe=industry/shaped/liquid_heat_exchanger
+item	ic2:lithium_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=compressor/small_lithium_dust_to_lithium_dust | recipe=observed/lithium_dust
+item	ic2:lithium_fuel_rod	False	True	recipe	recipe	recipe	recipe	recipe=classic/lithium_fuel_rod
+item	ic2:lv_transformer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:lv_transformer | recipe=industry/shaped/lv_transformer
+item	ic2:lzh_condensator	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/lzh_condensator
+item	ic2:macerator	True	True	recipe	recipe	recipe	recipe	recipe=macerator
+item	ic2:machine	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:macerator | loot=ic2:machine | recipe=machine
+item	ic2:magenta_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/magenta_painter
+item	ic2:magenta_wall	False	True	loot	loot	loot	loot	loot=ic2:magenta_wall
+item	ic2:magnetizer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:magnetizer | recipe=industry/shaped/magnetizer
+item	ic2:manual_kinetic_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:manual_kinetic_generator | recipe=industry/shapeless/manual_kinetic_generator
+item	ic2:mass_fabricator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:mass_fabricator | recipe=industry/shaped/mass_fabricator
+item	ic2:matter_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:matter_generator | recipe=industry/shaped/matter_generator
+item	ic2:metal_former	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:metal_former | recipe=industry/shaped/metal_former
+item	ic2:meter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/meter
+item	ic2:mfe	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:mfe | recipe=industry/shaped/mfe
+item	ic2:mfe_chargepad	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:mfe_chargepad | recipe=industry/shaped/mfe_chargepad
+item	ic2:mfsu	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:mfsu | recipe=industry/shaped/mfsu
+item	ic2:mfsu_chargepad	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:mfsu_chargepad | recipe=industry/shaped/mfsu_chargepad
+item	ic2:milk_wart	False	True	world-use	world-use	world-use	world-use	world-use=crop harvest
+item	ic2:miner	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:miner | recipe=industry/shaped/miner
+item	ic2:mining_laser	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/mining_laser
+item	ic2:mining_pipe	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:mining_pipe | loot=ic2:mining_pipe_tip | recipe=industry/shaped/mining_pipe
+item	ic2:mixed_metal_ingot	True	True	recipe	recipe	recipe	recipe	recipe=observed/mixed_metal_ingot
+item	ic2:mox	True	True	recipe	recipe	recipe	recipe	recipe=classic/mox | recipe=observed/mox_1 | recipe=observed/mox_2 | recipe=observed/mox_3
+item	ic2:mox_fuel_rod	False	True	device	device	device	device	device=canner_bottle/mox_fuel_rod
+item	ic2:mox_pellet	False	True	recipe	recipe	recipe	recipe	recipe=classic/mox_pellet
+item	ic2:mushroom_tfbp	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/mushroom_tfbp
+item	ic2:mv_transformer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:mv_transformer | recipe=industry/shaped/mv_transformer
+item	ic2:nano_boots	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/nano_boots
+item	ic2:nano_chestplate	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/nano_chestplate
+item	ic2:nano_helmet	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/nano_helmet
+item	ic2:nano_leggings	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/nano_leggings
+item	ic2:nano_saber	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/nano_saber
+item	ic2:near_depleted_uranium	False	True	recipe	recipe	recipe	recipe	recipe=classic/near_depleted_uranium
+item	ic2:netherrack_dust	False	True	device	device	device	device	device=macerator/netherrack_to_netherrack_dust
+item	ic2:neutron_reflector	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/neutron_reflector
+item	ic2:night_vision_goggles	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/night_vision_goggles
+item	ic2:nuclear_reactor	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:nuclear_reactor | recipe=industry/shaped/nuclear_reactor
+item	ic2:nuke	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:nuke | recipe=classic/nuke
+item	ic2:obscurator	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/obscurator
+item	ic2:obsidian_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=compressor/small_obsidian_dust_to_obsidian_dust | device=macerator/dense_obsidian_plate_to_obsidian_dust | device=macerator/obsidian_to_obsidian_dust | device=macerator/plates_obsidian_to_obsidian_dust
+item	ic2:obsidian_plate	False	True	device	device	device	device	device=block_cutter/obsidian_to_obsidian_plate | device=compressor/dusts_obsidian_to_obsidian_plate
+item	ic2:oil_berry	False	True	world-use	world-use	world-use	world-use	world-use=crop harvest
+item	ic2:orange_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/orange_painter
+item	ic2:orange_wall	False	True	loot	loot	loot	loot	loot=ic2:orange_wall
+item	ic2:ore_washing_plant	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:ore_washing_plant | recipe=industry/shaped/ore_washing_plant
+item	ic2:overclocked_heat_vent	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/overclocked_heat_vent
+item	ic2:overclocker_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/overclocker_upgrade_12 | recipe=industry/shaped/overclocker_upgrade_2 | recipe=industry/shaped/overclocker_upgrade_6
+item	ic2:oxygen_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:pahoehoe_lava_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/painter
+item	ic2:pattern_storage	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:pattern_storage | recipe=industry/shaped/pattern_storage
+item	ic2:pellet	False	True	recipe	recipe	recipe	recipe	recipe=classic/pellet
+item	ic2:personal_chest	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:personal_chest | recipe=industry/shaped/personal_chest
+item	ic2:pink_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/pink_painter
+item	ic2:pink_wall	False	True	loot	loot	loot	loot	loot=ic2:pink_wall
+item	ic2:plant_ball	True	True	recipe	recipe	recipe	recipe	recipe=observed/plant_ball_1 | recipe=observed/plant_ball_2 | recipe=observed/plant_ball_3 | recipe=observed/plant_ball_6
+item	ic2:plutonium	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/depleted_dual_mox_fuel_rod_to_small_plutonium | device=centrifuge/depleted_mox_fuel_rod_to_small_plutonium | device=centrifuge/depleted_quad_mox_fuel_rod_to_small_plutonium | device=centrifuge/rtg_pellet_to_plutonium
+item	ic2:power_unit	True	True	recipe	recipe	recipe	recipe	recipe=observed/power_unit
+item	ic2:pulling_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/pulling_upgrade | recipe=industry/shaped/pulling_upgrade_9
+item	ic2:pump	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:pump | recipe=industry/shaped/pump
+item	ic2:pump_cover_lv	True	True	recipe	recipe	recipe	recipe	recipe=pump_cover_lv
+item	ic2:pump_cover_mv	True	True	recipe	recipe	recipe	recipe	recipe=pump_cover_mv
+item	ic2:purified_copper	False	True	device	device	device	device	device=ore_washer/crushed_copper_to_purified_copper
+item	ic2:purified_gold	False	True	device	device	device	device	device=ore_washer/crushed_gold_to_purified_gold
+item	ic2:purified_iron	False	True	device	device	device	device	device=ore_washer/crushed_iron_to_purified_iron
+item	ic2:purified_lead	False	True	device	device	device	device	device=ore_washer/crushed_lead_to_purified_lead
+item	ic2:purified_silver	False	True	device	device	device	device	device=ore_washer/crushed_silver_to_purified_silver
+item	ic2:purified_tin	False	True	device	device	device	device	device=ore_washer/crushed_tin_to_purified_tin
+item	ic2:purified_uranium	False	True	device	device	device	device	device=ore_washer/crushed_uranium_to_purified_uranium
+item	ic2:purple_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/purple_painter
+item	ic2:purple_wall	False	True	loot	loot	loot	loot	loot=ic2:purple_wall
+item	ic2:quad_mox_fuel_rod	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/quad_mox_fuel_rod | recipe=industry/shaped/quad_mox_fuel_rod_from_dual
+item	ic2:quad_uranium_fuel_rod	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/quad_uranium_fuel_rod | recipe=industry/shaped/quad_uranium_fuel_rod_from_dual
+item	ic2:quantum_boots	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/quantum_boots
+item	ic2:quantum_chestplate	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/quantum_chestplate
+item	ic2:quantum_helmet	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/quantum_helmet
+item	ic2:quantum_leggings	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/quantum_leggings
+item	ic2:raw_crystal_memory	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/raw_crystal_memory
+item	ic2:raw_lead	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=macerator/raw_lead_block_to_raw_lead | loot=ic2:deepslate_lead_ore | loot=ic2:lead_ore | recipe=industry/shapeless/raw_ore/lead
+item	ic2:raw_lead_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/raw_lead_to_raw_lead_block | loot=ic2:raw_lead_block | recipe=industry/shaped/raw_lead_block
+item	ic2:raw_tin	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=macerator/raw_tin_block_to_raw_tin | loot=ic2:deepslate_tin_ore | loot=ic2:tin_ore | recipe=industry/shapeless/raw_ore/tin
+item	ic2:raw_tin_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/raw_tin_to_raw_tin_block | loot=ic2:raw_tin_block | recipe=industry/shaped/raw_tin_block
+item	ic2:raw_uranium	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=macerator/raw_uranium_block_to_raw_uranium | loot=ic2:deepslate_uranium_ore | loot=ic2:uranium_ore | recipe=industry/shapeless/raw_ore/uranium
+item	ic2:raw_uranium_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/raw_uranium_to_raw_uranium_block | loot=ic2:raw_uranium_block | recipe=industry/shaped/raw_uranium_block
+item	ic2:rci_lzh	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rci_lzh | recipe=industry/shaped/rci_lzh
+item	ic2:rci_rsh	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rci_rsh | recipe=industry/shaped/rci_rsh
+item	ic2:re_battery	True	True	recipe	recipe	recipe	recipe	recipe=re_battery
+item	ic2:re_enriched_uranium	False	True	device	device	device	device	device=reactor breeder conversion
+item	ic2:reactor_access_hatch	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reactor_access_hatch | recipe=industry/shaped/reactor_access_hatch
+item	ic2:reactor_chamber	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reactor_chamber | recipe=industry/shaped/reactor_chamber
+item	ic2:reactor_coolant_cell	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/reactor_coolant_cell
+item	ic2:reactor_fluid_port	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reactor_fluid_port | recipe=industry/shaped/reactor_fluid_port
+item	ic2:reactor_heat_exchanger	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/reactor_heat_exchanger
+item	ic2:reactor_heat_plating	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/reactor_heat_plating
+item	ic2:reactor_heat_vent	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/reactor_heat_vent
+item	ic2:reactor_plating	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/reactor_plating
+item	ic2:reactor_redstone_port	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reactor_redstone_port | recipe=industry/shaped/reactor_redstone_port
+item	ic2:reactor_vessel	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reactor_vessel | recipe=industry/shaped/reactor_vessel
+item	ic2:recycler	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:recycler | recipe=industry/shaped/recycler
+item	ic2:red_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/red_painter
+item	ic2:red_wall	False	True	loot	loot	loot	loot	loot=ic2:red_wall
+item	ic2:redstone_inverter_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/redstone_inverter_upgrade | recipe=industry/shaped/redstone_inverter_upgrade_9
+item	ic2:refined_iron_ingot	False	True	recipe	recipe	recipe	recipe	recipe=classic/refined_iron_ingot
+item	ic2:refractory_bricks	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:refractory_bricks | recipe=industry/shaped/refractory_bricks
+item	ic2:reinforced_door	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reinforced_door | recipe=industry/shaped/reinforced_door
+item	ic2:reinforced_glass	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reinforced_glass | recipe=industry/shaped/reinforced_glass | recipe=industry/shaped/reinforced_glass_2
+item	ic2:reinforced_iron_scaffold	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reinforced_iron_scaffold | recipe=world/reinforced_iron_scaffold
+item	ic2:reinforced_stone	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reinforced_stone | recipe=classic/reinforced_stone
+item	ic2:reinforced_wooden_scaffold	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:reinforced_wooden_scaffold | recipe=world/reinforced_wooden_scaffold
+item	ic2:remote_interface_upgrade	False	True	creative-only	creative-only	creative-only	creative-only	
+item	ic2:replicator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:replicator | recipe=industry/shaped/replicator
+item	ic2:resin	False	True	world-use	world-use	world-use	world-use	world-use=tap a grown rubber tree
+item	ic2:resin_sheet	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:resin_sheet | recipe=industry/shaped/resin_sheet
+item	ic2:rsh_condensator	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/rsh_condensator
+item	ic2:rt_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rt_generator | recipe=industry/shaped/rt_generator
+item	ic2:rt_heat_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rt_heat_generator | recipe=industry/shaped/rt_heat_generator
+item	ic2:rtg_pellet	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/rtg_pellet | recipe=industry/shaped/rtg_pellet_2 | recipe=industry/shaped/rtg_pellet_vertical | recipe=industry/shaped/rtg_pellet_vertical_2
+item	ic2:rubber	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=extractor/resin_to_rubber | device=extractor/rubber_log_to_rubber | device=extractor/rubber_sapling_to_rubber | recipe=rubber_from_resin
+item	ic2:rubber_boat	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/rubber_boat | recipe=industry/shapeless/rubber_boat_repair
+item	ic2:rubber_boots	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/rubber_boots
+item	ic2:rubber_button	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_button | recipe=industry/shapeless/rubber_button
+item	ic2:rubber_door	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_door | recipe=industry/shaped/rubber_door
+item	ic2:rubber_fence	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_fence | recipe=industry/shaped/rubber_fence
+item	ic2:rubber_fence_gate	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_fence_gate | recipe=industry/shaped/rubber_fence_gate
+item	ic2:rubber_leaves	False	True	loot	loot	loot	loot	loot=ic2:rubber_leaves
+item	ic2:rubber_log	False	True	loot	loot	loot	loot	loot=ic2:rubber_log
+item	ic2:rubber_planks	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_planks | recipe=industry/shapeless/rubber_planks
+item	ic2:rubber_pressure_plate	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_pressure_plate | recipe=industry/shaped/rubber_pressure_plate
+item	ic2:rubber_sapling	False	True	loot	loot	loot	loot	loot=ic2:rubber_leaves | loot=ic2:rubber_sapling
+item	ic2:rubber_sheet	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_sheet | recipe=industry/shaped/rubber_sheet
+item	ic2:rubber_sign	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_sign | loot=ic2:rubber_wall_sign | recipe=industry/shaped/rubber_sign
+item	ic2:rubber_slab	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_slab | recipe=industry/shaped/rubber_slab
+item	ic2:rubber_stairs	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_stairs | recipe=industry/shaped/rubber_stairs
+item	ic2:rubber_trapdoor	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_trapdoor | recipe=industry/shaped/rubber_trapdoor
+item	ic2:rubber_wood	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:rubber_wood | recipe=industry/shaped/rubber_wood
+item	ic2:scanner	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/scanner
+item	ic2:scrap	False	True	device	device	device	device	device=native recycler
+item	ic2:scrap_box	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/scrap_box
+item	ic2:semifluid_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:semifluid_generator | recipe=industry/shaped/semifluid_generator
+item	ic2:sextuple_reactor_coolant_cell	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/sextuple_reactor_coolant_cell
+item	ic2:silicon_dioxide_dust	False	True	device	device	device	device	device=centrifuge/clay_dust_to_silicon_dioxide_dust
+item	ic2:silver_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/ingots_silver_to_silver_block | loot=ic2:silver_block | recipe=industry/shaped/silver_block
+item	ic2:silver_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_silver_to_silver_dust | device=centrifuge/purified_silver_to_silver_dust | device=compressor/small_silver_dust_to_silver_dust | device=macerator/crushed_silver_to_silver_dust
+item	ic2:silver_ingot	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/silver_ingot | recipe=industry/smelting/silver_ingot_from_crushed_silver | recipe=industry/smelting/silver_ingot_from_purified_silver | recipe=industry/smelting/silver_ingot_from_silver_dust
+item	ic2:single_use_battery	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/single_use_battery | recipe=industry/shaped/single_use_battery_2
+item	ic2:slag	False	True	device	device	device	device	device=blast_furnace/crushed_iron_to_steel_ingot | device=blast_furnace/iron_ingot_to_steel_ingot | device=blast_furnace/iron_ore_to_steel_ingot | device=blast_furnace/purified_iron_to_steel_ingot
+item	ic2:small_bronze_dust	False	True	recipe	recipe	recipe	recipe	recipe=classic/small_bronze_dust
+item	ic2:small_copper_dust	False	True	device	device	device	device	device=centrifuge/purified_lead_to_lead_dust | device=ore_washer/crushed_copper_to_purified_copper
+item	ic2:small_diamond_dust	False	True	recipe	recipe	recipe	recipe	recipe=classic/small_diamond_dust
+item	ic2:small_emerald_dust	False	True	device	device	device	device	device=extractor/bobs_yer_uncle_ranks_berry_to_small_emerald_dust
+item	ic2:small_gold_dust	False	True	device	device	device	device	device=centrifuge/crushed_iron_to_iron_dust | device=centrifuge/purified_iron_to_iron_dust | device=centrifuge/slag_to_small_gold_dust | device=ore_washer/crushed_gold_to_purified_gold
+item	ic2:small_iron_dust	True	True	device	device	device	device	device=centrifuge/crushed_tin_to_tin_dust | device=centrifuge/purified_tin_to_tin_dust | device=ore_washer/crushed_iron_to_purified_iron
+item	ic2:small_lapis_dust	False	True	recipe	recipe	recipe	recipe	recipe=classic/small_lapis_dust
+item	ic2:small_lead_dust	False	True	device	device	device	device	device=centrifuge/purified_silver_to_silver_dust | device=ore_washer/crushed_uranium_to_purified_uranium
+item	ic2:small_lithium_dust	False	True	device	device	device	device	device=centrifuge/quartz_to_small_lithium_dust
+item	ic2:small_obsidian_dust	False	True	recipe	recipe	recipe	recipe	recipe=classic/small_obsidian_dust
+item	ic2:small_plutonium	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/depleted_dual_mox_fuel_rod_to_small_plutonium | device=centrifuge/depleted_dual_uranium_fuel_rod_to_small_plutonium | device=centrifuge/depleted_mox_fuel_rod_to_small_plutonium | device=centrifuge/depleted_quad_mox_fuel_rod_to_small_plutonium
+item	ic2:small_power_unit	True	True	recipe	recipe	recipe	recipe	recipe=observed/small_power_unit
+item	ic2:small_silver_dust	False	True	device	device	device	device	device=centrifuge/crushed_gold_to_gold_dust | device=centrifuge/purified_gold_to_gold_dust | device=ore_washer/crushed_silver_to_purified_silver
+item	ic2:small_sulfur_dust	False	True	device	device	device	device	device=extractor/netherrack_dust_to_small_sulfur_dust | device=extractor/netherrack_to_small_sulfur_dust | device=ore_washer/crushed_lead_to_purified_lead
+item	ic2:small_tin_dust	False	True	device	device	device	device	device=centrifuge/crushed_copper_to_copper_dust | device=centrifuge/purified_copper_to_copper_dust | device=ore_washer/crushed_tin_to_purified_tin
+item	ic2:small_uranium_235	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_uranium_to_small_uranium_235 | device=centrifuge/purified_uranium_to_small_uranium_235 | recipe=observed/small_uranium_235
+item	ic2:small_uranium_238	False	True	recipe	recipe	recipe	recipe	recipe=classic/small_uranium_238
+item	ic2:solar_distiller	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:solar_distiller | recipe=industry/shaped/solar_distiller
+item	ic2:solar_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:solar_generator | recipe=industry/shaped/solar_generator
+item	ic2:solar_helmet	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/solar_helmet | recipe=industry/shaped/solar_helmet_from_iron_helmet
+item	ic2:solid_canner	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:solid_canner | recipe=industry/shaped/solid_canner
+item	ic2:solid_heat_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:solid_heat_generator | recipe=industry/shaped/solid_heat_generator_from_furnace | recipe=industry/shaped/solid_heat_generator_from_iron_furnace
+item	ic2:sorting_machine	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:sorting_machine | recipe=industry/shaped/sorting_machine
+item	ic2:splitter_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:splitter_cable | loot=ic2:splitter_foam_cable | recipe=splitter_cable
+item	ic2:static_boots	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/static_boots | recipe=industry/shaped/static_boots_from_iron_boots
+item	ic2:steam_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:steam_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steam_generator | recipe=industry/shaped/steam_generator
+item	ic2:steam_kinetic_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steam_kinetic_generator | recipe=industry/shaped/steam_kinetic_generator
+item	ic2:steam_repressurizer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steam_repressurizer | recipe=industry/shaped/steam_repressurizer_from_iron_tank | recipe=industry/shaped/steam_repressurizer_from_tank
+item	ic2:steam_turbine	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/steam_turbine | recipe=industry/shaped/steam_turbine_vertical
+item	ic2:steam_turbine_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/steam_turbine_blade
+item	ic2:steel_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/ingots_steel_to_steel_block | loot=ic2:steel_block | recipe=industry/shaped/steel_block
+item	ic2:steel_casing	False	True	device	device	device	device	device=metal_former_rolling/plates_steel_to_steel_casing
+item	ic2:steel_cutting_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/steel_cutting_blade
+item	ic2:steel_fluid_pipe_large	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_fluid_pipe_large | recipe=steel_fluid_pipe_large
+item	ic2:steel_fluid_pipe_medium	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_fluid_pipe_medium | recipe=steel_fluid_pipe_medium
+item	ic2:steel_fluid_pipe_small	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_fluid_pipe_small | recipe=steel_fluid_pipe_small
+item	ic2:steel_fluid_pipe_tiny	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_fluid_pipe_tiny | recipe=steel_fluid_pipe_tiny
+item	ic2:steel_ingot	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=blast_furnace/crushed_iron_to_steel_ingot | device=blast_furnace/iron_ingot_to_steel_ingot | device=blast_furnace/iron_ore_to_steel_ingot | device=blast_furnace/purified_iron_to_steel_ingot
+item	ic2:steel_item_pipe_large	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_item_pipe_large | recipe=steel_item_pipe_large
+item	ic2:steel_item_pipe_medium	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_item_pipe_medium | recipe=steel_item_pipe_medium
+item	ic2:steel_item_pipe_small	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_item_pipe_small | recipe=steel_item_pipe_small
+item	ic2:steel_item_pipe_tiny	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_item_pipe_tiny | recipe=steel_item_pipe_tiny
+item	ic2:steel_plate	False	True	device	device	device	device	device=block_cutter/blocks_steel_to_steel_plate | device=metal_former_rolling/ingots_steel_to_steel_plate
+item	ic2:steel_rotor	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/steel_rotor
+item	ic2:steel_rotor_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/steel_rotor_blade
+item	ic2:steel_shaft	False	True	device	device	device	device	device=metal_former_extruding/blocks_steel_to_steel_shaft
+item	ic2:steel_storage_box	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_storage_box | recipe=industry/shaped/steel_storage_box
+item	ic2:steel_tank	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:steel_tank | recipe=steel_tank
+item	ic2:stirling_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:stirling_generator | recipe=industry/shaped/stirling_generator
+item	ic2:stirling_kinetic_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:stirling_kinetic_generator | recipe=industry/shaped/stirling_kinetic_generator
+item	ic2:stone_dust	False	True	device	device	device	device	device=centrifuge/cobblestone_to_stone_dust | device=centrifuge/crushed_copper_to_copper_dust | device=centrifuge/crushed_gold_to_gold_dust | device=centrifuge/crushed_iron_to_iron_dust
+item	ic2:stripped_rubber_log	False	True	loot	loot	loot	loot	loot=ic2:stripped_rubber_log
+item	ic2:stripped_rubber_wood	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:stripped_rubber_wood | recipe=industry/shaped/stripped_rubber_wood
+item	ic2:sulfur_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=compressor/small_sulfur_dust_to_sulfur_dust | device=extractor/gunpowder_to_sulfur_dust | recipe=observed/sulfur_dust
+item	ic2:superheated_steam_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:tank	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:tank | recipe=classic/tank
+item	ic2:teleporter	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:teleporter | recipe=industry/shaped/teleporter
+item	ic2:terra_wart	False	True	world-use	world-use	world-use	world-use	world-use=crop harvest
+item	ic2:terraformer	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:terraformer | recipe=industry/shaped/terraformer
+item	ic2:tesla_coil	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:tesla_coil | recipe=industry/shaped/tesla_coil
+item	ic2:thick_neutron_reflector	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/thick_neutron_reflector
+item	ic2:tin_block	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=compressor/ingots_tin_to_tin_block | loot=ic2:tin_block | recipe=industry/shaped/tin_block
+item	ic2:tin_cable	True	True	device,loot,recipe	device,loot,recipe	device,loot,recipe	device,loot,recipe	device=metal_former_cutting/plates_tin_to_tin_cable | device=metal_former_extruding/ingots_tin_to_tin_cable | loot=ic2:tin_cable | loot=ic2:tin_foam_cable
+item	ic2:tin_can	False	True	device	device	device	device	device=extractor/filled_tin_can_to_tin_can | device=metal_former_extruding/tin_casing_to_tin_can
+item	ic2:tin_casing	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/plates_tin_to_tin_casing | recipe=tin_casing
+item	ic2:tin_dust	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_tin_to_tin_dust | device=centrifuge/purified_tin_to_tin_dust | device=compressor/small_tin_dust_to_tin_dust | device=macerator/crushed_tin_to_tin_dust
+item	ic2:tin_ingot	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=macerator/tin_block_to_tin_ingot | recipe=industry/shaped/tin_ingot | recipe=industry/smelting/tin_ingot | recipe=industry/smelting/tin_ingot_from_crushed_tin
+item	ic2:tin_ore	False	True	loot	loot	loot	loot	loot=ic2:tin_ore
+item	ic2:tin_plate	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=metal_former_rolling/ingots_tin_to_tin_plate | recipe=tin_plate
+item	ic2:tool_box	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/tool_box
+item	ic2:trade_o_mat	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:trade_o_mat | recipe=industry/shaped/trade_o_mat
+item	ic2:transformer_upgrade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/transformer_upgrade
+item	ic2:treetap	True	True	recipe	recipe	recipe	recipe	recipe=treetap
+item	ic2:triple_insulated_iron_cable	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:triple_insulated_iron_cable | loot=ic2:triple_insulated_iron_foam_cable | recipe=triple_insulated_iron_cable
+item	ic2:triple_reactor_coolant_cell	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/triple_reactor_coolant_cell
+item	ic2:uranium	True	True	recipe	recipe	recipe	recipe	recipe=classic/uranium | recipe=observed/uranium | recipe=observed/uranium_2
+item	ic2:uranium_235	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/uranium_to_uranium_238 | device=compressor/small_uranium_235_to_uranium_235 | recipe=observed/uranium_235
+item	ic2:uranium_238	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=centrifuge/crushed_uranium_to_small_uranium_235 | device=centrifuge/depleted_dual_uranium_fuel_rod_to_small_plutonium | device=centrifuge/depleted_quad_uranium_fuel_rod_to_small_plutonium | device=centrifuge/depleted_uranium_fuel_rod_to_small_plutonium
+item	ic2:uranium_block	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:uranium_block | recipe=industry/shaped/uranium_block | recipe=industry/shaped/uranium_block_tagged
+item	ic2:uranium_fuel_rod	False	True	device,recipe	device,recipe	device,recipe	device,recipe	device=canner_bottle/uranium_fuel_rod | recipe=classic/uranium_fuel_rod
+item	ic2:uranium_ingot	True	True	device,recipe	device,recipe	device,recipe	device,recipe	device=macerator/uranium_block_to_uranium_ingot | recipe=industry/smelting/uranium_ingot | recipe=industry/smelting/uranium_ingot_from_crushed_uranium | recipe=industry/smelting/uranium_ingot_from_deepslate
+item	ic2:uranium_ore	False	True	loot	loot	loot	loot	loot=ic2:uranium_ore
+item	ic2:uranium_pellet	False	True	recipe	recipe	recipe	recipe	recipe=classic/uranium_pellet
+item	ic2:uu_assembly_bench	False	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:uu_assembly_bench | recipe=classic/uu_assembly_bench
+item	ic2:uu_matter	False	True	device	device	device	device	device=native mass_fabricator
+item	ic2:uu_matter_bucket	False	True	world-use	world-use	world-use	world-use	world-use=fill bucket from produced fluid
+item	ic2:uu_scanner	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:uu_scanner | recipe=industry/shaped/uu_scanner
+item	ic2:water_cell	True	True	recipe,world-use	recipe,world-use	recipe,world-use	recipe,world-use	recipe=industry/shapeless/water_cell | world-use=fill cell with water
+item	ic2:water_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:water_generator | recipe=industry/shaped/water_generator
+item	ic2:water_kinetic_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:water_kinetic_generator | recipe=industry/shaped/water_kinetic_generator
+item	ic2:water_sheet	False	True	recipe	recipe	recipe	recipe	recipe=world/water_sheet
+item	ic2:weed	False	True	world-use	world-use	world-use	world-use	world-use=crop harvest
+item	ic2:weed_ex_bucket	False	True	recipe,world-use	recipe,world-use	recipe,world-use	recipe,world-use	recipe=classic/weed_ex_bucket | world-use=fill bucket from produced fluid
+item	ic2:weed_ex_cell	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/weed_ex_cell
+item	ic2:weighted_fluid_distributor	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:weighted_fluid_distributor | recipe=industry/shaped/weighted_fluid_distributor
+item	ic2:weighted_item_distributor	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:weighted_item_distributor | recipe=industry/shaped/weighted_item_distributor
+item	ic2:white_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/white_painter
+item	ic2:white_wall	False	True	loot	loot	loot	loot	loot=ic2:obscured_wall | loot=ic2:white_wall
+item	ic2:wind_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:wind_generator | recipe=industry/shaped/wind_generator
+item	ic2:wind_kinetic_generator	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:wind_kinetic_generator | recipe=industry/shaped/wind_kinetic_generator
+item	ic2:wind_meter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/wind_meter
+item	ic2:wooden_rotor	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/wooden_rotor
+item	ic2:wooden_rotor_blade	True	True	recipe	recipe	recipe	recipe	recipe=industry/shaped/wooden_rotor_blade
+item	ic2:wooden_scaffold	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:wooden_scaffold | recipe=industry/shaped/wooden_scaffold
+item	ic2:wooden_storage_box	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:wooden_storage_box | recipe=industry/shaped/wooden_storage_box
+item	ic2:wool_sheet	True	True	loot,recipe	loot,recipe	loot,recipe	loot,recipe	loot=ic2:wool_sheet | recipe=industry/shaped/wool_sheet
+item	ic2:wrench	True	True	recipe	recipe	recipe	recipe	recipe=wrench | recipe=wrench_down
+item	ic2:yellow_painter	True	True	recipe	recipe	recipe	recipe	recipe=industry/shapeless/yellow_painter
+item	ic2:yellow_wall	False	True	loot	loot	loot	loot	loot=ic2:yellow_wall

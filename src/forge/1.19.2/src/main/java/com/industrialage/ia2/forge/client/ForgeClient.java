@@ -1,6 +1,9 @@
 package com.industrialage.ia2.forge.client;
 
 import com.industrialage.ia2.forge.ForgeNetwork;
+import com.industrialage.ia2.forge.content.ForgeContent;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
+import com.industrialage.ia2.industrial.WorkshopScreen;
 import com.industrialage.ia2.network.EchoProtocol;
 import com.mojang.blaze3d.platform.InputConstants;
 import java.util.function.Supplier;
@@ -9,7 +12,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.Connection;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -62,6 +67,22 @@ public final class ForgeClient {
                     client.playConnection = null;
                     echo.disconnected();
                 });
+    }
+
+    /** Wires machine menus and battery models to the physical client. */
+    public static void registerContent(IEventBus modBus) {
+        registerMenuScreen(modBus, ForgeContent::machineMenu, MachineScreen::new);
+        registerMenuScreen(modBus, WorkshopPlatform::menuType, WorkshopScreen::new);
+        modBus.addListener(
+                (FMLClientSetupEvent event) ->
+                        event.enqueueWork(
+                                () ->
+                                        ItemProperties.register(
+                                                ForgeContent.battery(),
+                                                ResourceLocation.fromNamespaceAndPath(
+                                                        "ic2", "charge"),
+                                                (stack, world, holder, seed) ->
+                                                        ForgeContent.batteryCharge(stack))));
     }
 
     /** Registers a screen factory on the client thread after its menu type is available. */

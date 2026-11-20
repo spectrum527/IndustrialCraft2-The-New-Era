@@ -1,0 +1,673 @@
+[
+  {
+    "id": "generator",
+    "screen": "MachineScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "slots": 38,
+    "anchors": [
+      [
+        57,
+        17
+      ],
+      [
+        57,
+        53
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        152,
+        142
+      ]
+    ],
+    "setup": [
+      "item replace block {target} container.0 with minecraft:coal"
+    ]
+  },
+  {
+    "id": "iron_furnace",
+    "screen": "MachineScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "slots": 39,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        116,
+        35
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        152,
+        142
+      ]
+    ],
+    "setup": [
+      "item replace block {target} container.0 with minecraft:raw_iron",
+      "item replace block {target} container.1 with minecraft:coal"
+    ]
+  },
+  {
+    "id": "macerator",
+    "screen": "MachineScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "slots": 43,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        116,
+        35
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        152,
+        142
+      ],
+      [
+        152,
+        8
+      ],
+      [
+        152,
+        26
+      ],
+      [
+        152,
+        44
+      ],
+      [
+        152,
+        62
+      ]
+    ],
+    "setup": [
+      "item replace block {target} container.0 with minecraft:coal",
+      "data merge block {target} {machine:{eu:900.0}}"
+    ]
+  },
+  {
+    "id": "compressor",
+    "screen": "MachineScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "slots": 43,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        116,
+        35
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        152,
+        142
+      ],
+      [
+        152,
+        8
+      ],
+      [
+        152,
+        26
+      ],
+      [
+        152,
+        44
+      ],
+      [
+        152,
+        62
+      ]
+    ],
+    "setup": [
+      "item replace block {target} container.0 with minecraft:snowball",
+      "data merge block {target} {machine:{eu:900.0}}"
+    ]
+  },
+  {
+    "id": "extractor",
+    "screen": "MachineScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "slots": 43,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        116,
+        35
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        152,
+        142
+      ],
+      [
+        152,
+        8
+      ],
+      [
+        152,
+        26
+      ],
+      [
+        152,
+        44
+      ],
+      [
+        152,
+        62
+      ]
+    ],
+    "setup": [
+      "item replace block {target} container.0 with ic2:resin",
+      "data merge block {target} {machine:{eu:900.0}}"
+    ]
+  },
+  {
+    "id": "electric_furnace",
+    "screen": "MachineScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "slots": 43,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        116,
+        35
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        152,
+        142
+      ],
+      [
+        152,
+        8
+      ],
+      [
+        152,
+        26
+      ],
+      [
+        152,
+        44
+      ],
+      [
+        152,
+        62
+      ]
+    ],
+    "setup": [
+      "item replace block {target} container.0 with minecraft:raw_iron",
+      "data merge block {target} {machine:{eu:900.0}}"
+    ]
+  },
+  {
+    "id": "batbox",
+    "screen": "MachineScreen",
+    "atlas": "guielectricblock",
+    "size": [
+      176,
+      196
+    ],
+    "slots": 42,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        114
+      ],
+      [
+        152,
+        172
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        26,
+        84
+      ],
+      [
+        44,
+        84
+      ],
+      [
+        62,
+        84
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:20000.0}}"
+    ],
+    "clicks": [
+      {
+        "at": [
+          162,
+          12
+        ],
+        "field": "redstoneMode",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "cesu",
+    "screen": "MachineScreen",
+    "atlas": "guielectricblock",
+    "size": [
+      176,
+      196
+    ],
+    "slots": 42,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        114
+      ],
+      [
+        152,
+        172
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        26,
+        84
+      ],
+      [
+        44,
+        84
+      ],
+      [
+        62,
+        84
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:150000.0}}"
+    ]
+  },
+  {
+    "id": "mfe",
+    "screen": "MachineScreen",
+    "atlas": "guielectricblock",
+    "size": [
+      176,
+      196
+    ],
+    "slots": 42,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        114
+      ],
+      [
+        152,
+        172
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        26,
+        84
+      ],
+      [
+        44,
+        84
+      ],
+      [
+        62,
+        84
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:2000000.0}}"
+    ]
+  },
+  {
+    "id": "mfsu",
+    "screen": "MachineScreen",
+    "atlas": "guielectricblock",
+    "size": [
+      176,
+      196
+    ],
+    "slots": 42,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        114
+      ],
+      [
+        152,
+        172
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        26,
+        84
+      ],
+      [
+        44,
+        84
+      ],
+      [
+        62,
+        84
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:20000000.0}}"
+    ]
+  },
+  {
+    "id": "batbox_chargepad",
+    "screen": "MachineScreen",
+    "atlas": "guichargepadblock",
+    "size": [
+      176,
+      161
+    ],
+    "slots": 38,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        79
+      ],
+      [
+        152,
+        137
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:20000.0}}"
+    ],
+    "clicks": [
+      {
+        "at": [
+          162,
+          12
+        ],
+        "field": "redstoneMode",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "cesu_chargepad",
+    "screen": "MachineScreen",
+    "atlas": "guichargepadblock",
+    "size": [
+      176,
+      161
+    ],
+    "slots": 38,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        79
+      ],
+      [
+        152,
+        137
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:150000.0}}"
+    ]
+  },
+  {
+    "id": "mfe_chargepad",
+    "screen": "MachineScreen",
+    "atlas": "guichargepadblock",
+    "size": [
+      176,
+      161
+    ],
+    "slots": 38,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        79
+      ],
+      [
+        152,
+        137
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:2000000.0}}"
+    ]
+  },
+  {
+    "id": "mfsu_chargepad",
+    "screen": "MachineScreen",
+    "atlas": "guichargepadblock",
+    "size": [
+      176,
+      161
+    ],
+    "slots": 38,
+    "anchors": [
+      [
+        56,
+        17
+      ],
+      [
+        56,
+        53
+      ],
+      [
+        8,
+        79
+      ],
+      [
+        152,
+        137
+      ]
+    ],
+    "setup": [
+      "data merge block {target} {machine:{eu:20000000.0}}"
+    ]
+  },
+  {
+    "id": "meter",
+    "kind": "item",
+    "target": "ic2:batbox",
+    "screen": "MeterScreen",
+    "atlas": "guitooleumeter",
+    "size": [
+      176,
+      217
+    ],
+    "slots": 36,
+    "anchors": [
+      [
+        8,
+        136
+      ],
+      [
+        152,
+        136
+      ],
+      [
+        8,
+        194
+      ],
+      [
+        152,
+        194
+      ]
+    ],
+    "clicks": [
+      {
+        "at": [
+          132,
+          74
+        ],
+        "field": "meterMode",
+        "value": 1
+      },
+      {
+        "at": [
+          132,
+          74
+        ],
+        "field": "meterMode",
+        "value": 2
+      },
+      {
+        "at": [
+          132,
+          74
+        ],
+        "field": "meterMode",
+        "value": 3
+      },
+      {
+        "at": [
+          132,
+          74
+        ],
+        "field": "meterMode",
+        "value": 0
+      }
+    ]
+  }
+]

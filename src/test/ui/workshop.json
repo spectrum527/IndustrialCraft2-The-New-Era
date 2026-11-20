@@ -1,0 +1,919 @@
+[
+  {
+    "id": "metal_former",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guimetalformer",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "ore_washing_plant",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiorewashingplant",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "centrifuge",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guithermalcentrifuge",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "blast_furnace",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiblastfurnacenew",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "induction_furnace",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "slots": 45,
+    "anchors": [[8, 84], [8, 142], [51, 53], [152, 8], [152, 26], [152, 44], [152, 62]],
+    "setup": [
+      "item replace entity {player} hotbar.1 with ic2:advanced_re_battery[ic2:eu=600.0d]"
+    ],
+    "clicks": [
+      {"at": [34, 150]},
+      {
+        "at": [59, 61],
+        "field": "machineEnergy",
+        "value": 600,
+        "expectSlot": {"at": [51, 53], "item": "ic2:advanced_re_battery", "count": 1},
+        "snapshot": "induction_furnace_battery",
+        "layout": {"size": [176, 166], "slots": 45}
+      }
+    ]
+  },
+  {
+    "id": "recycler",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "block_cutter",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiblockcutter",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "canner",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guicanner",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "solid_canner",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guisolidcanner",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "classic_canner",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "gui_canner_classic",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "coke_kiln",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "coke_kiln_grate",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "coke_kiln_hatch",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "uu_assembly_bench",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "solar_distiller",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guisolardestiller",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "liquid_heat_exchanger",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiheatsourcefluid",
+    "size": [
+      176,
+      204
+    ],
+    "anchors": [
+      [
+        8,
+        122
+      ],
+      [
+        8,
+        180
+      ]
+    ]
+  },
+  {
+    "id": "weighted_fluid_distributor",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiweightedfluiddistributor",
+    "size": [
+      176,
+      211
+    ],
+    "anchors": [
+      [
+        8,
+        129
+      ],
+      [
+        8,
+        187
+      ]
+    ]
+  },
+  {
+    "id": "fluid_bottler",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guibottler",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "fluid_regulator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guifluidregulator",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "fluid_distributor",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guifluiddistributor",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "pump",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "electrolyzer",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guielectrolyzer",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "stirling_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guistirlinggenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "fluid_heat_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guifluidheatgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "rt_heat_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guirtheatgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "fermenter",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guifermenter",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "semifluid_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guifluidgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "steam_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guisteamgenerator",
+    "size": [
+      176,
+      220
+    ]
+  },
+  {
+    "id": "steam_repressurizer",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guisteamrepressurizer",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "condenser",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guicondenser",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "steam_kinetic_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guisteamkineticgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "kinetic_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guikineticgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "electric_kinetic_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guielectrickineticgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "manual_kinetic_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ],
+    "held": "minecraft:stick"
+  },
+  {
+    "id": "stirling_kinetic_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guistirlingkineticgenerator",
+    "size": [
+      176,
+      204
+    ],
+    "anchors": [
+      [
+        8,
+        122
+      ],
+      [
+        8,
+        180
+      ]
+    ]
+  },
+  {
+    "id": "wind_kinetic_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiwindkineticgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "water_kinetic_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiwaterkineticgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "classic_electrolyzer",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "mass_fabricator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "classic_mass_fabricator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "matter_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guimatter",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "uu_scanner",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guiscanner",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "pattern_storage",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guipatternstorage",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "replicator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guireplicator",
+    "size": [
+      176,
+      184
+    ],
+    "anchors": [
+      [
+        8,
+        102
+      ],
+      [
+        8,
+        160
+      ]
+    ]
+  },
+  {
+    "id": "electric_heat_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guielectricheatgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "solid_heat_generator",
+    "kind": "block",
+    "screen": "WorkshopScreen",
+    "atlas": "guisolidheatgenerator",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  }
+]

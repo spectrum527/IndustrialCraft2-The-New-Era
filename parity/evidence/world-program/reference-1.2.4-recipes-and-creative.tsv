@@ -1,0 +1,1001 @@
+creative	ic2:advanced_batpack
+creative	ic2:advanced_charging_re_battery
+creative	ic2:advanced_circuit
+creative	ic2:advanced_ejector_upgrade
+creative	ic2:advanced_heat_exchanger
+creative	ic2:advanced_heat_vent
+creative	ic2:advanced_machine
+creative	ic2:advanced_miner
+creative	ic2:advanced_pulling_upgrade
+creative	ic2:advanced_re_battery
+creative	ic2:advanced_scanner
+creative	ic2:air_bucket
+creative	ic2:air_cell
+creative	ic2:alloy
+creative	ic2:alloy_chestplate
+creative	ic2:ashes
+creative	ic2:basalt
+creative	ic2:batbox
+creative	ic2:batbox_chargepad
+creative	ic2:batch_crafter
+creative	ic2:batpack
+creative	ic2:bio_cell
+creative	ic2:bio_chaff
+creative	ic2:biofuel_cell
+creative	ic2:biogas_bucket
+creative	ic2:biomass_bucket
+creative	ic2:black_painter
+creative	ic2:black_wall
+creative	ic2:blank_tfbp
+creative	ic2:blast_furnace
+creative	ic2:block_cutter
+creative	ic2:blue_painter
+creative	ic2:blue_wall
+creative	ic2:bobs_yer_uncle_ranks_berry
+creative	ic2:broken_rubber_boat
+creative	ic2:bronze_axe
+creative	ic2:bronze_block
+creative	ic2:bronze_boots
+creative	ic2:bronze_casing
+creative	ic2:bronze_chestplate
+creative	ic2:bronze_dust
+creative	ic2:bronze_fluid_pipe_large
+creative	ic2:bronze_fluid_pipe_medium
+creative	ic2:bronze_fluid_pipe_small
+creative	ic2:bronze_fluid_pipe_tiny
+creative	ic2:bronze_helmet
+creative	ic2:bronze_hoe
+creative	ic2:bronze_ingot
+creative	ic2:bronze_item_pipe_large
+creative	ic2:bronze_item_pipe_medium
+creative	ic2:bronze_item_pipe_small
+creative	ic2:bronze_item_pipe_tiny
+creative	ic2:bronze_leggings
+creative	ic2:bronze_pickaxe
+creative	ic2:bronze_plate
+creative	ic2:bronze_rotor
+creative	ic2:bronze_rotor_blade
+creative	ic2:bronze_shaft
+creative	ic2:bronze_shovel
+creative	ic2:bronze_storage_box
+creative	ic2:bronze_sword
+creative	ic2:bronze_tank
+creative	ic2:brown_painter
+creative	ic2:brown_wall
+creative	ic2:canner
+creative	ic2:carbon_boat
+creative	ic2:carbon_fibre
+creative	ic2:carbon_mesh
+creative	ic2:carbon_plate
+creative	ic2:carbon_rotor
+creative	ic2:carbon_rotor_blade
+creative	ic2:centrifuge
+creative	ic2:cesu
+creative	ic2:cesu_chargepad
+creative	ic2:cf_pack
+creative	ic2:cf_powder
+creative	ic2:chainsaw
+creative	ic2:charging_energy_crystal
+creative	ic2:charging_lapotron_crystal
+creative	ic2:charging_re_battery
+creative	ic2:chilling_tfbp
+creative	ic2:chunk_loader
+creative	ic2:circuit
+creative	ic2:classic_canner
+creative	ic2:classic_cropmatron
+creative	ic2:classic_electrolyzer
+creative	ic2:classic_mass_fabricator
+creative	ic2:classic_mfe
+creative	ic2:classic_mfsu
+creative	ic2:classic_nuke
+creative	ic2:clay_dust
+creative	ic2:coal_ball
+creative	ic2:coal_block
+creative	ic2:coal_chunk
+creative	ic2:coal_dust
+creative	ic2:coal_fuel_dust
+creative	ic2:coalfuel_cell
+creative	ic2:coffee_beans
+creative	ic2:coffee_mug
+creative	ic2:coffee_powder
+creative	ic2:coil
+creative	ic2:coin
+creative	ic2:coke
+creative	ic2:coke_kiln
+creative	ic2:coke_kiln_grate
+creative	ic2:coke_kiln_hatch
+creative	ic2:cold_coffee_mug
+creative	ic2:component_heat_exchanger
+creative	ic2:component_heat_vent
+creative	ic2:compressed_hydrated_coal
+creative	ic2:compressed_plants
+creative	ic2:compressor
+creative	ic2:condenser
+creative	ic2:construction_foam_bucket
+creative	ic2:containment_box
+creative	ic2:containment_reactor_plating
+creative	ic2:coolant_bucket
+creative	ic2:copper_boiler
+creative	ic2:copper_cable
+creative	ic2:copper_casing
+creative	ic2:copper_dust
+creative	ic2:copper_ingot
+creative	ic2:copper_plate
+creative	ic2:creative_generator
+creative	ic2:creosote_bucket
+creative	ic2:crop_harvester
+creative	ic2:crop_seed_bag
+creative	ic2:crop_stick
+creative	ic2:cropmatron
+creative	ic2:cropnalyzer
+creative	ic2:crowbar
+creative	ic2:crushed_copper
+creative	ic2:crushed_gold
+creative	ic2:crushed_iron
+creative	ic2:crushed_lead
+creative	ic2:crushed_silver
+creative	ic2:crushed_tin
+creative	ic2:crushed_uranium
+creative	ic2:crystal_memory
+creative	ic2:cultivation_tfbp
+creative	ic2:cutter
+creative	ic2:cyan_painter
+creative	ic2:cyan_wall
+creative	ic2:dark_coffee_mug
+creative	ic2:deepslate_lead_ore
+creative	ic2:deepslate_tin_ore
+creative	ic2:deepslate_uranium_ore
+creative	ic2:dense_bronze_plate
+creative	ic2:dense_copper_plate
+creative	ic2:dense_gold_plate
+creative	ic2:dense_iron_plate
+creative	ic2:dense_lapis_plate
+creative	ic2:dense_lead_plate
+creative	ic2:dense_obsidian_plate
+creative	ic2:dense_steel_plate
+creative	ic2:dense_tin_plate
+creative	ic2:depleted_dual_mox_fuel_rod
+creative	ic2:depleted_dual_uranium_fuel_rod
+creative	ic2:depleted_isotope_fuel_rod
+creative	ic2:depleted_mox_fuel_rod
+creative	ic2:depleted_quad_mox_fuel_rod
+creative	ic2:depleted_quad_uranium_fuel_rod
+creative	ic2:depleted_uranium_fuel_rod
+creative	ic2:desertification_tfbp
+creative	ic2:detector_cable
+creative	ic2:diamond_cutting_blade
+creative	ic2:diamond_drill
+creative	ic2:diamond_dust
+creative	ic2:distilled_water_bucket
+creative	ic2:double_insulated_gold_cable
+creative	ic2:double_insulated_iron_cable
+creative	ic2:drill
+creative	ic2:dual_mox_fuel_rod
+creative	ic2:dual_uranium_fuel_rod
+creative	ic2:ejector_upgrade
+creative	ic2:electric_boat
+creative	ic2:electric_furnace
+creative	ic2:electric_heat_generator
+creative	ic2:electric_jetpack
+creative	ic2:electric_kinetic_generator
+creative	ic2:electric_motor
+creative	ic2:electric_treetap
+creative	ic2:electric_wrench
+creative	ic2:electrolyzed_water_cell
+creative	ic2:electrolyzer
+creative	ic2:emerald_dust
+creative	ic2:empty_cell
+creative	ic2:empty_fuel_can
+creative	ic2:empty_mug
+creative	ic2:ender_pearl_dust
+creative	ic2:energium_dust
+creative	ic2:energy_crystal
+creative	ic2:energy_o_mat
+creative	ic2:energy_pack
+creative	ic2:energy_storage_upgrade
+creative	ic2:ev_transformer
+creative	ic2:extractor
+creative	ic2:fermenter
+creative	ic2:fertilizer
+creative	ic2:filled_fuel_can
+creative	ic2:filled_tin_can
+creative	ic2:flatification_tfbp
+creative	ic2:fluid_bottler
+creative	ic2:fluid_cell
+creative	ic2:fluid_distributor
+creative	ic2:fluid_ejector_upgrade
+creative	ic2:fluid_heat_generator
+creative	ic2:fluid_pulling_upgrade
+creative	ic2:fluid_regulator
+creative	ic2:foam
+creative	ic2:forge_hammer
+creative	ic2:frequency_transmitter
+creative	ic2:fuel_rod
+creative	ic2:generator
+creative	ic2:geo_generator
+creative	ic2:glass_fibre_cable
+creative	ic2:gold_cable
+creative	ic2:gold_casing
+creative	ic2:gold_dust
+creative	ic2:gold_plate
+creative	ic2:gray_painter
+creative	ic2:gray_wall
+creative	ic2:green_painter
+creative	ic2:green_wall
+creative	ic2:grin_powder
+creative	ic2:hazmat_chestplate
+creative	ic2:hazmat_helmet
+creative	ic2:hazmat_leggings
+creative	ic2:heat_conductor
+creative	ic2:heat_exchanger
+creative	ic2:heat_vent
+creative	ic2:heatpack
+creative	ic2:heavy_water_bucket
+creative	ic2:hops
+creative	ic2:hot_coolant_bucket
+creative	ic2:hot_water_bucket
+creative	ic2:hv_transformer
+creative	ic2:hydrated_coal_cell
+creative	ic2:hydrated_tin_dust
+creative	ic2:hydration_cell
+creative	ic2:hydrogen_bucket
+creative	ic2:induction_furnace
+creative	ic2:industrial_diamond
+creative	ic2:industrial_workbench
+creative	ic2:insulated_copper_cable
+creative	ic2:insulated_gold_cable
+creative	ic2:insulated_iron_cable
+creative	ic2:insulated_tin_cable
+creative	ic2:iodine
+creative	ic2:iodine_tablet
+creative	ic2:iridium
+creative	ic2:iridium_drill
+creative	ic2:iridium_neutron_reflector
+creative	ic2:iridium_ore
+creative	ic2:iridium_shard
+creative	ic2:iridium_storage_box
+creative	ic2:iridium_tank
+creative	ic2:iron_cable
+creative	ic2:iron_casing
+creative	ic2:iron_cutting_blade
+creative	ic2:iron_dust
+creative	ic2:iron_fence
+creative	ic2:iron_furnace
+creative	ic2:iron_plate
+creative	ic2:iron_rotor
+creative	ic2:iron_rotor_blade
+creative	ic2:iron_scaffold
+creative	ic2:iron_shaft
+creative	ic2:iron_storage_box
+creative	ic2:iron_tank
+creative	ic2:irrigation_tfbp
+creative	ic2:item_buffer
+creative	ic2:itnt
+creative	ic2:jetpack
+creative	ic2:jetpack_attachment_plate
+creative	ic2:kinetic_generator
+creative	ic2:lapis_dust
+creative	ic2:lapis_plate
+creative	ic2:lapotron_crystal
+creative	ic2:lava_cell
+creative	ic2:lava_sheet
+creative	ic2:lead_block
+creative	ic2:lead_casing
+creative	ic2:lead_dust
+creative	ic2:lead_ingot
+creative	ic2:lead_ore
+creative	ic2:lead_plate
+creative	ic2:light_blue_painter
+creative	ic2:light_blue_wall
+creative	ic2:light_gray_painter
+creative	ic2:light_gray_wall
+creative	ic2:lime_painter
+creative	ic2:lime_wall
+creative	ic2:liquid_heat_exchanger
+creative	ic2:lithium_dust
+creative	ic2:lithium_fuel_rod
+creative	ic2:lv_transformer
+creative	ic2:lzh_condensator
+creative	ic2:macerator
+creative	ic2:machine
+creative	ic2:magenta_painter
+creative	ic2:magenta_wall
+creative	ic2:magnetizer
+creative	ic2:manual_kinetic_generator
+creative	ic2:mass_fabricator
+creative	ic2:matter_generator
+creative	ic2:metal_former
+creative	ic2:meter
+creative	ic2:mfe
+creative	ic2:mfe_chargepad
+creative	ic2:mfsu
+creative	ic2:mfsu_chargepad
+creative	ic2:milk_wart
+creative	ic2:miner
+creative	ic2:mining_laser
+creative	ic2:mining_pipe
+creative	ic2:mixed_metal_ingot
+creative	ic2:mox
+creative	ic2:mox_fuel_rod
+creative	ic2:mox_pellet
+creative	ic2:mushroom_tfbp
+creative	ic2:mv_transformer
+creative	ic2:nano_boots
+creative	ic2:nano_chestplate
+creative	ic2:nano_helmet
+creative	ic2:nano_leggings
+creative	ic2:nano_saber
+creative	ic2:near_depleted_uranium
+creative	ic2:netherrack_dust
+creative	ic2:neutron_reflector
+creative	ic2:night_vision_goggles
+creative	ic2:nuclear_reactor
+creative	ic2:nuke
+creative	ic2:obscurator
+creative	ic2:obsidian_dust
+creative	ic2:obsidian_plate
+creative	ic2:oil_berry
+creative	ic2:orange_painter
+creative	ic2:orange_wall
+creative	ic2:ore_washing_plant
+creative	ic2:overclocked_heat_vent
+creative	ic2:overclocker_upgrade
+creative	ic2:oxygen_bucket
+creative	ic2:pahoehoe_lava_bucket
+creative	ic2:painter
+creative	ic2:pattern_storage
+creative	ic2:pellet
+creative	ic2:personal_chest
+creative	ic2:pink_painter
+creative	ic2:pink_wall
+creative	ic2:plant_ball
+creative	ic2:plutonium
+creative	ic2:power_unit
+creative	ic2:pulling_upgrade
+creative	ic2:pump
+creative	ic2:pump_cover_lv
+creative	ic2:pump_cover_mv
+creative	ic2:purified_copper
+creative	ic2:purified_gold
+creative	ic2:purified_iron
+creative	ic2:purified_lead
+creative	ic2:purified_silver
+creative	ic2:purified_tin
+creative	ic2:purified_uranium
+creative	ic2:purple_painter
+creative	ic2:purple_wall
+creative	ic2:quad_mox_fuel_rod
+creative	ic2:quad_uranium_fuel_rod
+creative	ic2:quantum_boots
+creative	ic2:quantum_chestplate
+creative	ic2:quantum_helmet
+creative	ic2:quantum_leggings
+creative	ic2:raw_crystal_memory
+creative	ic2:raw_lead
+creative	ic2:raw_lead_block
+creative	ic2:raw_tin
+creative	ic2:raw_tin_block
+creative	ic2:raw_uranium
+creative	ic2:raw_uranium_block
+creative	ic2:rci_lzh
+creative	ic2:rci_rsh
+creative	ic2:re_battery
+creative	ic2:re_enriched_uranium
+creative	ic2:reactor_access_hatch
+creative	ic2:reactor_chamber
+creative	ic2:reactor_coolant_cell
+creative	ic2:reactor_fluid_port
+creative	ic2:reactor_heat_exchanger
+creative	ic2:reactor_heat_plating
+creative	ic2:reactor_heat_vent
+creative	ic2:reactor_plating
+creative	ic2:reactor_redstone_port
+creative	ic2:reactor_vessel
+creative	ic2:recycler
+creative	ic2:red_painter
+creative	ic2:red_wall
+creative	ic2:redstone_inverter_upgrade
+creative	ic2:refined_iron_ingot
+creative	ic2:refractory_bricks
+creative	ic2:reinforced_door
+creative	ic2:reinforced_glass
+creative	ic2:reinforced_iron_scaffold
+creative	ic2:reinforced_stone
+creative	ic2:reinforced_wooden_scaffold
+creative	ic2:remote_interface_upgrade
+creative	ic2:replicator
+creative	ic2:resin
+creative	ic2:resin_sheet
+creative	ic2:rsh_condensator
+creative	ic2:rt_generator
+creative	ic2:rt_heat_generator
+creative	ic2:rtg_pellet
+creative	ic2:rubber
+creative	ic2:rubber_boat
+creative	ic2:rubber_boots
+creative	ic2:rubber_button
+creative	ic2:rubber_door
+creative	ic2:rubber_fence
+creative	ic2:rubber_fence_gate
+creative	ic2:rubber_leaves
+creative	ic2:rubber_log
+creative	ic2:rubber_planks
+creative	ic2:rubber_pressure_plate
+creative	ic2:rubber_sapling
+creative	ic2:rubber_sheet
+creative	ic2:rubber_sign
+creative	ic2:rubber_slab
+creative	ic2:rubber_stairs
+creative	ic2:rubber_trapdoor
+creative	ic2:rubber_wood
+creative	ic2:scanner
+creative	ic2:scrap
+creative	ic2:scrap_box
+creative	ic2:semifluid_generator
+creative	ic2:sextuple_reactor_coolant_cell
+creative	ic2:silicon_dioxide_dust
+creative	ic2:silver_block
+creative	ic2:silver_dust
+creative	ic2:silver_ingot
+creative	ic2:single_use_battery
+creative	ic2:slag
+creative	ic2:small_bronze_dust
+creative	ic2:small_copper_dust
+creative	ic2:small_diamond_dust
+creative	ic2:small_emerald_dust
+creative	ic2:small_gold_dust
+creative	ic2:small_iron_dust
+creative	ic2:small_lapis_dust
+creative	ic2:small_lead_dust
+creative	ic2:small_lithium_dust
+creative	ic2:small_obsidian_dust
+creative	ic2:small_plutonium
+creative	ic2:small_power_unit
+creative	ic2:small_silver_dust
+creative	ic2:small_sulfur_dust
+creative	ic2:small_tin_dust
+creative	ic2:small_uranium_235
+creative	ic2:small_uranium_238
+creative	ic2:solar_distiller
+creative	ic2:solar_generator
+creative	ic2:solar_helmet
+creative	ic2:solid_canner
+creative	ic2:solid_heat_generator
+creative	ic2:sorting_machine
+creative	ic2:splitter_cable
+creative	ic2:static_boots
+creative	ic2:steam_bucket
+creative	ic2:steam_generator
+creative	ic2:steam_kinetic_generator
+creative	ic2:steam_repressurizer
+creative	ic2:steam_turbine
+creative	ic2:steam_turbine_blade
+creative	ic2:steel_block
+creative	ic2:steel_casing
+creative	ic2:steel_cutting_blade
+creative	ic2:steel_fluid_pipe_large
+creative	ic2:steel_fluid_pipe_medium
+creative	ic2:steel_fluid_pipe_small
+creative	ic2:steel_fluid_pipe_tiny
+creative	ic2:steel_ingot
+creative	ic2:steel_item_pipe_large
+creative	ic2:steel_item_pipe_medium
+creative	ic2:steel_item_pipe_small
+creative	ic2:steel_item_pipe_tiny
+creative	ic2:steel_plate
+creative	ic2:steel_rotor
+creative	ic2:steel_rotor_blade
+creative	ic2:steel_shaft
+creative	ic2:steel_storage_box
+creative	ic2:steel_tank
+creative	ic2:stirling_generator
+creative	ic2:stirling_kinetic_generator
+creative	ic2:stone_dust
+creative	ic2:stripped_rubber_log
+creative	ic2:stripped_rubber_wood
+creative	ic2:sulfur_dust
+creative	ic2:superheated_steam_bucket
+creative	ic2:tank
+creative	ic2:teleporter
+creative	ic2:terra_wart
+creative	ic2:terraformer
+creative	ic2:tesla_coil
+creative	ic2:thick_neutron_reflector
+creative	ic2:tin_block
+creative	ic2:tin_cable
+creative	ic2:tin_can
+creative	ic2:tin_casing
+creative	ic2:tin_dust
+creative	ic2:tin_ingot
+creative	ic2:tin_ore
+creative	ic2:tin_plate
+creative	ic2:tool_box
+creative	ic2:trade_o_mat
+creative	ic2:transformer_upgrade
+creative	ic2:treetap
+creative	ic2:triple_insulated_iron_cable
+creative	ic2:triple_reactor_coolant_cell
+creative	ic2:uranium
+creative	ic2:uranium_235
+creative	ic2:uranium_238
+creative	ic2:uranium_block
+creative	ic2:uranium_fuel_rod
+creative	ic2:uranium_ingot
+creative	ic2:uranium_ore
+creative	ic2:uranium_pellet
+creative	ic2:uu_assembly_bench
+creative	ic2:uu_matter
+creative	ic2:uu_matter_bucket
+creative	ic2:uu_scanner
+creative	ic2:water_cell
+creative	ic2:water_generator
+creative	ic2:water_kinetic_generator
+creative	ic2:water_sheet
+creative	ic2:weed
+creative	ic2:weed_ex_bucket
+creative	ic2:weed_ex_cell
+creative	ic2:weighted_fluid_distributor
+creative	ic2:weighted_item_distributor
+creative	ic2:white_painter
+creative	ic2:white_wall
+creative	ic2:wind_generator
+creative	ic2:wind_kinetic_generator
+creative	ic2:wind_meter
+creative	ic2:wooden_rotor
+creative	ic2:wooden_rotor_blade
+creative	ic2:wooden_scaffold
+creative	ic2:wooden_storage_box
+creative	ic2:wool_sheet
+creative	ic2:wrench
+creative	ic2:yellow_painter
+creative	ic2:yellow_wall
+recipe	ic2:shaped/advanced_batpack	ic2:advanced_batpack
+recipe	ic2:shaped/advanced_charging_re_battery	ic2:advanced_charging_re_battery
+recipe	ic2:shaped/advanced_circuit	ic2:advanced_circuit
+recipe	ic2:shaped/advanced_circuit_vertical	ic2:advanced_circuit
+recipe	ic2:shaped/advanced_heat_exchanger	ic2:advanced_heat_exchanger
+recipe	ic2:shaped/advanced_heat_vent	ic2:advanced_heat_vent
+recipe	ic2:shaped/advanced_machine	ic2:advanced_machine
+recipe	ic2:shaped/advanced_machine_vertical	ic2:advanced_machine
+recipe	ic2:shaped/advanced_miner	ic2:advanced_miner
+recipe	ic2:shaped/advanced_re_battery	ic2:advanced_re_battery
+recipe	ic2:shaped/advanced_scanner	ic2:advanced_scanner
+recipe	ic2:shaped/alloy_chestplate	ic2:alloy_chestplate
+recipe	ic2:shaped/alloy_chestplate_2	ic2:alloy_chestplate
+recipe	ic2:shaped/batbox	ic2:batbox
+recipe	ic2:shaped/batbox_chargepad	ic2:batbox_chargepad
+recipe	ic2:shaped/batch_crafter	ic2:batch_crafter
+recipe	ic2:shaped/batpack	ic2:batpack
+recipe	ic2:shaped/blank_tfbp	ic2:blank_tfbp
+recipe	ic2:shaped/blast_furnace	ic2:blast_furnace
+recipe	ic2:shaped/block_cutter	ic2:block_cutter
+recipe	ic2:shaped/bronze_axe	ic2:bronze_axe
+recipe	ic2:shaped/bronze_block	ic2:bronze_block
+recipe	ic2:shaped/bronze_boots	ic2:bronze_boots
+recipe	ic2:shaped/bronze_chestplate	ic2:bronze_chestplate
+recipe	ic2:shaped/bronze_dust	ic2:bronze_dust
+recipe	ic2:shaped/bronze_helmet	ic2:bronze_helmet
+recipe	ic2:shaped/bronze_hoe	ic2:bronze_hoe
+recipe	ic2:shaped/bronze_ingot	ic2:bronze_ingot
+recipe	ic2:shaped/bronze_leggings	ic2:bronze_leggings
+recipe	ic2:shaped/bronze_pickaxe	ic2:bronze_pickaxe
+recipe	ic2:shaped/bronze_rotor	ic2:bronze_rotor
+recipe	ic2:shaped/bronze_rotor_blade	ic2:bronze_rotor_blade
+recipe	ic2:shaped/bronze_shovel	ic2:bronze_shovel
+recipe	ic2:shaped/bronze_storage_box	ic2:bronze_storage_box
+recipe	ic2:shaped/bronze_sword	ic2:bronze_sword
+recipe	ic2:shaped/bronze_tank	ic2:bronze_tank
+recipe	ic2:shaped/canner	ic2:canner
+recipe	ic2:shaped/carbon_boat	ic2:carbon_boat
+recipe	ic2:shaped/carbon_fibre	ic2:carbon_fibre
+recipe	ic2:shaped/carbon_rotor	ic2:carbon_rotor
+recipe	ic2:shaped/carbon_rotor_blade	ic2:carbon_rotor_blade
+recipe	ic2:shaped/centrifuge	ic2:centrifuge
+recipe	ic2:shaped/cesu	ic2:cesu
+recipe	ic2:shaped/cesu_chargepad	ic2:cesu_chargepad
+recipe	ic2:shaped/cf_pack	ic2:cf_pack
+recipe	ic2:shaped/cf_powder	ic2:cf_powder
+recipe	ic2:shaped/chainsaw	ic2:chainsaw
+recipe	ic2:shaped/charging_energy_crystal	ic2:charging_energy_crystal
+recipe	ic2:shaped/charging_lapotron_crystal	ic2:charging_lapotron_crystal
+recipe	ic2:shaped/charging_re_battery	ic2:charging_re_battery
+recipe	ic2:shaped/chilling_tfbp	ic2:chilling_tfbp
+recipe	ic2:shaped/chunk_loader	ic2:chunk_loader
+recipe	ic2:shaped/circuit	ic2:circuit
+recipe	ic2:shaped/circuit_vertical	ic2:circuit
+recipe	ic2:shaped/coal_ball	ic2:coal_ball
+recipe	ic2:shaped/coal_chunk	ic2:coal_chunk
+recipe	ic2:shaped/coal_fuel_dust	ic2:coal_fuel_dust
+recipe	ic2:shaped/coil	ic2:coil
+recipe	ic2:shaped/component_heat_exchanger	ic2:component_heat_exchanger
+recipe	ic2:shaped/component_heat_vent	ic2:component_heat_vent
+recipe	ic2:shaped/compressor	ic2:compressor
+recipe	ic2:shaped/condenser	ic2:condenser
+recipe	ic2:shaped/containment_box	ic2:containment_box
+recipe	ic2:shaped/copper_boiler	ic2:copper_boiler
+recipe	ic2:shaped/copper_dust	ic2:copper_dust
+recipe	ic2:shaped/crop_harvester	ic2:crop_harvester
+recipe	ic2:shaped/crop_stick	ic2:crop_stick
+recipe	ic2:shaped/cropmatron	ic2:cropmatron
+recipe	ic2:shaped/cropnalyzer	ic2:cropnalyzer
+recipe	ic2:shaped/crowbar	ic2:crowbar
+recipe	ic2:shaped/cultivation_tfbp	ic2:cultivation_tfbp
+recipe	ic2:shaped/cutter	ic2:cutter
+recipe	ic2:shaped/desertification_tfbp	ic2:desertification_tfbp
+recipe	ic2:shaped/detector_cable	ic2:detector_cable
+recipe	ic2:shaped/diamond_cutting_blade	ic2:diamond_cutting_blade
+recipe	ic2:shaped/diamond_drill	ic2:diamond_drill
+recipe	ic2:shaped/diamond_dust_from_small_dust	ic2:diamond_dust
+recipe	ic2:shaped/drill	ic2:drill
+recipe	ic2:shaped/dual_mox_fuel_rod	ic2:dual_mox_fuel_rod
+recipe	ic2:shaped/dual_uranium_fuel_rod	ic2:dual_uranium_fuel_rod
+recipe	ic2:shaped/ejector_upgrade	ic2:ejector_upgrade
+recipe	ic2:shaped/ejector_upgrade_9	ic2:ejector_upgrade
+recipe	ic2:shaped/electric_boat	ic2:electric_boat
+recipe	ic2:shaped/electric_furnace	ic2:electric_furnace
+recipe	ic2:shaped/electric_heat_generator	ic2:electric_heat_generator
+recipe	ic2:shaped/electric_jetpack	ic2:electric_jetpack
+recipe	ic2:shaped/electric_kinetic_generator	ic2:electric_kinetic_generator
+recipe	ic2:shaped/electric_motor	ic2:electric_motor
+recipe	ic2:shaped/electric_motor_vertical	ic2:electric_motor
+recipe	ic2:shaped/electrolyzer	ic2:electrolyzer
+recipe	ic2:shaped/emerald_dust_from_small_dust	ic2:emerald_dust
+recipe	ic2:shaped/empty_cell	ic2:empty_cell
+recipe	ic2:shaped/empty_mug	ic2:empty_mug
+recipe	ic2:shaped/energium_dust	ic2:energium_dust
+recipe	ic2:shaped/energy_o_mat	ic2:energy_o_mat
+recipe	ic2:shaped/energy_pack	ic2:energy_pack
+recipe	ic2:shaped/energy_storage_upgrade	ic2:energy_storage_upgrade
+recipe	ic2:shaped/ev_transformer	ic2:ev_transformer
+recipe	ic2:shaped/extractor	ic2:extractor
+recipe	ic2:shaped/fermenter	ic2:fermenter
+recipe	ic2:shaped/flatification_tfbp	ic2:flatification_tfbp
+recipe	ic2:shaped/fluid_bottler	ic2:fluid_bottler
+recipe	ic2:shaped/fluid_cell	ic2:fluid_cell
+recipe	ic2:shaped/fluid_distributor	ic2:fluid_distributor
+recipe	ic2:shaped/fluid_ejector_upgrade	ic2:fluid_ejector_upgrade
+recipe	ic2:shaped/fluid_ejector_upgrade_9	ic2:fluid_ejector_upgrade
+recipe	ic2:shaped/fluid_heat_generator	ic2:fluid_heat_generator
+recipe	ic2:shaped/fluid_pulling_upgrade	ic2:fluid_pulling_upgrade
+recipe	ic2:shaped/fluid_pulling_upgrade_9	ic2:fluid_pulling_upgrade
+recipe	ic2:shaped/fluid_regulator	ic2:fluid_regulator
+recipe	ic2:shaped/forge_hammer	ic2:forge_hammer
+recipe	ic2:shaped/forge_hammer_2	ic2:forge_hammer
+recipe	ic2:shaped/generator_from_furnace	ic2:generator
+recipe	ic2:shaped/generator_from_iron_furnace	ic2:generator
+recipe	ic2:shaped/geo_generator	ic2:geo_generator
+recipe	ic2:shaped/glass_fibre_cable	ic2:glass_fibre_cable
+recipe	ic2:shaped/gold_dust	ic2:gold_dust
+recipe	ic2:shaped/hazmat_chestplate	ic2:hazmat_chestplate
+recipe	ic2:shaped/hazmat_helmet	ic2:hazmat_helmet
+recipe	ic2:shaped/hazmat_leggings	ic2:hazmat_leggings
+recipe	ic2:shaped/heat_conductor	ic2:heat_conductor
+recipe	ic2:shaped/heat_exchanger_from_copper	ic2:heat_exchanger
+recipe	ic2:shaped/heat_exchanger_from_gold	ic2:heat_exchanger
+recipe	ic2:shaped/heat_vent	ic2:heat_vent
+recipe	ic2:shaped/hv_transformer	ic2:hv_transformer
+recipe	ic2:shaped/induction_furnace	ic2:induction_furnace
+recipe	ic2:shaped/industrial_workbench	ic2:industrial_workbench
+recipe	ic2:shaped/iridium	ic2:iridium
+recipe	ic2:shaped/iridium_drill	ic2:iridium_drill
+recipe	ic2:shaped/iridium_neutron_reflector	ic2:iridium_neutron_reflector
+recipe	ic2:shaped/iridium_neutron_reflector_vertical	ic2:iridium_neutron_reflector
+recipe	ic2:shaped/iridium_storage_box	ic2:iridium_storage_box
+recipe	ic2:shaped/iridium_tank	ic2:iridium_tank
+recipe	ic2:shaped/iron_cutting_blade	ic2:iron_cutting_blade
+recipe	ic2:shaped/iron_dust	ic2:iron_dust
+recipe	ic2:shaped/iron_furnace	ic2:iron_furnace
+recipe	ic2:shaped/iron_rotor	ic2:iron_rotor
+recipe	ic2:shaped/iron_rotor_blade	ic2:iron_rotor_blade
+recipe	ic2:shaped/iron_scaffold	ic2:iron_scaffold
+recipe	ic2:shaped/iron_storage_box	ic2:iron_storage_box
+recipe	ic2:shaped/iron_tank	ic2:iron_tank
+recipe	ic2:shaped/irrigation_tfbp	ic2:irrigation_tfbp
+recipe	ic2:shaped/item_buffer	ic2:item_buffer
+recipe	ic2:shaped/itnt	ic2:itnt
+recipe	ic2:shaped/itnt_vertical	ic2:itnt
+recipe	ic2:shaped/jetpack	ic2:jetpack
+recipe	ic2:shaped/jetpack_attachment_plate	ic2:jetpack_attachment_plate
+recipe	ic2:shaped/kinetic_generator	ic2:kinetic_generator
+recipe	ic2:shaped/lapis_dust	ic2:lapis_dust
+recipe	ic2:shaped/lapotron_crystal	ic2:lapotron_crystal
+recipe	ic2:shaped/lead_block	ic2:lead_block
+recipe	ic2:shaped/lead_dust	ic2:lead_dust
+recipe	ic2:shaped/lead_ingot	ic2:lead_ingot
+recipe	ic2:shaped/liquid_heat_exchanger	ic2:liquid_heat_exchanger
+recipe	ic2:shaped/lithium_dust	ic2:lithium_dust
+recipe	ic2:shaped/lv_transformer	ic2:lv_transformer
+recipe	ic2:shaped/lzh_condensator	ic2:lzh_condensator
+recipe	ic2:shaped/macerator	ic2:macerator
+recipe	ic2:shaped/machine	ic2:machine
+recipe	ic2:shaped/magnetizer	ic2:magnetizer
+recipe	ic2:shaped/mass_fabricator	ic2:mass_fabricator
+recipe	ic2:shaped/matter_generator	ic2:matter_generator
+recipe	ic2:shaped/metal_former	ic2:metal_former
+recipe	ic2:shaped/meter	ic2:meter
+recipe	ic2:shaped/mfe	ic2:mfe
+recipe	ic2:shaped/mfe_chargepad	ic2:mfe_chargepad
+recipe	ic2:shaped/mfsu	ic2:mfsu
+recipe	ic2:shaped/mfsu_chargepad	ic2:mfsu_chargepad
+recipe	ic2:shaped/miner	ic2:miner
+recipe	ic2:shaped/mining_laser	ic2:mining_laser
+recipe	ic2:shaped/mining_pipe	ic2:mining_pipe
+recipe	ic2:shaped/mixed_metal_ingot	ic2:mixed_metal_ingot
+recipe	ic2:shaped/mox_1	ic2:mox
+recipe	ic2:shaped/mox_2	ic2:mox
+recipe	ic2:shaped/mox_3	ic2:mox
+recipe	ic2:shaped/mox_4	ic2:mox
+recipe	ic2:shaped/mushroom_tfbp	ic2:mushroom_tfbp
+recipe	ic2:shaped/mv_transformer	ic2:mv_transformer
+recipe	ic2:shaped/nano_boots	ic2:nano_boots
+recipe	ic2:shaped/nano_chestplate	ic2:nano_chestplate
+recipe	ic2:shaped/nano_helmet	ic2:nano_helmet
+recipe	ic2:shaped/nano_leggings	ic2:nano_leggings
+recipe	ic2:shaped/nano_saber	ic2:nano_saber
+recipe	ic2:shaped/neutron_reflector	ic2:neutron_reflector
+recipe	ic2:shaped/night_vision_goggles	ic2:night_vision_goggles
+recipe	ic2:shaped/nuclear_reactor	ic2:nuclear_reactor
+recipe	ic2:shaped/nuke	ic2:nuke
+recipe	ic2:shaped/obscurator	ic2:obscurator
+recipe	ic2:shaped/obsidian_dust	ic2:obsidian_dust
+recipe	ic2:shaped/ore_washing_plant	ic2:ore_washing_plant
+recipe	ic2:shaped/overclocked_heat_vent	ic2:overclocked_heat_vent
+recipe	ic2:shaped/overclocker_upgrade_12	ic2:overclocker_upgrade
+recipe	ic2:shaped/overclocker_upgrade_2	ic2:overclocker_upgrade
+recipe	ic2:shaped/overclocker_upgrade_6	ic2:overclocker_upgrade
+recipe	ic2:shaped/painter	ic2:painter
+recipe	ic2:shaped/pattern_storage	ic2:pattern_storage
+recipe	ic2:shaped/personal_chest	ic2:personal_chest
+recipe	ic2:shaped/plant_ball_1	ic2:plant_ball
+recipe	ic2:shaped/plant_ball_2	ic2:plant_ball
+recipe	ic2:shaped/plant_ball_3	ic2:plant_ball
+recipe	ic2:shaped/plant_ball_4	ic2:plant_ball
+recipe	ic2:shaped/plant_ball_5	ic2:plant_ball
+recipe	ic2:shaped/plant_ball_6	ic2:plant_ball
+recipe	ic2:shaped/plant_ball_7	ic2:plant_ball
+recipe	ic2:shaped/plutonium	ic2:plutonium
+recipe	ic2:shaped/power_unit	ic2:power_unit
+recipe	ic2:shaped/pulling_upgrade	ic2:pulling_upgrade
+recipe	ic2:shaped/pulling_upgrade_9	ic2:pulling_upgrade
+recipe	ic2:shaped/pump	ic2:pump
+recipe	ic2:shaped/quad_mox_fuel_rod	ic2:quad_mox_fuel_rod
+recipe	ic2:shaped/quad_mox_fuel_rod_from_dual	ic2:quad_mox_fuel_rod
+recipe	ic2:shaped/quad_uranium_fuel_rod	ic2:quad_uranium_fuel_rod
+recipe	ic2:shaped/quad_uranium_fuel_rod_from_dual	ic2:quad_uranium_fuel_rod
+recipe	ic2:shaped/quantum_boots	ic2:quantum_boots
+recipe	ic2:shaped/quantum_chestplate	ic2:quantum_chestplate
+recipe	ic2:shaped/quantum_helmet	ic2:quantum_helmet
+recipe	ic2:shaped/quantum_leggings	ic2:quantum_leggings
+recipe	ic2:shaped/raw_crystal_memory	ic2:raw_crystal_memory
+recipe	ic2:shaped/raw_lead_block	ic2:raw_lead_block
+recipe	ic2:shaped/raw_tin_block	ic2:raw_tin_block
+recipe	ic2:shaped/raw_uranium_block	ic2:raw_uranium_block
+recipe	ic2:shaped/rci_lzh	ic2:rci_lzh
+recipe	ic2:shaped/rci_rsh	ic2:rci_rsh
+recipe	ic2:shaped/re_battery	ic2:re_battery
+recipe	ic2:shaped/reactor_access_hatch	ic2:reactor_access_hatch
+recipe	ic2:shaped/reactor_chamber	ic2:reactor_chamber
+recipe	ic2:shaped/reactor_coolant_cell	ic2:reactor_coolant_cell
+recipe	ic2:shaped/reactor_fluid_port	ic2:reactor_fluid_port
+recipe	ic2:shaped/reactor_heat_exchanger	ic2:reactor_heat_exchanger
+recipe	ic2:shaped/reactor_heat_plating	ic2:reactor_heat_plating
+recipe	ic2:shaped/reactor_heat_vent	ic2:reactor_heat_vent
+recipe	ic2:shaped/reactor_redstone_port	ic2:reactor_redstone_port
+recipe	ic2:shaped/reactor_vessel	ic2:reactor_vessel
+recipe	ic2:shaped/recycler	ic2:recycler
+recipe	ic2:shaped/redstone_inverter_upgrade	ic2:redstone_inverter_upgrade
+recipe	ic2:shaped/redstone_inverter_upgrade_9	ic2:redstone_inverter_upgrade
+recipe	ic2:shaped/refractory_bricks	ic2:refractory_bricks
+recipe	ic2:shaped/reinforced_door	ic2:reinforced_door
+recipe	ic2:shaped/reinforced_glass	ic2:reinforced_glass
+recipe	ic2:shaped/reinforced_glass_2	ic2:reinforced_glass
+recipe	ic2:shaped/replicator	ic2:replicator
+recipe	ic2:shaped/resin_sheet	ic2:resin_sheet
+recipe	ic2:shaped/rsh_condensator	ic2:rsh_condensator
+recipe	ic2:shaped/rt_generator	ic2:rt_generator
+recipe	ic2:shaped/rt_heat_generator	ic2:rt_heat_generator
+recipe	ic2:shaped/rtg_pellet	ic2:rtg_pellet
+recipe	ic2:shaped/rtg_pellet_2	ic2:rtg_pellet
+recipe	ic2:shaped/rtg_pellet_vertical	ic2:rtg_pellet
+recipe	ic2:shaped/rtg_pellet_vertical_2	ic2:rtg_pellet
+recipe	ic2:shaped/rubber_boat	ic2:rubber_boat
+recipe	ic2:shaped/rubber_boots	ic2:rubber_boots
+recipe	ic2:shaped/rubber_door	ic2:rubber_door
+recipe	ic2:shaped/rubber_fence	ic2:rubber_fence
+recipe	ic2:shaped/rubber_fence_gate	ic2:rubber_fence_gate
+recipe	ic2:shaped/rubber_pressure_plate	ic2:rubber_pressure_plate
+recipe	ic2:shaped/rubber_sheet	ic2:rubber_sheet
+recipe	ic2:shaped/rubber_sign	ic2:rubber_sign
+recipe	ic2:shaped/rubber_slab	ic2:rubber_slab
+recipe	ic2:shaped/rubber_stairs	ic2:rubber_stairs
+recipe	ic2:shaped/rubber_trapdoor	ic2:rubber_trapdoor
+recipe	ic2:shaped/rubber_wood	ic2:rubber_wood
+recipe	ic2:shaped/scanner	ic2:scanner
+recipe	ic2:shaped/scrap_box	ic2:scrap_box
+recipe	ic2:shaped/semifluid_generator	ic2:semifluid_generator
+recipe	ic2:shaped/sextuple_reactor_coolant_cell	ic2:sextuple_reactor_coolant_cell
+recipe	ic2:shaped/silver_block	ic2:silver_block
+recipe	ic2:shaped/silver_dust	ic2:silver_dust
+recipe	ic2:shaped/silver_ingot	ic2:silver_ingot
+recipe	ic2:shaped/single_use_battery	ic2:single_use_battery
+recipe	ic2:shaped/single_use_battery_2	ic2:single_use_battery
+recipe	ic2:shaped/small_iron_dust	ic2:small_iron_dust
+recipe	ic2:shaped/small_iron_dust_2	ic2:small_iron_dust
+recipe	ic2:shaped/small_power_unit	ic2:small_power_unit
+recipe	ic2:shaped/solar_distiller	ic2:solar_distiller
+recipe	ic2:shaped/solar_generator	ic2:solar_generator
+recipe	ic2:shaped/solar_helmet	ic2:solar_helmet
+recipe	ic2:shaped/solar_helmet_from_iron_helmet	ic2:solar_helmet
+recipe	ic2:shaped/solid_canner	ic2:solid_canner
+recipe	ic2:shaped/solid_heat_generator_from_furnace	ic2:solid_heat_generator
+recipe	ic2:shaped/solid_heat_generator_from_iron_furnace	ic2:solid_heat_generator
+recipe	ic2:shaped/sorting_machine	ic2:sorting_machine
+recipe	ic2:shaped/splitter_cable	ic2:splitter_cable
+recipe	ic2:shaped/static_boots	ic2:static_boots
+recipe	ic2:shaped/static_boots_from_iron_boots	ic2:static_boots
+recipe	ic2:shaped/steam_generator	ic2:steam_generator
+recipe	ic2:shaped/steam_kinetic_generator	ic2:steam_kinetic_generator
+recipe	ic2:shaped/steam_repressurizer_from_iron_tank	ic2:steam_repressurizer
+recipe	ic2:shaped/steam_repressurizer_from_tank	ic2:steam_repressurizer
+recipe	ic2:shaped/steam_turbine	ic2:steam_turbine
+recipe	ic2:shaped/steam_turbine_blade	ic2:steam_turbine_blade
+recipe	ic2:shaped/steam_turbine_vertical	ic2:steam_turbine
+recipe	ic2:shaped/steel_block	ic2:steel_block
+recipe	ic2:shaped/steel_cutting_blade	ic2:steel_cutting_blade
+recipe	ic2:shaped/steel_ingot	ic2:steel_ingot
+recipe	ic2:shaped/steel_rotor	ic2:steel_rotor
+recipe	ic2:shaped/steel_rotor_blade	ic2:steel_rotor_blade
+recipe	ic2:shaped/steel_storage_box	ic2:steel_storage_box
+recipe	ic2:shaped/steel_tank	ic2:steel_tank
+recipe	ic2:shaped/stirling_generator	ic2:stirling_generator
+recipe	ic2:shaped/stirling_kinetic_generator	ic2:stirling_kinetic_generator
+recipe	ic2:shaped/stripped_rubber_wood	ic2:stripped_rubber_wood
+recipe	ic2:shaped/sulfur_dust	ic2:sulfur_dust
+recipe	ic2:shaped/teleporter	ic2:teleporter
+recipe	ic2:shaped/terraformer	ic2:terraformer
+recipe	ic2:shaped/tesla_coil	ic2:tesla_coil
+recipe	ic2:shaped/thick_neutron_reflector	ic2:thick_neutron_reflector
+recipe	ic2:shaped/tin_block	ic2:tin_block
+recipe	ic2:shaped/tin_dust	ic2:tin_dust
+recipe	ic2:shaped/tin_ingot	ic2:tin_ingot
+recipe	ic2:shaped/tool_box	ic2:tool_box
+recipe	ic2:shaped/trade_o_mat	ic2:trade_o_mat
+recipe	ic2:shaped/transformer_upgrade	ic2:transformer_upgrade
+recipe	ic2:shaped/treetap	ic2:treetap
+recipe	ic2:shaped/triple_reactor_coolant_cell	ic2:triple_reactor_coolant_cell
+recipe	ic2:shaped/uranium	ic2:uranium
+recipe	ic2:shaped/uranium_2	ic2:uranium
+recipe	ic2:shaped/uranium_235	ic2:uranium_235
+recipe	ic2:shaped/uranium_block	ic2:uranium_block
+recipe	ic2:shaped/uranium_block_tagged	ic2:uranium_block
+recipe	ic2:shaped/uu_scanner	ic2:uu_scanner
+recipe	ic2:shaped/water_generator	ic2:water_generator
+recipe	ic2:shaped/water_kinetic_generator	ic2:water_kinetic_generator
+recipe	ic2:shaped/weed_ex_cell	ic2:weed_ex_cell
+recipe	ic2:shaped/weighted_fluid_distributor	ic2:weighted_fluid_distributor
+recipe	ic2:shaped/weighted_item_distributor	ic2:weighted_item_distributor
+recipe	ic2:shaped/wind_generator	ic2:wind_generator
+recipe	ic2:shaped/wind_kinetic_generator	ic2:wind_kinetic_generator
+recipe	ic2:shaped/wind_meter	ic2:wind_meter
+recipe	ic2:shaped/wooden_rotor	ic2:wooden_rotor
+recipe	ic2:shaped/wooden_rotor_blade	ic2:wooden_rotor_blade
+recipe	ic2:shaped/wooden_scaffold	ic2:wooden_scaffold
+recipe	ic2:shaped/wooden_storage_box	ic2:wooden_storage_box
+recipe	ic2:shaped/wool_sheet	ic2:wool_sheet
+recipe	ic2:shaped/wrench	ic2:wrench
+recipe	ic2:shaped/wrench_down	ic2:wrench
+recipe	ic2:shapeless/black_painter	ic2:black_painter
+recipe	ic2:shapeless/blue_painter	ic2:blue_painter
+recipe	ic2:shapeless/bronze_casing	ic2:bronze_casing
+recipe	ic2:shapeless/bronze_dust	ic2:bronze_dust
+recipe	ic2:shapeless/bronze_plate	ic2:bronze_plate
+recipe	ic2:shapeless/brown_painter	ic2:brown_painter
+recipe	ic2:shapeless/carbon_mesh	ic2:carbon_mesh
+recipe	ic2:shapeless/coal_fuel_dust	ic2:coal_fuel_dust
+recipe	ic2:shapeless/coffee_mug	ic2:coffee_mug
+recipe	ic2:shapeless/coffee_powder	ic2:coffee_powder
+recipe	ic2:shapeless/coke_kiln	ic2:coke_kiln
+recipe	ic2:shapeless/coke_kiln_grate	ic2:coke_kiln_grate
+recipe	ic2:shapeless/coke_kiln_hatch	ic2:coke_kiln_hatch
+recipe	ic2:shapeless/cold_coffee_mug	ic2:cold_coffee_mug
+recipe	ic2:shapeless/containment_reactor_plating	ic2:containment_reactor_plating
+recipe	ic2:shapeless/copper_cable	ic2:copper_cable
+recipe	ic2:shapeless/copper_casing	ic2:copper_casing
+recipe	ic2:shapeless/copper_plate	ic2:copper_plate
+recipe	ic2:shapeless/cyan_painter	ic2:cyan_painter
+recipe	ic2:shapeless/double_insulated_gold_cable	ic2:double_insulated_gold_cable
+recipe	ic2:shapeless/double_insulated_gold_cable_2	ic2:double_insulated_gold_cable
+recipe	ic2:shapeless/double_insulated_iron_cable	ic2:double_insulated_iron_cable
+recipe	ic2:shapeless/double_insulated_iron_cable_2	ic2:double_insulated_iron_cable
+recipe	ic2:shapeless/electric_treetap	ic2:electric_treetap
+recipe	ic2:shapeless/electric_wrench	ic2:electric_wrench
+recipe	ic2:shapeless/fertilizer	ic2:fertilizer
+recipe	ic2:shapeless/fertilizer_2	ic2:fertilizer
+recipe	ic2:shapeless/frequency_transmitter	ic2:frequency_transmitter
+recipe	ic2:shapeless/gold_cable	ic2:gold_cable
+recipe	ic2:shapeless/gold_casing	ic2:gold_casing
+recipe	ic2:shapeless/gold_plate	ic2:gold_plate
+recipe	ic2:shapeless/gray_painter	ic2:gray_painter
+recipe	ic2:shapeless/green_painter	ic2:green_painter
+recipe	ic2:shapeless/hydrated_tin_dust	ic2:hydrated_tin_dust
+recipe	ic2:shapeless/insulated_copper_cable	ic2:insulated_copper_cable
+recipe	ic2:shapeless/insulated_gold_cable	ic2:insulated_gold_cable
+recipe	ic2:shapeless/insulated_iron_cable	ic2:insulated_iron_cable
+recipe	ic2:shapeless/insulated_tin_cable	ic2:insulated_tin_cable
+recipe	ic2:shapeless/iodine_tablet	ic2:iodine_tablet
+recipe	ic2:shapeless/iron_casing	ic2:iron_casing
+recipe	ic2:shapeless/iron_plate	ic2:iron_plate
+recipe	ic2:shapeless/lava_cell	ic2:lava_cell
+recipe	ic2:shapeless/lead_casing	ic2:lead_casing
+recipe	ic2:shapeless/lead_plate	ic2:lead_plate
+recipe	ic2:shapeless/light_blue_painter	ic2:light_blue_painter
+recipe	ic2:shapeless/light_gray_painter	ic2:light_gray_painter
+recipe	ic2:shapeless/lime_painter	ic2:lime_painter
+recipe	ic2:shapeless/magenta_painter	ic2:magenta_painter
+recipe	ic2:shapeless/manual_kinetic_generator	ic2:manual_kinetic_generator
+recipe	ic2:shapeless/orange_painter	ic2:orange_painter
+recipe	ic2:shapeless/pink_painter	ic2:pink_painter
+recipe	ic2:shapeless/purple_painter	ic2:purple_painter
+recipe	ic2:shapeless/raw_ore/lead	ic2:raw_lead
+recipe	ic2:shapeless/raw_ore/tin	ic2:raw_tin
+recipe	ic2:shapeless/raw_ore/uranium	ic2:raw_uranium
+recipe	ic2:shapeless/reactor_plating	ic2:reactor_plating
+recipe	ic2:shapeless/red_painter	ic2:red_painter
+recipe	ic2:shapeless/rubber_boat_repair	ic2:rubber_boat
+recipe	ic2:shapeless/rubber_button	ic2:rubber_button
+recipe	ic2:shapeless/rubber_planks	ic2:rubber_planks
+recipe	ic2:shapeless/small_plutonium	ic2:small_plutonium
+recipe	ic2:shapeless/small_uranium_235	ic2:small_uranium_235
+recipe	ic2:shapeless/tin_cable	ic2:tin_cable
+recipe	ic2:shapeless/tin_casing	ic2:tin_casing
+recipe	ic2:shapeless/tin_plate	ic2:tin_plate
+recipe	ic2:shapeless/triple_insulated_iron_cable	ic2:triple_insulated_iron_cable
+recipe	ic2:shapeless/triple_insulated_iron_cable_2	ic2:triple_insulated_iron_cable
+recipe	ic2:shapeless/triple_insulated_iron_cable_3	ic2:triple_insulated_iron_cable
+recipe	ic2:shapeless/uranium_238	ic2:uranium_238
+recipe	ic2:shapeless/water_cell	ic2:water_cell
+recipe	ic2:shapeless/white_painter	ic2:white_painter
+recipe	ic2:shapeless/yellow_painter	ic2:yellow_painter
+recipe	ic2:smelting/bronze_ingot_from_bronze_dust	ic2:bronze_ingot
+recipe	ic2:smelting/coal_dust	ic2:coal_dust
+recipe	ic2:smelting/crystal_memory	ic2:crystal_memory
+recipe	ic2:smelting/dark_coffee_mug	ic2:dark_coffee_mug
+recipe	ic2:smelting/lead_ingot	ic2:lead_ingot
+recipe	ic2:smelting/lead_ingot_from_crushed_lead	ic2:lead_ingot
+recipe	ic2:smelting/lead_ingot_from_deepslate	ic2:lead_ingot
+recipe	ic2:smelting/lead_ingot_from_lead_dust	ic2:lead_ingot
+recipe	ic2:smelting/lead_ingot_from_purified_lead	ic2:lead_ingot
+recipe	ic2:smelting/lead_ingot_from_raw_lead	ic2:lead_ingot
+recipe	ic2:smelting/rubber	ic2:rubber
+recipe	ic2:smelting/silver_ingot_from_crushed_silver	ic2:silver_ingot
+recipe	ic2:smelting/silver_ingot_from_purified_silver	ic2:silver_ingot
+recipe	ic2:smelting/silver_ingot_from_silver_dust	ic2:silver_ingot
+recipe	ic2:smelting/tin_ingot	ic2:tin_ingot
+recipe	ic2:smelting/tin_ingot_from_crushed_tin	ic2:tin_ingot
+recipe	ic2:smelting/tin_ingot_from_deepslate	ic2:tin_ingot
+recipe	ic2:smelting/tin_ingot_from_purified_tin	ic2:tin_ingot
+recipe	ic2:smelting/tin_ingot_from_raw_tin	ic2:tin_ingot
+recipe	ic2:smelting/tin_ingot_from_tin_dust	ic2:tin_ingot
+recipe	ic2:smelting/uranium_ingot	ic2:uranium_ingot
+recipe	ic2:smelting/uranium_ingot_from_crushed_uranium	ic2:uranium_ingot
+recipe	ic2:smelting/uranium_ingot_from_deepslate	ic2:uranium_ingot
+recipe	ic2:smelting/uranium_ingot_from_purified_uranium	ic2:uranium_ingot
+recipe	ic2:smelting/uranium_ingot_from_raw_uranium	ic2:uranium_ingot
+recipe	ic2:transport/bronze_fluid_pipe_large	ic2:bronze_fluid_pipe_large
+recipe	ic2:transport/bronze_fluid_pipe_medium	ic2:bronze_fluid_pipe_medium
+recipe	ic2:transport/bronze_fluid_pipe_small	ic2:bronze_fluid_pipe_small
+recipe	ic2:transport/bronze_fluid_pipe_tiny	ic2:bronze_fluid_pipe_tiny
+recipe	ic2:transport/bronze_item_pipe_large	ic2:bronze_item_pipe_large
+recipe	ic2:transport/bronze_item_pipe_medium	ic2:bronze_item_pipe_medium
+recipe	ic2:transport/bronze_item_pipe_small	ic2:bronze_item_pipe_small
+recipe	ic2:transport/bronze_item_pipe_tiny	ic2:bronze_item_pipe_tiny
+recipe	ic2:transport/pump_cover_lv	ic2:pump_cover_lv
+recipe	ic2:transport/pump_cover_mv	ic2:pump_cover_mv
+recipe	ic2:transport/steel_fluid_pipe_large	ic2:steel_fluid_pipe_large
+recipe	ic2:transport/steel_fluid_pipe_medium	ic2:steel_fluid_pipe_medium
+recipe	ic2:transport/steel_fluid_pipe_small	ic2:steel_fluid_pipe_small
+recipe	ic2:transport/steel_fluid_pipe_tiny	ic2:steel_fluid_pipe_tiny
+recipe	ic2:transport/steel_item_pipe_large	ic2:steel_item_pipe_large
+recipe	ic2:transport/steel_item_pipe_medium	ic2:steel_item_pipe_medium
+recipe	ic2:transport/steel_item_pipe_small	ic2:steel_item_pipe_small
+recipe	ic2:transport/steel_item_pipe_tiny	ic2:steel_item_pipe_tiny

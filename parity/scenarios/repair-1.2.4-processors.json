@@ -1,0 +1,952 @@
+{
+  "jarSha256": "c3801301c8f32f957dd879413d33826438004f5a54f56fb17a2903da820efc5e",
+  "measurement": "Elapsed zero starts at setup. The first scheduled command runs before the first block entity tick. Working tick zero is elapsed=1; later working tick n is the elapsed n+1 reading.",
+  "cases": {
+    "two_coal": {
+      "device": "ic2:macerator",
+      "readings": [
+        {
+          "workingTicks": 0,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal",
+              2
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 1,
+          "progress": 1,
+          "storedEu": 1198.0,
+          "input": [
+            [
+              "minecraft:coal",
+              2
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 99,
+          "progress": 99,
+          "storedEu": 1002.0,
+          "input": [
+            [
+              "minecraft:coal",
+              2
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 100,
+          "progress": 100,
+          "storedEu": 1000.0,
+          "input": [
+            [
+              "minecraft:coal",
+              2
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 159,
+          "progress": 159,
+          "storedEu": 882.0,
+          "input": [
+            [
+              "minecraft:coal",
+              2
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 198,
+          "progress": 198,
+          "storedEu": 804.0,
+          "input": [
+            [
+              "minecraft:coal",
+              2
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 299,
+          "progress": 299,
+          "storedEu": 602.0,
+          "input": [
+            [
+              "minecraft:coal",
+              2
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 300,
+          "progress": 0,
+          "storedEu": 598.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 599,
+          "progress": 299,
+          "storedEu": 0.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 600,
+          "progress": 299,
+          "storedEu": 0.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "resin": {
+      "device": "ic2:extractor",
+      "readings": [
+        {
+          "workingTicks": 0,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "ic2:resin",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 1,
+          "progress": 1,
+          "storedEu": 1198.0,
+          "input": [
+            [
+              "ic2:resin",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 99,
+          "progress": 99,
+          "storedEu": 1002.0,
+          "input": [
+            [
+              "ic2:resin",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 100,
+          "progress": 100,
+          "storedEu": 1000.0,
+          "input": [
+            [
+              "ic2:resin",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 159,
+          "progress": 159,
+          "storedEu": 882.0,
+          "input": [
+            [
+              "ic2:resin",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 198,
+          "progress": 198,
+          "storedEu": 804.0,
+          "input": [
+            [
+              "ic2:resin",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 299,
+          "progress": 299,
+          "storedEu": 602.0,
+          "input": [
+            [
+              "ic2:resin",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 300,
+          "progress": 0,
+          "storedEu": 600.0,
+          "input": [],
+          "output": [
+            [
+              "ic2:rubber",
+              3
+            ]
+          ]
+        },
+        {
+          "workingTicks": 599,
+          "progress": 0,
+          "storedEu": 600.0,
+          "input": [],
+          "output": [
+            [
+              "ic2:rubber",
+              3
+            ]
+          ]
+        },
+        {
+          "workingTicks": 600,
+          "progress": 0,
+          "storedEu": 600.0,
+          "input": [],
+          "output": [
+            [
+              "ic2:rubber",
+              3
+            ]
+          ]
+        }
+      ]
+    },
+    "snowballs": {
+      "device": "ic2:compressor",
+      "readings": [
+        {
+          "workingTicks": 0,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:snowball",
+              4
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 1,
+          "progress": 1,
+          "storedEu": 1198.0,
+          "input": [
+            [
+              "minecraft:snowball",
+              4
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 99,
+          "progress": 99,
+          "storedEu": 1002.0,
+          "input": [
+            [
+              "minecraft:snowball",
+              4
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 100,
+          "progress": 100,
+          "storedEu": 1000.0,
+          "input": [
+            [
+              "minecraft:snowball",
+              4
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 159,
+          "progress": 159,
+          "storedEu": 882.0,
+          "input": [
+            [
+              "minecraft:snowball",
+              4
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 198,
+          "progress": 198,
+          "storedEu": 804.0,
+          "input": [
+            [
+              "minecraft:snowball",
+              4
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 299,
+          "progress": 299,
+          "storedEu": 602.0,
+          "input": [
+            [
+              "minecraft:snowball",
+              4
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 300,
+          "progress": 0,
+          "storedEu": 600.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:snow_block",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 599,
+          "progress": 0,
+          "storedEu": 600.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:snow_block",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 600,
+          "progress": 0,
+          "storedEu": 600.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:snow_block",
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "electric_smelting": {
+      "device": "ic2:electric_furnace",
+      "readings": [
+        {
+          "workingTicks": 0,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 1,
+          "progress": 1,
+          "storedEu": 1197.0,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 99,
+          "progress": 99,
+          "storedEu": 903.0,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 100,
+          "progress": 0,
+          "storedEu": 900.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 159,
+          "progress": 0,
+          "storedEu": 900.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 198,
+          "progress": 0,
+          "storedEu": 900.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 299,
+          "progress": 0,
+          "storedEu": 900.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 300,
+          "progress": 0,
+          "storedEu": 900.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 599,
+          "progress": 0,
+          "storedEu": 900.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 600,
+          "progress": 0,
+          "storedEu": 900.0,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "iron_smelting": {
+      "device": "ic2:iron_furnace",
+      "readings": [
+        {
+          "workingTicks": 0,
+          "progress": 0,
+          "storedEu": null,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 1,
+          "progress": 1,
+          "storedEu": null,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 99,
+          "progress": 99,
+          "storedEu": null,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 100,
+          "progress": 100,
+          "storedEu": null,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 159,
+          "progress": 159,
+          "storedEu": null,
+          "input": [
+            [
+              "minecraft:raw_iron",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 198,
+          "progress": 0,
+          "storedEu": null,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 299,
+          "progress": 0,
+          "storedEu": null,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 300,
+          "progress": 0,
+          "storedEu": null,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 599,
+          "progress": 0,
+          "storedEu": null,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 600,
+          "progress": 0,
+          "storedEu": null,
+          "input": [],
+          "output": [
+            [
+              "minecraft:iron_ingot",
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "one_coal": {
+      "device": "ic2:macerator",
+      "readings": [
+        {
+          "workingTicks": 0,
+          "progress": 0,
+          "storedEu": 600.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 1,
+          "progress": 1,
+          "storedEu": 598.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 99,
+          "progress": 99,
+          "storedEu": 402.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 100,
+          "progress": 100,
+          "storedEu": 400.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 159,
+          "progress": 159,
+          "storedEu": 282.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 198,
+          "progress": 198,
+          "storedEu": 204.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 299,
+          "progress": 299,
+          "storedEu": 2.0,
+          "input": [
+            [
+              "minecraft:coal",
+              1
+            ]
+          ],
+          "output": []
+        },
+        {
+          "workingTicks": 300,
+          "progress": 0,
+          "storedEu": 0.0,
+          "input": [],
+          "output": [
+            [
+              "ic2:coal_dust",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 599,
+          "progress": 0,
+          "storedEu": 0.0,
+          "input": [],
+          "output": [
+            [
+              "ic2:coal_dust",
+              1
+            ]
+          ]
+        },
+        {
+          "workingTicks": 600,
+          "progress": 0,
+          "storedEu": 0.0,
+          "input": [],
+          "output": [
+            [
+              "ic2:coal_dust",
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "blocked_coal_block": {
+      "device": "ic2:macerator",
+      "readings": [
+        {
+          "workingTicks": 0,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 1,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 99,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 100,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 159,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 198,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 299,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 300,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 599,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        },
+        {
+          "workingTicks": 600,
+          "progress": 0,
+          "storedEu": 1200.0,
+          "input": [
+            [
+              "minecraft:coal_block",
+              1
+            ]
+          ],
+          "output": [
+            [
+              "ic2:coal_dust",
+              56
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "networkCapacityEU": {
+    "macerator": 1200,
+    "extractor": 1200,
+    "compressor": 1200,
+    "electric_furnace": 600
+  }
+}

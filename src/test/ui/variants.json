@@ -1,0 +1,33 @@
+[
+  {
+    "id": "nuclear_reactor_six_chambers",
+    "kind": "block",
+    "target": "reactor_chamber",
+    "screen": "PowerScreen",
+    "atlas": "guinuclearreactor",
+    "size": [212, 242],
+    "slots": 90,
+    "anchors": [[26, 25], [170, 25], [170, 115], [26, 161]],
+    "setup": [
+      "setblock 3 100 0 ic2:nuclear_reactor",
+      "setblock 4 100 0 ic2:reactor_chamber",
+      "setblock 3 99 0 ic2:reactor_chamber",
+      "setblock 3 101 0 ic2:reactor_chamber",
+      "setblock 3 100 -1 ic2:reactor_chamber",
+      "setblock 3 100 1 ic2:reactor_chamber"
+    ]
+  },
+  {
+    "id": "tank_water",
+    "kind": "block",
+    "target": "tank",
+    "screen": "TankScreen",
+    "atlas": "common",
+    "size": [176, 166],
+    "slots": 40,
+    "setup": [
+      "data merge block {target} {fluid:{id:\"minecraft:water\",amount:1000}}",
+      "data get block {target} fluid"
+    ]
+  }
+]

@@ -1,0 +1,131 @@
+{
+  "sourceCommit": "6812c472c0774bb0a9ea8941066f11a121699e7a",
+  "platforms": {
+    "1.21.1": {
+      "jarSha256": "5796df6cfd9d9fd49a50b7c728cb61ab4839ba28d136828edf89069de1d6e6e5",
+      "png": 9,
+      "nativeChecks": 25,
+      "metalFormer": {
+        "machineEU": [
+          3084,
+          3384
+        ],
+        "batteryEU": [
+          300,
+          0
+        ]
+      },
+      "inductionFurnace": {
+        "machineEU": [
+          0,
+          250
+        ],
+        "batteryEU": [
+          250,
+          0
+        ]
+      },
+      "semifluidGenerator": {
+        "machineEU": [
+          350,
+          330
+        ],
+        "batteryEU": [
+          9980,
+          10000
+        ]
+      },
+      "pump": {
+        "millibucketsWithFullOutput": 1000,
+        "millibucketsAfterOutputCleared": 0,
+        "nativeProducedItem": "minecraft:water_bucket"
+      },
+      "clientExit": 0,
+      "serverExit": 0
+    },
+    "26.1.2": {
+      "jarSha256": "54ff6e1e7411b40cfe3b2c795611fdf216d56ee6663469bf6d83a1fb84eb29eb",
+      "png": 9,
+      "nativeChecks": 26,
+      "metalFormer": {
+        "machineEU": [
+          3084,
+          3384
+        ],
+        "batteryEU": [
+          300,
+          0
+        ]
+      },
+      "inductionFurnace": {
+        "machineEU": [
+          0,
+          250
+        ],
+        "batteryEU": [
+          250,
+          0
+        ]
+      },
+      "semifluidGenerator": {
+        "machineEU": [
+          350,
+          330
+        ],
+        "batteryEU": [
+          9980,
+          10000
+        ]
+      },
+      "pump": {
+        "millibucketsWithFullOutput": 1000,
+        "millibucketsAfterOutputCleared": 0,
+        "nativeProducedItem": "minecraft:water_bucket"
+      },
+      "clientExit": 0,
+      "serverExit": 0
+    },
+    "26.2": {
+      "jarSha256": "cfbbe089dc9529c0b8a8fb41af42382e0de76410be474f3c74b27de64a71c453",
+      "png": 9,
+      "nativeChecks": 26,
+      "metalFormer": {
+        "machineEU": [
+          3084,
+          3384
+        ],
+        "batteryEU": [
+          300,
+          0
+        ]
+      },
+      "inductionFurnace": {
+        "machineEU": [
+          0,
+          250
+        ],
+        "batteryEU": [
+          250,
+          0
+        ]
+      },
+      "semifluidGenerator": {
+        "machineEU": [
+          350,
+          330
+        ],
+        "batteryEU": [
+          9980,
+          10000
+        ]
+      },
+      "pump": {
+        "millibucketsWithFullOutput": 1000,
+        "millibucketsAfterOutputCleared": 0,
+        "nativeProducedItem": "minecraft:water_bucket"
+      },
+      "clientExit": 0,
+      "serverExit": 0
+    }
+  }
+}

@@ -1,0 +1,3882 @@
+{
+  "reference": {
+    "minecraft": "1.19.2",
+    "forge": "43.5.0",
+    "modVersion": "1.2.4",
+    "sha256": "c1be3ada861ba179eddaa771d43b04de81d6da8413782be619521e123b8d71bd"
+  },
+  "method": {
+    "location": "fresh local superflat dedicated world",
+    "tools": "native game mode interactions and public electric-item manager reads",
+    "armor": "public player equipment update, standard cactus damage event, then health and charge readback",
+    "damageSlotOrder": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  },
+  "electric_treetap": {
+    "eu": 50.0,
+    "result": "SUCCESS",
+    "target_after": "Block{ic2:rubber_log}[axis=x,state=dry_north]"
+  },
+  "electric_wrench": [
+    {
+      "initial": "east",
+      "crouch": false,
+      "observed": {
+        "eu": 1000.0,
+        "result": "SUCCESS",
+        "target_after": "Block{minecraft:air}"
+      },
+      "clicked": "east"
+    },
+    {
+      "initial": "east",
+      "crouch": false,
+      "observed": {
+        "eu": 100.0,
+        "result": "SUCCESS",
+        "target_after": "Block{ic2:batbox}[facing=west]"
+      },
+      "clicked": "west"
+    },
+    {
+      "initial": "east",
+      "crouch": false,
+      "observed": {
+        "eu": 100.0,
+        "result": "SUCCESS",
+        "target_after": "Block{ic2:batbox}[facing=north]"
+      },
+      "clicked": "north"
+    },
+    {
+      "initial": "east",
+      "crouch": false,
+      "observed": {
+        "eu": 100.0,
+        "result": "SUCCESS",
+        "target_after": "Block{ic2:batbox}[facing=up]"
+      },
+      "clicked": "up"
+    },
+    {
+      "initial": "east",
+      "crouch": true,
+      "observed": {
+        "eu": 100.0,
+        "result": "SUCCESS",
+        "target_after": "Block{ic2:batbox}[facing=west]"
+      },
+      "clicked": "east"
+    },
+    {
+      "initial": "east",
+      "crouch": true,
+      "observed": {
+        "eu": 1000.0,
+        "result": "SUCCESS",
+        "target_after": "Block{minecraft:air}"
+      },
+      "clicked": "west"
+    },
+    {
+      "initial": "east",
+      "crouch": true,
+      "observed": {
+        "eu": 100.0,
+        "result": "SUCCESS",
+        "target_after": "Block{ic2:batbox}[facing=south]"
+      },
+      "clicked": "north"
+    },
+    {
+      "initial": "east",
+      "crouch": true,
+      "observed": {
+        "eu": 100.0,
+        "result": "SUCCESS",
+        "target_after": "Block{ic2:batbox}[facing=down]"
+      },
+      "clicked": "up"
+    }
+  ],
+  "wind_meter": {
+    "ambient": {
+      "result": "SUCCESS",
+      "eu": 50.0
+    },
+    "wind_generator": {
+      "eu": 50.0,
+      "result": "SUCCESS",
+      "target_after": "Block{ic2:wind_generator}[active=true,facing=north]"
+    },
+    "missing_rotor": {
+      "eu": 0.0,
+      "result": "FAIL",
+      "target_after": "Block{ic2:wind_kinetic_generator}[active=true,facing=north]"
+    }
+  },
+  "nano_saber_thresholds": [
+    {
+      "after": 0.0,
+      "attack": 4.0,
+      "energy": 0.0,
+      "use": "PASS"
+    },
+    {
+      "after": 1.0,
+      "attack": 4.0,
+      "energy": 1.0,
+      "use": "PASS"
+    },
+    {
+      "after": 4.0,
+      "attack": 4.0,
+      "energy": 4.0,
+      "use": "PASS"
+    },
+    {
+      "after": 8.0,
+      "attack": 4.0,
+      "energy": 8.0,
+      "use": "PASS"
+    },
+    {
+      "after": 15.0,
+      "attack": 4.0,
+      "energy": 15.0,
+      "use": "PASS"
+    },
+    {
+      "after": 16.0,
+      "attack": 4.0,
+      "energy": 16.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 31.0,
+      "attack": 4.0,
+      "energy": 31.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 32.0,
+      "attack": 4.0,
+      "energy": 32.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 62.0,
+      "attack": 4.0,
+      "energy": 62.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 63.0,
+      "attack": 4.0,
+      "energy": 63.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 64.0,
+      "attack": 4.0,
+      "energy": 64.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 100.0,
+      "attack": 4.0,
+      "energy": 100.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 399.0,
+      "attack": 4.0,
+      "energy": 399.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 400.0,
+      "attack": 20.0,
+      "energy": 400.0,
+      "use": "SUCCESS"
+    },
+    {
+      "after": 401.0,
+      "attack": 20.0,
+      "energy": 401.0,
+      "use": "SUCCESS"
+    }
+  ],
+  "nano_saber_start": {
+    "active_attack_speed_modifier": -3.0,
+    "active_attack_modifier": 20.0,
+    "inactive_attack_modifier": 4.0,
+    "activation_eu": 0.0,
+    "inactive_attack_speed_modifier": -3.0,
+    "action": "SUCCESS"
+  },
+  "nano_saber_idle_eu_per_tick": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    64.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    64.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "nano_saber_idle_clock": [
+    {
+      "eu": 64.0,
+      "actor_tick": 15,
+      "world_tick": 16
+    },
+    {
+      "eu": 64.0,
+      "actor_tick": 31,
+      "world_tick": 32
+    }
+  ],
+  "nano_saber_hit": {
+    "eu": 400.0,
+    "hook_accepted": true
+  },
+  "impact": [
+    {
+      "health_lost": 3.8400002,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        4999.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        4999.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        4999.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        4999.0,
+        4999.0,
+        4999.0
+      ],
+      "family": "nano",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        12500.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        12500.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        12500.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        12500.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        12500.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        4999.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        12499.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        12500.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        12500.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        12500.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12500.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        4999.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12499.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12500.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12500.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12500.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        4999.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12499.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        12500.0,
+        12500.0,
+        12500.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        4999.0,
+        4999.0,
+        4999.0
+      ],
+      "family": "nano",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        12499.0,
+        12499.0,
+        12499.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        12500.0,
+        12500.0,
+        12500.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        12500.0,
+        12500.0,
+        12500.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        12500.0,
+        12500.0,
+        12500.0,
+        12500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        22500.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        22500.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        22500.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        4999.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        12499.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        19999.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        20000.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        22500.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        22500.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        4999.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12499.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        19999.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        20000.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        22500.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        22500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        4999.0
+      ],
+      "family": "nano",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12499.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        19999.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        20000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        22500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        22500.0,
+        22500.0,
+        22500.0,
+        22500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "nano",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        4999.0,
+        4999.0,
+        4999.0
+      ],
+      "family": "nano",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        12499.0,
+        12499.0,
+        12499.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        19999.0,
+        19999.0,
+        19999.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        20000.0,
+        20000.0,
+        20000.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        22500.0,
+        22500.0,
+        22500.0,
+        22500.0
+      ],
+      "family": "nano",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        20000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        20000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        20000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        4999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        12499.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        19999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        20000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.040001,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        20000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 4,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        20000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        4999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12499.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        19999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        20000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.3600006,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        20000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 4,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        4999.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12499.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        19999.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 3.8400002,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 4,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        20000.0,
+        20000.0,
+        20000.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        4999.0,
+        4999.0,
+        4999.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        12499.0,
+        12499.0,
+        12499.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        19999.0,
+        19999.0,
+        19999.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        20000.0,
+        20000.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 1.1199989,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        20000.0,
+        20000.0,
+        20000.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 4,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        50000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        49999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        50000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        4999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        12499.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        19999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        20000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 8.8,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        49999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 10,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        50000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        4999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12499.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        19999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        20000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.52,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        49999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 10,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        50000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        4999.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12499.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        19999.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 9.76,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        49999.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 10,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        50000.0,
+        50000.0,
+        50000.0,
+        50000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        4999.0,
+        4999.0,
+        4999.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        12499.0,
+        12499.0,
+        12499.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        19999.0,
+        19999.0,
+        19999.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        20000.0,
+        20000.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 4.0,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        49999.0,
+        49999.0,
+        49999.0,
+        49999.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 10,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        90000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        49999.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "helmet"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        90000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        4999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        12499.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        19999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        20000.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 16.848,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        49999.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 8,
+      "damage": 18,
+      "equipment": "chestplate"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        90000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        4999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        5000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        12499.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        19999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        20000.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.136,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        49999.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 6,
+      "damage": 18,
+      "equipment": "leggings"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        90000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        4999.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        12499.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        19999.0
+      ],
+      "family": "quantum",
+      "toughness": 2.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 17.568,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        49999.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 3,
+      "damage": 18,
+      "equipment": "boots"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 900000.0,
+      "cost_by_slot": [
+        90000.0,
+        90000.0,
+        90000.0,
+        90000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 0.0,
+      "cost_by_slot": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 4999.0,
+      "cost_by_slot": [
+        4999.0,
+        4999.0,
+        4999.0,
+        4999.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 5000.0,
+      "cost_by_slot": [
+        5000.0,
+        5000.0,
+        5000.0,
+        5000.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 12499.0,
+      "cost_by_slot": [
+        12499.0,
+        12499.0,
+        12499.0,
+        12499.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 18.0,
+      "precharge": 19999.0,
+      "cost_by_slot": [
+        19999.0,
+        19999.0,
+        19999.0,
+        19999.0
+      ],
+      "family": "quantum",
+      "toughness": 8.0,
+      "armor": 0,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 20000.0,
+      "cost_by_slot": [
+        20000.0,
+        20000.0,
+        20000.0,
+        20000.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    },
+    {
+      "health_lost": 10.08,
+      "precharge": 49999.0,
+      "cost_by_slot": [
+        49999.0,
+        49999.0,
+        49999.0,
+        49999.0
+      ],
+      "family": "quantum",
+      "toughness": 0.0,
+      "armor": 20,
+      "damage": 18,
+      "equipment": "full"
+    }
+  ]
+}

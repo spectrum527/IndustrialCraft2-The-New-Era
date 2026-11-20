@@ -4,14 +4,17 @@ import com.industrialage.ia2.platform.CapabilityFacade.Face;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 /** The effective energy topology of one world. Use it from the owning world thread. */
 public final class EnergyGraph {
@@ -48,6 +51,73 @@ public final class EnergyGraph {
             }
         }
         return List.copyOf(adjacent);
+    }
+
+    /** A receiving endpoint and the unrounded loss of its cheapest connected path, in EU. */
+    public record Route(Position sink, double rawLoss, List<Position> conductors) {
+        /**
+         * Captures the exact conductor sequence used to rate this route, in source-to-sink order.
+         */
+        public Route {
+            conductors = List.copyOf(conductors);
+        }
+    }
+
+    /**
+     * Finds every reachable receiver through loaded conductors, retaining the least-loss path to
+     * each receiver. Source and sink contacts add 0.002 EU together, including direct connections.
+     * A device can terminate a route but cannot carry energy through to another device.
+     */
+    public List<Route> routes(Position source, ToDoubleFunction<Position> cableLoss) {
+        Node start = nodes.get(source);
+        if (start == null || start.ports.conductor()) {
+            return List.of();
+        }
+        record Visit(Node node, double loss) {}
+        Comparator<Visit> order =
+                Comparator.comparingDouble(Visit::loss)
+                        .thenComparingInt(v -> v.node.position.x)
+                        .thenComparingInt(v -> v.node.position.y)
+                        .thenComparingInt(v -> v.node.position.z);
+        var frontier = new PriorityQueue<>(order);
+        Map<Node, Double> best = new IdentityHashMap<>();
+        Map<Node, Node> predecessors = new IdentityHashMap<>();
+        List<Route> routes = new ArrayList<>();
+        best.put(start, 0.0);
+        frontier.add(new Visit(start, 0.0));
+        while (!frontier.isEmpty()) {
+            Visit current = frontier.remove();
+            if (current.loss() > best.get(current.node())) {
+                continue;
+            }
+            if (current.node() != start && !current.node().ports.conductor()) {
+                List<Position> path = path(start, current.node(), predecessors);
+                routes.add(
+                        new Route(
+                                current.node().position,
+                                current.loss() + 0.002,
+                                path.subList(1, path.size() - 1)));
+                continue;
+            }
+            for (Node neighbor : current.node().outgoing) {
+                if (neighbor == null || neighbor == start) {
+                    continue;
+                }
+                double segment =
+                        neighbor.ports.conductor() ? cableLoss.applyAsDouble(neighbor.position) : 0;
+                if (!Double.isFinite(segment) || segment < 0) {
+                    throw new IllegalArgumentException(
+                            "Invalid cable loss at " + neighbor.position);
+                }
+                double next = current.loss() + segment;
+                if (next < best.getOrDefault(neighbor, Double.POSITIVE_INFINITY)) {
+                    best.put(neighbor, next);
+                    predecessors.put(neighbor, current.node());
+                    frontier.add(new Visit(neighbor, next));
+                }
+            }
+        }
+        return List.copyOf(routes);
     }
 
     /**
@@ -105,7 +175,11 @@ public final class EnergyGraph {
     }
 
     private static boolean connects(Node from, Face out, Node to, Face in) {
-        return from.ports.outputs().contains(out) && to.ports.inputs().contains(in);
+        int sourceColor = from.ports.color();
+        int targetColor = to.ports.color();
+        return (sourceColor == 0 || targetColor == 0 || sourceColor == targetColor)
+                && from.ports.outputs().contains(out)
+                && to.ports.inputs().contains(in);
     }
 
     private static List<Position> path(Node start, Node end, Map<Node, Node> predecessors) {
@@ -149,8 +223,14 @@ public final class EnergyGraph {
      * @param inputs faces that accept energy
      * @param outputs faces that emit energy
      * @param conductor whether paths can pass through this block between its ports
+     * @param color conductor dye, or zero for uncolored connections
      */
-    public record Ports(Set<Face> inputs, Set<Face> outputs, boolean conductor) {
+    public record Ports(Set<Face> inputs, Set<Face> outputs, boolean conductor, int color) {
+        /** Keeps undyed conductors and device ports compatible with every dye. */
+        public Ports(Set<Face> inputs, Set<Face> outputs, boolean conductor) {
+            this(inputs, outputs, conductor, 0);
+        }
+
         /** Copies the face sets so connections change only when the topology is updated. */
         public Ports {
             inputs = Set.copyOf(inputs);

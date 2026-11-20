@@ -19,7 +19,7 @@ subprojects {
 }
 spotless {
     java {
-        target 'src/common/src/**/*.java', 'src/forge/**/*.java', 'src/test/src/test/**/*.java',
+        target 'src/common/src/**/*.java', 'src/minecraft/shared/src/**/*.java', 'src/forge/**/*.java', 'src/test/src/test/**/*.java',
                 'src/neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeEvents.java',
                 'src/neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeConfig.java'
         targetExclude '**/build/**'

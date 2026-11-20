@@ -14,6 +14,7 @@ base.archivesName = "ic2-forge-${minecraft_version}"
 sourceSets {
     main {
         java.srcDir rootProject.file('src/common/src/main/java')
+        java.srcDir rootProject.file('src/minecraft/shared/src/main/java')
     }
     qa {
         compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
@@ -60,13 +61,37 @@ minecraft {
 }
 dependencies { minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}" }
 
+tasks.named('processQaResources') {
+    from(rootProject.file('spec/registry/classic-playable-recipes.json')) { rename { 'classic-recipes.json' } }
+}
+
+def generatedResources = layout.buildDirectory.dir('generated/ic2-resources')
+def generateResources = tasks.register('generatePlayableResources', Exec) {
+    def generator = rootProject.file('src/datagen/generate_resources.py')
+    inputs.files(rootProject.fileTree('src/datagen') { include '*.py', '*.tsv', '*.json', 'families/*.json' })
+    inputs.files(rootProject.fileTree('spec/registry') { include '*.tsv', 'repair-recipe-book.json', 'classic-playable-recipes.json' })
+    inputs.file(rootProject.file('assets/REGISTRY-ART-CATALOG.csv'))
+    inputs.dir(rootProject.file('assets/ic2'))
+    outputs.dir(generatedResources)
+    commandLine 'python3', generator, '--target', 'forge-1.19.2', '--logistics', '--output',
+            generatedResources.get().asFile
+}
+
 tasks.named('processResources') {
+    from(rootProject.file('spec/registry/sounds.txt')) { into 'com/industrialage/ia2/audio' }
+    from(rootProject.file('spec/registry')) {
+        include 'industrial-materials.tsv', 'chest-supplements.tsv', 'processing-recipes.tsv', 'classic-processing.tsv', 'processing-tags.tsv', 'workshop-recipes.tsv', 'industrial-fluids.tsv', 'wind-height.tsv', 'radioactive-items.tsv'
+        into 'com/industrialage/ia2/content'
+    }
+    dependsOn generateResources
+    from(generatedResources) { exclude '.ic2-generated-output' }
     inputs.properties(version: project.version, minecraftVersion: minecraft_version, forgeVersion: forge_version)
     filesMatching('META-INF/mods.toml') {
         expand version: project.version, minecraftVersion: minecraft_version, forgeVersion: forge_version
     }
     from(rootProject.file('spec/config/active-keys.tsv')) { into 'com/industrialage/ia2/config' }
     from(rootProject.file('assets')) {
+        exclude 'qa/**'  // Registered documentation figures stay outside the mod JAR.
         into 'assets'
         exclude '**/*.md', '**/.git*', '**/.DS_Store'
         includeEmptyDirs = false

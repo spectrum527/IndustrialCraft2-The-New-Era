@@ -1,0 +1,103 @@
+{
+  "version": "0.1.0",
+  "productionSourceCommits": {
+    "1.19.2": "876b772e8c8a5381c82b50fb5a943f7774219218",
+    "1.21.1": "6812c472c0774bb0a9ea8941066f11a121699e7a",
+    "26.1.2": "6812c472c0774bb0a9ea8941066f11a121699e7a",
+    "26.2": "6812c472c0774bb0a9ea8941066f11a121699e7a"
+  },
+  "jars": {
+    "1.19.2": {
+      "filename": "ic2-forge-1.19.2-0.1.0.jar",
+      "size": 4106830,
+      "sha256": "e67443e6050abe6039ad2856fe739637e654f46b8d806592820add2a675efcf6",
+      "byteIdenticalGuiPng": 77,
+      "loader": "Forge"
+    },
+    "1.21.1": {
+      "filename": "ic2-neoforge-1.21.1-0.1.0.jar",
+      "size": 3912404,
+      "sha256": "5796df6cfd9d9fd49a50b7c728cb61ab4839ba28d136828edf89069de1d6e6e5",
+      "byteIdenticalGuiPng": 77,
+      "loader": "NeoForge"
+    },
+    "26.1.2": {
+      "filename": "ic2-neoforge-26.1.2-0.1.0.jar",
+      "size": 4038056,
+      "sha256": "54ff6e1e7411b40cfe3b2c795611fdf216d56ee6663469bf6d83a1fb84eb29eb",
+      "byteIdenticalGuiPng": 77,
+      "loader": "NeoForge"
+    },
+    "26.2": {
+      "filename": "ic2-neoforge-26.2-0.1.0.jar",
+      "size": 4038647,
+      "sha256": "cfbbe089dc9529c0b8a8fb41af42382e0de76410be474f3c74b27de64a71c453",
+      "byteIdenticalGuiPng": 77,
+      "loader": "NeoForge"
+    }
+  },
+  "server": {
+    "1.19.2": {
+      "installedScenarios": [
+        "cold-steel",
+        "steam",
+        "advanced-workshop",
+        "thermal-kinetic",
+        "ore-solar-compressor",
+        "starter-logistics-restart",
+        "cross-chunk-bottler",
+        "matter-generation",
+        "native-power-restart",
+        "server-startup-restart"
+      ],
+      "clientChecks": 409,
+      "nativeGameTests": 22
+    },
+    "1.21.1": {
+      "worldPhases": 10,
+      "assertions": 428
+    },
+    "26.1.2": {
+      "worldPhases": 10,
+      "assertions": 428
+    },
+    "26.2": {
+      "worldPhases": 10,
+      "assertions": 428
+    }
+  },
+  "client": {
+    "1.19.2": {
+      "covered": 116,
+      "views": 117,
+      "screenshots": 154
+    },
+    "1.21.1": {
+      "covered": 116,
+      "views": 143,
+      "screenshots": 143
+    },
+    "26.1.2": {
+      "covered": 116,
+      "views": 143,
+      "screenshots": 143
+    },
+    "26.2": {
+      "covered": 116,
+      "views": 143,
+      "screenshots": 143
+    }
+  },
+  "reference": {
+    "version": "1.2.4-port.20261120",
+    "minecraft": "1.19.2",
+    "loader": "Forge 43.5.0",
+    "sha256": "c3801301c8f32f957dd879413d33826438004f5a54f56fb17a2903da820efc5e",
+    "source": "New server world, level.dat > fml > Registries > ids. Includes every ic2 namespace entry in the saved Forge registries."
+  },
+  "authoredGuiPngs": 77,
+  "referenceBlockCount": 292,
+  "referenceItemCount": 552,
+  "additionalItem": "ic2:foam_sprayer",
+  "originalityReportSha256": "087007be748e2357b108bc344237a0187a14983f7c14d21cf4ddd4d91bbeed2e"
+}

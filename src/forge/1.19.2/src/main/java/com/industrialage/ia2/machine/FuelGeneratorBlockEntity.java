@@ -1,5 +1,6 @@
 package com.industrialage.ia2.machine;
 
+import java.util.function.DoubleUnaryOperator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NumericTag;
@@ -50,6 +51,12 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
         return generator.snapshot();
     }
 
+    /** Returns the live burn reserve as a fraction of the active fuel. */
+    public final double fuelRatio() {
+        int capacity = generator.fuelCapacity();
+        return capacity == 0 ? 0 : (double) generator.snapshot().fuelTicks() / capacity;
+    }
+
     /** Reports activity during the most recent loaded tick. */
     public final boolean isActive() {
         return generator.isActive();
@@ -57,10 +64,19 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
 
     /** Debits at most one 32 EU packet. The calling network round controls the cadence. */
     public final double drawPacket(double requested) {
+        return draw(requested, generator::extractEnergy);
+    }
+
+    /** Debits local slot charging independently of the generator's network packet rating. */
+    protected final double drawLocalEnergy(double requested) {
+        return draw(requested, generator::extractLocalEnergy);
+    }
+
+    private double draw(double requested, DoubleUnaryOperator debit) {
         if (!isLoadedServerMachine()) {
             return 0;
         }
-        double sent = generator.extractEnergy(requested);
+        double sent = debit.applyAsDouble(requested);
         if (sent > 0) {
             setChanged();
         }
@@ -73,6 +89,7 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
         var state = savedState();
         var payload = new CompoundTag();
         payload.putInt(FUEL_TICKS, state.fuelTicks());
+        payload.putInt("fuel_capacity", generator.fuelCapacity());
         payload.putDouble(STORED_ENERGY, state.storedEnergy());
         tag.put(GENERATOR, payload);
     }
@@ -82,6 +99,7 @@ public abstract class FuelGeneratorBlockEntity extends ForgeMachineBlockEntity {
         var state = readState(tag);
         super.load(tag);
         generator.restore(state);
+        generator.restoreFuelCapacity(tag.getCompound(GENERATOR).getInt("fuel_capacity"));
     }
 
     private FuelGenerator.Snapshot readState(CompoundTag tag) {

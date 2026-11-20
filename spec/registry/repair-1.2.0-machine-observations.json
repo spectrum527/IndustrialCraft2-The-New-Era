@@ -1,0 +1,3565 @@
+{
+  "release": "1.2.0-port.20261119",
+  "sha256": "580075096fffcd80e01283ce8da8d85f9ef915bbb7368367544823d28c8c63bc",
+  "minecraft": "1.19.2",
+  "forge": "43.5.0",
+  "deviceCount": 107,
+  "caseCount": 135,
+  "meaning": "Observed readings transcribed from the player-facing release report. An elapsed sample time can exceed the processing time.",
+  "cases": {
+    "macerator": {
+      "devices": {
+        "ic2:macerator": "519 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 566,
+          "measurement": "output contains exactly 2 ic2:crushed_iron",
+          "result": "[{Index: 0b, id: \"ic2:crushed_iron\", Count: 2b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 566,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "compressor": {
+      "devices": {
+        "ic2:compressor": "535 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 561,
+          "measurement": "output contains exactly 1 minecraft:clay",
+          "result": "[{Index: 0b, id: \"minecraft:clay\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 561,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "extractor": {
+      "devices": {
+        "ic2:extractor": "551 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 557,
+          "measurement": "output contains exactly 1 minecraft:stick",
+          "result": "[{Index: 0b, id: \"minecraft:stick\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 557,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "electric_furnace": {
+      "devices": {
+        "ic2:electric_furnace": "567 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 553,
+          "measurement": "output contains exactly 2 minecraft:iron_ingot",
+          "result": "[{Index: 0b, id: \"minecraft:iron_ingot\", Count: 2b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 553,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "iron_furnace": {
+      "devices": {
+        "ic2:iron_furnace": "583 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 549,
+          "measurement": "output contains exactly 2 minecraft:iron_ingot",
+          "result": "[{Index: 0b, id: \"minecraft:iron_ingot\", Count: 2b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 549,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "solid_canner": {
+      "devices": {
+        "ic2:solid_canner": "599 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 545,
+          "measurement": "output contains exactly 4 ic2:filled_tin_can",
+          "result": "[{Index: 0b, id: \"ic2:filled_tin_can\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 545,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "block_cutter": {
+      "devices": {
+        "ic2:block_cutter": "615 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 778,
+          "measurement": "output contains exactly 6 minecraft:acacia_planks",
+          "result": "[{Index: 0b, id: \"minecraft:acacia_planks\", Count: 6b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 778,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "batch_crafter": {
+      "devices": {
+        "ic2:batch_crafter": "631 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 536,
+          "measurement": "output contains exactly 4 minecraft:oak_planks",
+          "result": "[{Index: 0b, id: \"minecraft:oak_planks\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 536,
+          "measurement": "ingredient[0] input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "uu_assembly_bench": {
+      "devices": {
+        "ic2:uu_assembly_bench": "647 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "unprocessed start",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 532,
+          "measurement": "output contains exactly 8 minecraft:oak_log",
+          "result": "[{Index: 0b, id: \"minecraft:oak_log\", Count: 8b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 532,
+          "measurement": "ingredient[1] input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "canner_modern_solids": {
+      "devices": {
+        "ic2:canner": "663 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 528,
+          "measurement": "output contains exactly 4 ic2:filled_tin_can",
+          "result": "[{Index: 0b, id: \"ic2:filled_tin_can\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 528,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 528,
+          "measurement": "canInput input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "canner_classic_food": {
+      "devices": {
+        "ic2:classic_canner": "679 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 524,
+          "measurement": "output contains exactly 4 ic2:filled_tin_can",
+          "result": "[{Index: 0b, id: \"ic2:filled_tin_can\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 524,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 524,
+          "measurement": "canInput input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "canner_classic_fuel": {
+      "devices": {
+        "ic2:classic_canner": "695 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 757,
+          "measurement": "output contains exactly 1 ic2:filled_fuel_can",
+          "result": "[{Index: 0b, id: \"ic2:filled_fuel_can\", Count: 1b, tag: {value: 15288}}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 757,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 757,
+          "measurement": "canInput input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "canner_empty_liquid": {
+      "devices": {
+        "ic2:canner": "519 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 753,
+          "measurement": "canInput input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 753,
+          "measurement": "liquid transfer conserves recipe quantity",
+          "result": "{FluidName: \"minecraft:water\", Amount: 2000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 753,
+          "measurement": "output contains exactly 2 ic2:empty_cell",
+          "result": "[{Index: 0b, id: \"ic2:empty_cell\", Count: 2b}]",
+          "matches": true
+        }
+      ]
+    },
+    "canner_bottle_liquid": {
+      "devices": {
+        "ic2:canner": "535 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 749,
+          "measurement": "canInput input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 749,
+          "measurement": "liquid transfer conserves recipe quantity",
+          "result": "{FluidName: \"minecraft:water\", Amount: 2000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 749,
+          "measurement": "output contains exactly 2 ic2:water_cell",
+          "result": "[{Index: 0b, id: \"ic2:water_cell\", Count: 2b}]",
+          "matches": true
+        }
+      ]
+    },
+    "canner_enrich_liquid": {
+      "devices": {
+        "ic2:canner": "551 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 745,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 745,
+          "measurement": "liquid transfer conserves recipe quantity",
+          "result": "{FluidName: \"ic2:construction_foam\", Amount: 1000}",
+          "matches": true
+        }
+      ]
+    },
+    "fluid_bottler_fill": {
+      "devices": {
+        "ic2:fluid_bottler": "567 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 503,
+          "measurement": "output contains exactly 2 ic2:water_cell",
+          "result": "[{Index: 0b, id: \"ic2:water_cell\", Count: 2b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 503,
+          "measurement": "fillInput input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 503,
+          "measurement": "two containers changed tank volume by exactly 2000 mB",
+          "result": "{FluidName: \"minecraft:water\", Amount: 2000}",
+          "matches": true
+        }
+      ]
+    },
+    "fluid_bottler_drain": {
+      "devices": {
+        "ic2:fluid_bottler": "583 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 499,
+          "measurement": "output contains exactly 2 ic2:empty_cell",
+          "result": "[{Index: 0b, id: \"ic2:empty_cell\", Count: 2b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 499,
+          "measurement": "drainInput input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 499,
+          "measurement": "two containers changed tank volume by exactly 2000 mB",
+          "result": "{FluidName: \"minecraft:water\", Amount: 2000}",
+          "matches": true
+        }
+      ]
+    },
+    "metal_former_extruding": {
+      "devices": {
+        "ic2:metal_former": "599 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 495,
+          "measurement": "machine mode applied through its handler",
+          "result": "0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 495,
+          "measurement": "output contains exactly 3 ic2:copper_cable",
+          "result": "[{Index: 0b, id: \"ic2:copper_cable\", Count: 3b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 495,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "metal_former_rolling": {
+      "devices": {
+        "ic2:metal_former": "615 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 490,
+          "measurement": "machine mode applied through its handler",
+          "result": "1",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 490,
+          "measurement": "output contains exactly 1 ic2:copper_plate",
+          "result": "[{Index: 0b, id: \"ic2:copper_plate\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 490,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "metal_former_cutting": {
+      "devices": {
+        "ic2:metal_former": "631 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 486,
+          "measurement": "machine mode applied through its handler",
+          "result": "2",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 486,
+          "measurement": "output contains exactly 1 ic2:coin",
+          "result": "[{Index: 0b, id: \"ic2:coin\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 486,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "ore_washing_plant": {
+      "devices": {
+        "ic2:ore_washing_plant": "647 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 720,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 720,
+          "measurement": "cell contains exactly 1 ic2:empty_cell",
+          "result": "[{Index: 0b, id: \"ic2:empty_cell\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 720,
+          "measurement": "output contains exactly 1 ic2:purified_iron",
+          "result": "[{Index: 0b, id: \"ic2:purified_iron\", Count: 1b}, {Index: 1b, id: \"ic2:small_iron_dust\", Count: 2b}, {Index: 2b, id: \"ic2:stone_dust\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 720,
+          "measurement": "output contains exactly 2 ic2:small_iron_dust",
+          "result": "[{Index: 0b, id: \"ic2:purified_iron\", Count: 1b}, {Index: 1b, id: \"ic2:small_iron_dust\", Count: 2b}, {Index: 2b, id: \"ic2:stone_dust\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 720,
+          "measurement": "output contains exactly 1 ic2:stone_dust",
+          "result": "[{Index: 0b, id: \"ic2:purified_iron\", Count: 1b}, {Index: 1b, id: \"ic2:small_iron_dust\", Count: 2b}, {Index: 2b, id: \"ic2:stone_dust\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "induction_furnace_dual_cold_start": {
+      "devices": {
+        "ic2:induction_furnace": "663 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 917,
+          "measurement": "outputA contains exactly 1 minecraft:iron_ingot",
+          "result": "[{Index: 0b, id: \"minecraft:iron_ingot\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 917,
+          "measurement": "outputB contains exactly 1 minecraft:glass",
+          "result": "[{Index: 0b, id: \"minecraft:glass\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 917,
+          "measurement": "inputA input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 917,
+          "measurement": "inputB input consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "centrifuge_cold_start": {
+      "devices": {
+        "ic2:centrifuge": "679 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 2285,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2285,
+          "measurement": "output contains exactly 1 ic2:iron_dust",
+          "result": "[{Index: 0b, id: \"ic2:iron_dust\", Count: 1b}, {Index: 1b, id: \"ic2:small_gold_dust\", Count: 1b}, {Index: 2b, id: \"ic2:stone_dust\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2285,
+          "measurement": "output contains exactly 1 ic2:small_gold_dust",
+          "result": "[{Index: 0b, id: \"ic2:iron_dust\", Count: 1b}, {Index: 1b, id: \"ic2:small_gold_dust\", Count: 1b}, {Index: 2b, id: \"ic2:stone_dust\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2285,
+          "measurement": "output contains exactly 1 ic2:stone_dust",
+          "result": "[{Index: 0b, id: \"ic2:iron_dust\", Count: 1b}, {Index: 1b, id: \"ic2:small_gold_dust\", Count: 1b}, {Index: 2b, id: \"ic2:stone_dust\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "recycler_reduces_and_produces_scrap": {
+      "devices": {
+        "ic2:recycler": "695 120 535"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 3052,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3052,
+          "measurement": "allowed inputs yield some scrap",
+          "result": "[{Index: 0b, id: \"ic2:scrap\", Count: 9b}]",
+          "matches": true
+        }
+      ]
+    },
+    "recycler_blacklist": {
+      "devices": {
+        "ic2:recycler": "519 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 3062,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3062,
+          "measurement": "blacklisted glass panes yield no scrap",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "blast_furnace_cold_start": {
+      "devices": {
+        "ic2:blast_furnace": "535 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 864,
+          "measurement": "actual cold start reached steel-making heat",
+          "result": "50039",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 6740,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 6740,
+          "measurement": "cellOutput contains exactly 6 ic2:empty_cell",
+          "result": "[{Index: 0b, id: \"ic2:empty_cell\", Count: 6b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 6740,
+          "measurement": "output contains exactly 1 ic2:steel_ingot",
+          "result": "[{Index: 0b, id: \"ic2:steel_ingot\", Count: 1b}, {Index: 1b, id: \"ic2:slag\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 6740,
+          "measurement": "output contains exactly 1 ic2:slag",
+          "result": "[{Index: 0b, id: \"ic2:steel_ingot\", Count: 1b}, {Index: 1b, id: \"ic2:slag\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 6740,
+          "measurement": "all 6000 mB of air used",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        }
+      ]
+    },
+    "fermenter_no_heat_preset": {
+      "devices": {
+        "ic2:fermenter": "551 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 2360,
+          "measurement": "50 runs send all 20 buckets of biogas to a real tank",
+          "result": "{FluidName: \"ic2:biogas\", Amount: 20000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2360,
+          "measurement": "all 1000 mB biomass consumed",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2360,
+          "measurement": "output contains exactly 2 ic2:fertilizer",
+          "result": "[{Index: 0b, id: \"ic2:fertilizer\", Count: 2b}]",
+          "matches": true
+        }
+      ]
+    },
+    "mass_fabricator_whole_uu_cycle": {
+      "devices": {
+        "ic2:mass_fabricator": "567 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 2250,
+          "measurement": "output contains exactly 1 ic2:uu_matter",
+          "result": "[{Index: 0b, id: \"ic2:uu_matter\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2250,
+          "measurement": "machine status at end of cycle",
+          "result": "{components: {energy: {storage: 19968.0d}}, scrap: 130032, InvSlots: {output: {Contents: [{Index: 0b, id: \"ic2:uu_matter\", Count: 1b}]}, scrap: {Contents: [{Index: 0b, id: \"ic2:scrap\", Count: 9b}]}, upgrade: {Contents: []}, discharge: {Contents: []}}, x: 567, active: 0b, y: 120, z: 551, id: \"ic2:mass_fabricator\", consumedScrap: 19968}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2250,
+          "measurement": "used at least one scrap from supplied stack",
+          "result": "[{Index: 0b, id: \"ic2:scrap\", Count: 9b}]",
+          "matches": true
+        }
+      ]
+    },
+    "classic_mass_fabricator_whole_uu_cycle": {
+      "devices": {
+        "ic2:classic_mass_fabricator": "583 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 2260,
+          "measurement": "output contains exactly 1 ic2:uu_matter",
+          "result": "[{Index: 0b, id: \"ic2:uu_matter\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2260,
+          "measurement": "machine status at end of cycle",
+          "result": "{lastEnergy: 819712.0d, components: {energy: {storage: 819712.0d}}, scrap: 0, InvSlots: {output: {Contents: [{Index: 0b, id: \"ic2:uu_matter\", Count: 1b}]}, scrap: {Contents: []}, discharge: {Contents: []}}, x: 583, active: 1b, y: 120, z: 551, id: \"ic2:classic_mass_fabricator\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2260,
+          "measurement": "used at least one scrap from supplied stack",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "matter_generator_whole_uu_cycle": {
+      "devices": {
+        "ic2:matter_generator": "599 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 2255,
+          "measurement": "liquid UU mB after natural cycle",
+          "result": "{FluidName: \"ic2:uu_matter\", Amount: 1}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2255,
+          "measurement": "machine status at end of cycle",
+          "result": "{lastEnergy: 819712.0d, components: {fluid: {fluidTank: {FluidName: \"ic2:uu_matter\", Amount: 1}}, energy: {storage: 819712.0d}}, scrap: 0, InvSlots: {output: {Contents: []}, container: {Contents: []}, scrap: {Contents: []}, upgrade: {Contents: []}, discharge: {Contents: []}}, x: 599, active: 1b, y: 120, z: 551, id: \"ic2:matter_generator\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 2255,
+          "measurement": "used at least one scrap from supplied stack",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "mass_fabricator_finishes_after_output_clears": {
+      "devices": {
+        "ic2:mass_fabricator": "615 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 440,
+          "measurement": "output contains exactly 64 ic2:uu_matter",
+          "result": "[{Index: 0b, id: \"ic2:uu_matter\", Count: 64b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 440,
+          "measurement": "finished cycle waits with full energy",
+          "result": "1000000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 440,
+          "measurement": "scrap conversion reached completion boundary",
+          "result": "1000000",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 678,
+          "measurement": "output contains exactly 1 ic2:uu_matter",
+          "result": "[{Index: 0b, id: \"ic2:uu_matter\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 678,
+          "measurement": "cycle finally charged its promised EU",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 678,
+          "measurement": "scrap counter resets for next cycle",
+          "result": "0",
+          "matches": true
+        }
+      ]
+    },
+    "scanner_storage_replicator_full_chain": {
+      "devices": {
+        "ic2:uu_scanner": "631 120 551",
+        "ic2:pattern_storage": "632 120 551",
+        "ic2:replicator": "633 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "scan starts from zero progress",
+          "result": "0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3410,
+          "measurement": "full 3300-tick scan finished",
+          "result": "3300",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3410,
+          "measurement": "scan state completed",
+          "result": "2",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3410,
+          "measurement": "input input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3410,
+          "measurement": "cobblestone pattern now recorded in scanner",
+          "result": "{id: \"minecraft:cobblestone\", Count: 1b}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3534,
+          "measurement": "same live pattern transferred to empty storage",
+          "result": "[{id: \"minecraft:cobblestone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3534,
+          "measurement": "output contains exactly 1 minecraft:cobblestone",
+          "result": "[{Index: 0b, id: \"minecraft:cobblestone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3534,
+          "measurement": "single mode has stopped",
+          "result": "0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3755,
+          "measurement": "output contains exactly 64 minecraft:cobblestone",
+          "result": "[{Index: 0b, id: \"minecraft:cobblestone\", Count: 64b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3755,
+          "measurement": "UU depleted during duplication",
+          "result": "{FluidName: \"ic2:uu_matter\", Amount: 15999}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3771,
+          "measurement": "stop event persists",
+          "result": "0",
+          "matches": true
+        }
+      ]
+    },
+    "industrial_workbench_craft": {
+      "devices": {
+        "ic2:industrial_workbench": "647 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 432,
+          "measurement": "one log picked up as four planks through menu and consumed",
+          "result": "recipe={Count:4b,id:\"minecraft:oak_planks\"} picked={Count:4b,id:\"minecraft:oak_planks\"} consumed=true",
+          "matches": true
+        }
+      ]
+    },
+    "batch_crafter_reloads_template_while_running": {
+      "devices": {
+        "ic2:batch_crafter": "663 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 428,
+          "measurement": "output input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 666,
+          "measurement": "output contains exactly 4 minecraft:oak_planks",
+          "result": "[{Index: 0b, id: \"minecraft:oak_planks\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 666,
+          "measurement": "ingredient[0] input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 831,
+          "measurement": "output contains exactly 4 minecraft:stick",
+          "result": "[{Index: 0b, id: \"minecraft:stick\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 831,
+          "measurement": "ingredient[4] input consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 867,
+          "measurement": "clearing the template leaves the output empty",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 867,
+          "measurement": "ingredient[7] contains exactly 1 minecraft:oak_planks",
+          "result": "[{Index: 0b, id: \"minecraft:oak_planks\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "generator_coal": {
+      "devices": {
+        "ic2:generator": "679 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 423,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "4000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 423,
+          "measurement": "solid fuel consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "geo_generator_lava": {
+      "devices": {
+        "ic2:geo_generator": "695 120 551"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 419,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "9340.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 419,
+          "measurement": "output contains 1 minecraft:bucket",
+          "result": "[{Index: 0b, id: \"minecraft:bucket\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "rt_generator_pellets": {
+      "devices": {
+        "ic2:rt_generator": "519 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 415,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "934.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 415,
+          "measurement": "fuel contains 2 ic2:rtg_pellet",
+          "result": "[{Index: 0b, id: \"ic2:rtg_pellet\", Count: 1b}, {Index: 1b, id: \"ic2:rtg_pellet\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "semifluid_generator_biogas": {
+      "devices": {
+        "ic2:semifluid_generator": "535 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 411,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "7424.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 411,
+          "measurement": "output contains 1 minecraft:bucket",
+          "result": "[{Index: 0b, id: \"minecraft:bucket\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "solar_generator_sun": {
+      "devices": {
+        "ic2:solar_generator": "551 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 407,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "463.0d",
+          "matches": true
+        }
+      ]
+    },
+    "water_generator_bucket": {
+      "devices": {
+        "ic2:water_generator": "567 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 402,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "461.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 402,
+          "measurement": "fuel contains 1 minecraft:bucket",
+          "result": "[{Index: 0b, id: \"minecraft:bucket\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "water_generator_world_water": {
+      "devices": {
+        "ic2:water_generator": "583 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 398,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "114.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 398,
+          "measurement": "no supplied container or fuel",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "wind_generator_altitude": {
+      "devices": {
+        "ic2:wind_generator": "599 190 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 632,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "2473.0141553123376d",
+          "matches": true
+        }
+      ]
+    },
+    "creative_generator_no_fuel": {
+      "devices": {
+        "ic2:creative_generator": "615 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 390,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "40000.0d",
+          "matches": true
+        }
+      ]
+    },
+    "solar_generator_under_roof": {
+      "devices": {
+        "ic2:solar_generator": "631 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 386,
+          "measurement": "opaque roof blocks generation",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 624,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "101.0d",
+          "matches": true
+        }
+      ]
+    },
+    "inactive_generator_no_fuel": {
+      "devices": {
+        "ic2:generator": "647 120 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 382,
+          "measurement": "empty fuel slot supplies no EU",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 620,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "1950.0d",
+          "matches": true
+        }
+      ]
+    },
+    "solid_heat_generator_to_stirling_to_storage": {
+      "devices": {
+        "ic2:solid_heat_generator": "663 120 567",
+        "ic2:stirling_generator": "663 121 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 377,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "4000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 377,
+          "measurement": "coal consumed",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "rt_heat_generator_to_stirling_to_storage": {
+      "devices": {
+        "ic2:rt_heat_generator": "679 120 567",
+        "ic2:stirling_generator": "679 121 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 373,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "1788.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 373,
+          "measurement": "fuelSlot contains 3 ic2:rtg_pellet",
+          "result": "[{Index: 0b, id: \"ic2:rtg_pellet\", Count: 1b}, {Index: 1b, id: \"ic2:rtg_pellet\", Count: 1b}, {Index: 2b, id: \"ic2:rtg_pellet\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "fluid_heat_generator_to_stirling_to_storage": {
+      "devices": {
+        "ic2:fluid_heat_generator": "695 120 567",
+        "ic2:stirling_generator": "695 121 567"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 369,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "7120.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 369,
+          "measurement": "output contains 1 minecraft:bucket",
+          "result": "[{Index: 0b, id: \"minecraft:bucket\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "electric_heat_generator_to_stirling_to_storage": {
+      "devices": {
+        "ic2:electric_heat_generator": "519 120 583",
+        "ic2:stirling_generator": "519 121 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 365,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "4430.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 365,
+          "measurement": "external EU source depleted while loading coils",
+          "result": "11140.0d",
+          "matches": true
+        }
+      ]
+    },
+    "electric_kinetic_to_eu": {
+      "devices": {
+        "ic2:electric_kinetic_generator": "535 120 583",
+        "ic2:kinetic_generator": "535 121 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 361,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "11025.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 361,
+          "measurement": "external power fed the motor",
+          "result": "28750.0d",
+          "matches": true
+        }
+      ]
+    },
+    "manual_kinetic_to_eu": {
+      "devices": {
+        "ic2:manual_kinetic_generator": "551 120 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 356,
+          "measurement": "no EU in absence of handle use",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 594,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "30.0d",
+          "matches": true
+        }
+      ]
+    },
+    "wind_kinetic_open_rotor": {
+      "devices": {
+        "ic2:wind_kinetic_generator": "567 180 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 590,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "14112.5d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 590,
+          "measurement": "rotor activated",
+          "result": "1b",
+          "matches": true
+        }
+      ]
+    },
+    "water_kinetic_deep_ocean": {
+      "devices": {
+        "ic2:water_kinetic_generator": "1024 120 518"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 584,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "60600.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 584,
+          "measurement": "live rotor recognized DEAP_OCEAN with the appropriate kU output",
+          "result": "biome=DEAP_OCEAN ku=400",
+          "matches": true
+        }
+      ]
+    },
+    "water_kinetic_ocean": {
+      "devices": {
+        "ic2:water_kinetic_generator": "1024 151 518"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 580,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "45600.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 580,
+          "measurement": "live rotor recognized OCEAN with the appropriate kU output",
+          "result": "biome=OCEAN ku=300",
+          "matches": true
+        }
+      ]
+    },
+    "water_kinetic_river": {
+      "devices": {
+        "ic2:water_kinetic_generator": "1024 182 518"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 574,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "6142.25d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 574,
+          "measurement": "live rotor recognized RIVER with the appropriate kU output",
+          "result": "biome=RIVER ku=37",
+          "matches": true
+        }
+      ]
+    },
+    "water_kinetic_plains": {
+      "devices": {
+        "ic2:water_kinetic_generator": "1024 213 518"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 569,
+          "measurement": "invalid biome yields no EU",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 569,
+          "measurement": "live rotor recognized INVALID with the appropriate kU output",
+          "result": "biome=INVALID ku=0",
+          "matches": true
+        }
+      ]
+    },
+    "batbox_storage_facing": {
+      "devices": {
+        "ic2:batbox": "647 120 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 327,
+          "measurement": "all supplied EU reached the output-face receiver",
+          "result": "3200.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 327,
+          "measurement": "source energy spent in transfer",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 327,
+          "measurement": "side without output emitted no energy",
+          "result": "0.0d",
+          "matches": true
+        }
+      ]
+    },
+    "cesu_storage_facing": {
+      "devices": {
+        "ic2:cesu": "663 120 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 323,
+          "measurement": "all supplied EU reached the output-face receiver",
+          "result": "12800.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 323,
+          "measurement": "source energy spent in transfer",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 323,
+          "measurement": "side without output emitted no energy",
+          "result": "0.0d",
+          "matches": true
+        }
+      ]
+    },
+    "mfe_storage_facing": {
+      "devices": {
+        "ic2:mfe": "679 120 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 319,
+          "measurement": "all supplied EU reached the output-face receiver",
+          "result": "51200.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 319,
+          "measurement": "source energy spent in transfer",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 319,
+          "measurement": "side without output emitted no energy",
+          "result": "0.0d",
+          "matches": true
+        }
+      ]
+    },
+    "mfsu_storage_facing": {
+      "devices": {
+        "ic2:mfsu": "695 120 583"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 314,
+          "measurement": "all supplied EU reached the output-face receiver",
+          "result": "204800.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 314,
+          "measurement": "source energy spent in transfer",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 314,
+          "measurement": "side without output emitted no energy",
+          "result": "0.0d",
+          "matches": true
+        }
+      ]
+    },
+    "classic_mfe_storage_facing": {
+      "devices": {
+        "ic2:classic_mfe": "519 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 310,
+          "measurement": "all supplied EU reached the output-face receiver",
+          "result": "12800.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 310,
+          "measurement": "source energy spent in transfer",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 310,
+          "measurement": "side without output emitted no energy",
+          "result": "0.0d",
+          "matches": true
+        }
+      ]
+    },
+    "classic_mfsu_storage_facing": {
+      "devices": {
+        "ic2:classic_mfsu": "535 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 306,
+          "measurement": "all supplied EU reached the output-face receiver",
+          "result": "51200.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 306,
+          "measurement": "source energy spent in transfer",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 306,
+          "measurement": "side without output emitted no energy",
+          "result": "0.0d",
+          "matches": true
+        }
+      ]
+    },
+    "batbox_battery_charge_and_signal_block": {
+      "devices": {
+        "ic2:batbox": "551 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 302,
+          "measurement": "redstone block mode prevented emissions while battery charged",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 302,
+          "measurement": "charge slot battery gained charge",
+          "result": "10000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 540,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "5696.0d",
+          "matches": true
+        }
+      ]
+    },
+    "lv_transformer_up": {
+      "devices": {
+        "ic2:lv_transformer": "567 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 297,
+          "measurement": "configured mode engaged",
+          "result": "1b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 297,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "12800.0d",
+          "matches": true
+        }
+      ]
+    },
+    "lv_transformer_down": {
+      "devices": {
+        "ic2:lv_transformer": "583 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 293,
+          "measurement": "configured mode engaged",
+          "result": "0b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 293,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "18944.0d",
+          "matches": true
+        }
+      ]
+    },
+    "mv_transformer_up": {
+      "devices": {
+        "ic2:mv_transformer": "599 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 289,
+          "measurement": "configured mode engaged",
+          "result": "1b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 289,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "18944.0d",
+          "matches": true
+        }
+      ]
+    },
+    "mv_transformer_down": {
+      "devices": {
+        "ic2:mv_transformer": "615 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 285,
+          "measurement": "configured mode engaged",
+          "result": "0b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 285,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "18944.0d",
+          "matches": true
+        }
+      ]
+    },
+    "hv_transformer_up": {
+      "devices": {
+        "ic2:hv_transformer": "631 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 281,
+          "measurement": "configured mode engaged",
+          "result": "1b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 281,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "18432.0d",
+          "matches": true
+        }
+      ]
+    },
+    "hv_transformer_down": {
+      "devices": {
+        "ic2:hv_transformer": "647 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 277,
+          "measurement": "configured mode engaged",
+          "result": "0b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 277,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "18432.0d",
+          "matches": true
+        }
+      ]
+    },
+    "ev_transformer_up": {
+      "devices": {
+        "ic2:ev_transformer": "663 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 273,
+          "measurement": "configured mode engaged",
+          "result": "1b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 273,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "16384.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 273,
+          "measurement": "second EV downconverts the tier-five output",
+          "result": "1",
+          "matches": true
+        }
+      ]
+    },
+    "lv_transformer_redstone_up_then_down": {
+      "devices": {
+        "ic2:lv_transformer": "679 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 268,
+          "measurement": "redstone automatically stepped up",
+          "result": "1b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 268,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "5120.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 268,
+          "measurement": "low-side store drained before power is returned",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 506,
+          "measurement": "signal removal automatically stepped down",
+          "result": "0b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 506,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "5120.0d",
+          "matches": true
+        }
+      ]
+    },
+    "classic_electrolyzer_save": {
+      "devices": {
+        "ic2:classic_electrolyzer": "695 120 599"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 703,
+          "measurement": "hydrogen contains 1 ic2:electrolyzed_water_cell",
+          "result": "[{Index: 0b, id: \"ic2:electrolyzed_water_cell\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 703,
+          "measurement": "measured EU changes by exactly its cycle amount",
+          "result": "3480000.0d",
+          "matches": true
+        }
+      ]
+    },
+    "classic_electrolyzer_restore": {
+      "devices": {
+        "ic2:classic_electrolyzer": "519 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 718,
+          "measurement": "water contains 1 ic2:water_cell",
+          "result": "[{Index: 0b, id: \"ic2:water_cell\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 718,
+          "measurement": "measured EU changes by exactly its cycle amount",
+          "result": "18000.0d",
+          "matches": true
+        }
+      ]
+    },
+    "batbox_chargepad_hands_charge_on_contact": {
+      "devices": {
+        "ic2:batbox_chargepad": "535 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 256,
+          "measurement": "no contact did not drain the pad",
+          "result": "20000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 494,
+          "measurement": "both hand items gained charge",
+          "result": "hand=64.0 offhand=64.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 494,
+          "measurement": "pad EU eliminated only by verified charging",
+          "result": "19872.0d",
+          "matches": true
+        }
+      ]
+    },
+    "cesu_chargepad_hands_charge_on_contact": {
+      "devices": {
+        "ic2:cesu_chargepad": "551 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 252,
+          "measurement": "no contact did not drain the pad",
+          "result": "20000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 490,
+          "measurement": "both hand items gained charge",
+          "result": "hand=256.0 offhand=256.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 490,
+          "measurement": "pad EU eliminated only by verified charging",
+          "result": "19488.0d",
+          "matches": true
+        }
+      ]
+    },
+    "mfe_chargepad_hands_charge_on_contact": {
+      "devices": {
+        "ic2:mfe_chargepad": "567 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 248,
+          "measurement": "no contact did not drain the pad",
+          "result": "20000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 486,
+          "measurement": "both hand items gained charge",
+          "result": "hand=1024.0 offhand=1024.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 486,
+          "measurement": "pad EU eliminated only by verified charging",
+          "result": "17952.0d",
+          "matches": true
+        }
+      ]
+    },
+    "mfsu_chargepad_hands_charge_on_contact": {
+      "devices": {
+        "ic2:mfsu_chargepad": "583 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 244,
+          "measurement": "no contact did not drain the pad",
+          "result": "20000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 482,
+          "measurement": "both hand items gained charge",
+          "result": "hand=4096.0 offhand=4096.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 482,
+          "measurement": "pad EU eliminated only by verified charging",
+          "result": "11808.0d",
+          "matches": true
+        }
+      ]
+    },
+    "solar_day_night_and_dark_dimensions": {
+      "devices": {
+        "ic2:solar_generator": "599 120 615",
+        "ic2:solar_distiller": "601 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "receiver starts empty",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1450,
+          "measurement": "receiver stores more than 0 EU from the live source",
+          "result": "1454.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1450,
+          "measurement": "overworld sunlight distilled water",
+          "result": "{FluidName: \"ic2:distilled_water\", Amount: 20}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1450,
+          "measurement": "minecraft:the_nether solar panel never generated EU",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1450,
+          "measurement": "minecraft:the_nether solar distiller never turned water into distilled water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 100}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1450,
+          "measurement": "minecraft:the_end solar panel never generated EU",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1450,
+          "measurement": "minecraft:the_end solar distiller never turned water into distilled water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 100}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1801,
+          "measurement": "overworld solar panel stopped when dark",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1801,
+          "measurement": "overworld distiller stopped when dark",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        }
+      ]
+    },
+    "pump_world_intake": {
+      "devices": {
+        "ic2:pump": "615 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 473,
+          "measurement": "drawn water exceeds one bucket using coal supply",
+          "result": "{FluidName: \"minecraft:water\", Amount: 8000}",
+          "matches": true
+        }
+      ]
+    },
+    "pump_tank_to_snowball_route": {
+      "devices": {
+        "ic2:pump": "631 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 742,
+          "measurement": "fluid is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 742,
+          "measurement": "fluid is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 742,
+          "measurement": "output contains exactly 1 minecraft:snowball",
+          "result": "[{Index: 0b, id: \"minecraft:snowball\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "fluid_distributor_distribute": {
+      "devices": {
+        "ic2:fluid_distributor": "647 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 227,
+          "measurement": "fluid holds 1000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 1000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 227,
+          "measurement": "fluid is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 227,
+          "measurement": "fluidTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        }
+      ]
+    },
+    "fluid_distributor_concentrate": {
+      "devices": {
+        "ic2:fluid_distributor": "663 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 223,
+          "measurement": "fluid holds 1000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 1000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 223,
+          "measurement": "fluid is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 223,
+          "measurement": "fluidTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        }
+      ]
+    },
+    "weighted_fluid_distributor_priority_and_fallback": {
+      "devices": {
+        "ic2:weighted_fluid_distributor": "679 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 218,
+          "measurement": "fluid holds 24000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 24000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 218,
+          "measurement": "fluid holds 975 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 975}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 218,
+          "measurement": "fluidTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        }
+      ]
+    },
+    "fluid_regulator_mode_0_partial": {
+      "devices": {
+        "ic2:fluid_regulator": "695 120 615"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 214,
+          "measurement": "fluidTank holds 975 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 975}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 214,
+          "measurement": "fluid holds 24000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 24000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 214,
+          "measurement": "only one successful transfer spends 10 EU",
+          "result": "990.0d",
+          "matches": true
+        }
+      ]
+    },
+    "fluid_regulator_mode_1_partial": {
+      "devices": {
+        "ic2:fluid_regulator": "519 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 210,
+          "measurement": "fluidTank holds 975 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 975}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 210,
+          "measurement": "fluid holds 24000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 24000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 210,
+          "measurement": "only one successful transfer spends 10 EU",
+          "result": "990.0d",
+          "matches": true
+        }
+      ]
+    },
+    "machine_tank_accepts_at_capacity": {
+      "devices": {
+        "ic2:tank": "535 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 206,
+          "measurement": "fluid holds 24000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 24000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 206,
+          "measurement": "fluidTank holds 500 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 500}",
+          "matches": true
+        }
+      ]
+    },
+    "bronze_tank_capacity_fill_and_drain": {
+      "devices": {
+        "ic2:bronze_tank": "551 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 202,
+          "measurement": "contents holds 32000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 32000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 202,
+          "measurement": "fluidTank holds 500 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 500}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 440,
+          "measurement": "actual player-use handler fills an empty IC2 cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:0b,id:\"ic2:water_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 440,
+          "measurement": "contents holds 31000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 31000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 605,
+          "measurement": "actual player-use handler returns an empty cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:1b,id:\"ic2:empty_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 605,
+          "measurement": "contents holds 32000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 32000}",
+          "matches": true
+        }
+      ]
+    },
+    "iron_tank_capacity_fill_and_drain": {
+      "devices": {
+        "ic2:iron_tank": "567 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 198,
+          "measurement": "contents holds 32000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 32000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 198,
+          "measurement": "fluidTank holds 500 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 500}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 436,
+          "measurement": "actual player-use handler fills an empty IC2 cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:0b,id:\"ic2:water_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 436,
+          "measurement": "contents holds 31000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 31000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 601,
+          "measurement": "actual player-use handler returns an empty cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:1b,id:\"ic2:empty_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 601,
+          "measurement": "contents holds 32000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 32000}",
+          "matches": true
+        }
+      ]
+    },
+    "steel_tank_capacity_fill_and_drain": {
+      "devices": {
+        "ic2:steel_tank": "583 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 194,
+          "measurement": "contents holds 128000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 128000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 194,
+          "measurement": "fluidTank holds 500 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 500}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 432,
+          "measurement": "actual player-use handler fills an empty IC2 cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:0b,id:\"ic2:water_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 432,
+          "measurement": "contents holds 127000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 127000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 597,
+          "measurement": "actual player-use handler returns an empty cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:1b,id:\"ic2:empty_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 597,
+          "measurement": "contents holds 128000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 128000}",
+          "matches": true
+        }
+      ]
+    },
+    "iridium_tank_capacity_fill_and_drain": {
+      "devices": {
+        "ic2:iridium_tank": "599 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 189,
+          "measurement": "contents holds 1024000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 1024000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 189,
+          "measurement": "fluidTank holds 500 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 500}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 427,
+          "measurement": "actual player-use handler fills an empty IC2 cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:0b,id:\"ic2:water_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 427,
+          "measurement": "contents holds 1023000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 1023000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 592,
+          "measurement": "actual player-use handler returns an empty cell",
+          "result": "result=SUCCESS inventory=[{Count:1b,Slot:1b,id:\"ic2:empty_cell\"}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 592,
+          "measurement": "contents holds 1024000 mB minecraft:water",
+          "result": "{FluidName: \"minecraft:water\", Amount: 1024000}",
+          "matches": true
+        }
+      ]
+    },
+    "solar_distiller_conserves_water_in_daylight": {
+      "devices": {
+        "ic2:solar_distiller": "615 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 423,
+          "measurement": "outputTank holds some mB ic2:distilled_water",
+          "result": "{FluidName: \"ic2:distilled_water\", Amount: 6}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 423,
+          "measurement": "sum of water and distilled water remains 100 mB",
+          "result": "{outputTank: {FluidName: \"ic2:distilled_water\", Amount: 6}, inputTank: {FluidName: \"minecraft:water\", Amount: 94}}",
+          "matches": true
+        }
+      ]
+    },
+    "liquid_heat_exchanger_cold_and_empty": {
+      "devices": {
+        "ic2:liquid_heat_exchanger": "631 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 419,
+          "measurement": "inputTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 419,
+          "measurement": "outputTank holds 100 mB ic2:coolant",
+          "result": "{FluidName: \"ic2:coolant\", Amount: 100}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 419,
+          "measurement": "real HU export follows actual conversion",
+          "result": "1000.0d",
+          "matches": true
+        }
+      ]
+    },
+    "liquid_heat_exchanger_partial_capacity": {
+      "devices": {
+        "ic2:liquid_heat_exchanger": "647 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 415,
+          "measurement": "inputTank holds 99 mB ic2:hot_coolant",
+          "result": "{FluidName: \"ic2:hot_coolant\", Amount: 99}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 415,
+          "measurement": "outputTank holds 2000 mB ic2:coolant",
+          "result": "{FluidName: \"ic2:coolant\", Amount: 2000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 415,
+          "measurement": "real HU export follows actual conversion",
+          "result": "10.0d",
+          "matches": true
+        }
+      ]
+    },
+    "liquid_heat_exchanger_full": {
+      "devices": {
+        "ic2:liquid_heat_exchanger": "663 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 411,
+          "measurement": "inputTank holds 100 mB ic2:hot_coolant",
+          "result": "{FluidName: \"ic2:hot_coolant\", Amount: 100}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 411,
+          "measurement": "outputTank holds 2000 mB ic2:coolant",
+          "result": "{FluidName: \"ic2:coolant\", Amount: 2000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 411,
+          "measurement": "real HU export follows actual conversion",
+          "result": "0.0d",
+          "matches": true
+        }
+      ]
+    },
+    "stirling_kinetic_live_water_conversion": {
+      "devices": {
+        "ic2:stirling_kinetic_generator": "679 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 407,
+          "measurement": "water input is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 407,
+          "measurement": "15 mB water became hot water",
+          "result": "{FluidName: \"ic2:hot_water\", Amount: 15}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 407,
+          "measurement": "generated kU converted into real EU",
+          "result": "45.0d",
+          "matches": true
+        }
+      ]
+    },
+    "steam_generator_cold_start_steam": {
+      "devices": {
+        "ic2:steam_generator": "695 120 631"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "waterTank holds 50 mB ic2:distilled_water",
+          "result": "{FluidName: \"ic2:distilled_water\", Amount: 50}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "boiler not preheated",
+          "result": "0.0f",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1404,
+          "measurement": "waterTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1404,
+          "measurement": "fluid holds 5000 mB ic2:steam",
+          "result": "{FluidName: \"ic2:steam\", Amount: 5000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 1404,
+          "measurement": "distilled water causes no calcification",
+          "result": "0",
+          "matches": true
+        }
+      ]
+    },
+    "steam_generator_cold_start_superheated_steam": {
+      "devices": {
+        "ic2:steam_generator": "519 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "waterTank holds 50 mB ic2:distilled_water",
+          "result": "{FluidName: \"ic2:distilled_water\", Amount: 50}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 0,
+          "measurement": "boiler not preheated",
+          "result": "0.0f",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3991,
+          "measurement": "waterTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3991,
+          "measurement": "fluid holds 5000 mB ic2:superheated_steam",
+          "result": "{FluidName: \"ic2:superheated_steam\", Amount: 5000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 3991,
+          "measurement": "distilled water causes no calcification",
+          "result": "0",
+          "matches": true
+        }
+      ]
+    },
+    "condenser_complete_cycle": {
+      "devices": {
+        "ic2:condenser": "535 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 394,
+          "measurement": "inputTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 394,
+          "measurement": "outputTank holds 100 mB ic2:distilled_water",
+          "result": "{FluidName: \"ic2:distilled_water\", Amount: 100}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 394,
+          "measurement": "whole condensation run clears progress",
+          "result": "0",
+          "matches": true
+        }
+      ]
+    },
+    "steam_turbine_delivers_kU_and_exhaust": {
+      "devices": {
+        "ic2:steam_kinetic_generator": "551 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 390,
+          "measurement": "steamTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 390,
+          "measurement": "distilledWaterTank holds 10 mB ic2:distilled_water",
+          "result": "{FluidName: \"ic2:distilled_water\", Amount: 10}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 390,
+          "measurement": "condenser received remaining 9000 mB",
+          "result": "9000",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 390,
+          "measurement": "storage gained real EU from steam kU",
+          "result": "4967.5d",
+          "matches": true
+        }
+      ]
+    },
+    "steam_turbine_blocks_superheated_without_receiver": {
+      "devices": {
+        "ic2:steam_kinetic_generator": "567 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 385,
+          "measurement": "steamTank holds 1000 mB ic2:superheated_steam",
+          "result": "{FluidName: \"ic2:superheated_steam\", Amount: 1000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 385,
+          "measurement": "distilledWaterTank is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        }
+      ]
+    },
+    "steam_repressurizer_steam": {
+      "devices": {
+        "ic2:steam_repressurizer": "583 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 381,
+          "measurement": "input is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 381,
+          "measurement": "output holds 1600 mB ic2:steam",
+          "result": "{FluidName: \"ic2:steam\", Amount: 1600}",
+          "matches": true
+        }
+      ]
+    },
+    "steam_repressurizer_superheated_steam": {
+      "devices": {
+        "ic2:steam_repressurizer": "599 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 377,
+          "measurement": "input is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 377,
+          "measurement": "output holds 3200 mB ic2:steam",
+          "result": "{FluidName: \"ic2:steam\", Amount: 3200}",
+          "matches": true
+        }
+      ]
+    },
+    "electrolyzer_one_water_cycle": {
+      "devices": {
+        "ic2:electrolyzer": "615 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 373,
+          "measurement": "input is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 373,
+          "measurement": "fluid holds 26 mB ic2:hydrogen",
+          "result": "{FluidName: \"ic2:hydrogen\", Amount: 26}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 373,
+          "measurement": "fluid holds 13 mB ic2:oxygen",
+          "result": "{FluidName: \"ic2:oxygen\", Amount: 13}",
+          "matches": true
+        }
+      ]
+    },
+    "reactor_electric_expanded": {
+      "devices": {
+        "ic2:nuclear_reactor": "631 120 647",
+        "ic2:reactor_chamber": "632 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 131,
+          "measurement": "one chamber adds one working column",
+          "result": "size=4 liquid=false",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 131,
+          "measurement": "redstone off produces no EU",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 369,
+          "measurement": "single rod generates EU through real energy net",
+          "result": "720.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 369,
+          "measurement": "reactor fuel progressed",
+          "result": "8",
+          "matches": true
+        }
+      ]
+    },
+    "reactor_fluid_multiblock_all_ports": {
+      "devices": {
+        "ic2:reactor_fluid_port": "647 122 647",
+        "ic2:reactor_access_hatch": "649 120 647",
+        "ic2:reactor_redstone_port": "645 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 127,
+          "measurement": "intact vessel activates coolant mode",
+          "result": "size=9 liquid=true",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 365,
+          "measurement": "inputTank holds 1000 mB ic2:coolant",
+          "result": "{FluidName: \"ic2:coolant\", Amount: 1000}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 365,
+          "measurement": "access hatch set an actual fuel rod in reactor slot",
+          "result": "[{Index: 0b, id: \"ic2:uranium_fuel_rod\", Count: 1b}, {Index: 1b, id: \"ic2:reactor_heat_vent\", Count: 1b, tag: {use: 0}}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 365,
+          "measurement": "before redstone active heat output is empty",
+          "result": "{Empty: \"\"}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 530,
+          "measurement": "outputTank holds some mB ic2:hot_coolant",
+          "result": "{FluidName: \"ic2:hot_coolant\", Amount: 32}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 530,
+          "measurement": "redstone port created hot coolant from actual reactor vent",
+          "result": "{FluidName: \"ic2:coolant\", Amount: 968}",
+          "matches": true
+        }
+      ]
+    },
+    "rci_rsh_wear_and_resource_contract": {
+      "devices": {
+        "ic2:rci_rsh": "663 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 122,
+          "measurement": "no materials means no repair",
+          "result": "18000",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 122,
+          "measurement": "no materials means no draw",
+          "result": "2000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 360,
+          "measurement": "target wear removed on successful repair",
+          "result": "{Index: 0b, id: \"ic2:rsh_condensator\", Count: 1b, tag: {use: 0}}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 360,
+          "measurement": "one applicable material was consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 360,
+          "measurement": "successful repair costs EU",
+          "result": "1000.0d",
+          "matches": true
+        }
+      ]
+    },
+    "rci_lzh_wear_and_resource_contract": {
+      "devices": {
+        "ic2:rci_lzh": "679 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 118,
+          "measurement": "no materials means no repair",
+          "result": "90000",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 118,
+          "measurement": "no materials means no draw",
+          "result": "2000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 356,
+          "measurement": "target wear removed on successful repair",
+          "result": "{Index: 0b, id: \"ic2:lzh_condensator\", Count: 1b, tag: {use: 0}}",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 356,
+          "measurement": "one applicable material was consumed",
+          "result": "[]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 356,
+          "measurement": "successful repair costs EU",
+          "result": "1000.0d",
+          "matches": true
+        }
+      ]
+    },
+    "solid_heat_residual_refuels_after_cable_loss": {
+      "devices": {
+        "ic2:solid_heat_generator": "695 120 647"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 114,
+          "measurement": "residual 2 HU and waiting coal resume real EU transfer",
+          "result": "2718.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 114,
+          "measurement": "one piece of coal was used",
+          "result": "[{Index: 0b, id: \"minecraft:coal\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 114,
+          "measurement": "full heat outlet without demand keeps both pieces of coal",
+          "result": "[{Index: 0b, id: \"minecraft:coal\", Count: 2b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 114,
+          "measurement": "new burn stores the original fuel duration",
+          "result": "400",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 114,
+          "measurement": "old saves restore a valid duration from remaining fuel",
+          "result": "1000",
+          "matches": true
+        }
+      ]
+    },
+    "item_buffer_ejector_inventory": {
+      "devices": {
+        "ic2:item_buffer": "519 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 110,
+          "measurement": "ejector moves all 16 items to neighboring chest",
+          "result": "[{Slot: 0b, id: \"minecraft:cobblestone\", Count: 16b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 110,
+          "measurement": "item buffer no longer holds original stack",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "sorting_machine_filtered_east_and_default_down": {
+      "devices": {
+        "ic2:sorting_machine": "535 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 344,
+          "measurement": "filter route received four diamonds",
+          "result": "[{Slot: 0b, id: \"minecraft:diamond\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 344,
+          "measurement": "unmatched input took default route",
+          "result": "[{Slot: 0b, id: \"minecraft:cobblestone\", Count: 8b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 344,
+          "measurement": "all routed input removed from sorter",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "weighted_item_distributor_fallback_capacity": {
+      "devices": {
+        "ic2:weighted_item_distributor": "551 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 340,
+          "measurement": "highest priority fills only its four available spaces",
+          "result": "[{Slot: 0b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 1b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 2b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 3b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 4b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 5b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 6b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 7b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 8b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 9b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 10b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 11b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 12b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 13b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 14b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 15b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 16b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 17b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 18b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 19b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 20b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 21b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 22b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 23b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 24b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 25b, id: \"minecraft:cobblestone\", Count: 64b}, {Slot: 26b, id: \"minecraft:cobblestone\", Count: 64b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 340,
+          "measurement": "remaining four arrive at secondary channel",
+          "result": "[{Slot: 0b, id: \"minecraft:cobblestone\", Count: 4b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 340,
+          "measurement": "buffer loses exactly eight delivered items",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "trade_o_mat_exchanges_one_item": {
+      "devices": {
+        "ic2:trade_o_mat": "567 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 336,
+          "measurement": "output contains exactly 1 minecraft:iron_ingot",
+          "result": "[{Index: 0b, id: \"minecraft:iron_ingot\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 336,
+          "measurement": "exact funds entered supplier chest",
+          "result": "[{Slot: 0b, id: \"minecraft:iron_ingot\", Count: 7b}, {Slot: 1b, id: \"minecraft:diamond\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 336,
+          "measurement": "supplier stock decremented by one",
+          "result": "[{Slot: 0b, id: \"minecraft:iron_ingot\", Count: 7b}, {Slot: 1b, id: \"minecraft:diamond\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 336,
+          "measurement": "successful trade counted once",
+          "result": "1",
+          "matches": true
+        }
+      ]
+    },
+    "energy_o_mat_uses_real_grid_after_payment": {
+      "devices": {
+        "ic2:energy_o_mat": "583 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 94,
+          "measurement": "unpaid charge demand rejected",
+          "result": "0.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 94,
+          "measurement": "no EU sold before payment",
+          "result": "10000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 332,
+          "measurement": "exactly 1000 EU sold and charged into battery",
+          "result": "1000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 332,
+          "measurement": "adjacent grid transferred exactly 1000 EU",
+          "result": "9000.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 332,
+          "measurement": "one matching payment reaches supplier",
+          "result": "[{Slot: 0b, id: \"minecraft:diamond\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 332,
+          "measurement": "paid credit cleared when sale complete",
+          "result": "0",
+          "matches": true
+        }
+      ]
+    },
+    "personal_chest_ownership_and_item": {
+      "devices": {
+        "ic2:personal_chest": "599 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 89,
+          "measurement": "first profile can use storage, second profile denied",
+          "result": "owner=true other=false",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 89,
+          "measurement": "original profile persisted as owner",
+          "result": "\"MachineQA\"",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 89,
+          "measurement": "content contains exactly 2 minecraft:diamond",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}]",
+          "matches": true
+        }
+      ]
+    },
+    "wooden_storage_box_capacity_and_survival_drop": {
+      "devices": {
+        "ic2:wooden_storage_box": "615 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 85,
+          "measurement": "inventory contains exactly 2 minecraft:diamond",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 26b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 85,
+          "measurement": "inventory contains exactly 1 minecraft:redstone",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 26b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 323,
+          "measurement": "box was removed through survival break",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 323,
+          "measurement": "actual drop preserves first and last inventory slots",
+          "result": "{id: \"ic2:wooden_storage_box\", Count: 1b, tag: {Contents: [{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 26b, id: \"minecraft:redstone\", Count: 1b}]}}",
+          "matches": true
+        }
+      ]
+    },
+    "iron_storage_box_capacity_and_survival_drop": {
+      "devices": {
+        "ic2:iron_storage_box": "631 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 81,
+          "measurement": "inventory contains exactly 2 minecraft:diamond",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 44b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 81,
+          "measurement": "inventory contains exactly 1 minecraft:redstone",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 44b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 319,
+          "measurement": "box was removed through survival break",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 319,
+          "measurement": "actual drop preserves first and last inventory slots",
+          "result": "{id: \"ic2:iron_storage_box\", Count: 1b, tag: {Contents: [{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 44b, id: \"minecraft:redstone\", Count: 1b}]}}",
+          "matches": true
+        }
+      ]
+    },
+    "bronze_storage_box_capacity_and_survival_drop": {
+      "devices": {
+        "ic2:bronze_storage_box": "647 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 77,
+          "measurement": "inventory contains exactly 2 minecraft:diamond",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 44b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 77,
+          "measurement": "inventory contains exactly 1 minecraft:redstone",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 44b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 315,
+          "measurement": "box was removed through survival break",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 315,
+          "measurement": "actual drop preserves first and last inventory slots",
+          "result": "{id: \"ic2:bronze_storage_box\", Count: 1b, tag: {Contents: [{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 44b, id: \"minecraft:redstone\", Count: 1b}]}}",
+          "matches": true
+        }
+      ]
+    },
+    "steel_storage_box_capacity_and_survival_drop": {
+      "devices": {
+        "ic2:steel_storage_box": "663 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 73,
+          "measurement": "inventory contains exactly 2 minecraft:diamond",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 62b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 73,
+          "measurement": "inventory contains exactly 1 minecraft:redstone",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 62b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 311,
+          "measurement": "box was removed through survival break",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 311,
+          "measurement": "actual drop preserves first and last inventory slots",
+          "result": "{id: \"ic2:steel_storage_box\", Count: 1b, tag: {Contents: [{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 62b, id: \"minecraft:redstone\", Count: 1b}]}}",
+          "matches": true
+        }
+      ]
+    },
+    "iridium_storage_box_capacity_and_survival_drop": {
+      "devices": {
+        "ic2:iridium_storage_box": "679 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 69,
+          "measurement": "inventory contains exactly 2 minecraft:diamond",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 125b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 69,
+          "measurement": "inventory contains exactly 1 minecraft:redstone",
+          "result": "[{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 125b, id: \"minecraft:redstone\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 307,
+          "measurement": "box was removed through survival break",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 307,
+          "measurement": "actual drop preserves first and last inventory slots",
+          "result": "{id: \"ic2:iridium_storage_box\", Count: 1b, tag: {Contents: [{Index: 0b, id: \"minecraft:diamond\", Count: 2b}, {Index: 125b, id: \"minecraft:redstone\", Count: 1b}]}}",
+          "matches": true
+        }
+      ]
+    },
+    "magnetizer_contact_and_controlled_descent": {
+      "devices": {
+        "ic2:magnetizer": "695 120 663"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 64,
+          "measurement": "unpowered standing collision has no boost",
+          "result": "motion=0.0 distance=0.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 64,
+          "measurement": "unpowered crouch and fast fall slows by 10%",
+          "result": "motion=-0.9 distance=8.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 302,
+          "measurement": "powered contact accelerates upward",
+          "result": "motion=0.07725 distance=0.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 302,
+          "measurement": "powered crouch and fast fall slows by 20%",
+          "result": "motion=-0.8 distance=8.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 302,
+          "measurement": "slow collision clears accumulated fall distance",
+          "result": "motion=-0.125 distance=0.0",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 302,
+          "measurement": "powered contacts consumed some energy",
+          "result": "94.0d",
+          "matches": true
+        }
+      ]
+    },
+    "teleporter_bound_pair_moves_item_with_power": {
+      "devices": {
+        "ic2:teleporter": "519 120 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 298,
+          "measurement": "link tool set reciprocal target first endpoint",
+          "result": "525",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 298,
+          "measurement": "link tool set reciprocal target second endpoint",
+          "result": "519",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 298,
+          "measurement": "item stayed at entrance without energy",
+          "result": "519.5d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 463,
+          "measurement": "item moved to paired endpoint",
+          "result": "525.5d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 463,
+          "measurement": "successful teleport charged the linked store",
+          "result": "6518.0d",
+          "matches": true
+        }
+      ]
+    },
+    "tesla_coil_redstone_and_shock": {
+      "devices": {
+        "ic2:tesla_coil": "535 120 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 56,
+          "measurement": "redstone off consumes no energy",
+          "result": "3600.0d",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 56,
+          "measurement": "redstone off leaves target unchanged",
+          "result": "100.0f",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 294,
+          "measurement": "redstone on deals exactly eight damage to sole target",
+          "result": "92.0f",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 294,
+          "measurement": "shock draws at least 3200 EU",
+          "result": "263.0d",
+          "matches": true
+        }
+      ]
+    },
+    "miner_descends_and_withdraws": {
+      "devices": {
+        "ic2:miner": "551 120 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 455,
+          "measurement": "prospecting reached the ore and left a pipe when blocked by bedrock",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 455,
+          "measurement": "buffer contains exactly 1 minecraft:raw_iron",
+          "result": "[{Index: 0b, id: \"minecraft:raw_iron\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 455,
+          "measurement": "pipe contains exactly 1 ic2:mining_pipe",
+          "result": "[{Index: 0b, id: \"ic2:mining_pipe\", Count: 1b}]",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 651,
+          "measurement": "withdraw pulled pipe without restoring ore",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 651,
+          "measurement": "buffer contains exactly 1 ic2:mining_pipe",
+          "result": "[{Index: 0b, id: \"minecraft:raw_iron\", Count: 1b}, {Index: 1b, id: \"ic2:mining_pipe\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "advanced_miner_natural_scan_whitelist": {
+      "devices": {
+        "ic2:advanced_miner": "567 240 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 286,
+          "measurement": "initial scan removed accepted iron ore",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 286,
+          "measurement": "filter keeps nearby excluded stone",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 286,
+          "measurement": "raw iron delivered to adjacent chest",
+          "result": "[{Slot: 0b, id: \"minecraft:raw_iron\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "advanced_miner_natural_scan_blacklist": {
+      "devices": {
+        "ic2:advanced_miner": "583 245 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 282,
+          "measurement": "initial scan removed accepted iron ore",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 282,
+          "measurement": "filter keeps nearby excluded stone",
+          "result": "Test passed",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 282,
+          "measurement": "raw iron delivered to adjacent chest",
+          "result": "[{Slot: 0b, id: \"minecraft:raw_iron\", Count: 1b}]",
+          "matches": true
+        }
+      ]
+    },
+    "crop_harvester_mature_wheat_output": {
+      "devices": {
+        "ic2:crop_harvester": "599 120 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 277,
+          "measurement": "harvest resets mature age",
+          "result": "2b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 277,
+          "measurement": "grown wheat output collected by machine",
+          "result": "[{Index: 0b, id: \"minecraft:wheat\", Count: 15b}]",
+          "matches": true
+        }
+      ]
+    },
+    "cropmatron_fertilizes_and_waters": {
+      "devices": {
+        "ic2:cropmatron": "615 120 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 273,
+          "measurement": "crop got measurable nutrition",
+          "result": "88s",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 273,
+          "measurement": "crop got measurable hydration",
+          "result": "198s",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 273,
+          "measurement": "one fertilizer used",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "classic_cropmatron_fertilizes_and_waters": {
+      "devices": {
+        "ic2:classic_cropmatron": "631 120 679"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 269,
+          "measurement": "crop got measurable nutrition",
+          "result": "88s",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 269,
+          "measurement": "crop got measurable hydration",
+          "result": "200s",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 269,
+          "measurement": "one fertilizer used",
+          "result": "[]",
+          "matches": true
+        }
+      ]
+    },
+    "terraformer_flatification": {
+      "devices": {
+        "ic2:terraformer": "880 120 888"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 265,
+          "measurement": "installed flatification blueprint created minecraft:dirt on its own test platform",
+          "result": "Successfully filled 12 blocks",
+          "matches": true
+        }
+      ]
+    },
+    "terraformer_chilling": {
+      "devices": {
+        "ic2:terraformer": "912 120 888"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 261,
+          "measurement": "installed chilling blueprint created minecraft:ice on its own test platform",
+          "result": "Successfully filled 14 blocks",
+          "matches": true
+        }
+      ]
+    },
+    "terraformer_cultivation": {
+      "devices": {
+        "ic2:terraformer": "944 120 888"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 256,
+          "measurement": "installed cultivation blueprint created minecraft:dirt on its own test platform",
+          "result": "Successfully filled 7 blocks",
+          "matches": true
+        }
+      ]
+    },
+    "terraformer_desertification": {
+      "devices": {
+        "ic2:terraformer": "976 120 888"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 252,
+          "measurement": "installed desertification blueprint created minecraft:sand on its own test platform",
+          "result": "Successfully filled 15 blocks",
+          "matches": true
+        }
+      ]
+    },
+    "terraformer_irrigation": {
+      "devices": {
+        "ic2:terraformer": "1008 120 888"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 248,
+          "measurement": "installed irrigation blueprint created minecraft:dirt on its own test platform",
+          "result": "Successfully filled 21 blocks",
+          "matches": true
+        }
+      ]
+    },
+    "terraformer_mushroom": {
+      "devices": {
+        "ic2:terraformer": "1040 120 888"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 244,
+          "measurement": "installed mushroom blueprint created minecraft:mycelium on its own test platform",
+          "result": "Successfully filled 8 blocks",
+          "matches": true
+        }
+      ]
+    },
+    "chunk_loader_loads_releases_selected_chunk": {
+      "devices": {
+        "ic2:chunk_loader": "887 120 519"
+      },
+      "observations": [
+        {
+          "elapsedSampleTick": 240,
+          "measurement": "loader became active on real network power",
+          "result": "1b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 240,
+          "measurement": "selected chunk became loaded",
+          "result": "loaded=true",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 240,
+          "measurement": "there is no vanilla forced ticket at the selected chunk",
+          "result": "Chunk at [59, 32] in minecraft:overworld is not marked for force loading",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 498,
+          "measurement": "loss of power shuts down chunk loader",
+          "result": "0b",
+          "matches": true
+        },
+        {
+          "elapsedSampleTick": 498,
+          "measurement": "selected chunk unloaded after loss of power",
+          "result": "loaded=false",
+          "matches": true
+        }
+      ]
+    }
+  }
+}

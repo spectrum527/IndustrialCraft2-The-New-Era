@@ -1,0 +1,2333 @@
+{
+  "source": "Player-facing GUI resource metadata and anchors from the 1.2.4 game archive; this records declared dimensions and layout facts.",
+  "buildSha256": "c3801301c8f32f957dd879413d33826438004f5a54f56fb17a2903da820efc5e",
+  "panels": {
+    "advanced_upgrade": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 7,
+          "align": "center"
+        },
+        {
+          "role": "button",
+          "x": 10,
+          "y": 18,
+          "width": 50,
+          "height": 20
+        },
+        {
+          "role": "image",
+          "x": 65,
+          "y": 21,
+          "width": 14,
+          "height": 14,
+          "src": "textures/gui/common",
+          "u": 192,
+          "v": 62
+        },
+        {
+          "role": "image",
+          "x": 65,
+          "y": 21,
+          "width": 14,
+          "height": 14,
+          "src": "textures/gui/common",
+          "u": 206,
+          "v": 62
+        },
+        {
+          "role": "button",
+          "x": 10,
+          "y": 40,
+          "width": 50,
+          "height": 20
+        },
+        {
+          "role": "image",
+          "x": 65,
+          "y": 43,
+          "width": 14,
+          "height": 14,
+          "src": "textures/gui/common",
+          "u": 192,
+          "v": 62
+        },
+        {
+          "role": "image",
+          "x": 65,
+          "y": 43,
+          "width": 14,
+          "height": 14,
+          "src": "textures/gui/common",
+          "u": 206,
+          "v": 62
+        },
+        {
+          "role": "image",
+          "x": 65,
+          "y": 65,
+          "width": 14,
+          "height": 14,
+          "src": "textures/gui/common",
+          "u": 192,
+          "v": 62
+        },
+        {
+          "role": "image",
+          "x": 65,
+          "y": 65,
+          "width": 14,
+          "height": 14,
+          "src": "textures/gui/common",
+          "u": 206,
+          "v": 62
+        },
+        {
+          "role": "button",
+          "x": 83,
+          "y": 23,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "role": "button",
+          "x": 83,
+          "y": 45,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "role": "button",
+          "x": 83,
+          "y": 67,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83,
+          "title": "false"
+        }
+      ]
+    },
+    "blast_furnace": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 55,
+          "y": 24
+        },
+        {
+          "role": "slotgrid",
+          "name": "output",
+          "x": 111,
+          "y": 24,
+          "rows": 2
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 80,
+          "y": 35,
+          "width": 22,
+          "height": 15
+        },
+        {
+          "role": "slot",
+          "name": "cellInput",
+          "x": 7,
+          "y": 52
+        },
+        {
+          "role": "slot",
+          "name": "cellOutput",
+          "x": 25,
+          "y": 52
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressarrow",
+          "x": 80,
+          "y": 35
+        },
+        {
+          "role": "text",
+          "x": 14,
+          "y": 25
+        },
+        {
+          "role": "gauge",
+          "name": "heat",
+          "style": "heatcentrifuge",
+          "x": 15,
+          "y": 34
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "block_cutter": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 26,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 34
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 26,
+          "y": 52
+        },
+        {
+          "role": "slot",
+          "name": "cutterInputSlot",
+          "style": "plain",
+          "x": 70,
+          "y": 34
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 55,
+          "y": 33,
+          "width": 15,
+          "height": 19
+        },
+        {
+          "role": "button",
+          "x": 86,
+          "y": 33,
+          "width": 15,
+          "height": 19
+        },
+        {
+          "role": "image",
+          "x": 63,
+          "y": 54,
+          "width": 30,
+          "height": 26,
+          "src": "ic2:textures/gui/guiblockcutter",
+          "u": 176,
+          "v": 34
+        },
+        {
+          "role": "energygauge",
+          "x": 29,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressblockcutter",
+          "x": 55,
+          "y": 33
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "bronze_storage_box": {
+      "width": 176,
+      "height": 202,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "inventory",
+          "x": 7,
+          "y": 16,
+          "rows": 5,
+          "cols": 9
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 119
+        }
+      ]
+    },
+    "bronze_tank": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "burning_box": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "image",
+          "x": 48,
+          "y": 45,
+          "width": 81,
+          "height": 36,
+          "src": "ic2:textures/gui/guisolidheatgenerator.png",
+          "u": 47,
+          "v": 44
+        },
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "fuel",
+          "x": 80,
+          "y": 45
+        },
+        {
+          "role": "slot",
+          "name": "ashes",
+          "x": 113,
+          "y": 45
+        },
+        {
+          "role": "gauge",
+          "name": "fuel",
+          "style": "fuel",
+          "x": 81,
+          "y": 29
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83,
+          "title": "false"
+        }
+      ]
+    },
+    "centrifuge": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "image",
+          "x": 40,
+          "y": 18,
+          "width": 80,
+          "height": 60,
+          "src": "ic2:textures/gui/guithermalcentrifuge.png",
+          "u": 40,
+          "v": 18
+        },
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 10,
+          "y": 17
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 10,
+          "y": 53
+        },
+        {
+          "role": "slotgrid",
+          "name": "output",
+          "x": 123,
+          "y": 17,
+          "rows": 3
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 84,
+          "y": 25,
+          "width": 3,
+          "height": 28
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progresscentrifuge",
+          "x": 84,
+          "y": 25
+        },
+        {
+          "role": "energygauge",
+          "x": 15,
+          "y": 38
+        },
+        {
+          "role": "gauge",
+          "name": "heat",
+          "style": "heatcentrifuge",
+          "x": 68,
+          "y": 67
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "classic_electrolyzer": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "water",
+          "x": 53,
+          "y": 34
+        },
+        {
+          "role": "slot",
+          "name": "hydrogen",
+          "x": 111,
+          "y": 34
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "classic_mass_fabricator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "scrap",
+          "x": 114,
+          "y": 61
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 110,
+          "y": 18
+        },
+        {
+          "role": "text",
+          "x": 8,
+          "y": 22
+        },
+        {
+          "role": "text",
+          "x": 18,
+          "y": 31
+        },
+        {
+          "role": "text",
+          "x": 8,
+          "y": 46
+        },
+        {
+          "role": "text",
+          "x": 8,
+          "y": 58
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 79,
+          "y": 61
+        },
+        {
+          "role": "image",
+          "x": 119,
+          "y": 46,
+          "width": 7,
+          "height": 13,
+          "src": "ic2:textures/gui/common.png",
+          "u": 116,
+          "v": 65
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "coke_kiln": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "x": 91,
+          "y": 35
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "fuel",
+          "x": 70,
+          "y": 36
+        },
+        {
+          "role": "button",
+          "x": 70,
+          "y": 35,
+          "width": 16,
+          "height": 16
+        },
+        {
+          "role": "text",
+          "y": 61,
+          "align": "center"
+        },
+        {
+          "role": "text",
+          "y": 61,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "coke_kiln_grate": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "coke_kiln_hatch": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "inventory",
+          "x": 79,
+          "y": 35
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "compressor": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 55,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 30
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 55,
+          "y": 52
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 80,
+          "y": 35,
+          "width": 22,
+          "height": 15
+        },
+        {
+          "role": "energygauge",
+          "x": 59,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progresstriangle",
+          "x": 80,
+          "y": 35
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "drum": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "electric_furnace": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 55,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 30
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 55,
+          "y": 52
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 80,
+          "y": 35,
+          "width": 22,
+          "height": 15
+        },
+        {
+          "role": "energygauge",
+          "x": 59,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressarrow",
+          "x": 80,
+          "y": 35
+        },
+        {
+          "role": "button",
+          "x": 6,
+          "y": 50,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "electrolyzer": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "water",
+          "x": 53,
+          "y": 34
+        },
+        {
+          "role": "slot",
+          "name": "hydrogen",
+          "x": 111,
+          "y": 34
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "extractor": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 55,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 30
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 55,
+          "y": 52
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 80,
+          "y": 35,
+          "width": 22,
+          "height": 15
+        },
+        {
+          "role": "energygauge",
+          "x": 59,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressdrop",
+          "x": 80,
+          "y": 35
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "fuel",
+          "x": 56,
+          "y": 52
+        },
+        {
+          "role": "slot",
+          "name": "charge",
+          "x": 56,
+          "y": 16
+        },
+        {
+          "role": "energygauge",
+          "style": "bar",
+          "x": 100,
+          "y": 39
+        },
+        {
+          "role": "gauge",
+          "name": "fuel",
+          "style": "fuel",
+          "x": 57,
+          "y": 36
+        },
+        {
+          "role": "button",
+          "x": 57,
+          "y": 36,
+          "width": 13,
+          "height": 13
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "geo_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "fluidSlot",
+          "x": 26,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "x": 26,
+          "y": 52
+        },
+        {
+          "role": "slot",
+          "name": "charge",
+          "x": 114,
+          "y": 48
+        },
+        {
+          "role": "energygauge",
+          "style": "bar",
+          "x": 110,
+          "y": 30
+        },
+        {
+          "role": "fluidtank",
+          "name": "fluid",
+          "x": 56,
+          "y": 16
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "induction_furnace": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "image",
+          "x": 42,
+          "y": 16,
+          "src": "textures/gui/overlay/induction_furnace_input"
+        },
+        {
+          "role": "slot",
+          "name": "inputA",
+          "style": "plain",
+          "x": 43,
+          "y": 17
+        },
+        {
+          "role": "slot",
+          "name": "inputB",
+          "style": "plain",
+          "x": 59,
+          "y": 17
+        },
+        {
+          "role": "image",
+          "x": 110,
+          "y": 30,
+          "src": "textures/gui/overlay/induction_furnace_output"
+        },
+        {
+          "role": "slot",
+          "name": "outputA",
+          "style": "plain",
+          "x": 113,
+          "y": 35
+        },
+        {
+          "role": "slot",
+          "name": "outputB",
+          "style": "plain",
+          "x": 129,
+          "y": 35
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 50,
+          "y": 52
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 25,
+          "cols": 1
+        },
+        {
+          "role": "energygauge",
+          "x": 55,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressarrow",
+          "x": 81,
+          "y": 35
+        },
+        {
+          "role": "button",
+          "x": 81,
+          "y": 35,
+          "width": 22,
+          "height": 15
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        },
+        {
+          "role": "text",
+          "x": 10,
+          "y": 36
+        },
+        {
+          "role": "text",
+          "x": 10,
+          "y": 46
+        }
+      ]
+    },
+    "iridium_storage_box": {
+      "width": 338,
+      "height": 238,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "inventory",
+          "x": 7,
+          "y": 16,
+          "rows": 7,
+          "cols": 18
+        },
+        {
+          "role": "playerInventory",
+          "x": 88,
+          "y": 155
+        }
+      ]
+    },
+    "iridium_tank": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "iron_furnace": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 55,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 30
+        },
+        {
+          "role": "slot",
+          "name": "fuel",
+          "x": 55,
+          "y": 52
+        },
+        {
+          "role": "gauge",
+          "name": "fuel",
+          "style": "fuel",
+          "x": 56,
+          "y": 36
+        },
+        {
+          "role": "button",
+          "x": 56,
+          "y": 36,
+          "width": 13,
+          "height": 13
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressarrow",
+          "x": 80,
+          "y": 35
+        },
+        {
+          "role": "button",
+          "x": 80,
+          "y": 35,
+          "width": 22,
+          "height": 15
+        },
+        {
+          "role": "button",
+          "x": 6,
+          "y": 50,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "iron_storage_box": {
+      "width": 176,
+      "height": 202,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "inventory",
+          "x": 7,
+          "y": 16,
+          "rows": 5,
+          "cols": 9
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 119
+        }
+      ]
+    },
+    "iron_tank": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "kinetic_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        },
+        {
+          "role": "text",
+          "x": 41,
+          "y": 33
+        },
+        {
+          "role": "text",
+          "x": 41,
+          "y": 45
+        }
+      ]
+    },
+    "macerator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 55,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 30
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 55,
+          "y": 52
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 80,
+          "y": 38,
+          "width": 21,
+          "height": 11
+        },
+        {
+          "role": "energygauge",
+          "x": 59,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progresscrush",
+          "x": 80,
+          "y": 38
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "mass_fabricator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "scrap",
+          "x": 114,
+          "y": 61
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 110,
+          "y": 18
+        },
+        {
+          "role": "text",
+          "x": 18,
+          "y": 22
+        },
+        {
+          "role": "text",
+          "x": 18,
+          "y": 34
+        },
+        {
+          "role": "text",
+          "x": 18,
+          "y": 46
+        },
+        {
+          "role": "text",
+          "x": 18,
+          "y": 58
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 79,
+          "y": 61
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "energygauge",
+          "x": 119,
+          "y": 46
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "mass_fabricator_classic": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "scrap",
+          "x": 114,
+          "y": 61
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 110,
+          "y": 18
+        },
+        {
+          "role": "text",
+          "x": 8,
+          "y": 22
+        },
+        {
+          "role": "text",
+          "x": 18,
+          "y": 31
+        },
+        {
+          "role": "text",
+          "x": 8,
+          "y": 46
+        },
+        {
+          "role": "text",
+          "x": 8,
+          "y": 58
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 79,
+          "y": 61
+        },
+        {
+          "role": "image",
+          "x": 119,
+          "y": 46,
+          "width": 7,
+          "height": 13,
+          "src": "ic2:textures/gui/common.png",
+          "u": 116,
+          "v": 65
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "metal_former": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 16,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 30
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 16,
+          "y": 52
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "energygauge",
+          "x": 20,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressmetalformer",
+          "x": 52,
+          "y": 40
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "nuke": {
+      "width": 176,
+      "height": 219,
+      "elements": [
+        {
+          "role": "image",
+          "x": 0,
+          "y": 0,
+          "src": "ic2:textures/gui/guinuke.png"
+        },
+        {
+          "role": "slot",
+          "name": "insideSlot",
+          "x": 78,
+          "y": 61
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 51,
+          "y": 7
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 105,
+          "y": 7
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 25,
+          "y": 34
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 132,
+          "y": 34
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 25,
+          "y": 88
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 132,
+          "y": 88
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 51,
+          "y": 115
+        },
+        {
+          "role": "slot",
+          "name": "outsideSlot",
+          "x": 105,
+          "y": 115
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 136,
+          "title": "false"
+        }
+      ]
+    },
+    "ore_washing_plant": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "image",
+          "x": 37,
+          "y": 16,
+          "width": 87,
+          "height": 63,
+          "src": "ic2:textures/gui/guiorewashingplant.png",
+          "u": 37,
+          "v": 16
+        },
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 103,
+          "y": 16
+        },
+        {
+          "role": "slotgrid",
+          "name": "output",
+          "x": 85,
+          "y": 61,
+          "rows": 1
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 103,
+          "y": 39,
+          "width": 18,
+          "height": 18
+        },
+        {
+          "role": "slot",
+          "name": "fluid",
+          "x": 37,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "cell",
+          "x": 37,
+          "y": 61
+        },
+        {
+          "role": "fluidtank",
+          "name": "fluid",
+          "x": 60,
+          "y": 20
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressorewasher",
+          "x": 103,
+          "y": 39
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 10,
+          "y": 53
+        },
+        {
+          "role": "energygauge",
+          "x": 15,
+          "y": 38
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83,
+          "title": "false"
+        }
+      ]
+    },
+    "personal_chest": {
+      "width": 176,
+      "height": 222,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "content",
+          "x": 7,
+          "y": 18,
+          "rows": 6
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 139
+        }
+      ]
+    },
+    "pump": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "image",
+          "x": 93,
+          "y": 36,
+          "src": "textures/gui/overlay/pump_arrow"
+        },
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 98,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "x": 131,
+          "y": 33
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 7,
+          "y": 43
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "energygauge",
+          "x": 12,
+          "y": 28
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressdrop",
+          "x": 36,
+          "y": 34
+        },
+        {
+          "role": "fluidtank",
+          "name": "fluid",
+          "x": 70,
+          "y": 16
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "rci_lzh": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "slotgrid",
+          "name": "input",
+          "x": 61,
+          "y": 16,
+          "rows": 3,
+          "cols": 3
+        },
+        {
+          "role": "energygauge",
+          "x": 7,
+          "y": 55
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "rci_rsh": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "slotgrid",
+          "name": "input",
+          "x": 61,
+          "y": 16,
+          "rows": 3,
+          "cols": 3
+        },
+        {
+          "role": "energygauge",
+          "x": 7,
+          "y": 55
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "reactor_fluid_port": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "upgrade",
+          "x": 79,
+          "y": 42
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "recycler": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 55,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "style": "large",
+          "x": 111,
+          "y": 30
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 55,
+          "y": 52
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 80,
+          "y": 35,
+          "width": 18,
+          "height": 15
+        },
+        {
+          "role": "energygauge",
+          "x": 59,
+          "y": 37
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressrecycler",
+          "x": 80,
+          "y": 35
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "rt_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "fuel",
+          "x": 30,
+          "y": 25,
+          "rows": 2
+        },
+        {
+          "role": "energygauge",
+          "style": "bar",
+          "x": 115,
+          "y": 39
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "semifluid_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "fluidSlot",
+          "x": 26,
+          "y": 16
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "x": 26,
+          "y": 52
+        },
+        {
+          "role": "slot",
+          "name": "charge",
+          "x": 114,
+          "y": 48
+        },
+        {
+          "role": "energygauge",
+          "style": "bar",
+          "x": 110,
+          "y": 30
+        },
+        {
+          "role": "fluidtank",
+          "name": "fluid",
+          "x": 56,
+          "y": 16
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "solid_canner": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "input",
+          "x": 36,
+          "y": 35
+        },
+        {
+          "role": "slot",
+          "name": "canInput",
+          "x": 66,
+          "y": 35
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "x": 115,
+          "y": 35
+        },
+        {
+          "role": "slot",
+          "name": "discharge",
+          "x": 7,
+          "y": 61
+        },
+        {
+          "role": "energygauge",
+          "x": 11,
+          "y": 46
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "button",
+          "x": 88,
+          "y": 35,
+          "width": 22,
+          "height": 15
+        },
+        {
+          "role": "image",
+          "x": 54,
+          "y": 35,
+          "width": 12,
+          "height": 18,
+          "src": "textures/gui/overlay/canner_arrow"
+        },
+        {
+          "role": "gauge",
+          "name": "progress",
+          "style": "progressarrow",
+          "x": 89,
+          "y": 36
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83,
+          "title": "false"
+        }
+      ]
+    },
+    "solid_heat_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "image",
+          "x": 48,
+          "y": 45,
+          "width": 81,
+          "height": 36,
+          "src": "ic2:textures/gui/guisolidheatgenerator.png",
+          "u": 47,
+          "v": 44
+        },
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "fuel",
+          "x": 80,
+          "y": 45
+        },
+        {
+          "role": "slot",
+          "name": "output",
+          "x": 113,
+          "y": 45
+        },
+        {
+          "role": "gauge",
+          "name": "fuel",
+          "style": "fuel",
+          "x": 81,
+          "y": 29
+        },
+        {
+          "role": "text",
+          "x": 48,
+          "y": 66,
+          "width": 79,
+          "height": 13
+        },
+        {
+          "role": "button",
+          "x": 81,
+          "y": 29,
+          "width": 13,
+          "height": 13
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83,
+          "title": "false"
+        }
+      ]
+    },
+    "steam_repressurizer": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "image",
+          "x": 0,
+          "y": 0,
+          "width": 176,
+          "height": 166,
+          "src": "textures/gui/guisteamrepressurizer"
+        },
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "fluidtank",
+          "name": "input",
+          "x": 15,
+          "y": 19,
+          "width": 38,
+          "height": 47
+        },
+        {
+          "role": "fluidtank",
+          "name": "output",
+          "x": 123,
+          "y": 19,
+          "width": 38,
+          "height": 47
+        },
+        {
+          "role": "text",
+          "y": 19,
+          "align": "center"
+        },
+        {
+          "role": "text",
+          "y": 63,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "steel_storage_box": {
+      "width": 176,
+      "height": 238,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "inventory",
+          "x": 7,
+          "y": 16,
+          "rows": 7,
+          "cols": 9
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 155
+        }
+      ]
+    },
+    "steel_tank": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "stirling_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        },
+        {
+          "role": "text",
+          "x": 41,
+          "y": 33
+        },
+        {
+          "role": "text",
+          "x": 41,
+          "y": 45
+        }
+      ]
+    },
+    "storage_box": {
+      "width": 176,
+      "height": 202,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "inventory",
+          "x": 7,
+          "y": 16,
+          "rows": 5,
+          "cols": 9
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 119
+        }
+      ]
+    },
+    "tank": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "upgrade",
+          "x": 151,
+          "y": 7,
+          "cols": 1
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "water_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "fuel",
+          "x": 80,
+          "y": 53
+        },
+        {
+          "role": "slot",
+          "name": "charge",
+          "x": 80,
+          "y": 17
+        },
+        {
+          "role": "gauge",
+          "name": "water",
+          "style": "bucket",
+          "x": 82,
+          "y": 36
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "wind_generator": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slot",
+          "name": "charge",
+          "x": 80,
+          "y": 26
+        },
+        {
+          "role": "gauge",
+          "name": "wind",
+          "style": "progresswind",
+          "x": 82,
+          "y": 45
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    },
+    "wooden_storage_box": {
+      "width": 176,
+      "height": 166,
+      "elements": [
+        {
+          "role": "text",
+          "y": 6,
+          "align": "center"
+        },
+        {
+          "role": "slotgrid",
+          "name": "inventory",
+          "x": 7,
+          "y": 16,
+          "rows": 3,
+          "cols": 9
+        },
+        {
+          "role": "playerInventory",
+          "x": 7,
+          "y": 83
+        }
+      ]
+    }
+  }
+}

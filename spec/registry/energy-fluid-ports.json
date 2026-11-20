@@ -1,0 +1,201 @@
+{
+  "batbox": {
+    "capacity": 40000,
+    "demand": 40000.0,
+    "offer": 0.0,
+    "packet": 32,
+    "sinkTier": 1,
+    "sourceTier": 1,
+    "tankCapacities": []
+  },
+  "blast_furnace": {
+    "tankCapacities": [
+      8000
+    ]
+  },
+  "canner": {
+    "demand": 1600.0,
+    "sinkTier": 1,
+    "tankCapacities": [
+      8000
+    ]
+  },
+  "centrifuge": {
+    "demand": 48000.0,
+    "sinkTier": 2,
+    "tankCapacities": []
+  },
+  "cesu": {
+    "capacity": 300000,
+    "demand": 300000.0,
+    "offer": 0.0,
+    "packet": 128,
+    "sinkTier": 2,
+    "sourceTier": 2,
+    "tankCapacities": []
+  },
+  "classic_canner": {
+    "demand": 600.0,
+    "sinkTier": 1,
+    "tankCapacities": []
+  },
+  "classic_mfe": {
+    "capacity": 600000,
+    "demand": 600000.0,
+    "offer": 0.0,
+    "packet": 128,
+    "sinkTier": 2,
+    "sourceTier": 2,
+    "tankCapacities": []
+  },
+  "classic_mfsu": {
+    "capacity": 10000000,
+    "demand": 10000000.0,
+    "offer": 0.0,
+    "packet": 512,
+    "sinkTier": 3,
+    "sourceTier": 3,
+    "tankCapacities": []
+  },
+  "condenser": {
+    "demand": 100000.0,
+    "sinkTier": 3,
+    "tankCapacities": [
+      1000,
+      100000
+    ]
+  },
+  "creative_generator": {
+    "offer": "unbounded",
+    "sourceTier": 1,
+    "tankCapacities": []
+  },
+  "electric_heat_generator": {
+    "demand": 10000.0,
+    "sinkTier": 4,
+    "tankCapacities": []
+  },
+  "electric_kinetic_generator": {
+    "demand": 10000.0,
+    "sinkTier": 4,
+    "tankCapacities": []
+  },
+  "electrolyzer": {
+    "demand": 32000.0,
+    "sinkTier": 2,
+    "tankCapacities": [
+      8000
+    ]
+  },
+  "ev_transformer": {
+    "demand": 16384.0,
+    "offer": 0.0,
+    "sinkTier": 5,
+    "sourceTier": 4,
+    "tankCapacities": []
+  },
+  "fermenter": {
+    "tankCapacities": [
+      2000,
+      10000
+    ]
+  },
+  "generator": {
+    "offer": 0.0,
+    "sourceTier": 1,
+    "tankCapacities": []
+  },
+  "geo_generator": {
+    "offer": 0.0,
+    "sourceTier": 1,
+    "tankCapacities": [
+      8000
+    ]
+  },
+  "hv_transformer": {
+    "demand": 4096.0,
+    "offer": 0.0,
+    "sinkTier": 4,
+    "sourceTier": 3,
+    "tankCapacities": []
+  },
+  "induction_furnace": {
+    "demand": 10000.0,
+    "sinkTier": 2,
+    "tankCapacities": []
+  },
+  "lv_transformer": {
+    "demand": 256.0,
+    "offer": 0.0,
+    "sinkTier": 2,
+    "sourceTier": 1,
+    "tankCapacities": []
+  },
+  "metal_former": {
+    "demand": 4000.0,
+    "sinkTier": 1,
+    "tankCapacities": []
+  },
+  "mfe": {
+    "capacity": 4000000,
+    "demand": 4000000.0,
+    "offer": 0.0,
+    "packet": 512,
+    "sinkTier": 3,
+    "sourceTier": 3,
+    "tankCapacities": []
+  },
+  "mfsu": {
+    "capacity": 40000000,
+    "demand": 40000000.0,
+    "offer": 0.0,
+    "packet": 2048,
+    "sinkTier": 4,
+    "sourceTier": 4,
+    "tankCapacities": []
+  },
+  "mv_transformer": {
+    "demand": 1024.0,
+    "offer": 0.0,
+    "sinkTier": 3,
+    "sourceTier": 2,
+    "tankCapacities": []
+  },
+  "nuclear_reactor": {
+    "offer": 0.0,
+    "sourceTier": 5,
+    "tankCapacities": []
+  },
+  "ore_washing_plant": {
+    "demand": 16000.0,
+    "sinkTier": 1,
+    "tankCapacities": [
+      8000
+    ]
+  },
+  "rt_generator": {
+    "offer": 0.0,
+    "sourceTier": 1,
+    "tankCapacities": []
+  },
+  "solar_generator": {
+    "offer": 2.0,
+    "sourceTier": 1,
+    "tankCapacities": []
+  },
+  "steam_generator": {
+    "tankCapacities": [
+      10000
+    ]
+  },
+  "water_generator": {
+    "offer": 0.0,
+    "sourceTier": 1,
+    "tankCapacities": []
+  },
+  "wind_generator": {
+    "offer": 32.0,
+    "sourceTier": 1,
+    "tankCapacities": []
+  }
+}

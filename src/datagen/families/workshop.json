@@ -1,0 +1,229 @@
+{
+  "items": {
+    "air_cell": {},
+    "iron_cutting_blade": {},
+    "steel_cutting_blade": {},
+    "diamond_cutting_blade": {},
+    "tin_can": {},
+    "filled_tin_can": {},
+    "tool_box": {},
+    "water_cell": {},
+    "lava_cell": {},
+    "wooden_rotor": {},
+    "iron_rotor": {},
+    "bronze_rotor": {},
+    "steel_rotor": {},
+    "carbon_rotor": {},
+    "wooden_rotor_blade": {},
+    "iron_rotor_blade": {},
+    "bronze_rotor_blade": {},
+    "steel_rotor_blade": {},
+    "carbon_rotor_blade": {},
+    "steam_turbine": {},
+    "steam_turbine_blade": {},
+    "containment_box": {},
+    "electrolyzed_water_cell": {},
+    "uu_matter": {},
+    "scrap_box": {},
+    "empty_fuel_can": {},
+    "filled_fuel_can": {},
+    "coalfuel_cell": {},
+    "biofuel_cell": {},
+    "hydrated_coal_cell": {},
+    "bio_cell": {},
+    "bronze_shaft": {},
+    "iron_shaft": {},
+    "steel_shaft": {},
+    "raw_crystal_memory": {},
+    "crystal_memory": {},
+    "fluid_cell": {}
+  },
+  "blocks": {
+    "metal_former": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "ore_washing_plant": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "centrifuge": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "blast_furnace": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "induction_furnace": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "recycler": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "block_cutter": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "canner": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "electric_heat_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "advanced_machine": {},
+    "solid_heat_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "classic_canner": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "fluid_bottler": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "fluid_distributor": {
+      "facing": "six",
+      "active": true
+    },
+    "fluid_regulator": {
+      "facing": "six",
+      "active": true
+    },
+    "pump": {
+      "facing": "six",
+      "active": true
+    },
+    "stirling_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "electrolyzer": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "fluid_heat_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "rt_heat_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "fermenter": {
+      "facing": "six",
+      "active": true
+    },
+    "steam_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "condenser": {
+      "facing": "six",
+      "active": true
+    },
+    "steam_kinetic_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "kinetic_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "electric_kinetic_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "manual_kinetic_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "stirling_kinetic_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "wind_kinetic_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "water_kinetic_generator": {
+      "facing": "six",
+      "active": true
+    },
+    "semifluid_generator": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "steam_repressurizer": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "classic_electrolyzer": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "mass_fabricator": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "classic_mass_fabricator": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "matter_generator": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "uu_scanner": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "pattern_storage": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "replicator": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "solid_canner": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "solar_distiller": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "liquid_heat_exchanger": {
+      "facing": "six",
+      "active": true
+    },
+    "weighted_fluid_distributor": {
+      "facing": "six",
+      "active": true
+    },
+    "tank": {},
+    "coke_kiln": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "uu_assembly_bench": {
+      "facing": "horizontal",
+      "active": true
+    },
+    "coke_kiln_grate": {
+      "facing": "six",
+      "active": false
+    },
+    "coke_kiln_hatch": {
+      "facing": "six",
+      "active": false
+    }
+  }
+}
