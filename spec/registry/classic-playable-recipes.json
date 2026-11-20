@@ -321,6 +321,98 @@
         "ic2:uranium_238"
       ],
       "source": "survival-access: inverse of nine-small unit conversion"
+    },
+    {
+      "output": "copper_ingot",
+      "count": 1,
+      "ingredients": [
+        "minecraft:copper_ingot"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "lithium_fuel_rod",
+      "count": 1,
+      "ingredients": [
+        "ic2:fuel_rod",
+        "ic2:lithium_dust"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "mox_pellet",
+      "count": 1,
+      "ingredients": [
+        "ic2:mox"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "uranium_pellet",
+      "count": 1,
+      "ingredients": [
+        "ic2:uranium"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "pellet",
+      "count": 1,
+      "ingredients": [
+        "ic2:cf_powder"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "heavy_water_bucket",
+      "count": 1,
+      "ingredients": [
+        "ic2:uu_matter",
+        "minecraft:water_bucket"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "weed_ex_bucket",
+      "count": 1,
+      "ingredients": [
+        "ic2:weed_ex_cell",
+        "minecraft:bucket"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "crushed_silver",
+      "count": 1,
+      "ingredients": [
+        "ic2:uu_matter",
+        "ic2:silver_dust"
+      ],
+      "source": "survival-access: registered legacy or optional-integration specimen"
+    },
+    {
+      "output": "mox",
+      "count": 1,
+      "ingredients": [
+        "ic2:mox_pellet"
+      ],
+      "source": "survival-access: restore one original material from a pressed specimen"
+    },
+    {
+      "output": "uranium",
+      "count": 1,
+      "ingredients": [
+        "ic2:uranium_pellet"
+      ],
+      "source": "survival-access: restore one original material from a pressed specimen"
+    },
+    {
+      "output": "cf_powder",
+      "count": 1,
+      "ingredients": [
+        "ic2:pellet"
+      ],
+      "source": "survival-access: restore one original material from a pressed specimen"
     }
   ]
 }
