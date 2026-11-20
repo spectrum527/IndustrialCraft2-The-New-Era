@@ -2,10 +2,7 @@ package com.industrialage.ia2.gametest;
 
 import com.industrialage.ia2.gameplay.IndustrialMachine;
 import com.industrialage.ia2.worldtest.WorldChecks;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Properties;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,6 +32,11 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Properties;
+
 /** Exercises the actual registered factories, block tickers, inventories, and recipes. */
 @Mod("ic2_native_gameplay")
 public final class NativeGameplayFixture {
@@ -55,6 +57,7 @@ public final class NativeGameplayFixture {
     private GearChecks gear;
     private final PowerChecks power = new PowerChecks();
     private final WorkshopChecks workshop = new WorkshopChecks();
+    private final StorageChecks storage = new StorageChecks();
     private WorldChecks worldProgram;
     private com.industrialage.ia2.worldtest.FoodPaintChecks worldDetails;
     private int ticks;
@@ -67,6 +70,9 @@ public final class NativeGameplayFixture {
 
     /** Installs the two phases on the dedicated server. */
     public NativeGameplayFixture() {
+        NeoForge.EVENT_BUS.addListener(
+                net.neoforged.neoforge.event.level.BlockDropsEvent.class,
+                StorageChecks::traceDrops);
         NeoForge.EVENT_BUS.addListener(ServerStartedEvent.class, this::startup);
         NeoForge.EVENT_BUS.addListener(ServerTickEvent.Post.class, this::sample);
     }
@@ -151,6 +157,10 @@ public final class NativeGameplayFixture {
                 worldProgram.setup(level, FakePlayerFactory.getMinecraft(level));
             } else if (phase.startsWith("power")) {
                 power.start(level, phase.equals("powerRead"), this::check);
+            } else if ("storage".equals(phase)) {
+                level.setChunkForced(0, 0, true);
+                level.getChunk(0, 0);
+                storage.setup(level, this::check);
             } else if ("workshop".equals(phase)) {
                 workshop.setup(level, this::check);
             } else if ("write".equals(phase)) {
@@ -321,6 +331,10 @@ public final class NativeGameplayFixture {
             }
             boolean done =
                     switch (phase) {
+                        case "storage" -> {
+                            if (ticks < 30) yield false;
+                            yield storage.tick(server.overworld(), this::check);
+                        }
                         case "powerWrite", "powerRead" ->
                                 power.sample(
                                         server.overworld(),

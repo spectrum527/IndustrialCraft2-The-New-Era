@@ -1,12 +1,13 @@
 package com.industrialage.ia2.industrial;
 
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.UUID;
 
 /** Persistent inventory shared by viewers and serialized by the native block entity. */
 public final class BoxNode extends BoxHost {
@@ -54,9 +55,9 @@ public final class BoxNode extends BoxHost {
                 new SimpleMenuProvider((id, inventory, who) -> menu(id, inventory, page), title));
     }
 
-    /** Scatters fixed storage and bench contents when the block is removed. */
+    /** Scatters workbench contents when the block is removed. */
     void releaseContents(net.minecraft.world.level.Level level, BlockPos pos) {
-        if (kind == BoxKind.PERSONAL_CHEST || kind == BoxKind.INDUSTRIAL_WORKBENCH)
+        if (kind == BoxKind.INDUSTRIAL_WORKBENCH)
             net.minecraft.world.Containers.dropContents(level, pos, items);
     }
 

@@ -1,17 +1,20 @@
 package com.industrialage.ia2.industrial;
 
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+
+import java.util.UUID;
 
 /** Preserves native stacks on world save and in portable box drops. */
 abstract class BoxHost extends BlockEntity {
@@ -54,8 +57,14 @@ abstract class BoxHost extends BlockEntity {
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder builder) {
         super.collectImplicitComponents(builder);
-        if (((BoxNode) this).kind.portable())
+        var node = (BoxNode) this;
+        if (node.kind.portable())
             builder.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(list()));
+        if (node.kind == BoxKind.PERSONAL_CHEST && node.owner != null) {
+            var tag = new CompoundTag();
+            tag.putString("ic2_box_owner", node.owner.toString());
+            builder.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        }
     }
 
     @Override
@@ -67,6 +76,19 @@ abstract class BoxHost extends BlockEntity {
             var items = NonNullList.withSize(n.kind.slots, ItemStack.EMPTY);
             content.copyInto(items);
             restore(items);
+            if (n.kind == BoxKind.PERSONAL_CHEST) {
+                var data = input.get(DataComponents.CUSTOM_DATA);
+                if (data != null) {
+                    var owner = data.copyTag().getString("ic2_box_owner");
+                    if (owner.isPresent()) {
+                        try {
+                            n.owner = UUID.fromString(owner.get());
+                        } catch (IllegalArgumentException ignored) {
+                            // An item without a valid owner remains unclaimed.
+                        }
+                    }
+                }
+            }
         }
     }
 

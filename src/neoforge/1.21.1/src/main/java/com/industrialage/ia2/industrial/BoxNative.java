@@ -21,7 +21,7 @@ final class BoxNative {
                                 Capabilities.ItemHandler.BLOCK,
                                 BoxPlatform.type(),
                                 (node, side) ->
-                                        node.kind.portable()
+                                        node.kind.automatable()
                                                 ? new net.neoforged.neoforge.items.wrapper
                                                         .InvWrapper(node.items)
                                                 : null));

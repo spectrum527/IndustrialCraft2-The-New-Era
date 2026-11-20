@@ -21,7 +21,7 @@ final class BoxNative {
                                 Capabilities.Item.BLOCK,
                                 BoxPlatform.type(),
                                 (node, side) ->
-                                        node.kind.portable()
+                                        node.kind.automatable()
                                                 ? net.neoforged.neoforge.transfer.item
                                                         .VanillaContainerWrapper.of(node.items)
                                                 : null));

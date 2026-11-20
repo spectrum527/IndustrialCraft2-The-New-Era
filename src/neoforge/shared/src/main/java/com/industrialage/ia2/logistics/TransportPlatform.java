@@ -3,8 +3,7 @@ package com.industrialage.ia2.logistics;
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import com.industrialage.ia2.gameplay.IndustrialContent;
-import java.util.ArrayList;
-import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
@@ -27,6 +26,9 @@ import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** NeoForge registration and native capability entry points for the transport network. */
 public final class TransportPlatform {
@@ -207,7 +209,11 @@ public final class TransportPlatform {
 
         @Override
         public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-            var action = IndustrialContent.wrenchBlock(context);
+            var block = context.getLevel().getBlockState(context.getClickedPos()).getBlock();
+            var action =
+                    block instanceof com.industrialage.ia2.industrial.BoxBlock box
+                            ? box.wrench(context)
+                            : IndustrialContent.wrenchBlock(context);
             if (action.consumesAction()
                     && context.getLevel() instanceof ServerLevel
                     && context.getPlayer() != null) {
