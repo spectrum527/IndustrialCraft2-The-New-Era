@@ -21,6 +21,10 @@ enum BoxKind {
     }
 
     boolean portable() {
-        return this != INDUSTRIAL_WORKBENCH && this != PERSONAL_CHEST;
+        return this != INDUSTRIAL_WORKBENCH;
+    }
+
+    boolean automatable() {
+        return portable() && this != PERSONAL_CHEST;
     }
 }

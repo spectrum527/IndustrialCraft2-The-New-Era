@@ -418,6 +418,10 @@
   "gui.ic2.workshop.inputs": "Inputs",
   "gui.ic2.workshop.input": "Input",
   "gui.ic2.workshop.energy": "%s / %s EU",
+  "gui.ic2.workshop.electrolysis.hydrogen": "Hydrogen · bottom outlet",
+  "gui.ic2.workshop.electrolysis.oxygen": "Oxygen · top outlet",
+  "gui.ic2.workshop.electrolysis.preview": "%s mB per batch",
+  "gui.ic2.workshop.electrolysis.unused": "No output for this recipe",
   "gui.ic2.workshop.outputs": "Products",
   "gui.ic2.workshop.auxiliary": "Aux",
   "gui.ic2.workshop.returned": "Return",
@@ -1131,5 +1135,12 @@
   "ic2.upgrades.meta": "Damage",
   "ic2.upgrades.energy": "Energy",
   "ic2.upgrades.allow": "Allow",
-  "ic2.upgrades.deny": "Deny"
+  "ic2.upgrades.deny": "Deny",
+  "top.ic2.conductor": "Conductor (0 EU buffer)",
+  "top.ic2.empty": "Empty",
+  "top.ic2.energy": "Stored EU %s / %s EU",
+  "top.ic2.fluid": "%s %s / %s mB",
+  "top.ic2.no_rider_battery": "Rider battery unavailable",
+  "top.ic2.output": "Output %s EU/t",
+  "top.ic2.rider_battery": "Rider battery (%s) %s / %s EU"
 }

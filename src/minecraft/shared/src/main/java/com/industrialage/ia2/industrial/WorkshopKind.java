@@ -22,7 +22,7 @@ enum WorkshopKind {
     FLUID_REGULATOR("fluid_regulator", 20, 10, 10000, 1),
     FLUID_DISTRIBUTOR("fluid_distributor", 0, 0, 0, 0),
     PUMP("pump", 20, 2, 40, 1),
-    ELECTROLYZER("electrolyzer", 160, 16, 32000, 2),
+    ELECTROLYZER("electrolyzer", 200, 32, 32000, 2),
     STIRLING("stirling_generator", 0, 0, 1000, 1),
     FLUID_HEAT("fluid_heat_generator", 0, 0, 0, 0),
     RADIOISOTOPE_HEAT("rt_heat_generator", 0, 0, 0, 0),
@@ -74,7 +74,7 @@ enum WorkshopKind {
 
     int inputs(int mode) {
         return switch (this) {
-            case CANNER -> mode == 0 ? 2 : 1;
+            case CANNER -> mode == 1 || mode == 2 ? 1 : 2;
             case INDUCTION, CLASSIC_CANNER, SOLID_CANNER, FLUID_BOTTLER, UU_ASSEMBLY -> 2;
             case RADIOISOTOPE_HEAT -> 6;
             case ELECTRIC_HEAT,

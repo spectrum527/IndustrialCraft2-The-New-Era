@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.LiquidBlock;
 /** Server-side transport, electrolysis and heat-to-power machine cycles. */
 final class WorkshopDevices {
     private static final String WATER = "minecraft:water";
-    private static final String HYDROGEN = "ic2:hydrogen";
-    private static final String OXYGEN = "ic2:oxygen";
-    private static final int ELECTROLYSIS_WATER = 40;
-    private static final int ELECTROLYSIS_HYDROGEN = 26;
-    private static final int ELECTROLYSIS_OXYGEN = 13;
+    static final String HYDROGEN = "ic2:hydrogen";
+    static final String OXYGEN = "ic2:oxygen";
+    static final int ELECTROLYSIS_WATER = 40;
+    static final int ELECTROLYSIS_HYDROGEN = 26;
+    static final int ELECTROLYSIS_OXYGEN = 13;
 
     private WorkshopDevices() {}
 
@@ -159,13 +159,20 @@ final class WorkshopDevices {
     private static boolean electrolyze(WorkshopNode node, ServerLevel level) {
         push(node, node.outlet, level, Direction.DOWN, node.outlet.capacity);
         push(node, node.byproduct, level, Direction.UP, node.byproduct.capacity);
-        if (node.energy < node.kind.workingEu
+        // 0.1.0 counted 16 EU per tick. Carry any half-paid tick into the next actual debit.
+        boolean legacy = node.cycleDuration == 0;
+        int debit = node.kind.workingEu - (legacy ? (node.progress % 2) * 16 : 0);
+        if (node.energy < debit
                 || !node.inlet.has(WATER, ELECTROLYSIS_WATER)
                 || node.outlet.fill(HYDROGEN, ELECTROLYSIS_HYDROGEN, true) != ELECTROLYSIS_HYDROGEN
                 || node.byproduct.fill(OXYGEN, ELECTROLYSIS_OXYGEN, true) != ELECTROLYSIS_OXYGEN) {
             return false;
         }
-        node.energy -= node.kind.workingEu;
+        if (legacy) {
+            node.progress /= 2;
+            node.cycleDuration = node.kind.duration;
+        }
+        node.energy -= debit;
         if (++node.progress >= node.kind.duration) {
             node.inlet.drain(ELECTROLYSIS_WATER, false);
             node.outlet.fill(HYDROGEN, ELECTROLYSIS_HYDROGEN, false);

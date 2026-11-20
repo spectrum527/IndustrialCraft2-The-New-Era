@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import shutil
@@ -29,8 +30,24 @@ def check_layout(case, state):
         return
     if any(panel[key] <= 0 for key in ('width', 'height', 'scale', 'menuId')):
         raise AssertionError(f'{case["id"]} invalid native dimensions: {panel}')
-    if 'size' in case and [panel['width'], panel['height']] != case['size']:
-        raise AssertionError(f'{case["id"]} dimensions differ: {panel}')
+    width, height = panel['width'], panel['height']
+    scale = panel.get('panelScale', 1)
+    if 'size' in case:
+        art_width, art_height = case['size']
+        expected_scale = 1
+        if 'panelScale' in panel:
+            expected_scale = min(1, (panel['viewportWidth'] - 4) / art_width,
+                                 (panel['viewportHeight'] - 4) / art_height)
+        if not math.isclose(scale, expected_scale, abs_tol=1e-6):
+            raise AssertionError(f'{case["id"]} expected scale {expected_scale}: {panel}')
+        expected_size = [math.ceil(size * expected_scale - 1e-6) for size in case['size']]
+        if [width, height] != expected_size:
+            raise AssertionError(f'{case["id"]} expected visible size {expected_size}: {panel}')
+    if 'viewportWidth' in panel and (
+            panel['x'] < 0 or panel['y'] < 0
+            or panel['x'] + width > panel['viewportWidth']
+            or panel['y'] + height > panel['viewportHeight']):
+        raise AssertionError(f'{case["id"]} exceeds the logical viewport: {panel}')
     slots = panel['slots']
     points = [(slot['x'], slot['y']) for slot in slots]
     for i, slot in enumerate(slots):
@@ -39,8 +56,8 @@ def check_layout(case, state):
                     and max(slot['y'], other['y']) < min(slot['y'] + slot['height'], other['y'] + other['height'])):
                 raise AssertionError(f'{case["id"]} has overlapping native slots: {slot} and {other}')
     if any(slot['x'] < 0 or slot['y'] < 0 or
-           slot['x'] + slot['width'] > panel['width'] or
-           slot['y'] + slot['height'] > panel['height'] for slot in slots):
+           (slot['x'] + slot['width']) * scale > width or
+           (slot['y'] + slot['height']) * scale > height for slot in slots):
         raise AssertionError(f'{case["id"]} contains an off-panel slot: {panel}')
     if 'slots' in case and len(slots) != case['slots']:
         raise AssertionError(f'{case["id"]} expected {case["slots"]} slots, got {len(slots)}')
@@ -91,6 +108,7 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
         screenshot = capture(name)
         screenshots.append({'id': name, 'screen': state['screen'], 'title': state['title'],
                             'panel': state.get('panel'), 'atlas': case.get('atlas'),
+                            'authoredSize': case.get('size'),
                             'atlasSha256': stamp['entries'].get('assets/ic2/textures/gui/' + str(case.get('atlas')) + '.png'),
                             'productionJarSha256': stamp['jarSha256'],
                             'measurements': {key: state[key] for key in ('machineEnergy', 'machineProgress',
@@ -163,6 +181,8 @@ def run_cases(client, command, player, session, cases, capture, escape, clear):
             check_block_data(click.get('blockData', {}), click.get('snapshot', name))
             if 'snapshot' in click:
                 page = {'id': click['snapshot'], 'atlas': case.get('atlas')}
+                if 'size' in case:
+                    page['size'] = case['size']
                 page.update(click.get('layout', {}))
                 check_layout(page, state)
                 record(page, click['snapshot'], state)

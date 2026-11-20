@@ -21,6 +21,7 @@ final class WorkshopAutomation {
                     CLASSIC_CANNER,
                     SOLID_CANNER,
                     FLUID_BOTTLER,
+                    ELECTROLYZER,
                     PUMP,
                     UU_ASSEMBLY ->
                     true;
@@ -32,8 +33,10 @@ final class WorkshopAutomation {
         if (!supported(node.kind)) {
             return false;
         }
-        String id = WorkshopPlatform.itemId(item);
-        return switch (id) {
+        if (node.kind == WorkshopKind.ELECTROLYZER) {
+            return acceptsElectrolyzerUpgrade(item);
+        }
+        return switch (WorkshopPlatform.itemId(item)) {
             case "ic2:fluid_pulling_upgrade" ->
                     node.kind != WorkshopKind.PUMP && node.inlet.capacity > 0;
             case "ic2:fluid_ejector_upgrade" -> node.outlet.capacity > 0;
@@ -43,8 +46,12 @@ final class WorkshopAutomation {
         };
     }
 
+    static boolean acceptsElectrolyzerUpgrade(ItemStack item) {
+        return WorkshopPlatform.itemId(item).equals("ic2:fluid_pulling_upgrade");
+    }
+
     static ProcessingUpgrades basic(WorkshopNode node) {
-        return supported(node.kind)
+        return supported(node.kind) && node.kind != WorkshopKind.ELECTROLYZER
                 ? MachineAutomation.installed(stacks(node))
                 : ProcessingUpgrades.NONE;
     }
@@ -87,9 +94,11 @@ final class WorkshopAutomation {
 
         for (var upgrade : installed) {
             String path = WorkshopPlatform.itemId(upgrade);
-            if (path.equals("ic2:fluid_ejector_upgrade")
-                    || path.equals("ic2:fluid_pulling_upgrade")) {
-                fluid(node, level, upgrade, path.equals("ic2:fluid_ejector_upgrade"));
+            if (path.equals("ic2:fluid_pulling_upgrade")) {
+                fluid(node, level, upgrade, false);
+            } else if (node.kind != WorkshopKind.ELECTROLYZER
+                    && path.equals("ic2:fluid_ejector_upgrade")) {
+                fluid(node, level, upgrade, true);
             }
         }
     }

@@ -13,9 +13,15 @@
 | 26.1.2 | NeoForge 26.1.2.128 | 25 |
 | 26.2 | NeoForge 26.2.0.95 | 25 |
 
+## 可选联动
+
+本分支构建可独立安装。另装 The One Probe 后，准星指向设备即可查看液体种类和毫桶数、储能与容量。另装 Curios 后，电池背包和喷气背包可放入背饰槽，电力背包穿在背饰位时也能用合适等级的充电座充电。[支持的装备与读数](spec/platform/optional-integrations.md)
+
 ## 构建
 
 三个 NeoForge 分支共享玩法层，本工程可以分别构建三个目标。Forge 1.19.2 分支使用 ForgeGradle 的重混淆发行任务。
+
+复现发行 JAR 时，可在全新检出目录运行下列打包命令。这样旧分支的编译类和生成资源不会混入成品。
 
 ```sh
 ./gradlew :neoforge:1.21.1:jar :neoforge:26.1.2:jar :neoforge:26.2:jar

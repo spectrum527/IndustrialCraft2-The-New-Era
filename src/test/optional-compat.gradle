@@ -1,0 +1,62 @@
+import java.time.Duration
+
+def fixture = rootProject.file('src/test/src/optionalCompat')
+def directory = layout.buildDirectory.dir("run/optional-compat-${compatMode}")
+sourceSets {
+    optionalCompat {
+        java.srcDir new File(fixture, 'java')
+        java.srcDir new File(fixture, platformJava == 21 ? '1.21.1' : '26.x')
+        resources.srcDir new File(fixture, 'resources')
+    }
+}
+configurations.optionalCompatCompileOnly.extendsFrom(configurations.compileOnly)
+neoForge.addModdingDependenciesTo(sourceSets.optionalCompat)
+dependencies {
+    optionalCompatCompileOnly sourceSets.main.output
+    optionalCompatCompileOnly project(':common')
+}
+tasks.named('processOptionalCompatResources') {
+    inputs.property('loaderMetadata', loaderMetadata)
+    filesMatching('META-INF/neoforge.mods.toml') { expand(loaderMetadata: loaderMetadata) }
+}
+def fixtureMod = neoForge.mods.create('ic2_compat_qa') { sourceSet sourceSets.optionalCompat }
+def artifact = tasks.named('jar', Jar).flatMap { it.archiveFile }
+neoForge.runs.create('optionalCompat') {
+    server()
+    programArgument '--nogui'
+    sourceSet.set(sourceSets.optionalCompat)
+    loadedMods.set([fixtureMod])
+    gameDirectory.set(directory)
+    systemProperty 'ic2.compat.mode', compatMode
+}
+tasks.named('runOptionalCompat', JavaExec) {
+    timeout.set(Duration.ofMinutes(3))
+    dependsOn 'jar'
+    doFirst {
+        delete directory
+        def dir = directory.get().asFile
+        dir.mkdirs()
+        copy { from artifact; into new File(dir, 'mods') }
+        copy { from compatModFiles(minecraftVersion); into new File(dir, 'mods') }
+        new File(dir, 'eula.txt').text = 'eula=true\n'
+        new File(dir, 'server.properties').text = '''server-ip=127.0.0.1
+server-port=0
+online-mode=false
+level-name=world
+level-seed=20261120
+generate-structures=false
+spawn-protection=0
+view-distance=2
+simulation-distance=2
+level-type=minecraft:flat
+generator-settings={"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:dirt","height":2},{"block":"minecraft:grass_block","height":1}],"biome":"minecraft:plains","structure_overrides":[]}
+'''
+    }
+    doLast {
+        def result = directory.get().file('compat-checks.txt').asFile
+        if (!result.isFile() || !result.text.startsWith('passed\n')) {
+            throw new GradleException("Optional mod checks failed: ${result.isFile() ? result.text : 'no report'}")
+        }
+        logger.lifecycle(result.text)
+    }
+}

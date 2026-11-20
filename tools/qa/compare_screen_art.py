@@ -55,13 +55,15 @@ def audit(root, record, source):
     texture = root / 'assets/ic2/textures/gui' / (atlas + '.png')
     sheet = Image.open(texture).convert('RGBA')
     screenshot = Image.open(image).convert('RGB')
-    w, h = geometry['width'], geometry['height']
-    scale = geometry.get('scale', geometry.get('guiScale'))
+    w, h = record.get('authoredSize') or (geometry['width'], geometry['height'])
+    scale = geometry.get('scale', geometry.get('guiScale')) * geometry.get('panelScale', 1)
+    window_scale = geometry.get('scale', geometry.get('guiScale'))
     x = geometry.get('x', geometry.get('left'))
     y = geometry.get('y', geometry.get('top'))
     if w <= 0 or h <= 0 or scale <= 0:
         raise ValueError(f'{image}: invalid GUI dimensions')
-    bounds = tuple(round(k * scale) for k in (x, y, x + w, y + h))
+    x, y = round(x * window_scale), round(y * window_scale)
+    bounds = (x, y, x + round(w * scale), y + round(h * scale))
     observed = screenshot.crop(bounds).resize((w, h), Image.Resampling.NEAREST)
     common = atlas == 'common'
     expected = common_frame(sheet, w, h) if common else sheet.crop((0, 0, w, h))

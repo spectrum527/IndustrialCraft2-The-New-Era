@@ -5,7 +5,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -54,19 +56,34 @@ abstract class BoxHost extends BlockEntity {
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder builder) {
         super.collectImplicitComponents(builder);
-        if (((BoxNode) this).kind.portable())
+        var node = (BoxNode) this;
+        if (node.kind.portable())
             builder.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(list()));
+        if (node.kind == BoxKind.PERSONAL_CHEST && node.owner != null) {
+            var tag = new CompoundTag();
+            tag.putString("ic2_box_owner", node.owner.toString());
+            builder.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        }
     }
 
     @Override
     protected void applyImplicitComponents(net.minecraft.core.component.DataComponentGetter input) {
         super.applyImplicitComponents(input);
         var n = (BoxNode) this;
-        if (n.kind.portable()) {
-            var content = input.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
-            var items = NonNullList.withSize(n.kind.slots, ItemStack.EMPTY);
-            content.copyInto(items);
-            restore(items);
+        if (!n.kind.portable()) return;
+        var content = input.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        var items = NonNullList.withSize(n.kind.slots, ItemStack.EMPTY);
+        content.copyInto(items);
+        restore(items);
+
+        if (n.kind != BoxKind.PERSONAL_CHEST) return;
+        var data = input.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        var owner = data.copyTag().getString("ic2_box_owner");
+        if (owner.isEmpty()) return;
+        try {
+            n.owner = UUID.fromString(owner.get());
+        } catch (IllegalArgumentException ignored) {
+            // Keep the existing owner when the item has a malformed identifier.
         }
     }
 

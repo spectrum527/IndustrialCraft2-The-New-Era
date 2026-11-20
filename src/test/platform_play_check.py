@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 
 from client_acceptance import launch
+from magnetizer_check import check_magnetizer
 
 
 class Client:
@@ -141,6 +142,8 @@ def live_checks(client):
                  and s["title"] == "IC2 acceptance menu" and s["menuId"] > 0)
     client.act("esc")
     client.check("server-menu-closed", lambda s: not s["screen"] and s["menuId"] == 0)
+    lift = check_magnetizer(client, run.command, run.directory / "server.log")
+    (run.directory / "magnetizer-checks.json").write_text(json.dumps(lift, indent=2) + "\n")
     client.act("macerator")
     client.check("production-machine-menu", lambda s: s["screen"] == "MachineScreen"
                  and s.get("machineCapacity") == 1200 and s.get("machineDuration") == 300)

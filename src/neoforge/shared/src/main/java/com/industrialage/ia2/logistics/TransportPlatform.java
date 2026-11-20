@@ -207,7 +207,11 @@ public final class TransportPlatform {
 
         @Override
         public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-            var action = IndustrialContent.wrenchBlock(context);
+            var block = context.getLevel().getBlockState(context.getClickedPos()).getBlock();
+            var action =
+                    block instanceof com.industrialage.ia2.industrial.BoxBlock box
+                            ? box.wrench(context)
+                            : IndustrialContent.wrenchBlock(context);
             if (action.consumesAction()
                     && context.getLevel() instanceof ServerLevel
                     && context.getPlayer() != null) {

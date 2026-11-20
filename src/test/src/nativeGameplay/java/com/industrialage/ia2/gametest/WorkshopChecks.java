@@ -351,12 +351,31 @@ final class WorkshopChecks {
                     bottled.is(NativeGameplayFixture.item("water_cell"))
                             && bottled.getCount() == 2
                             && NativeTransferAccess.volume(world, BOTTLER, Direction.NORTH) == 0);
+            var electrolyzer = (WorkshopNode) world.getBlockEntity(ELECTROLYZER);
+            check.accept(
+                    "electrolysis-2560-eu-does-not-finish-a-6400-eu-batch",
+                    electrolyzer.fluidContents().getFirst().amount() == 40
+                            && electrolyzer.bufferedEu().stored() == 0
+                            && NativeTransferAccess.volume(
+                                            world, ELECTROLYZER.below(), Direction.UP)
+                                    == 0
+                            && NativeTransferAccess.volume(
+                                            world, ELECTROLYZER.above(), Direction.DOWN)
+                                    == 0);
+            check.accept("electrolysis-pays-remaining-3840-eu", electrolyzer.receive(3840) == 3840);
+        }
+        if (elapsed == 1350) {
             check.accept(
                     "native-electrolysis-outputs-26-mb-below-and-13-mb-above",
                     NativeTransferAccess.volume(world, ELECTROLYZER.below(), Direction.UP) == 26
                             && NativeTransferAccess.volume(
                                             world, ELECTROLYZER.above(), Direction.DOWN)
                                     == 13);
+            var electrolyzer = (WorkshopNode) world.getBlockEntity(ELECTROLYZER);
+            check.accept(
+                    "native-electrolysis-used-exactly-6400-eu-and-40-mb",
+                    electrolyzer.fluidContents().getFirst().amount() == 0
+                            && electrolyzer.bufferedEu().stored() == 0);
         }
         if (!fermentationVerified && elapsed >= 1000 && elapsed % 20 == 0) {
             var fertilizer = NativeTransferAccess.cargo(world, FERMENTER, Direction.DOWN);

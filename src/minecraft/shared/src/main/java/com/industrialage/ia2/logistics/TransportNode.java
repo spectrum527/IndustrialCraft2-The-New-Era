@@ -2,6 +2,7 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -51,6 +52,18 @@ public final class TransportNode extends TransportSaveBase
         return spec.kind() == Kind.TANK
                 ? new TankMenu(id, player, this, upgrades.getContainerSize() > 0)
                 : null;
+    }
+
+    /** Live capacity and fluid name for a tank or a fluid pipe, if present. */
+    public java.util.Optional<FluidContents> fluidContents() {
+        if (spec.kind() == Kind.ITEM_PIPE) return java.util.Optional.empty();
+        return java.util.Optional.of(
+                liquid == null
+                        ? FluidContents.empty(spec.capacity())
+                        : new FluidContents(
+                                WorkshopPlatform.previewFluid(liquid.registryId()),
+                                amount,
+                                spec.capacity()));
     }
 
     void tick(ServerLevel world) {

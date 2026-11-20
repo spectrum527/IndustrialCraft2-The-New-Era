@@ -71,9 +71,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                             return layout.shows(slot)
                                     && purpose.insertable
                                     && (machine == null
-                                            ? slot != WorkshopInventory.POWER_ITEM_SLOT
-                                                    || WorkshopInventory.acceptsPowerItem(
-                                                            kind, item, get(Metric.TIER))
+                                            ? acceptsClientInput(slot, item)
                                             : machine.inventory.canPlaceItem(slot, item));
                         }
 
@@ -120,6 +118,20 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                         return layout.player != null;
                     }
                 });
+    }
+
+    private boolean acceptsClientInput(int slot, ItemStack item) {
+        if (slot == WorkshopInventory.POWER_ITEM_SLOT) {
+            return WorkshopInventory.acceptsPowerItem(kind, item, get(Metric.TIER));
+        }
+        if (kind == WorkshopKind.ELECTROLYZER
+                && slot >= WorkshopInventory.UPGRADE_START
+                && slot < WorkshopInventory.UPGRADE_END) {
+            return WorkshopAutomation.acceptsElectrolyzerUpgrade(item);
+        }
+        return slot >= 2
+                || (kind != WorkshopKind.CANNER && kind != WorkshopKind.SOLID_CANNER)
+                || WorkshopPlans.acceptsCanningInput(kind, mode(), slot, item);
     }
 
     WorkshopLayout layout() {
@@ -196,7 +208,15 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         return switch (kind) {
             case PUMP -> Role.FILL;
             case FLUID_BOTTLER -> slot == 0 ? Role.FILL : Role.DRAIN;
-            case CLASSIC_CANNER, SOLID_CANNER, CANNER -> slot == 1 ? Role.CONTAINER : Role.INPUT;
+            case CANNER ->
+                    slot == 1
+                            ? Role.INPUT
+                            : switch (mode()) {
+                                case 1 -> Role.FILL;
+                                case 2 -> Role.DRAIN;
+                                default -> Role.CONTAINER;
+                            };
+            case CLASSIC_CANNER, SOLID_CANNER -> slot == 1 ? Role.CONTAINER : Role.INPUT;
             case UU_ASSEMBLY -> slot == 0 ? Role.TEMPLATE : Role.MATTER;
             case MASS_FABRICATOR, CLASSIC_MASS, MATTER_GENERATOR -> Role.SCRAP;
             case RADIOISOTOPE_HEAT -> Role.PELLET;
@@ -216,7 +236,11 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                         switch (metric) {
                             case ENERGY -> (int) machine.energy;
                             case CAPACITY -> machine.energyCapacity();
-                            case PROGRESS -> machine.progress;
+                            case PROGRESS ->
+                                    machine.kind == WorkshopKind.ELECTROLYZER
+                                                    && machine.cycleDuration == 0
+                                            ? machine.progress / 2
+                                            : machine.progress;
                             case DURATION ->
                                     machine.cycleDuration > 0
                                             ? machine.cycleDuration
@@ -334,6 +358,16 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         };
     }
 
+    int tankFluid(int row) {
+        return get(
+                switch (row) {
+                    case 0 -> Metric.IN_FLUID;
+                    case 1 -> Metric.OUT_FLUID;
+                    case 2 -> Metric.BY_FLUID;
+                    default -> throw new IndexOutOfBoundsException(row);
+                });
+    }
+
     /** Visible tank role, maximum volume, actual volume and translated fluid type. */
     public record TankReadout(String role, int maximum, int amount, Component liquid) {}
 
@@ -438,6 +472,13 @@ public final class WorkshopMenu extends AbstractContainerMenu {
             return true;
         }
         int inputs = kind.inputs(get(Metric.MODE));
+        if (kind == WorkshopKind.CANNER || kind == WorkshopKind.SOLID_CANNER) {
+            for (int slot = 0; slot < inputs; slot++) {
+                if (slots.get(slot).mayPlace(stack)
+                        && moveItemStackTo(stack, slot, slot + 1, false)) return true;
+            }
+            return false;
+        }
         return inputs > 0 && moveItemStackTo(stack, 0, inputs, false);
     }
 

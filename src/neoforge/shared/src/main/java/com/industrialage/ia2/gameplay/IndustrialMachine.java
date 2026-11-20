@@ -1,5 +1,6 @@
 package com.industrialage.ia2.gameplay;
 
+import com.industrialage.ia2.compat.CuriosBack;
 import com.industrialage.ia2.content.PowerGrid;
 import com.industrialage.ia2.content.ProcessingMachine;
 import com.industrialage.ia2.content.ProcessingMachine.Recipe;
@@ -12,6 +13,7 @@ import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.machine.BlockEntityBase;
 import com.industrialage.ia2.machine.FuelGenerator;
 import com.industrialage.ia2.platform.NeoForgeVersion;
+import com.industrialage.ia2.power.EuBuffer;
 import com.industrialage.ia2.power.WorldPowerPort;
 import com.industrialage.ia2.power.WorldPowerStorage;
 import com.industrialage.ia2.world.MachineAutomation;
@@ -27,7 +29,6 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,7 @@ import net.minecraft.world.phys.AABB;
 
 /** Server-owned machine inventory, ticking logic, and EU port. */
 public final class IndustrialMachine extends NativeGameplay.InventoryEntity
-        implements WorldlyContainer, MenuProvider, WorldPowerPort, WorldPowerStorage {
+        implements WorldlyContainer, MenuProvider, WorldPowerPort, WorldPowerStorage, EuBuffer {
     private static final int IRON_FURNACE_DURATION = 160;
     private final MachineKind kind;
     private final NonNullList<ItemStack> items;
@@ -369,17 +370,17 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                         player -> player.onGround() && player.blockPosition().equals(feet));
         boolean worked = false;
         for (var player : players) {
-            var equipment =
-                    java.util.List.of(
-                            player.getItemBySlot(EquipmentSlot.CHEST),
-                            player.getMainHandItem(),
-                            player.getOffhandItem());
-            for (var stack : equipment) {
+            for (var stack : CuriosBack.chargeableEquipment(player)) {
                 double accepted = PortableGear.charge(stack, energy(), itemTier());
                 worked |= accepted > 0 && draw(accepted) > 0;
             }
         }
         return worked;
+    }
+
+    @Override
+    public EuBuffer.Reading bufferedEu() {
+        return new EuBuffer.Reading(energy(), capacity());
     }
 
     /** Buffered EU, including fractional EU remaining after cable losses. */

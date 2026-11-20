@@ -4,8 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.industrialage.ia2.equipment.MeterMenu;
 import com.industrialage.ia2.gameplay.MachineMenu;
+import com.industrialage.ia2.gui.AuthoredScreen;
 import com.industrialage.ia2.industrial.WorkshopMenu;
+import java.lang.reflect.Method;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
@@ -15,13 +18,25 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.lwjgl.glfw.GLFW;
 
 /** Observes the actual screen and container geometry used by the native client. */
 public final class UiProbe {
     private static final BlockPos TARGET = new BlockPos(2, 100, 0);
+    private static final Method MOUSE_MOVE = mouseMove();
 
     private UiProbe() {}
+
+    private static Method mouseMove() {
+        try {
+            var method =
+                    MouseHandler.class.getDeclaredMethod(
+                            "onMove", long.class, double.class, double.class);
+            method.setAccessible(true);
+            return method;
+        } catch (ReflectiveOperationException failure) {
+            throw new ExceptionInInitializerError(failure);
+        }
+    }
 
     /** Sends a normal use-on packet to the prepared world position. */
     public static void use(Minecraft mc, String id, boolean item, boolean targetBlock) {
@@ -80,6 +95,10 @@ public final class UiProbe {
         panel.addProperty("width", container.getXSize());
         panel.addProperty("height", container.getYSize());
         panel.addProperty("scale", mc.getWindow().getGuiScale());
+        panel.addProperty("viewportWidth", mc.getWindow().getGuiScaledWidth());
+        panel.addProperty("viewportHeight", mc.getWindow().getGuiScaledHeight());
+        if (container instanceof AuthoredScreen<?> authored)
+            panel.addProperty("panelScale", authored.panelScale());
         panel.addProperty("menuId", container.getMenu().containerId);
         panel.addProperty("titleWidth", mc.font.width(container.getTitle()));
         if (container.getMenu() instanceof MachineMenu machine) {
@@ -131,10 +150,19 @@ public final class UiProbe {
         }
         var parts = coordinates.split(",", -1);
         if (parts.length != 2) throw new IllegalArgumentException("Expected x,y");
-        double x = panel.getGuiLeft() + Double.parseDouble(parts[0]);
-        double y = panel.getGuiTop() + Double.parseDouble(parts[1]);
+        float scale = panel instanceof AuthoredScreen<?> authored ? authored.panelScale() : 1;
+        double x = panel.getGuiLeft() + scale * Double.parseDouble(parts[0]);
+        double y = panel.getGuiTop() + scale * Double.parseDouble(parts[1]);
         var window = mc.getWindow();
-        GLFW.glfwSetCursorPos(windowHandle, x * window.getGuiScale(), y * window.getGuiScale());
+        try {
+            MOUSE_MOVE.invoke(
+                    mc.mouseHandler,
+                    windowHandle,
+                    x * window.getScreenWidth() / window.getGuiScaledWidth(),
+                    y * window.getScreenHeight() / window.getGuiScaledHeight());
+        } catch (ReflectiveOperationException failure) {
+            throw new IllegalStateException("Could not deliver the native pointer event", failure);
+        }
         return new double[] {x, y};
     }
 }

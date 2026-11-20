@@ -36,6 +36,15 @@ jobs:
         if: matrix.target != '1.21.1'
         timeout-minutes: 12
         run: ./gradlew :neoforge:${{ matrix.target }}:runModernServerSmoke --console=plain
+      - name: Check survival removal and replacement of all storage boxes
+        timeout-minutes: 10
+        run: ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayStorage --console=plain
+      - name: Check The One Probe and Curios individually and together
+        timeout-minutes: 18
+        run: |
+          for mode in none top curios both; do
+            ./gradlew :neoforge:${{ matrix.target }}:runOptionalCompat "-Pic2.compat.mode=$mode" --console=plain
+          done
       - name: Resource overlay regression
         if: matrix.target == '1.21.1'
         run: python3 src/test/resource_overlay.py
@@ -84,3 +93,5 @@ jobs:
             src/neoforge/${{ matrix.target }}/build/run/modern-server-smoke/failure.txt
             src/neoforge/${{ matrix.target }}/build/run/modern-server-smoke/jar-*.json
             src/neoforge/${{ matrix.target }}/build/run/modern-server-smoke/logs/latest.log
+            src/neoforge/${{ matrix.target }}/build/run/native-storage/storage.properties
+            src/neoforge/${{ matrix.target }}/build/run/optional-compat-*/compat-checks.txt
