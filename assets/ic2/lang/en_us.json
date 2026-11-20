@@ -1131,5 +1131,12 @@
   "ic2.upgrades.meta": "Damage",
   "ic2.upgrades.energy": "Energy",
   "ic2.upgrades.allow": "Allow",
-  "ic2.upgrades.deny": "Deny"
+  "ic2.upgrades.deny": "Deny",
+  "top.ic2.conductor": "Conductor (0 EU buffer)",
+  "top.ic2.empty": "Empty",
+  "top.ic2.energy": "Stored EU %s / %s EU",
+  "top.ic2.fluid": "%s %s / %s mB",
+  "top.ic2.no_rider_battery": "Rider battery unavailable",
+  "top.ic2.output": "Output %s EU/t",
+  "top.ic2.rider_battery": "Rider battery (%s) %s / %s EU"
 }

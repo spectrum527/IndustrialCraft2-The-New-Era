@@ -13,6 +13,7 @@ import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.machine.BlockEntityBase;
 import com.industrialage.ia2.machine.FuelGenerator;
 import com.industrialage.ia2.platform.NeoForgeVersion;
+import com.industrialage.ia2.power.EuBuffer;
 import com.industrialage.ia2.power.WorldPowerPort;
 import com.industrialage.ia2.power.WorldPowerStorage;
 import com.industrialage.ia2.world.MachineAutomation;
@@ -38,7 +39,7 @@ import net.minecraft.world.phys.AABB;
 
 /** Server-owned machine inventory, ticking logic, and EU port. */
 public final class IndustrialMachine extends NativeGameplay.InventoryEntity
-        implements WorldlyContainer, MenuProvider, WorldPowerPort, WorldPowerStorage {
+        implements WorldlyContainer, MenuProvider, WorldPowerPort, WorldPowerStorage, EuBuffer {
     private static final int IRON_FURNACE_DURATION = 160;
     private final MachineKind kind;
     private final NonNullList<ItemStack> items;
@@ -375,6 +376,11 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
             }
         }
         return worked;
+    }
+
+    @Override
+    public EuBuffer.Reading bufferedEu() {
+        return new EuBuffer.Reading(energy(), capacity());
     }
 
     /** Buffered EU, including fractional EU remaining after cable losses. */

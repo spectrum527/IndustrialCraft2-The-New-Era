@@ -1,6 +1,7 @@
 package com.industrialage.ia2;
 
 import com.industrialage.ia2.audio.SoundPlatform;
+import com.industrialage.ia2.compat.OptionalMods;
 import com.industrialage.ia2.fluids.FluidContent;
 import com.industrialage.ia2.gameplay.IndustrialContent;
 import com.industrialage.ia2.industrial.BoxPlatform;
@@ -31,6 +32,7 @@ public final class IndustrialAge2 {
 
     /** Called by NeoForge when the mod is constructed. */
     public IndustrialAge2(IEventBus modBus, ModContainer container, Dist dist) {
+        OptionalMods.install(modBus);
         var platform = new NeoForgePlatform(modBus, NeoForge.EVENT_BUS, container, dist);
         IndustrialContent.install(modBus, NeoForge.EVENT_BUS, platform.services().config(), dist);
         TransportPlatform.install(modBus);
