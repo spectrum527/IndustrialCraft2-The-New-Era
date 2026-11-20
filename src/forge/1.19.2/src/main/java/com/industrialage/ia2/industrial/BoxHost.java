@@ -57,7 +57,7 @@ abstract class BoxHost extends BlockEntity {
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (!isRemoved()
                 && cap == ForgeCapabilities.ITEM_HANDLER
-                && ((BoxNode) this).kind.portable()) return inventory.cast();
+                && ((BoxNode) this).kind.automatable()) return inventory.cast();
         return super.getCapability(cap, side);
     }
 

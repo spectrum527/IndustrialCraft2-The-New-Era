@@ -52,7 +52,7 @@ minecraft {
         }
         qaGameTestServer {
             parent runs.gameTestServer
-            property 'forge.enabledGameTestNamespaces', 'ic2_qa'
+            property 'forge.enabledGameTestNamespaces', providers.gradleProperty('qaGameTestNamespaces').getOrElse('ic2_qa,ic2_storage')
         }
         matching { it.name.startsWith('qa') || it.name.startsWith('serverQa') }.all {
             mods { ic2_qa { source sourceSets.qa } }

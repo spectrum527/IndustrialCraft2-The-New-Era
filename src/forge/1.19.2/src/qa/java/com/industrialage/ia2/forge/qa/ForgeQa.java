@@ -42,6 +42,7 @@ public final class ForgeQa {
                                         new PlatformWorldFixture(phase, bus);
                                     }));
         }
+        if (Boolean.getBoolean("ic2.qa.storage")) new InstalledStorageFixture();
         if (Boolean.getBoolean("ic2.qa.worldProgram")) new InstalledWorldProgram();
         if (Boolean.getBoolean("ic2.qa.clientAcceptance")) {
             var menus = new PlayMenuFixture(bus);

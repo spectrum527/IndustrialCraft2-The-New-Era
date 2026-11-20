@@ -2,9 +2,7 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.forge.content.ForgeContent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +31,10 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /** Wires the shared transport devices to Forge registration, item handlers and fluid handlers. */
 public final class TransportPlatform {
@@ -345,7 +347,21 @@ public final class TransportPlatform {
 
         @Override
         public InteractionResult useOn(UseOnContext context) {
-            return wrench ? ForgeContent.wrenchBlock(context) : InteractionResult.PASS;
+            if (!wrench) return InteractionResult.PASS;
+            var block = context.getLevel().getBlockState(context.getClickedPos()).getBlock();
+            if (!(block instanceof com.industrialage.ia2.industrial.BoxBlock box))
+                return ForgeContent.wrenchBlock(context);
+            var action = box.wrench(context);
+            var player = context.getPlayer();
+            if (action.consumesAction()
+                    && !context.getLevel().isClientSide
+                    && player != null
+                    && !player.isCreative()) {
+                context.getItemInHand()
+                        .hurtAndBreak(
+                                1, player, holder -> holder.broadcastBreakEvent(context.getHand()));
+            }
+            return action;
         }
     }
 }

@@ -103,11 +103,16 @@ def generate(repo, out, target, write):
         loot = {"type":"minecraft:item","name":"ic2:" + drop}
         if entry.get("portable"):
             if forge:
-                loot["functions"] = [{"function":"minecraft:copy_nbt","source":"block_entity",
-                                      "ops":[{"source":"Items","target":"BlockEntityTag.Items","op":"replace"}]}]
+                ops = [{"source":"Items","target":"BlockEntityTag.Items","op":"replace"}]
+                if entry.get("ownerLocked"):
+                    ops.append({"source":"owner","target":"BlockEntityTag.owner","op":"replace"})
+                loot["functions"] = [{"function":"minecraft:copy_nbt","source":"block_entity", "ops":ops}]
             else:
+                components = ["minecraft:container"]
+                if entry.get("ownerLocked"):
+                    components.append("minecraft:custom_data")
                 loot["functions"] = [{"function":"minecraft:copy_components","source":"block_entity",
-                                      "include":["minecraft:container"]}]
+                                      "include":components}]
         write("data/ic2/" + path + "/blocks/" + name, {"type":"minecraft:block",
               "pools":[{"rolls":1, "conditions":[{"condition":"minecraft:survives_explosion"}],
                         "entries":[loot]}]})

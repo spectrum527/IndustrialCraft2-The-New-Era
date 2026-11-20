@@ -15,7 +15,10 @@
     "iridium_storage_box": {
       "portable": true
     },
-    "personal_chest": {},
+    "personal_chest": {
+      "portable": true,
+      "ownerLocked": true
+    },
     "industrial_workbench": {}
   }
 }
