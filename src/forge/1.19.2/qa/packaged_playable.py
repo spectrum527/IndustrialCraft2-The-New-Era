@@ -245,7 +245,8 @@ def setup_energy_devices(server):
     for offset, (kind, cable_name, total) in enumerate(
             (("cesu", "copper_cable", 640), ("mfe", "gold_cable", 2560),
              ("mfsu", "iron_cable", 10240))):
-        x = 28 + offset
+        # Keep each voltage tier's vertical cable out of the neighboring network.
+        x = 28 + offset * 4
         source = f"{x} 150 20"
         cable_pos = f"{x} 151 20"
         sink = f"{x} 152 20"
