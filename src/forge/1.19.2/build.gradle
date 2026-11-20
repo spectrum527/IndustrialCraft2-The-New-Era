@@ -1,3 +1,11 @@
+import net.minecraftforge.artifactural.api.artifact.Artifact
+import net.minecraftforge.artifactural.api.artifact.ArtifactType
+import net.minecraftforge.artifactural.api.repository.ArtifactProvider
+import net.minecraftforge.artifactural.base.artifact.StreamableArtifact
+import net.minecraftforge.artifactural.gradle.GradleRepositoryAdapter
+import net.minecraftforge.gradle.common.util.Artifact as ForgeArtifact
+import net.minecraftforge.gradle.common.util.BaseRepo
+
 plugins {
     id 'java'
     id 'net.minecraftforge.gradle'
@@ -70,3 +78,31 @@ tasks.named('jar') {
 }
 
 apply from: 'qa/play.gradle'
+
+apply from: rootProject.file('gradle/canonical-forge-jar.gradle')
+// Serve only this derived coordinate through the canonical publisher. ForgeGradle still generates
+// its artifacts, and Gradle verifies the POM, published JAR and other dependencies normally.
+repositories {
+    String mapped = "${minecraft_version}-${forge_version}_mapped_official_${minecraft_version}"
+    def normalize = canonicalForgeJar(mapped)
+    def checksums = [md5: 'MD5', sha1: 'SHA-1', sha256: 'SHA-256', sha512: 'SHA-512']
+    GradleRepositoryAdapter stable
+    def provide = { id ->
+        if (id.group != 'net.minecraftforge' || id.name != 'forge' || id.version != mapped) return Artifact.none()
+        String checksumAlgorithm = !id.classifier && id.extension.startsWith('jar.') ? checksums[id.extension.substring(4)] : null
+        def primary = checksumAlgorithm ? ForgeArtifact.from(id.group, id.name, mapped, null, 'jar') : id
+        File file = project.repositories.withType(GradleRepositoryAdapter).findAll { it != stable }
+                .findResult { generator -> generator.getArtifact(primary) }
+        if (file == null) return Artifact.none()
+        if (!primary.classifier && primary.extension == 'jar') file = normalize(file)
+        if (checksumAlgorithm) return StreamableArtifact.ofBytes(id, ArtifactType.OTHER, forgeJarChecksum(file, checksumAlgorithm))
+        def type = id.classifier == 'sources' ? ArtifactType.SOURCE :
+                (id.extension == 'jar' ? ArtifactType.BINARY : ArtifactType.OTHER)
+        return StreamableArtifact.ofFile(id, type, file)
+    } as ArtifactProvider
+    stable = new BaseRepo.Builder().add(provide).attach(project, 'ic2-canonical-mapped-repo')
+    exclusiveContent {
+        forRepositories(stable)
+        filter { includeVersion('net.minecraftforge', 'forge', mapped) }
+    }
+}

@@ -1,0 +1,108 @@
+import groovy.transform.CompileStatic
+import java.nio.channels.FileChannel
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+import java.nio.file.StandardOpenOption
+import java.security.DigestInputStream
+import java.security.MessageDigest
+import java.time.LocalDateTime
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
+@CompileStatic
+class CanonicalForgeJar {
+    private static final LocalDateTime ZIP_TIME = LocalDateTime.of(2000, 1, 1, 0, 0)
+
+    static String hash(Path file, String algorithm = 'SHA-256') {
+        def digest = MessageDigest.getInstance(algorithm)
+        Files.newInputStream(file).withCloseable { input ->
+            new DigestInputStream(input, digest).transferTo(OutputStream.nullOutputStream())
+        }
+        return HexFormat.of().formatHex(digest.digest())
+    }
+
+    private static int order(ZipEntry entry) {
+        if (entry.name == 'META-INF/') return 0
+        return entry.name == 'META-INF/MANIFEST.MF' ? 1 : 2
+    }
+
+    static void write(Path input, Path output) {
+        new ZipFile(input.toFile()).withCloseable { zip ->
+            new ZipOutputStream(new BufferedOutputStream(Files.newOutputStream(output))).withCloseable { archive ->
+                archive.setComment(zip.comment)
+                List<? extends ZipEntry> entries = Collections.list(zip.entries())
+                entries.sort({ ZipEntry left, ZipEntry right ->
+                    int rank = Integer.compare(order(left), order(right))
+                    return rank == 0 ? left.name.compareTo(right.name) : rank
+                } as Comparator<ZipEntry>)
+                for (ZipEntry source : entries) {
+                    // Forge's Java ZIP writer emits either no extra data or an extended mtime.
+                    // Reject an unfamiliar record so it cannot disappear during normalization.
+                    byte[] extra = source.extra
+                    if (extra && !(extra.length == 9 && extra[0] == 0x55 && extra[1] == 0x54
+                            && extra[2] == 5 && extra[3] == 0 && extra[4] == 1)) {
+                        throw new GradleException("Unexpected ZIP metadata on " + source.name)
+                    }
+                    def target = new ZipEntry(source.name)
+                    target.setTimeLocal(ZIP_TIME)
+                    target.comment = source.comment
+                    target.method = ZipEntry.STORED
+                    target.size = source.size
+                    target.compressedSize = source.size
+                    target.crc = source.crc
+                    archive.putNextEntry(target)
+                    zip.getInputStream(source).withCloseable { it.transferTo(archive) }
+                    archive.closeEntry()
+                }
+            }
+        }
+    }
+
+    static File verified(File source, Path output, String expected) {
+        Files.createDirectories(output.parent)
+        synchronized (output.toAbsolutePath().toString().intern()) {
+            FileChannel.open(output.resolveSibling('publication.lock'), StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE).withCloseable { channel ->
+                channel.lock().withCloseable {
+                    Path candidate = Files.createTempFile(output.parent, 'mapped-', '.jar')
+                    try {
+                        write(source.toPath(), candidate)
+                        if (hash(candidate) != expected) {
+                            throw new GradleException('Forge mapped JAR content differs from the pinned SHA-256')
+                        }
+                        if (Files.exists(output)) {
+                            if (hash(output) != expected) {
+                                throw new GradleException('Cached canonical Forge mapped JAR differs from the pinned SHA-256')
+                            }
+                        } else {
+                            Files.move(candidate, output, StandardCopyOption.ATOMIC_MOVE)
+                        }
+                    } finally {
+                        Files.deleteIfExists(candidate)
+                    }
+                }
+            }
+        }
+        return output.toFile()
+    }
+}
+
+ext.canonicalForgeJar = { String coordinateVersion ->
+    def artifact = "forge-${coordinateVersion}.jar"
+    def metadata = new XmlSlurper().parse(rootProject.file('gradle/verification-metadata.xml'))
+    def pins = metadata.components.component.findAll {
+        it.@group == 'net.minecraftforge' && it.@name == 'forge' && it.@version == coordinateVersion
+    }.artifact.findAll { it.@name == artifact }.sha256
+    def expected = pins.@value.text()
+    if (pins.size() != 1 || !(expected ==~ /[0-9a-f]{64}/)) {
+        throw new GradleException("Expected one pinned SHA-256 for " + artifact)
+    }
+    def directory = new File(gradle.gradleUserHomeDir, "caches/ic2-canonical-forge/${expected}").toPath()
+    return { File source -> CanonicalForgeJar.verified(source, directory.resolve(artifact), expected) }
+}
+
+ext.forgeJarChecksum = { File published, String algorithm ->
+    CanonicalForgeJar.hash(published.toPath(), algorithm).getBytes('US-ASCII')
+}
