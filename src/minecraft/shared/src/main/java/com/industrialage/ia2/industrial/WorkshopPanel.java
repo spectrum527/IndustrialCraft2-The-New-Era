@@ -13,6 +13,15 @@ import net.minecraft.world.item.ItemStack;
 final class WorkshopPanel {
     private static final int DARK = 0xff323b48;
     private static final int LCD = 0xff8de6ee;
+    private static final Area CANNER_MODE = new Area(63, 81, 50, 14);
+    private static final Area ELECTROLYSIS_IN = new Area(78, 16, 18, 18);
+    private static final List<Area> ELECTROLYSIS_BRANCHES =
+            List.of(
+                    new Area(36, 61, 18, 18),
+                    new Area(57, 61, 18, 18),
+                    new Area(78, 61, 18, 18),
+                    new Area(99, 61, 18, 18),
+                    new Area(120, 61, 18, 18));
 
     private WorkshopPanel() {}
 
@@ -54,6 +63,18 @@ final class WorkshopPanel {
         for (var meter : layout.meters) {
             meter(menu, canvas, meter);
         }
+        if (menu.device().equals("canner")) {
+            var mode = CANNER_MODE;
+            canvas.blit(
+                    "guicanner",
+                    mode.x(),
+                    mode.y(),
+                    176,
+                    18 + 14 * menu.mode(),
+                    mode.width(),
+                    mode.height());
+        }
+        if (menu.device().equals("electrolyzer")) drawElectrolysis(menu, canvas);
         var info = info(layout);
         canvas.blit("infobutton", info.x(), info.y(), 0, 0, 10, 10);
     }
@@ -73,7 +94,16 @@ final class WorkshopPanel {
         for (var label : layout.labels) {
             var area = label.area();
             var text = readout(menu, label.value());
-            canvas.text(fit.apply(text, area.width() - 2), area.x() + 1, area.y(), LCD, false);
+            int ink = label.light() ? LCD : DARK;
+            var fitted = fit.apply(text, area.width() - 2);
+            if (fitted != text
+                    && label.value() != Readout.RECIPE
+                    && label.value() != Readout.PATTERN) {
+                canvas.fittedText(
+                        text, area.x() + area.width() / 2, area.y(), area.width() - 2, ink);
+            } else {
+                canvas.text(fitted, area.x() + 1, area.y(), ink, false);
+            }
         }
         for (var control : layout.controls) {
             var area = control.area();
@@ -106,6 +136,14 @@ final class WorkshopPanel {
         }
         if (!hasItem && slot >= 0 && slot < WorkshopInventory.SIZE) {
             return List.of(menu.slotLabel(slot));
+        }
+        if (menu.device().equals("canner") && CANNER_MODE.contains(x, y)) {
+            return List.of(menu.controlLabel());
+        }
+        if (menu.device().equals("electrolyzer")) {
+            if (ELECTROLYSIS_IN.contains(x, y)) return List.of(readout(menu, Readout.INLET));
+            var details = electrolysisBranchTooltip(menu, x, y);
+            if (!details.isEmpty()) return details;
         }
         for (var meter : layout.meters) {
             if (meter.area().contains(x, y)) {
@@ -162,6 +200,65 @@ final class WorkshopPanel {
                 "detail_tank", label(tank.role()), tank.liquid(), tank.amount(), tank.maximum());
     }
 
+    private static void drawElectrolysis(WorkshopMenu menu, PanelCanvas canvas) {
+        fluidWell(canvas, ELECTROLYSIS_IN, menu.tankFluid(0));
+        for (int branch = 0; branch < ELECTROLYSIS_BRANCHES.size(); branch++) {
+            var product = ElectrolysisProduct.at(branch);
+            int fluid = product == null ? 0 : menu.tankFluid(product.tank());
+            if (product != null && fluid == 0 && electrolysisPreview(menu)) {
+                fluid = WorkshopPlatform.previewFluidId(product.fluid());
+            }
+            fluidWell(canvas, ELECTROLYSIS_BRANCHES.get(branch), fluid);
+        }
+    }
+
+    private static void fluidWell(PanelCanvas canvas, Area area, int fluid) {
+        canvas.blit("common", area.x(), area.y(), 8, 160, area.width(), area.height());
+        if (fluid != 0) canvas.fluid(fluid, area.x() + 1, area.y() + 1, 16, 16);
+    }
+
+    private static boolean electrolysisPreview(WorkshopMenu menu) {
+        return menu.tank(0).amount() >= WorkshopDevices.ELECTROLYSIS_WATER;
+    }
+
+    private static List<Component> electrolysisBranchTooltip(WorkshopMenu menu, int x, int y) {
+        for (int branch = 0; branch < ELECTROLYSIS_BRANCHES.size(); branch++) {
+            if (!ELECTROLYSIS_BRANCHES.get(branch).contains(x, y)) continue;
+            var product = ElectrolysisProduct.at(branch);
+            if (product == null) return List.of(label("electrolysis.unused"));
+            var heading = label(product.label());
+            var tank = menu.tank(product.tank());
+            if (tank.amount() == 0 && electrolysisPreview(menu)) {
+                return List.of(heading, label("electrolysis.preview", product.batch()));
+            }
+            return List.of(heading, tankReadout(tank));
+        }
+        return List.of();
+    }
+
+    private record ElectrolysisProduct(int tank, String fluid, String label, int batch) {
+        private static final ElectrolysisProduct HYDROGEN =
+                new ElectrolysisProduct(
+                        1,
+                        WorkshopDevices.HYDROGEN,
+                        "electrolysis.hydrogen",
+                        WorkshopDevices.ELECTROLYSIS_HYDROGEN);
+        private static final ElectrolysisProduct OXYGEN =
+                new ElectrolysisProduct(
+                        2,
+                        WorkshopDevices.OXYGEN,
+                        "electrolysis.oxygen",
+                        WorkshopDevices.ELECTROLYSIS_OXYGEN);
+
+        static ElectrolysisProduct at(int branch) {
+            return switch (branch) {
+                case 1 -> HYDROGEN;
+                case 3 -> OXYGEN;
+                default -> null;
+            };
+        }
+    }
+
     private static void meter(WorkshopMenu menu, PanelCanvas canvas, Meter meter) {
         var area = meter.area();
         int maximum =
@@ -204,6 +301,14 @@ final class WorkshopPanel {
                     area.y() + dy,
                     meter.uv().x(),
                     meter.uv().y() + dy,
+                    width,
+                    height);
+        } else if (menu.device().equals("canner")
+                && (meter.value() == Readout.INLET || meter.value() == Readout.OUTLET)) {
+            canvas.fluid(
+                    menu.tankFluid(meter.value() == Readout.INLET ? 0 : 1),
+                    area.x(),
+                    area.y() + dy,
                     width,
                     height);
         } else {
