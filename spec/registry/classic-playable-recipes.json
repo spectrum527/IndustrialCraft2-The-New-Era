@@ -368,7 +368,8 @@
       "count": 1,
       "ingredients": [
         "ic2:uu_matter",
-        "minecraft:water_bucket"
+        "ic2:water_cell",
+        "minecraft:bucket"
       ],
       "source": "survival-access: registered legacy or optional-integration specimen"
     },
