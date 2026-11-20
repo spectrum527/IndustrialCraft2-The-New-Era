@@ -7,6 +7,9 @@ import com.industrialage.ia2.logistics.TransportNode;
 import com.industrialage.ia2.power.EuBuffer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeHitEntityData;
 import mcjty.theoneprobe.api.IProbeInfo;
@@ -78,10 +81,10 @@ final class TopProbe {
     }
 
     private static String eu(double amount) {
-        return BigDecimal.valueOf(amount)
-                .setScale(3, RoundingMode.HALF_UP)
-                .stripTrailingZeros()
-                .toPlainString();
+        var display = new DecimalFormat("0.###", DecimalFormatSymbols.getInstance(Locale.ROOT));
+        display.setRoundingMode(RoundingMode.HALF_UP);
+        String digits = display.format(BigDecimal.valueOf(amount));
+        return digits.equals("-0") ? "0" : digits;
     }
 
     private static final class Entities implements IProbeInfoEntityProvider {
