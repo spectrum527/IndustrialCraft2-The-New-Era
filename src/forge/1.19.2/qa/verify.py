@@ -45,7 +45,12 @@ def properties(path):
                 if line and not line.startswith("#"))
 
 
-def world(directory):
+def world(directory, launch=None):
+    from machine_evidence import machine_samples, region_generator
+    if launch is None:
+        from machine_launch import Development
+        gradle("prepareQaWorld", directory / "prepare-world.log")
+        launch = Development(MODULE / "build/qa-machine/server-launch.json")
     server_setup(directory, 0)
     run = str(uuid.uuid4())
     (directory / "run-id").write_text(run)
@@ -58,8 +63,7 @@ def world(directory):
         write_json(tags / f"platform_{kind}.json", {"values": ["ic2:qa_platform_pillar"]})
     report = {}
     for phase in ("write", "read"):
-        exit_code = gradle("runQaWorld", directory / f"{phase}-launch.log",
-                           f"-PqaDir={directory}", f"-PqaPhase={phase}")
+        exit_code = launch.run(phase, directory, directory / f"{phase}-launch.log")
         shutil.copyfile(directory / "logs/latest.log", directory / f"{phase}-server.log")
         if not (directory / "world/level.dat").is_file() or not list((directory / "world/region").glob("*.mca")):
             raise AssertionError("Missing saved world or region files")
@@ -78,6 +82,10 @@ def world(directory):
                      "invalid-capability-inputs-rejected"}
                     if phase == "write" else {"reloaded-world", "reloaded-run", "reloaded-dimension",
                                                "reloaded-removed", "reloaded-retained"})
+        specific.update({"generator-item-placement", "generator-lava-retained", "generator-saved-37"}
+                        if phase == "write" else {"generator-native-cold-read", "generator-full-idle",
+                                                  "generator-max-packet", "generator-removed-port"})
+        machine_samples(phase, result)
         if (result["phase"] != phase or result["status"] != "passed" or result["failedChecks"] != "0"
                 or int(result["passedChecks"]) != len(checks) or len(set(checks)) != len(checks)
                 or not (shared | specific).issubset(checks) or result["run"] != run):
@@ -92,16 +100,18 @@ def world(directory):
                 or capabilities != ["before world unload = EAST", "after world unload = absent"]):
             raise AssertionError(f"Incomplete {phase} lifecycle, config, or unload evidence")
         report[phase] = dict(result, assertions=checks, lifecycle=lifetime, config=config,
-                             capability=capabilities, processExit=exit_code)
+                             capability=capabilities, processExit=exit_code, artifacts=launch.verify(result),
+                             diskGenerator=region_generator(directory, phase))
     if report["write"]["pid"] == report["read"]["pid"]:
         raise AssertionError("World reload did not use a fresh JVM")
     return report
 
 
-def smoke(directory):
+def smoke(directory, launch=None):
     server_setup(directory, 0)
     log = directory / "smoke-launch.log"
-    exit_code = gradle("runQaGameTestServer", log, f"-PqaDir={directory}")
+    exit_code = (launch.run("smoke", directory, log) if launch
+                 else gradle("runQaGameTestServer", log, f"-PqaDir={directory}"))
     cases = ET.parse(directory / "game-test.xml").getroot().findall(".//testcase")
     names = [case.attrib["name"] for case in cases]
     failed = [case.attrib["name"] for case in cases if case.find("failure") is not None
@@ -125,6 +135,7 @@ def smoke(directory):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("suite", choices=("smoke", "world", "play", "mismatch", "all"))
+    parser.add_argument("--server-launch", type=Path, help="Prepared Forge dedicated server/GameTest launch manifest")
     parser.add_argument("--output", type=Path, help="New evidence directory (created once)")
     parser.add_argument("--prepared", action="store_true", help="Reuse the previously exported play launch manifest")
     options = parser.parse_args()
@@ -154,7 +165,9 @@ def main():
                 else:
                     result = exercise(directory, launch)
             else:
-                result = (smoke if suite == "smoke" else world)(directory)
+                from machine_launch import Development
+                launch = Development(options.server_launch) if options.server_launch else None
+                result = (smoke if suite == "smoke" else world)(directory, launch)
         except Exception as failure:
             write_json(directory / "result.json", {"status": "failed", "error": str(failure),
                                                    "seconds": round(time.monotonic() - start, 2)})

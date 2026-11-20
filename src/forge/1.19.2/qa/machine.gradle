@@ -1,0 +1,45 @@
+import groovy.json.JsonOutput
+
+def output = layout.buildDirectory.dir('qa-machine')
+tasks.register('qaFixtureJar', Jar) {
+    group = 'verification'
+    description = 'Assemble only the independent fixtures for an installed Forge server.'
+    from sourceSets.qa.output
+    archiveClassifier = 'qa'
+    destinationDirectory = output.map { it.dir('fixtures') }
+}
+// ForgeGradle normally sees only external libraries here. The QA block entity subclasses the
+// production block entity, so the remapper also needs its development-name inheritance chain.
+def namedTypes = tasks.register('qaRemapTypes', Jar) {
+    from sourceSets.main.output.classesDirs
+    archiveFileName = 'named-production-types.jar'
+    destinationDirectory = output.map { it.dir('mapping') }
+}
+reobf {
+    qaFixtureJar {
+        libraries.from(namedTypes.flatMap { it.archiveFile })
+    }
+}
+
+tasks.register('prepareQaWorld') {
+    group = 'verification'
+    description = 'Export standalone Forge GameTest and dedicated server commands without starting a JVM.'
+    dependsOn 'qaClasses', 'reobfJar'
+    def runs = [world: 'runQaWorld', smoke: 'runQaGameTestServer']
+    dependsOn {
+        runs.values().collectMany { name ->
+            def run = tasks.getByName(name)
+            run.taskDependencies.getDependencies(run).toList()
+        }
+    }
+    def target = output.map { it.file('server-launch.json') }
+    outputs.file(target)
+    outputs.upToDateWhen { false }
+    doLast {
+        def manifest = runs.collectEntries { key, name -> [(key): qaHostLaunch(tasks.getByName(name), 'server')] }
+        manifest.jar = tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
+        def file = target.get().asFile
+        file.parentFile.mkdirs()
+        file.text = JsonOutput.prettyPrint(JsonOutput.toJson(manifest)) + '\n'
+    }
+}

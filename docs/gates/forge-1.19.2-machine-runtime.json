@@ -1,0 +1,329 @@
+{
+  "target": "Minecraft 1.19.2 / Forge 43.5.0 / Java 17",
+  "tested_on": "macOS arm64",
+  "date": "2026-11-20",
+  "java_source_revision": "c84094d16e068c68150072ba0722e0ea6643e2a6",
+  "parity": {
+    "modern_revisions": [
+      "741f773",
+      "b496f51",
+      "5e7687c"
+    ],
+    "identical_git_blobs": {
+      "spec/machines/components.md": "e1e1d386283a7da747bdaaf3835197ad466bd43b",
+      "src/common/src/main/java/com/industrialage/ia2/energy/graph/EnergyGraph.java": "6ceadad0e0f6eea53a565153336798560df1b3f8",
+      "src/common/src/main/java/com/industrialage/ia2/energy/graph/PacketBudget.java": "5538ddc41fb1c28d3e3be92cb20405ae87a4f5e2",
+      "src/common/src/main/java/com/industrialage/ia2/machine/BlockEntityBase.java": "f735ad099388400acd19f96e033f9eafc75dcfad",
+      "src/common/src/main/java/com/industrialage/ia2/machine/FuelGenerator.java": "1aa02a7626fc46ea59f51d7f8792744ee8deb6e4",
+      "src/test/src/test/java/com/industrialage/ia2/energy/graph/EnergyGraphContractTest.java": "b2cffc21b9d54c54287189b22c13a54da3060831",
+      "src/test/src/test/java/com/industrialage/ia2/machine/BlockEntityBaseContractTest.java": "555acc87a60ad6f58c613279536237f409beac78",
+      "src/test/src/test/java/com/industrialage/ia2/machine/FuelGeneratorContractTest.java": "134b2949c764ed0f1c448a53ee7c75dcc2e24495"
+    }
+  },
+  "production_artifact": {
+    "filename": "ic2-forge-1.19.2-0.1.0-SNAPSHOT.jar",
+    "sha256": "12aed7456c8845b21cdc02e911ac519810cf7447185843237a7a5dba4ac3b289",
+    "bytes": 148090,
+    "classes": 77,
+    "class_major_version": 61,
+    "qa_entries": 0
+  },
+  "separate_qa_artifact": {
+    "filename": "ic2-forge-1.19.2-0.1.0-SNAPSHOT-qa.jar",
+    "sha256": "e32bb1802f630a2dfe65b4000962d566d1b9feaf4e1e05effe0c4debc9644032"
+  },
+  "junit": {
+    "tests": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "native_gametests": {
+    "cases": [
+      "generatornewstate",
+      "generatorcorruptnbt",
+      "generatorfractionalnbt",
+      "harnesssmoke"
+    ],
+    "requiredPassed": 4,
+    "requiredFailed": 0,
+    "processExit": 0,
+    "nativeNbt": {
+      "new": {
+        "fuelTicks": 0,
+        "storedEU": 0
+      },
+      "roundTrip": {
+        "fuelTicks": 123,
+        "storedEU": 1200.5,
+        "file": "generator-fractional.nbt",
+        "sha256": "706b14e96d645529e86470ddcf56f39d6e5b83ad1c45034aaa5498559a6a7267"
+      },
+      "corrupt": {
+        "count": 14,
+        "diagnosedAndPreserved": [
+          "not-compound",
+          "empty",
+          "missing-ticks",
+          "missing-eu",
+          "string-ticks",
+          "string-eu",
+          "fractional-ticks",
+          "negative-ticks",
+          "overflow",
+          "nan-ticks",
+          "negative-eu",
+          "over-capacity",
+          "nan-eu",
+          "infinite-eu"
+        ]
+      }
+    }
+  },
+  "development_servers": {
+    "write": {
+      "pid": 23092,
+      "run": "6d5fbab0-d029-4a3f-8a7e-e01c8549b414",
+      "process_exit": 0,
+      "assertions_passed": 42,
+      "baseline_assertions_retained": 39,
+      "added_assertions": [
+        "generator-item-placement",
+        "generator-lava-retained",
+        "generator-saved-37"
+      ],
+      "machine": {
+        "lava.workTicks": "0",
+        "saved.fuelTicks": "363",
+        "lava.count": "1",
+        "lava.fuelTicks": "0",
+        "saved.item": "minecraft:coal",
+        "lava.item": "minecraft:lava_bucket",
+        "saved.eu": "370.0",
+        "lava.eu": "0.0",
+        "saved.count": "1",
+        "saved.workTicks": "37",
+        "position": "29, 90, 25"
+      },
+      "disk": {
+        "region": "world/region/r.0.0.mca",
+        "chunk": [
+          1,
+          1
+        ],
+        "position": [
+          29,
+          90,
+          25
+        ],
+        "generatorCountAfterShutdown": 1,
+        "chunkNbtSha256": "29aecb462c045719bb6607ee825d3f512c0623511c3edcb31a0876bc2d070612",
+        "nativeSample": "generator-write.nbt",
+        "nativeSampleSha256": "b2c1469eddfd4cd53f4d1a622c7ead070fefb2154b54b9c12f9f2eb9cc92f322"
+      }
+    },
+    "read": {
+      "pid": 23140,
+      "run": "6d5fbab0-d029-4a3f-8a7e-e01c8549b414",
+      "process_exit": 0,
+      "assertions_passed": 16,
+      "baseline_assertions_retained": 12,
+      "added_assertions": [
+        "generator-native-cold-read",
+        "generator-full-idle",
+        "generator-max-packet",
+        "generator-removed-port"
+      ],
+      "machine": {
+        "afterPacket.count": "1",
+        "full.workTicks": "363",
+        "cold.count": "1",
+        "afterPacket.fuelTicks": "0",
+        "cold.eu": "370.0",
+        "full.eu": "4000.0",
+        "full.item": "minecraft:coal",
+        "removedPortEU": "0.0",
+        "afterPacket.eu": "3968.0",
+        "full.count": "1",
+        "cold.fuelTicks": "363",
+        "cold.workTicks": "0",
+        "cold.item": "minecraft:coal",
+        "afterPacket.workTicks": "363",
+        "afterPacket.item": "minecraft:coal",
+        "full.fuelTicks": "0",
+        "drawnEU": "32.0",
+        "position": "29, 90, 25"
+      },
+      "disk": {
+        "region": "world/region/r.0.0.mca",
+        "chunk": [
+          1,
+          1
+        ],
+        "position": [
+          29,
+          90,
+          25
+        ],
+        "generatorCountAfterShutdown": 0,
+        "chunkNbtSha256": "10d7db4753a4be6581c3c8f49006e858adc0d37c675980b27dae14665fad2fd1",
+        "nativeSample": "generator-read.nbt",
+        "nativeSampleSha256": "fae24874fcb79cd66c0a169db23fc4010dbfc0ce86e3f564a7ce1080887e5f77"
+      }
+    }
+  },
+  "installed_servers": {
+    "write": {
+      "pid": 23342,
+      "run": "f63994ae-0db8-4b92-81c8-418c1d0a9aae",
+      "process_exit": 0,
+      "assertions_passed": 42,
+      "baseline_assertions_retained": 39,
+      "added_assertions": [
+        "generator-item-placement",
+        "generator-lava-retained",
+        "generator-saved-37"
+      ],
+      "machine": {
+        "lava.workTicks": "0",
+        "saved.fuelTicks": "363",
+        "lava.count": "1",
+        "lava.fuelTicks": "0",
+        "saved.item": "minecraft:coal",
+        "lava.item": "minecraft:lava_bucket",
+        "saved.eu": "370.0",
+        "lava.eu": "0.0",
+        "saved.count": "1",
+        "saved.workTicks": "37",
+        "position": "29, 90, 25"
+      },
+      "disk": {
+        "region": "world/region/r.0.0.mca",
+        "chunk": [
+          1,
+          1
+        ],
+        "position": [
+          29,
+          90,
+          25
+        ],
+        "generatorCountAfterShutdown": 1,
+        "chunkNbtSha256": "29aecb462c045719bb6607ee825d3f512c0623511c3edcb31a0876bc2d070612",
+        "nativeSample": "generator-write.nbt",
+        "nativeSampleSha256": "b2c1469eddfd4cd53f4d1a622c7ead070fefb2154b54b9c12f9f2eb9cc92f322"
+      }
+    },
+    "read": {
+      "pid": 23371,
+      "run": "f63994ae-0db8-4b92-81c8-418c1d0a9aae",
+      "process_exit": 0,
+      "assertions_passed": 16,
+      "baseline_assertions_retained": 12,
+      "added_assertions": [
+        "generator-native-cold-read",
+        "generator-full-idle",
+        "generator-max-packet",
+        "generator-removed-port"
+      ],
+      "machine": {
+        "afterPacket.count": "1",
+        "full.workTicks": "363",
+        "cold.count": "1",
+        "afterPacket.fuelTicks": "0",
+        "cold.eu": "370.0",
+        "full.eu": "4000.0",
+        "full.item": "minecraft:coal",
+        "removedPortEU": "0.0",
+        "afterPacket.eu": "3968.0",
+        "full.count": "1",
+        "cold.fuelTicks": "363",
+        "cold.workTicks": "0",
+        "cold.item": "minecraft:coal",
+        "afterPacket.workTicks": "363",
+        "afterPacket.item": "minecraft:coal",
+        "full.fuelTicks": "0",
+        "drawnEU": "32.0",
+        "position": "29, 90, 25"
+      },
+      "disk": {
+        "region": "world/region/r.0.0.mca",
+        "chunk": [
+          1,
+          1
+        ],
+        "position": [
+          29,
+          90,
+          25
+        ],
+        "generatorCountAfterShutdown": 0,
+        "chunkNbtSha256": "10d7db4753a4be6581c3c8f49006e858adc0d37c675980b27dae14665fad2fd1",
+        "nativeSample": "generator-read.nbt",
+        "nativeSampleSha256": "fae24874fcb79cd66c0a169db23fc4010dbfc0ce86e3f564a7ce1080887e5f77"
+      }
+    }
+  },
+  "production_only": {
+    "minecraft": "1.19.2",
+    "forge": "43.5.0",
+    "sha256": "12aed7456c8845b21cdc02e911ac519810cf7447185843237a7a5dba4ac3b289",
+    "pids": [
+      23344,
+      23379
+    ],
+    "server_exits": [
+      0,
+      0
+    ],
+    "config_reloads": 2,
+    "persisted_block": "minecraft:emerald_block",
+    "position": [
+      0,
+      80,
+      0
+    ]
+  },
+  "physical_client": {
+    "checks": 36,
+    "echo": "262853128166416",
+    "server_pid": 23333,
+    "client_pid": 23356,
+    "exits": {
+      "server": 0,
+      "client": 0
+    }
+  },
+  "rejected_handshakes": {
+    "client": {
+      "rejectedRemoteVersion": "1",
+      "serverJoins": 0,
+      "echoes": 0,
+      "exits": {
+        "server": 0,
+        "client": 0
+      }
+    },
+    "server": {
+      "rejectedRemoteVersion": "2",
+      "serverJoins": 0,
+      "echoes": 0,
+      "exits": {
+        "server": 0,
+        "client": 0
+      }
+    }
+  },
+  "similarity": {
+    "candidate_java_files": 73,
+    "reference_java_files": 3012,
+    "comparisons": 219876,
+    "checker_exit_code": 0,
+    "final_status_counts": {
+      "pass": 23,
+      "warn": 50,
+      "fail": 0
+    },
+    "eight_line_hits": 0
+  }
+}

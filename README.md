@@ -2,7 +2,7 @@
 
 这个分支为 Minecraft 1.19.2 独立构建 IC2。它从重建仓库的 P2 合并点 `10a57bac` 分出，复用本项目按行为规格开发的通用层，在 Forge 43.5.0 上接入注册、事件、方位能力、每档配置和网络。进入游戏后，可在控制设置里为“打开 IC2 状态”绑定按键。服务端管理员可用 `/ic2 config reload` 重载当前存档的配置。
 
-P2 是平台开发基座。发电、输电、机器加工和生存配方由后续阶段接入。G0、G1、G2 的分支准入决定及每项技术验收的范围见[分支进度与门禁](docs/gates/1.19.2-P2.md)。
+本分支已接入六面有向能量图、机器组件和基础火力发电机的燃烧、储能及存档。开发专服验证了同一台机器跨进程续烧。玩家可合成的发电机、分面库存和实际线路结算按后续任务接入。[首台机器验收](docs/forge-1.19.2-machine.md) · [P2 基座门禁](docs/gates/1.19.2-P2.md)
 
 ## 构建与验证
 
@@ -17,13 +17,12 @@ P2 是平台开发基座。发电、输电、机器加工和生存配方由后�
 生产 JAR 位于 `src/forge/1.19.2/build/libs/`。将它放进 Minecraft 1.19.2 / Forge 43.5.0 实例的 `mods/` 目录，两端使用同一构建。专服首次启动遵循 Minecraft 的 EULA 流程。修复版和本分支都使用 `ic2`，请用新实例和新存档测试。
 
 ```sh
-python3 src/forge/1.19.2/qa/verify.py smoke
-python3 src/forge/1.19.2/qa/verify.py world
+./gradlew :test:runPlatformHostTest :test:runPlatformWorldTest
 python3 src/forge/1.19.2/qa/verify.py play
 python3 src/forge/1.19.2/qa/verify.py mismatch
 ```
 
-`world` 在独立专服进程中保存并重开同一存档。`play` 与 `mismatch` 启动实际游戏客户端，需要图形会话。开发夹具由单独的 `ic2_qa` 模组加载。
+`runPlatformHostTest` 运行 JUnit 和 Forge GameTest。`runPlatformWorldTest` 在两个独立专服进程中保存并重开同一存档。`play` 与 `mismatch` 启动实际游戏客户端，需要图形会话。开发夹具由单独的 `ic2_qa` 模组加载。
 
 ## 工程依据
 
