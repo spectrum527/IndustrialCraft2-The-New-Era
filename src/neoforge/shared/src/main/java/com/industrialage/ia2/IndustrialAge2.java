@@ -1,6 +1,14 @@
 package com.industrialage.ia2;
 
+import com.industrialage.ia2.audio.SoundPlatform;
+import com.industrialage.ia2.fluids.FluidContent;
+import com.industrialage.ia2.gameplay.IndustrialContent;
+import com.industrialage.ia2.industrial.BoxPlatform;
+import com.industrialage.ia2.industrial.PowerPlatform;
+import com.industrialage.ia2.industrial.Radiation;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import com.industrialage.ia2.lifecycle.ServerLifecycle;
+import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.platform.NeoForgePlatform;
 import com.industrialage.ia2.platform.NeoForgeVersion;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +32,18 @@ public final class IndustrialAge2 {
     /** Called by NeoForge when the mod is constructed. */
     public IndustrialAge2(IEventBus modBus, ModContainer container, Dist dist) {
         var platform = new NeoForgePlatform(modBus, NeoForge.EVENT_BUS, container, dist);
+        IndustrialContent.install(modBus, NeoForge.EVENT_BUS, platform.services().config(), dist);
+        TransportPlatform.install(modBus);
+        com.industrialage.ia2.world.WorldPlatform.install(
+                modBus, NeoForge.EVENT_BUS, dist == Dist.CLIENT);
+        WorkshopPlatform.install(modBus);
+        FluidContent.register(modBus, dist == Dist.CLIENT);
+        PowerPlatform.install(modBus, platform.services().config());
+        if (dist == Dist.CLIENT)
+            com.industrialage.ia2.industrial.ChargeTypes.installRenderer(modBus);
+        BoxPlatform.install(modBus);
+        Radiation.install(modBus, net.neoforged.neoforge.common.NeoForge.EVENT_BUS);
+        SoundPlatform.install(modBus, dist == Dist.CLIENT);
         container.registerExtensionPoint(NeoForgePlatform.class, platform);
         bindServerEvents(NeoForge.EVENT_BUS, platform);
 

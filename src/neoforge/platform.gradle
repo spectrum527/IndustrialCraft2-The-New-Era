@@ -1,6 +1,7 @@
 java.toolchain.languageVersion = JavaLanguageVersion.of(platformJava)
 base.archivesName = "ic2-neoforge-$minecraftVersion"
 sourceSets.main.java.srcDir('../shared/src/main/java')
+sourceSets.main.java.srcDir('../../minecraft/shared/src/main/java')
 dependencies { implementation project(':common') }
 neoForge {
     enable {
@@ -32,15 +33,41 @@ if (legacy.isPresent() && (!legacy.get().isDirectory()
         || legacy.get().canonicalPath.startsWith(rootProject.projectDir.canonicalPath + File.separator))) {
     throw new GradleException('ic2.legacyAssetsDir must name an existing directory outside this repository')
 }
+// Resource and data formats differ between 1.21.1 and 26.x. Keep one authored
+// source and generate only the pack appropriate for this target.
+def generatedIc2Resources = layout.buildDirectory.dir('generated/ic2-resources')
+def includeLogistics = providers.gradleProperty('ic2.logistics').map { it.toBoolean() }.getOrElse(true)
+def includeExtendedEnergy = providers.gradleProperty('ic2.extendedEnergy').map { it.toBoolean() }.getOrElse(false)
+def includeMaterials = providers.gradleProperty('ic2.materials').map { it.toBoolean() }.getOrElse(false)
+def generateIc2Resources = tasks.register('generateIc2Resources', Exec) {
+    def generator = rootProject.file('src/datagen/generate_resources.py')
+    inputs.file(generator)
+    inputs.files(rootProject.fileTree('src/datagen') { include '*.py', '*.tsv', '*.json', 'families/*.json' })
+    inputs.files(rootProject.fileTree('spec/registry') { include '*.tsv', 'repair-recipe-book.json', 'classic-playable-recipes.json' })
+    inputs.file(rootProject.file('assets/REGISTRY-ART-CATALOG.csv'))
+    inputs.files(rootProject.file('src/datagen/material-assets.tsv'), rootProject.file('src/datagen/observed-material-recipes.json'))
+    inputs.property('minecraftTarget', minecraftVersion)
+    inputs.property('includeLogistics', includeLogistics)
+    inputs.property('includeExtendedEnergy', includeExtendedEnergy)
+    inputs.property('includeMaterials', includeMaterials)
+    outputs.dir(generatedIc2Resources)
+    commandLine providers.gradleProperty('ic2.python').getOrElse('python3'), generator,
+            '--target', "neoforge-$minecraftVersion", '--output', generatedIc2Resources.get().asFile
+    if (includeLogistics) { args '--logistics' }
+    if (includeExtendedEnergy) { args '--extended-energy' }
+    if (includeMaterials) { args '--materials' }
+}
 tasks.named('processResources') {
+    dependsOn generateIc2Resources
     inputs.properties(version: project.version, neoForgeVersion: neoForgeVersion, minecraftVersion: minecraftVersion)
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     includeEmptyDirs = false
     doFirst { delete destinationDir }
     from(rootProject.file('assets')) {
         into 'assets'
-        exclude '**/*.md', '**/.git*', '**/.DS_Store'
+        exclude '**/*.md', '**/*.csv', '**/.git*', '**/.DS_Store'
     }
+    from(generatedIc2Resources) { exclude '.ic2-generated-output' }
     if (legacy.isPresent()) {
         from(legacy) {
             exclude '**/.git*/**', '**/*.md', '**/.DS_Store'

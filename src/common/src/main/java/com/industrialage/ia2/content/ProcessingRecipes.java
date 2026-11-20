@@ -28,7 +28,9 @@ final class ProcessingRecipes {
                     row[0],
                     row.length < 2 || row[1].isEmpty() ? List.of() : List.of(row[1].split(",")));
         }
-        for (String line : IndustrialMaterials.rows("processing-recipes.tsv")) {
+        var lines = new ArrayList<>(IndustrialMaterials.rows("processing-recipes.tsv"));
+        lines.addAll(IndustrialMaterials.rows("classic-processing.tsv"));
+        for (String line : lines) {
             String[] row = line.split("\t");
             String input = row[2];
             int count = Integer.parseInt(row[3]);

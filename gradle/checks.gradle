@@ -14,6 +14,20 @@ def assetIsolation = tasks.register('checkAssetIsolation') {
         def tracked = providers.exec { commandLine 'git', 'ls-files', '-z' }.standardOutput.asText.get().split('\u0000')
         def registry = file('assets/SOURCES.md')
         def ledgers = ['assets/REGISTRY-ART-CATALOG.csv', 'assets/PRODUCTION-TEXTURES.csv'] as Set
+        def screenshots = [:]
+        fileTree('parity/evidence/portable-equipment/client') { include '*/checks.json' }.each { evidence ->
+            def report = new groovy.json.JsonSlurper().parse(evidence)
+            if (report.status == 'passed' || report.status == 'pass') {
+                report.screenshotSha256?.each { name, digest ->
+                    if (name ==~ /[A-Za-z0-9_-]+\.png/ && digest ==~ /[0-9a-f]{64}/) {
+                        def image = new File(evidence.parentFile, name)
+                        def actual = image.isFile() ? java.security.MessageDigest.getInstance('SHA-256').digest(image.bytes).encodeHex().toString() : null
+                        if (actual != digest) { throw new GradleException("Game screenshot differs from its verified client run: $image") }
+                        screenshots[relativePath(image)] = digest
+                    }
+                }
+            }
+        }
         def resources = tracked.findAll { (it.startsWith('assets/') && !ledgers.contains(it) && !(it ==~ /.*(?:\.md|\.gitkeep)/))
                 || it ==~ /.*\.(png|ogg|wav|jpg|jpeg|webp|obj|glb|gltf)/
                 || it ==~ /.*\/(textures|models|sounds|blockstates)\/.*\.json/ }
@@ -28,7 +42,7 @@ def assetIsolation = tasks.register('checkAssetIsolation') {
             }
         }
         resources.each { path ->
-            if (!path.startsWith('assets/') || !registered.contains(path)) {
+            if (!screenshots.containsKey(path) && (!path.startsWith('assets/') || !registered.contains(path))) {
                 throw new GradleException("Unregistered new asset or isolated asset tracked: $path")
             }
         }

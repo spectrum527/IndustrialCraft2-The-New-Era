@@ -32,6 +32,11 @@ public final class ElectricReactor {
         /** Returns fuel use, reflector wear, or stored component heat. */
         int wear(int slot);
 
+        /** Native component count, used by stackable heating cells. */
+        default int count(int slot) {
+            return 1;
+        }
+
         /** Updates only the machine-owned use field of the same stack. */
         void wear(int slot, int value);
 
@@ -42,6 +47,7 @@ public final class ElectricReactor {
     }
 
     private int heat;
+    private int vented;
     private double rate;
     private int maxHeat = 10_000;
 
@@ -58,6 +64,7 @@ public final class ElectricReactor {
     /** Handles the energy, hull heat and installed cooling parts for one component cycle. */
     public void cycle(Grid grid, int chambers, boolean powered, double multiplier) {
         int width = width(chambers);
+        vented = 0;
         int[] radiation = new int[SLOTS];
         maxHeat = 10_000;
         for (int s = 0; s < SLOTS; s++) {
@@ -75,8 +82,8 @@ public final class ElectricReactor {
             int pulses = basePulses(cells);
             for (int n : adjacent(s, width)) {
                 String part = grid.part(n);
-                if (RODS.contains(part) || REFLECTORS.contains(part)) pulses++;
-                if (REFLECTORS.contains(part)) radiation[n] += cells;
+                if (RODS.contains(part) || REFLECTORS.contains(part) || breeder(part)) pulses++;
+                if (REFLECTORS.contains(part) || breeder(part)) radiation[n] += cells;
             }
             int generated = 2 * cells * pulses * (pulses + 1);
             heat += distributeHeat(grid, s, width, generated);
@@ -84,6 +91,17 @@ public final class ElectricReactor {
         for (int s = 0; s < SLOTS; s++) {
             if (radiation[s] == 0) continue;
             String id = grid.part(s);
+            if (breeder(id)) {
+                if (id.equals("lithium_fuel_rod")) {
+                    if (grid.wear(s) < 9999)
+                        grid.wear(s, Math.min(9999, grid.wear(s) + radiation[s] * (heat / 3000)));
+                } else {
+                    int progress = grid.wear(s) + radiation[s] * (1 + heat / 3000);
+                    if (progress >= 10_000) grid.replace(s, "re_enriched_uranium");
+                    else grid.wear(s, progress);
+                }
+                continue;
+            }
             if (id.equals("iridium_neutron_reflector")) continue;
             int wear = grid.wear(s) + radiation[s];
             int limit = id.equals("thick_neutron_reflector") ? 120_000 : 30_000;
@@ -108,7 +126,7 @@ public final class ElectricReactor {
                 if (wear >= (mox ? 10_000 : 20_000)) spent[s] = true;
                 else grid.wear(s, wear);
             }
-            cool(grid, s, width);
+            cool(grid, s, width, powered);
         }
         for (int s = 0; s < SLOTS; s++) {
             if (spent[s]) grid.replace(s, "depleted_" + grid.part(s));
@@ -120,10 +138,31 @@ public final class ElectricReactor {
         return RODS.contains(id)
                 || REFLECTORS.contains(id)
                 || heatCapacity(id) > 0
+                || breeder(id)
+                || id.equals("heatpack")
                 || id.equals("component_heat_vent")
                 || id.equals("reactor_plating")
                 || id.equals("reactor_heat_plating")
                 || id.equals("containment_reactor_plating");
+    }
+
+    private static boolean breeder(String id) {
+        return id.equals("depleted_isotope_fuel_rod") || id.equals("lithium_fuel_rod");
+    }
+
+    /** Identifies parts whose use value stores heat. */
+    public static boolean heatStore(String id) {
+        return heatCapacity(id) > 0;
+    }
+
+    /** Heat removed by installed vents in the last twenty-tick cycle. */
+    public int ventedHeat() {
+        return vented;
+    }
+
+    /** Returns heat that the fluid cooling system could not remove to the hull. */
+    public void returnHeat(int amount) {
+        heat += Math.max(0, amount);
     }
 
     private static int cells(String id) {
@@ -152,6 +191,9 @@ public final class ElectricReactor {
             case "reactor_coolant_cell" -> 10_000;
             case "triple_reactor_coolant_cell" -> 30_000;
             case "sextuple_reactor_coolant_cell" -> 60_000;
+            case "heat_exchanger" -> 2500;
+            case "advanced_heat_exchanger" -> 10_000;
+            case "component_heat_exchanger", "reactor_heat_exchanger" -> 5000;
             case "rsh_condensator" -> 20_000;
             case "lzh_condensator" -> 100_000;
             default -> 0;
@@ -175,12 +217,86 @@ public final class ElectricReactor {
         return added;
     }
 
-    private void cool(Grid grid, int s, int width) {
+    private static int balance(int stored, int capacity, int other, int otherCapacity, int limit) {
+        if (limit == 0 || capacity <= 0 || otherCapacity <= 0) return 0;
+        double level = (double) stored / capacity;
+        double neighbor = (double) other / otherCapacity;
+        if (level == neighbor) return 0;
+        double share = (level + neighbor) * 0.5;
+        int amount =
+                Math.min(
+                        limit,
+                        Math.max(
+                                1,
+                                (int)
+                                        Math.floor(
+                                                (share < 0.01
+                                                        ? 1
+                                                        : (level > neighbor
+                                                                        ? otherCapacity
+                                                                        : capacity)
+                                                                * share))));
+        return level > neighbor
+                ? Math.min(stored, Math.min(otherCapacity - other, amount))
+                : -Math.min(other, Math.min(capacity - stored, amount));
+    }
+
+    private void exchange(Grid grid, int slot, int width, String id) {
+        int cap = heatCapacity(id);
+        int own = grid.wear(slot);
+        int sideLimit =
+                switch (id) {
+                    case "heat_exchanger" -> 12;
+                    case "advanced_heat_exchanger" -> 24;
+                    case "component_heat_exchanger" -> 36;
+                    default -> 0;
+                };
+        for (int other : adjacent(slot, width)) {
+            String part = grid.part(other);
+            int capacity = heatCapacity(part);
+            if (capacity == 0 || part.endsWith("condensator")) continue;
+            int previous = grid.wear(other);
+            int sent = balance(own, cap, previous, capacity, sideLimit);
+            if (sent != 0) {
+                grid.wear(other, previous + sent);
+                own -= sent;
+            }
+        }
+        int hullLimit =
+                switch (id) {
+                    case "heat_exchanger" -> 4;
+                    case "advanced_heat_exchanger" -> 8;
+                    case "reactor_heat_exchanger" -> 72;
+                    default -> 0;
+                };
+        int toHull = balance(own, cap, heat, maxHeat, hullLimit);
+        heat += toHull;
+        grid.wear(slot, own - toHull);
+    }
+
+    private void cool(Grid grid, int s, int width, boolean powered) {
         String id = grid.part(s);
+        if (id.endsWith("heat_exchanger")) {
+            exchange(grid, s, width, id);
+            return;
+        }
+        if (powered && id.equals("heatpack")) {
+            int count = grid.count(s);
+            for (int n : adjacent(s, width)) {
+                int cap = heatCapacity(grid.part(n));
+                if (cap > 0
+                        && !grid.part(n).endsWith("condensator")
+                        && grid.wear(n) < Math.min(cap, count * 1000))
+                    grid.wear(n, Math.min(cap, grid.wear(n) + count));
+            }
+            return;
+        }
         if (id.equals("component_heat_vent")) {
             for (int n : adjacent(s, width)) {
                 if (heatCapacity(grid.part(n)) > 0 && !grid.part(n).endsWith("condensator")) {
-                    grid.wear(n, Math.max(0, grid.wear(n) - 4));
+                    int removed = Math.min(4, grid.wear(n));
+                    vented += removed;
+                    grid.wear(n, grid.wear(n) - removed);
                 }
             }
             return;
@@ -200,7 +316,30 @@ public final class ElectricReactor {
         heat -= moved;
         int hot = grid.wear(s) + moved;
         if (hot > heatCapacity(id)) grid.replace(s, "");
-        else grid.wear(s, Math.max(0, hot - cooling));
+        else {
+            int removed = Math.min(hot, cooling);
+            vented += removed;
+            grid.wear(s, hot - removed);
+        }
+    }
+
+    /** In-game meltdown radius before the server-configured cap. */
+    public static float meltdownPower(Grid grid, int chambers) {
+        float fuelContribution = 10;
+        float attenuation = 1;
+        for (int slot = 0; slot < SLOTS; slot++) {
+            if (!exposed(slot, chambers)) continue;
+            String part = grid.part(slot);
+            if (RODS.contains(part)) fuelContribution += 2 * cells(part);
+            attenuation *=
+                    switch (part) {
+                        case "reactor_plating" -> .95F;
+                        case "reactor_heat_plating" -> .99F;
+                        case "containment_reactor_plating" -> .9F;
+                        default -> 1F;
+                    };
+        }
+        return fuelContribution * attenuation;
     }
 
     /** Accumulated hull heat. */

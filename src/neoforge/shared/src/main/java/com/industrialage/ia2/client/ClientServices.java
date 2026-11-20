@@ -1,5 +1,8 @@
 package com.industrialage.ia2.client;
 
+import com.industrialage.ia2.gameplay.IndustrialContent;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
+import com.industrialage.ia2.industrial.WorkshopScreen;
 import com.industrialage.ia2.network.EchoProtocol;
 import com.industrialage.ia2.platform.NeoForgeVersion.Client;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -47,6 +50,8 @@ public final class ClientServices {
         installSender.accept(ClientServices::send);
         modBus.addListener(
                 RegisterKeyMappingsEvent.class, event -> event.register(services.binding));
+        registerMenuScreen(modBus, IndustrialContent.MACHINE_MENU, MachineScreen::new);
+        registerMenuScreen(modBus, WorkshopPlatform::menuType, WorkshopScreen::new);
         Client.registerReload(modBus, STATUS_LISTENER, services.resources);
         gameBus.addListener(ScreenEvent.KeyPressed.Pre.class, services::rememberScreenInput);
         gameBus.addListener(InputEvent.Key.class, services::onKey);

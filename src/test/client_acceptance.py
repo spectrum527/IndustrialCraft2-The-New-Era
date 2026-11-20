@@ -139,7 +139,7 @@ def _setup(directory, port):
     client.mkdir()
     server.mkdir()
     (client / "options.txt").write_text(
-        "onboardAccessibility:false\nlang:en_us\nfullscreen:false\n"
+        "onboardAccessibility:false\nlang:en_us\nfullscreen:false\ntutorialStep:none\n"
         "overrideWidth:960\noverrideHeight:540\nrenderDistance:4\n",
         encoding="utf-8",
     )
@@ -147,7 +147,7 @@ def _setup(directory, port):
         "\n".join(
             [f"server-ip={HOST}", f"server-port={port}", "online-mode=false",
              "level-name=world", "level-type=minecraft:flat", "level-seed=7541",
-             "generate-structures=false", "spawn-protection=0", "view-distance=3",
+             "generate-structures=false", "spawn-protection=0", "view-distance=3", "difficulty=peaceful",
              "simulation-distance=3", ""]
         ),
         encoding="utf-8",

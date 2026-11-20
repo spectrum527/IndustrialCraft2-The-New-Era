@@ -1733,3 +1733,33 @@
 | `assets/ic2/sounds/machine/teleporter/charge.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/machine/teleporter/use.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/machine/terraformer/loop.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/alloy.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_alloy_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/hazmat.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_hazmat_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/nano.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_nano_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/night_vision.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_night_vision_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/quantum.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_quantum_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/quantum_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_1_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/solar_helmet.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/solar_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid/static_boots.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/ic2/textures/models/armor/static_boots_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid_leggings/hazmat.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_hazmat_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid_leggings/nano.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_nano_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid_leggings/quantum.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_quantum_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/entity/equipment/humanoid_leggings/quantum_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_2_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/alloy_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_alloy_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/hazmat_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_hazmat_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/hazmat_layer_2.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_hazmat_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/nano_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_nano_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/nano_layer_2.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_nano_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/night_vision_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_night_vision_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_1.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_quantum_layer_1.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_1_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_1_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_2.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_quantum_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/textures/models/armor/quantum_layer_2_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_2_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
+| `assets/ic2/equipment/alloy.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/equipment/hazmat.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/equipment/nano.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/equipment/night_vision.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/equipment/quantum.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/equipment/solar_helmet.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/equipment/static_boots.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/textures/entity/signs/rubber.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/entity/signs/rubber.png`，原样适配橡胶告示牌 | 2026-11-20 |

@@ -1,8 +1,9 @@
 plugins { id 'java-library' }
 
 tasks.named('processResources') {
+    from(rootProject.file('spec/registry/sounds.txt')) { into 'com/industrialage/ia2/audio' }
     from(rootProject.file('spec/registry')) {
-        include 'industrial-materials.tsv', 'processing-recipes.tsv', 'processing-tags.tsv', 'workshop-recipes.tsv', 'industrial-fluids.tsv'
+        include 'industrial-materials.tsv', 'chest-supplements.tsv', 'processing-recipes.tsv', 'classic-processing.tsv', 'processing-tags.tsv', 'workshop-recipes.tsv', 'industrial-fluids.tsv', 'wind-height.tsv', 'radioactive-items.tsv'
         into 'com/industrialage/ia2/content'
     }
     from(rootProject.file('spec/config/active-keys.tsv')) {

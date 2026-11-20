@@ -22,7 +22,8 @@ public final class IndustrialMaterials {
 
     private IndustrialMaterials() {}
 
-    static List<String> rows(String file) {
+    /** Reads UTF-8 observation rows packaged with the industrial content, skipping the header. */
+    public static List<String> rows(String file) {
         var input =
                 Objects.requireNonNull(IndustrialMaterials.class.getResourceAsStream(file), file);
         try (var reader =

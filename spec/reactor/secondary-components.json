@@ -1,0 +1,205 @@
+{
+  "reference": "1.2.4-port.20261120",
+  "method": "Independent scheduled vanilla commands and native saved inventories in a dedicated Forge world. Each trial used individual loaded test installations.",
+  "fluidReactor": {
+    "shellSide": 5,
+    "chambers": 6,
+    "inputCoolant": 1000,
+    "poweredCycles": 6,
+    "fuelWear": 6,
+    "remainingCoolant": 952,
+    "hotCoolant": 48,
+    "hullHeat": 0,
+    "electricMode": false
+  },
+  "injector": {
+    "input": {
+      "rsh": "minecraft:redstone_block",
+      "lzh": "minecraft:lapis_block"
+    },
+    "reactor": "behind the face",
+    "initialEU": 2000,
+    "rshFinalByUse": {
+      "0": 2000,
+      "1": 2000,
+      "13999": 2000,
+      "14000": 2000,
+      "15000": 2000,
+      "15999": 2000,
+      "16000": 2000,
+      "16001": 2000,
+      "16999": 2000,
+      "17000": 2000,
+      "17001": 1000,
+      "17999": 1000,
+      "18000": 1000,
+      "18001": 1000,
+      "19999": 1000,
+      "5000": 2000
+    },
+    "testedFacingsWithCoreWest": {
+      "lzh_down": 2000,
+      "lzh_east": 1000,
+      "lzh_north": 2000,
+      "lzh_south": 2000,
+      "lzh_up": 2000,
+      "lzh_west": 2000,
+      "rsh_down": 2000,
+      "rsh_east": 1000,
+      "rsh_north": 2000,
+      "rsh_south": 2000,
+      "rsh_up": 2000,
+      "rsh_west": 2000
+    }
+  },
+  "exchangersAfter120Ticks": {
+    "ic2:heat_exchanger": {
+      "hull": 672,
+      "part": 61,
+      "coolantCell": 267
+    },
+    "ic2:advanced_heat_exchanger": {
+      "hull": 352,
+      "part": 322,
+      "coolantCell": 326
+    },
+    "ic2:component_heat_exchanger": {
+      "hull": 1000,
+      "part": 0,
+      "coolantCell": 0
+    },
+    "ic2:reactor_heat_exchanger": {
+      "hull": 640,
+      "part": 360,
+      "coolantCell": 0
+    },
+    "ic2:heatpack": {
+      "hull": 1000,
+      "part": 0,
+      "coolantCell": 0
+    }
+  },
+  "breeding": {
+    "0": {
+      "startHull": 0,
+      "startUse": 0,
+      "part": "depleted_isotope_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:depleted_isotope_fuel_rod",
+      "endUse": 6,
+      "endHull": 72
+    },
+    "1": {
+      "startHull": 3000,
+      "startUse": 0,
+      "part": "depleted_isotope_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:depleted_isotope_fuel_rod",
+      "endUse": 12,
+      "endHull": 3072
+    },
+    "2": {
+      "startHull": 0,
+      "startUse": 9999,
+      "part": "depleted_isotope_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:re_enriched_uranium",
+      "endUse": 0,
+      "endHull": 32
+    },
+    "3": {
+      "startHull": 0,
+      "startUse": 2999,
+      "part": "depleted_isotope_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:depleted_isotope_fuel_rod",
+      "endUse": 3005,
+      "endHull": 72
+    },
+    "4": {
+      "startHull": 0,
+      "startUse": 999,
+      "part": "depleted_isotope_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:depleted_isotope_fuel_rod",
+      "endUse": 1005,
+      "endHull": 72
+    },
+    "5": {
+      "startHull": 0,
+      "startUse": 59999,
+      "part": "depleted_isotope_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:re_enriched_uranium",
+      "endUse": 0,
+      "endHull": 32
+    },
+    "6": {
+      "startHull": 0,
+      "startUse": 0,
+      "part": "lithium_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:lithium_fuel_rod",
+      "endUse": 0,
+      "endHull": 72
+    },
+    "7": {
+      "startHull": 3000,
+      "startUse": 0,
+      "part": "lithium_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:lithium_fuel_rod",
+      "endUse": 6,
+      "endHull": 3072
+    },
+    "8": {
+      "startHull": 0,
+      "startUse": 9999,
+      "part": "lithium_fuel_rod",
+      "fuelUse": 5,
+      "endPart": "ic2:lithium_fuel_rod",
+      "endUse": 9999,
+      "endHull": 60
+    },
+    "9": {
+      "startHull": 0,
+      "startUse": 2999,
+      "part": "lithium_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:lithium_fuel_rod",
+      "endUse": 2999,
+      "endHull": 72
+    },
+    "10": {
+      "startHull": 0,
+      "startUse": 999,
+      "part": "lithium_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:lithium_fuel_rod",
+      "endUse": 999,
+      "endHull": 72
+    },
+    "11": {
+      "startHull": 0,
+      "startUse": 59999,
+      "part": "lithium_fuel_rod",
+      "fuelUse": 6,
+      "endPart": "ic2:lithium_fuel_rod",
+      "endUse": 59999,
+      "endHull": 72
+    }
+  },
+  "heatPack": {
+    "1": 6,
+    "2": 12,
+    "4": 20,
+    "8": 48
+  },
+  "gameEntities": {
+    "observedFuseAfterOneTick": {
+      "itnt": 59,
+      "classic_nuke": 299
+    },
+    "emptyProgrammableBlockPrimed": false
+  }
+}

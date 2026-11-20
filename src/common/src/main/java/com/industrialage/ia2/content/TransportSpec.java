@@ -42,6 +42,7 @@ public record TransportSpec(String path, Kind kind, int capacity, int rate, int 
             String id = entry.getKey() + "_tank";
             result.put(id, new TransportSpec(id, Kind.TANK, entry.getValue(), entry.getValue(), 0));
         }
+        result.put("tank", new TransportSpec("tank", Kind.TANK, 24_000, 24_000, 0));
         return Collections.unmodifiableMap(result);
     }
 }

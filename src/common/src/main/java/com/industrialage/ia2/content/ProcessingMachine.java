@@ -8,8 +8,11 @@ import java.util.function.Predicate;
  */
 public final class ProcessingMachine {
     private final int baseDuration;
-    private final int energyPerTick;
-    private final int capacity;
+    private final int baseEnergy;
+    private final int reserve;
+    private ProcessingUpgrades upgrades = ProcessingUpgrades.NONE;
+    private ProcessingUpgrades.Stats stats;
+    private int completedOperations;
     private double energy;
     private int progress;
     private String recipeKey = "";
@@ -20,18 +23,39 @@ public final class ProcessingMachine {
         switch (machinePath) {
             case "macerator", "compressor", "extractor" -> {
                 baseDuration = 300;
-                energyPerTick = 2;
-                capacity = 1200;
+                baseEnergy = 2;
+                reserve = 600;
             }
             case "electric_furnace" -> {
                 baseDuration = 100;
-                energyPerTick = 3;
-                capacity = 600;
+                baseEnergy = 3;
+                reserve = 300;
             }
             default ->
                     throw new IllegalArgumentException(
                             "Unknown electric processor: " + machinePath);
         }
+        stats = upgrades.stats(baseDuration, baseEnergy, reserve, 1);
+    }
+
+    /** Recalculates speed, throughput and EU capacity while retaining the paid progress ratio. */
+    public boolean setUpgrades(ProcessingUpgrades installed) {
+        if (upgrades.equals(installed)) return false;
+        int oldDuration = stats.duration();
+        upgrades = Objects.requireNonNull(installed);
+        stats = upgrades.stats(baseDuration, baseEnergy, reserve, 1);
+        progress = ProcessingUpgrades.progress(progress, oldDuration, stats.duration());
+        return true;
+    }
+
+    /** Supplies the current operation parameters to the inventory and EU host. */
+    public ProcessingUpgrades.Stats stats() {
+        return stats;
+    }
+
+    /** Number of operations authorized by the current successful tick. */
+    public int completedOperations() {
+        return completedOperations;
     }
 
     /** One recipe. The host supplies the current smelting recipe for an electric furnace. */
@@ -64,14 +88,21 @@ public final class ProcessingMachine {
     }
 
     /**
-     * Advances from the live input and the space available for this particular result. A true
-     * return authorizes exactly one inventory transaction on this same server tick.
+     * Advances from the live input and space. A completion authorizes one atomic inventory
+     * transaction containing {@link #completedOperations()} operations.
      */
     public boolean tick(Recipe recipe, int availableInput, int outputSpace) {
         active = false;
-        if (recipe == null
-                || availableInput < recipe.inputCount()
-                || outputSpace < recipe.outputCount()) {
+        completedOperations = 0;
+        int operations =
+                recipe == null
+                        ? 0
+                        : Math.min(
+                                stats.operations(),
+                                Math.min(
+                                        availableInput / recipe.inputCount(),
+                                        outputSpace / recipe.outputCount()));
+        if (operations <= 0) {
             progress = 0;
             recipeKey = "";
             return false;
@@ -81,20 +112,18 @@ public final class ProcessingMachine {
             recipeKey = nextKey;
             progress = 0;
         }
-        if (energy < energyPerTick) {
-            return false;
-        }
-        energy -= energyPerTick;
+        int cost = stats.energyPerTick();
+        if (energy < cost) return false;
+        energy -= cost;
         active = true;
-        if (++progress < baseDuration) {
-            return false;
-        }
+        if (++progress < stats.duration()) return false;
+        completedOperations = operations;
         progress = 0;
         recipeKey = "";
         active =
-                energy >= energyPerTick
-                        && availableInput - recipe.inputCount() >= recipe.inputCount()
-                        && outputSpace - recipe.outputCount() >= recipe.outputCount();
+                energy >= cost
+                        && availableInput - operations * recipe.inputCount() >= recipe.inputCount()
+                        && outputSpace - operations * recipe.outputCount() >= recipe.outputCount();
         return true;
     }
 
@@ -103,7 +132,7 @@ public final class ProcessingMachine {
         if (!Double.isFinite(eu) || eu <= 0) {
             return 0;
         }
-        double accepted = Math.min(eu, Math.max(0, capacity - energy));
+        double accepted = Math.min(eu, Math.max(0, stats.capacity() - energy));
         energy += accepted;
         return accepted;
     }
@@ -125,12 +154,12 @@ public final class ProcessingMachine {
 
     /** Paid working ticks per operation. */
     public int duration() {
-        return baseDuration;
+        return stats.duration();
     }
 
     /** Maximum buffer in EU. */
     public double capacity() {
-        return capacity;
+        return stats.capacity();
     }
 
     /** Identity of the input and result for which the current progress was earned. */
@@ -138,18 +167,25 @@ public final class ProcessingMachine {
         return recipeKey;
     }
 
-    /** Restores the server-side buffer and in-flight recipe before its next tick. */
+    /** Restores an in-flight operation written before persisted upgrade timings were added. */
     public void restore(double stored, int ticks, String key) {
+        restore(stored, ticks, key, baseDuration);
+    }
+
+    /** Restores the saved ratio under the currently installed upgrades. */
+    public void restore(double stored, int ticks, String key, int savedDuration) {
+        int duration = savedDuration > 0 ? savedDuration : baseDuration;
         if (!Double.isFinite(stored)
                 || stored < 0
                 || ticks < 0
-                || ticks >= baseDuration
+                || ticks >= duration
                 || (ticks > 0 && (key == null || key.isEmpty()))) {
             throw new IllegalArgumentException("Invalid saved processor state");
         }
         energy = stored;
-        progress = ticks;
+        progress = ProcessingUpgrades.progress(ticks, duration, stats.duration());
         recipeKey = ticks == 0 ? "" : key;
+        completedOperations = 0;
         active = false;
     }
 }

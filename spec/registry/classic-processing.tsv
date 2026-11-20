@@ -1,0 +1,5 @@
+machine	recipe	input	input_count	output	output_count
+compressor	classic/plant_ball_to_compressed_plants	ic2:plant_ball	1	ic2:compressed_plants	1
+compressor	classic/coal_fuel_dust_to_compressed_hydrated_coal	ic2:coal_fuel_dust	1	ic2:compressed_hydrated_coal	1
+extractor	classic/bio_cell_to_biofuel_cell	ic2:bio_cell	1	ic2:biofuel_cell	1
+extractor	classic/hydrated_coal_cell_to_coalfuel_cell	ic2:hydrated_coal_cell	1	ic2:coalfuel_cell	1

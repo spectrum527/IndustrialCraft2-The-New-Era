@@ -175,7 +175,11 @@ public final class EnergyGraph {
     }
 
     private static boolean connects(Node from, Face out, Node to, Face in) {
-        return from.ports.outputs().contains(out) && to.ports.inputs().contains(in);
+        int sourceColor = from.ports.color();
+        int targetColor = to.ports.color();
+        return (sourceColor == 0 || targetColor == 0 || sourceColor == targetColor)
+                && from.ports.outputs().contains(out)
+                && to.ports.inputs().contains(in);
     }
 
     private static List<Position> path(Node start, Node end, Map<Node, Node> predecessors) {
@@ -219,8 +223,14 @@ public final class EnergyGraph {
      * @param inputs faces that accept energy
      * @param outputs faces that emit energy
      * @param conductor whether paths can pass through this block between its ports
+     * @param color conductor dye, or zero for uncolored connections
      */
-    public record Ports(Set<Face> inputs, Set<Face> outputs, boolean conductor) {
+    public record Ports(Set<Face> inputs, Set<Face> outputs, boolean conductor, int color) {
+        /** Keeps undyed conductors and device ports compatible with every dye. */
+        public Ports(Set<Face> inputs, Set<Face> outputs, boolean conductor) {
+            this(inputs, outputs, conductor, 0);
+        }
+
         /** Copies the face sets so connections change only when the topology is updated. */
         public Ports {
             inputs = Set.copyOf(inputs);

@@ -1,0 +1,12 @@
+${loaderMetadata}
+license="LGPL-3.0-only"
+[[mods]]
+modId="ic2_native_gameplay"
+version="1"
+displayName="IndustrialCraft 2 Native Gameplay Checks"
+[[dependencies.ic2_native_gameplay]]
+modId="ic2"
+type="required"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"

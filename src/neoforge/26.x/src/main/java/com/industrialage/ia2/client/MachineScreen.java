@@ -1,0 +1,40 @@
+package com.industrialage.ia2.client;
+
+import com.industrialage.ia2.gameplay.MachineMenu;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+
+/** Native interactive machine screen for Minecraft 26.x. */
+final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
+    MachineScreen(MachineMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title, MachineMenu.WIDTH, MachineMenu.HEIGHT);
+        inventoryLabelY = 84;
+    }
+
+    @Override
+    public void extractContents(
+            GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        MachinePanel.draw(
+                menu,
+                (x1, y1, x2, y2, color) ->
+                        graphics.fill(leftPos + x1, topPos + y1, leftPos + x2, topPos + y2, color),
+                (line, x, y, center) ->
+                        graphics.text(
+                                font,
+                                line,
+                                leftPos + x - (center ? font.width(line) / 2 : 0),
+                                topPos + y,
+                                0xffd6e6f0,
+                                false));
+        super.extractContents(graphics, mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        graphics.text(font, title, titleLabelX, titleLabelY, 0xffedf3f8, false);
+        graphics.text(
+                font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xffd6e6f0, false);
+    }
+}

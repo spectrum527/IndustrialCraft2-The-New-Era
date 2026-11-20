@@ -1,0 +1,148 @@
+{
+  "reference": "1.2.4-port.20261120",
+  "method": "Parallel loaded native receivers observed across identical twenty-tick windows at Y=223; data counters read from the world. Teleport coordinates differ by six blocks and use two neighboring unfed BatBoxes.",
+  "wind": {
+    "10": {
+      "additionalSolidBlocks": 10,
+      "euPerTick": 4.706852937390067,
+      "fractionRelativeToControl": 0.9823321554770049
+    },
+    "32": {
+      "additionalSolidBlocks": 32,
+      "euPerTick": 4.520610554975519,
+      "fractionRelativeToControl": 0.9434628975265108
+    },
+    "180": {
+      "additionalSolidBlocks": 180,
+      "euPerTick": 3.3438973206280025,
+      "fractionRelativeToControl": 0.6978798586572595
+    },
+    "16": {
+      "additionalSolidBlocks": 16,
+      "euPerTick": 4.656059560367794,
+      "fractionRelativeToControl": 0.9717314487632079
+    },
+    "40": {
+      "additionalSolidBlocks": 40,
+      "euPerTick": 4.452886052279155,
+      "fractionRelativeToControl": 0.9293286219081148
+    },
+    "100": {
+      "additionalSolidBlocks": 100,
+      "euPerTick": 3.944952282057102,
+      "fractionRelativeToControl": 0.823321554770287
+    },
+    "64": {
+      "additionalSolidBlocks": 64,
+      "euPerTick": 4.2497125441905155,
+      "fractionRelativeToControl": 0.8869257950530216
+    },
+    "300": {
+      "additionalSolidBlocks": 300,
+      "euPerTick": 2.5481344139468547,
+      "fractionRelativeToControl": 0.5318021201413436
+    },
+    "24": {
+      "additionalSolidBlocks": 24,
+      "euPerTick": 4.588335057671884,
+      "fractionRelativeToControl": 0.9575971731449069
+    },
+    "0": {
+      "additionalSolidBlocks": 0,
+      "euPerTick": 4.791508565760523,
+      "fractionRelativeToControl": 1.0
+    },
+    "1": {
+      "additionalSolidBlocks": 1,
+      "euPerTick": 4.783043002923478,
+      "fractionRelativeToControl": 0.9982332155477005
+    },
+    "2": {
+      "additionalSolidBlocks": 2,
+      "euPerTick": 4.774577440086432,
+      "fractionRelativeToControl": 0.996466431095401
+    },
+    "3": {
+      "additionalSolidBlocks": 3,
+      "euPerTick": 4.7661118772493865,
+      "fractionRelativeToControl": 0.9946996466431015
+    },
+    "4": {
+      "additionalSolidBlocks": 4,
+      "euPerTick": 4.757646314412341,
+      "fractionRelativeToControl": 0.992932862190802
+    },
+    "5": {
+      "additionalSolidBlocks": 5,
+      "euPerTick": 4.749180751575295,
+      "fractionRelativeToControl": 0.9911660777385025
+    },
+    "8": {
+      "additionalSolidBlocks": 8,
+      "euPerTick": 4.7237840630641585,
+      "fractionRelativeToControl": 0.985865724381604
+    }
+  },
+  "travel": {
+    "diamond_1": {
+      "distance": 6.0,
+      "firstDebit": 17.0,
+      "secondDebit": 17.0
+    },
+    "diamond_2": {
+      "distance": 6.0,
+      "firstDebit": 52.0,
+      "secondDebit": 52.0
+    },
+    "diamond_8": {
+      "distance": 6.0,
+      "firstDebit": 208.0,
+      "secondDebit": 209.0
+    },
+    "diamond_16": {
+      "distance": 6.0,
+      "firstDebit": 435.0,
+      "secondDebit": 435.0
+    },
+    "diamond_32": {
+      "distance": 6.0,
+      "firstDebit": 870.0,
+      "secondDebit": 871.0
+    },
+    "diamond_63": {
+      "distance": 6.0,
+      "firstDebit": 1706.0,
+      "secondDebit": 1706.0
+    },
+    "diamond_64": {
+      "distance": 6.0,
+      "firstDebit": 1741.0,
+      "secondDebit": 1741.0
+    },
+    "wooden_pickaxe": {
+      "distance": 6.0,
+      "firstDebit": 1741.0,
+      "secondDebit": 1741.0
+    },
+    "zombie": {
+      "distance": 6.0,
+      "firstDebit": 8705.0,
+      "secondDebit": 8706.0
+    },
+    "minecart": {
+      "distance": 6.0,
+      "firstDebit": 1741.0,
+      "secondDebit": 1741.0
+    },
+    "boat": {
+      "distance": 6.0,
+      "firstDebit": 1741.0,
+      "secondDebit": 1741.0
+    },
+    "diamond_64_split_supply": {
+      "distance": 6.0,
+      "firstDebit": 1741.0,
+      "secondDebit": 1741.0
+    }
+  }
+}
