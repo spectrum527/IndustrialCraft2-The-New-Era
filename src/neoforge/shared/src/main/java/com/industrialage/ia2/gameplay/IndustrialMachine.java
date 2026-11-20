@@ -50,6 +50,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
     private final BlockEntityBase components;
     private double stored;
     private int fuelRemaining;
+    private int fuelCapacity;
     private int furnaceProgress;
     private String furnaceRecipe = "";
     private int redstoneMode;
@@ -115,7 +116,8 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                 progress(),
                 processor == null ? furnaceRecipe : processor.recipeKey(),
                 redstoneMode,
-                processor == null ? 0 : processor.duration());
+                processor == null ? 0 : processor.duration(),
+                fuelCapacity());
     }
 
     @Override
@@ -125,6 +127,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                     new FuelGenerator.Snapshot(
                             snapshot.fuelTicks(),
                             Math.min(snapshot.energy(), FuelGenerator.CAPACITY)));
+            generator.restoreFuelCapacity(snapshot.fuelCapacity());
         } else if (processor != null) {
             refreshUpgrades();
             processor.restore(
@@ -135,6 +138,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         } else {
             furnaceProgress = Math.min(snapshot.progress(), IRON_FURNACE_DURATION - 1);
             fuelRemaining = snapshot.fuelTicks();
+            fuelCapacity = Math.max(fuelRemaining, snapshot.fuelCapacity());
             furnaceRecipe = snapshot.recipe();
         }
     }
@@ -230,6 +234,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
             if (time > 0) {
                 consumeFuel();
                 fuelRemaining = time;
+                fuelCapacity = time;
             }
         }
         if (fuelRemaining > 0) {
@@ -413,6 +418,11 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         return generator == null ? fuelRemaining : generator.snapshot().fuelTicks();
     }
 
+    int fuelCapacity() {
+        if (generator != null) return generator.fuelCapacity();
+        return fuelRemaining == 0 ? 0 : fuelCapacity;
+    }
+
     @Override
     public Ports energyPorts() {
         return EnergyNetwork.ports(this);
@@ -521,6 +531,10 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                 || redstoneMode == 6
                         && stored
                                 > storage.capacity() - 20 * PacketBudget.packetSize(storage.tier());
+    }
+
+    int redstoneMode() {
+        return redstoneMode;
     }
 
     void cycleRedstoneMode(ServerPlayer player) {

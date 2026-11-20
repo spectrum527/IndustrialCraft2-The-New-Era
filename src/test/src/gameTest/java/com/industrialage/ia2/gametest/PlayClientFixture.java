@@ -109,6 +109,7 @@ public final class PlayClientFixture {
                     "text", mc.screen == null ? "" : mc.screen.getNarrationMessage().getString());
             result.addProperty("overlay", mc.getOverlay() != null);
             result.addProperty("world", mc.level != null);
+            UiProbe.record(mc, mc.screen, result);
             result.addProperty(
                     "player", mc.player == null ? "" : mc.player.getGameProfile().getName());
             result.addProperty("integrated", mc.getSingleplayerServer() != null);
@@ -307,7 +308,10 @@ public final class PlayClientFixture {
             case "first-person-camera" -> mc.options.setCameraType(CameraType.FIRST_PERSON);
             case "shot-rubber_boat", "shot-carbon_boat", "shot-electric_boat" ->
                     shot(mc, "ic2-" + action.substring(5) + ".png");
-            case "hide-chat" -> mc.gui.getChat().clearMessages(false);
+            case "hide-chat" -> {
+                mc.gui.getChat().clearMessages(false);
+                mc.getToasts().clear();
+            }
             case "machine-screenshot" -> shot(mc, "ic2-machine.png");
             case "flight-ready" -> mc.getConnection().sendCommand("ic2accept flight");
             case "flight-start" -> mc.options.keyJump.setDown(true);
@@ -344,7 +348,32 @@ public final class PlayClientFixture {
                     mc.createWorldOpenFlows()
                             .openWorld(action, () -> mc.setScreen(new TitleScreen()));
             case "quit" -> mc.stop();
-            default -> throw new IllegalArgumentException("Unknown acceptance action " + action);
+            default -> panelAction(mc, action);
+        }
+    }
+
+    private void panelAction(Minecraft mc, String action) {
+        var request = action.split(":", 2);
+        if (request.length != 2) throw new IllegalArgumentException("Unknown action " + action);
+        var argument = request[1];
+        switch (request[0]) {
+            case "ui" -> UiProbe.use(mc, argument, false, true);
+            case "ui-item" -> UiProbe.use(mc, argument, true, false);
+            case "ui-use-on" -> UiProbe.use(mc, argument, true, true);
+            case "snapshot-ui" -> {
+                if (!argument.matches("[a-z0-9_-]+"))
+                    throw new IllegalArgumentException("Invalid screenshot name");
+                shot(mc, argument + ".png");
+            }
+            case "move-ui", "click-ui" -> {
+                var screen = mc.screen;
+                var center = UiProbe.pointer(mc, screen, argument, mc.getWindow().getWindow());
+                if (request[0].equals("click-ui")) {
+                    screen.mouseClicked(center[0], center[1], GLFW.GLFW_MOUSE_BUTTON_LEFT);
+                    screen.mouseReleased(center[0], center[1], GLFW.GLFW_MOUSE_BUTTON_LEFT);
+                }
+            }
+            default -> throw new IllegalArgumentException("Unknown action " + action);
         }
     }
 

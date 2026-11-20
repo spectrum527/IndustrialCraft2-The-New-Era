@@ -70,7 +70,7 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock {
             Level world, BlockState state, BlockEntityType<T> type) {
         if (!(world instanceof ServerLevel server)
                 || type != TransportPlatform.type()
-                || spec.kind() == Kind.TANK) return null;
+                || (spec.kind() == Kind.TANK && !spec.path().equals("tank"))) return null;
         return (level, pos, current, entity) -> ((TransportNode) entity).tick(server);
     }
 
@@ -122,8 +122,11 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock {
                 return true;
             }
         }
-        return spec.kind() != Kind.ITEM_PIPE
-                && TransportPlatform.containerInteraction(node, side, player, hand);
+        if (spec.kind() != Kind.ITEM_PIPE
+                && TransportPlatform.containerInteraction(node, side, player, hand)) return true;
+        if (spec.kind() != Kind.TANK) return false;
+        if (server) player.openMenu(node);
+        return true;
     }
 
     @Override

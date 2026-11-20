@@ -1,40 +1,99 @@
 package com.industrialage.ia2.client;
 
+import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.gameplay.MachineMenu;
+import com.industrialage.ia2.gui.PanelButton;
+import com.industrialage.ia2.gui.PanelGraphics;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-/** Native interactive machine screen for Minecraft 26.x. */
+/** Native interaction and authored machine art for Minecraft 26.x. */
 final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
+    private PanelButton redstone;
+
     MachineScreen(MachineMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title, MachineMenu.WIDTH, MachineMenu.HEIGHT);
-        inventoryLabelY = 84;
+        super(menu, inventory, title, MachineLayout.WIDTH, menu.layout().height());
     }
 
     @Override
-    public void extractContents(
-            GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        MachinePanel.draw(
-                menu,
-                (x1, y1, x2, y2, color) ->
-                        graphics.fill(leftPos + x1, topPos + y1, leftPos + x2, topPos + y2, color),
-                (line, x, y, center) ->
-                        graphics.text(
-                                font,
-                                line,
-                                leftPos + x - (center ? font.width(line) / 2 : 0),
-                                topPos + y,
-                                0xffd6e6f0,
-                                false));
-        super.extractContents(graphics, mouseX, mouseY, partialTick);
+    protected void init() {
+        super.init();
+        if (menu.layout().storage()) {
+            redstone =
+                    addRenderableWidget(
+                            new PanelButton(
+                                    leftPos + 151,
+                                    topPos + 3,
+                                    21,
+                                    22,
+                                    redstoneMode(),
+                                    button ->
+                                            minecraft.gameMode.handleInventoryButtonClick(
+                                                    menu.containerId, 0)));
+            redstone.setTooltip(Tooltip.create(redstoneMode()));
+        }
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        if (redstone != null) {
+            var mode = redstoneMode();
+            if (!redstone.getMessage().equals(mode)) {
+                redstone.setMessage(mode);
+                redstone.setTooltip(Tooltip.create(mode));
+            }
+        }
+    }
+
+    private Component redstoneMode() {
+        return Component.translatable("container.ic2.redstone_mode." + menu.redstoneMode());
+    }
+
+    @Override
+    public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tick) {
+        double energy = menu.capacity() > 0 ? (double) menu.energy() / menu.capacity() : 0;
+        double work = menu.duration() > 0 ? (double) menu.progress() / menu.duration() : 0;
+        MachineArtwork.draw(
+                menu.layout(),
+                menu.machineSlots(),
+                menu::slotRole,
+                energy,
+                work,
+                menu.fuelRatio(),
+                PanelGraphics.at(graphics, font, leftPos, topPos));
+        super.extractContents(graphics, mouseX, mouseY, tick);
     }
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        graphics.text(font, title, titleLabelX, titleLabelY, 0xffedf3f8, false);
-        graphics.text(
-                font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xffd6e6f0, false);
+        MachineArtwork.labels(
+                menu.layout(),
+                title,
+                playerInventoryTitle,
+                menu.redstoneMode(),
+                PanelGraphics.at(graphics, font, 0, 0));
+    }
+
+    @Override
+    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractTooltip(graphics, mouseX, mouseY);
+        if (menu.getCarried().isEmpty()) {
+            Component tip =
+                    hoveredSlot != null && !hoveredSlot.hasItem()
+                            ? menu.slotLabel(hoveredSlot.index)
+                            : MachineArtwork.gaugeTip(
+                                    menu.layout(),
+                                    mouseX - leftPos,
+                                    mouseY - topPos,
+                                    menu.energy(),
+                                    menu.capacity(),
+                                    menu.progress(),
+                                    menu.duration());
+            if (tip != null) graphics.setTooltipForNextFrame(font, tip, mouseX, mouseY);
+        }
     }
 }

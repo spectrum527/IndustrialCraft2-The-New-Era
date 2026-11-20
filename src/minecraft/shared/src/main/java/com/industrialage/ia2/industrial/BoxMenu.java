@@ -1,138 +1,223 @@
 package com.industrialage.ia2.industrial;
 
-import java.util.List;
-import net.minecraft.network.chat.Component;
+import com.industrialage.ia2.world.WorldCrafting;
+import java.util.ArrayList;
+import java.util.Collections;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
-/** Native chest protocol with independent per-viewer paging for 63- and 126-slot inventories. */
-final class BoxMenu extends BoxMenuBase {
-    private static final List<MenuType<ChestMenu>> TYPES =
-            List.of(
-                    MenuType.GENERIC_9x1,
-                    MenuType.GENERIC_9x2,
-                    MenuType.GENERIC_9x3,
-                    MenuType.GENERIC_9x4,
-                    MenuType.GENERIC_9x5,
-                    MenuType.GENERIC_9x6);
-    private final View view;
+/** The drawn storage grid and the server share the same persistent inventory indices. */
+final class BoxMenu extends AbstractContainerMenu {
+    final BoxKind kind;
+    final BoxNode node;
+    final Container inventory;
+    final int width, height, inventoryX, inventoryY, playerStart;
+    private long resolvedRevision = Long.MIN_VALUE;
+    private final SimpleContainer results = new SimpleContainer(3);
 
-    static BoxMenu open(int id, Inventory player, BoxNode box, int page) {
-        return new BoxMenu(id, player, new View(box, page));
+    BoxMenu(int id, Inventory player, BoxKind kind, BoxNode node, int start) {
+        super(BoxMenus.type(kind), id);
+        this.kind = kind;
+        this.node = node;
+        inventory = node == null ? new SimpleContainer(kind.slots) : node.items;
+        boolean bench = kind == BoxKind.INDUSTRIAL_WORKBENCH;
+        int columns = kind == BoxKind.IRIDIUM_STORAGE_BOX ? 18 : 9;
+        int top = kind == BoxKind.PERSONAL_CHEST ? 19 : 17;
+        width = bench ? 194 : columns * 18 + 14;
+        height =
+                bench
+                        ? 228
+                        : (kind == BoxKind.PERSONAL_CHEST
+                                ? 222
+                                : 112 + 18 * (kind.slots / columns));
+        inventoryX = columns == 18 ? 89 : 8;
+        inventoryY = bench ? 146 : height - 82;
+        if (bench) {
+            for (int i = 0; i < 9; i++)
+                addSlot(new Slot(inventory, i, 30 + 18 * (i % 3), 43 + 18 * (i / 3)));
+            for (int i = 0; i < 4; i++) {
+                int slot = i;
+                addSlot(
+                        new Slot(inventory, 9 + i, 7 + 84 * (i / 2) + 18 * (i % 2), 17) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return slot % 2 != 0
+                                        || PowerPlatform.path(stack)
+                                                .equals(slot == 0 ? "forge_hammer" : "cutter");
+                            }
+                        });
+            }
+            for (int i = 0; i < 18; i++)
+                addSlot(new Slot(inventory, 13 + i, 8 + 18 * (i % 9), 106 + 18 * (i / 9)));
+            for (int station = 0; station < 3; station++) {
+                int stationIndex = station;
+                addSlot(
+                        new Slot(
+                                results,
+                                stationIndex,
+                                station == 0 ? 124 : station == 1 ? 69 : 153,
+                                station == 0 ? 61 : 17) {
+                            @Override
+                            public boolean mayPlace(ItemStack stack) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean mayPickup(Player who) {
+                                if (node == null) return true;
+                                var recipe = recipe(stationIndex);
+                                return recipe != null && sameResult(recipe.output(), getItem());
+                            }
+
+                            @Override
+                            public void onTake(Player who, ItemStack taken) {
+                                if (node != null) craft(stationIndex, who);
+                                super.onTake(who, taken);
+                            }
+                        });
+            }
+        } else {
+            // Old programmatic page views still expose the same backing indices.
+            for (int i = 0; i < kind.slots - start; i++)
+                addSlot(
+                        new Slot(
+                                inventory,
+                                start + i,
+                                8 + 18 * (i % columns),
+                                top + 18 * (i / columns)));
+        }
+        playerStart = slots.size();
+        for (int i = 0; i < 27; i++)
+            addSlot(new Slot(player, 9 + i, inventoryX + 18 * (i % 9), inventoryY + 18 * (i / 9)));
+        for (int i = 0; i < 9; i++)
+            addSlot(new Slot(player, i, inventoryX + 18 * i, inventoryY + 58));
+        refresh();
     }
 
-    private BoxMenu(int id, Inventory player, View view) {
-        super(TYPES.get(view.size / 9 - 1), id, player, view, view.size / 9);
-        this.view = view;
-        for (int i = view.usable; i < view.size; i++) {
-            var previous = slots.get(i);
-            var control =
-                    new Slot(view, i, previous.x, previous.y) {
-                        @Override
-                        public boolean mayPlace(ItemStack stack) {
-                            return false;
-                        }
+    private static boolean sameResult(ItemStack a, ItemStack b) {
+        return !a.isEmpty()
+                && !b.isEmpty()
+                && a.getCount() == b.getCount()
+                && WorkshopPlatform.sameItem(a, b);
+    }
 
-                        @Override
-                        public boolean mayPickup(Player opener) {
-                            return false;
-                        }
-                    };
-            control.index = i;
-            slots.set(i, control);
+    private int inputs(int station) {
+        return station == 0 ? 9 : 2;
+    }
+
+    private int first(int station) {
+        return station == 0 ? 0 : 9 + 2 * (station - 1);
+    }
+
+    private WorldCrafting.Result recipe(int station) {
+        if (node == null || !(node.getLevel() instanceof ServerLevel level)) return null;
+        if (station != 0
+                && !PowerPlatform.path(inventory.getItem(first(station)))
+                        .equals(station == 1 ? "forge_hammer" : "cutter")) return null;
+        var input = new ArrayList<>(Collections.nCopies(9, ItemStack.EMPTY));
+        for (int i = 0; i < inputs(station); i++)
+            input.set(i, inventory.getItem(first(station) + i));
+        return WorldCrafting.result(level, input);
+    }
+
+    private void refresh() {
+        if (kind != BoxKind.INDUSTRIAL_WORKBENCH
+                || node == null
+                || resolvedRevision == node.inventoryRevision) return;
+        resolvedRevision = node.inventoryRevision;
+        for (int s = 0; s < 3; s++) {
+            var match = recipe(s);
+            var next = match == null ? ItemStack.EMPTY : match.output();
+            var old = results.getItem(s);
+            if (!(old.isEmpty() && next.isEmpty()) && !sameResult(old, next))
+                results.setItem(s, next);
         }
+    }
+
+    private void craft(int station, Player who) {
+        var match = recipe(station);
+        if (match == null) return;
+        for (int i = 0; i < inputs(station); i++) {
+            int input = first(station) + i;
+            if (inventory.getItem(input).isEmpty()) continue;
+            inventory.removeItem(input, 1);
+            var remainder = match.remainders().get(i).copy();
+            if (remainder.isEmpty()) continue;
+            var available = inventory.getItem(input);
+            if (available.isEmpty()) inventory.setItem(input, remainder);
+            else if (WorkshopPlatform.sameItem(available, remainder)
+                    && available.getCount() + remainder.getCount() <= available.getMaxStackSize())
+                available.grow(remainder.getCount());
+            else if (!who.getInventory().add(remainder)) who.drop(remainder, false);
+        }
+        inventory.setChanged();
+        refresh();
     }
 
     @Override
-    boolean intercept(int slot, boolean pickup, Player player) {
-        if (slot >= view.usable && slot < view.size) {
-            if (pickup && getCarried().isEmpty() && view.box.inReach(player)) {
-                if (slot == 45 && view.page > 0) view.box.open(player, view.page - 1);
-                else if (slot == 53 && view.start + view.usable < view.box.kind.slots)
-                    view.box.open(player, view.page + 1);
-            }
-            return true;
-        }
-        return false;
+    public void broadcastChanges() {
+        refresh();
+        super.broadcastChanges();
     }
 
-    private static final class View implements Container {
-        final BoxNode box;
-        final int page, start, size, usable;
-        final ItemStack previous, next;
+    @Override
+    public boolean stillValid(Player player) {
+        return node == null || node.inReach(player);
+    }
 
-        View(BoxNode box, int page) {
-            this.box = box;
-            this.page = page;
-            start = page * 45;
-            size = Math.min(54, box.kind.slots);
-            usable = box.kind.slots > 54 ? Math.min(45, box.kind.slots - start) : size;
-            previous =
-                    page > 0
-                            ? BoxPlatform.named(
-                                    new ItemStack(Items.ARROW),
-                                    Component.translatable("ic2.box.previous"))
-                            : ItemStack.EMPTY;
-            next =
-                    start + usable < box.kind.slots
-                            ? BoxPlatform.named(
-                                    new ItemStack(Items.ARROW),
-                                    Component.translatable("ic2.box.next"))
-                            : ItemStack.EMPTY;
-        }
+    @Override
+    public ItemStack quickMoveStack(Player who, int index) {
+        if (index < 0 || index >= slots.size()) return ItemStack.EMPTY;
+        var source = getSlot(index);
+        if (!source.hasItem() || !source.mayPickup(who)) return ItemStack.EMPTY;
+        var item = source.getItem();
+        var original = item.copy();
+        boolean output =
+                kind == BoxKind.INDUSTRIAL_WORKBENCH && index >= kind.slots && index < playerStart;
+        if (output && !canStore(item)) return ItemStack.EMPTY;
+        boolean moved =
+                index < playerStart
+                        ? moveItemStackTo(item, playerStart, slots.size(), true)
+                        : moveItemStackTo(
+                                item,
+                                kind == BoxKind.INDUSTRIAL_WORKBENCH ? 13 : 0,
+                                kind == BoxKind.INDUSTRIAL_WORKBENCH ? 31 : playerStart,
+                                false);
+        if (!moved) return ItemStack.EMPTY;
+        if (item.isEmpty()) source.set(ItemStack.EMPTY);
+        else source.setChanged();
+        source.onTake(who, original);
+        return original;
+    }
 
-        @Override
-        public int getContainerSize() {
-            return size;
+    @Override
+    public boolean clickMenuButton(Player who, int action) {
+        if (kind != BoxKind.INDUSTRIAL_WORKBENCH || action != 0 || node == null || !stillValid(who))
+            return false;
+        for (int i = 0; i < 9; i++) {
+            var item = inventory.removeItemNoUpdate(i);
+            if (!item.isEmpty() && !who.getInventory().add(item)) who.drop(item, false);
         }
+        inventory.setChanged();
+        broadcastChanges();
+        return true;
+    }
 
-        @Override
-        public boolean isEmpty() {
-            for (int i = 0; i < usable; i++) if (!getItem(i).isEmpty()) return false;
-            return true;
+    private boolean canStore(ItemStack stack) {
+        int left = stack.getCount();
+        for (int i = playerStart; i < slots.size(); i++) {
+            var slot = getSlot(i);
+            var present = slot.getItem();
+            if (present.isEmpty() || WorkshopPlatform.sameItem(present, stack))
+                left -= Math.max(0, slot.getMaxStackSize(stack) - present.getCount());
+            if (left <= 0) return true;
         }
-
-        @Override
-        public ItemStack getItem(int slot) {
-            return slot < usable
-                    ? box.items.getItem(start + slot)
-                    : slot == 45 ? previous : slot == 53 ? next : ItemStack.EMPTY;
-        }
-
-        @Override
-        public ItemStack removeItem(int slot, int count) {
-            return slot < usable ? box.items.removeItem(start + slot, count) : ItemStack.EMPTY;
-        }
-
-        @Override
-        public ItemStack removeItemNoUpdate(int slot) {
-            return slot < usable ? box.items.removeItemNoUpdate(start + slot) : ItemStack.EMPTY;
-        }
-
-        @Override
-        public void setItem(int slot, ItemStack stack) {
-            if (slot < usable) box.items.setItem(start + slot, stack);
-        }
-
-        @Override
-        public void setChanged() {
-            box.setChanged();
-        }
-
-        @Override
-        public boolean stillValid(Player player) {
-            return box.inReach(player);
-        }
-
-        @Override
-        public void clearContent() {
-            for (int i = 0; i < usable; i++) box.items.setItem(start + i, ItemStack.EMPTY);
-        }
+        return false;
     }
 }

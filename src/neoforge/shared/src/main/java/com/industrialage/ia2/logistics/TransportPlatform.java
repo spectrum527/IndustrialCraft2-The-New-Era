@@ -77,6 +77,7 @@ public final class TransportPlatform {
         }
         ITEMS.registerItem("wrench", properties -> new Wrench(properties.durability(120)));
         ITEMS.registerItem("crowbar", properties -> new Item(properties.stacksTo(1)));
+        TankMenus.install(bus);
         BLOCKS.register(bus);
         ITEMS.register(bus);
         TYPES.register(bus);
@@ -142,6 +143,10 @@ public final class TransportPlatform {
 
     static boolean isPristineCell(ItemStack cell) {
         return sameItem(cell, new ItemStack(CELL.get()));
+    }
+
+    static ItemStack exchangeCursor(TransportNode node, ItemStack carried, Player who) {
+        return NeoTransport.exchangeCursor(node, carried, who);
     }
 
     static boolean containerInteraction(

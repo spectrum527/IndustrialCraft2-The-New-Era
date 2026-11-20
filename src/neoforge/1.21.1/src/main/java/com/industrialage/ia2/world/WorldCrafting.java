@@ -8,10 +8,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeType;
 
-final class WorldCrafting {
+/** Native crafting lookup with its per-square container and tool remainders. */
+public final class WorldCrafting {
     private WorldCrafting() {}
 
-    static Result result(ServerLevel level, List<ItemStack> stacks) {
+    /** Resolves a nine-square grid against this world's active recipe data. */
+    public static Result result(ServerLevel level, List<ItemStack> stacks) {
         var positioned = CraftingInput.ofPositioned(3, 3, stacks);
         var input = positioned.input();
         var manager = level.getServer().getRecipeManager();
@@ -30,5 +32,6 @@ final class WorldCrafting {
         return new Result(recipe.assemble(input, level.registryAccess()), grid);
     }
 
-    record Result(ItemStack output, List<ItemStack> remainders) {}
+    /** Output and remaining stacks, indexed in the originally supplied grid. */
+    public record Result(ItemStack output, List<ItemStack> remainders) {}
 }

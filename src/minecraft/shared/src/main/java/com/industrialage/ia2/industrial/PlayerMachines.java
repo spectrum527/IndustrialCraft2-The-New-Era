@@ -32,10 +32,13 @@ final class PlayerMachines {
     }
 
     private static boolean inject(PowerNode device, ServerLevel level) {
-        if (device.energy < 1000 || device.inventory.getItem(0).isEmpty()) return false;
+        if (device.energy < 1000) return false;
+        int input = 0;
+        while (input < 9 && !device.inventory.canPlaceItem(input, device.inventory.getItem(input)))
+            input++;
+        if (input == 9) return false;
         String component = device.kind == PowerKind.RCI_LZH ? "lzh_condensator" : "rsh_condensator";
         int threshold = device.kind == PowerKind.RCI_LZH ? 85000 : 17000;
-        if (!device.inventory.canPlaceItem(0, device.inventory.getItem(0))) return false;
         BlockPos pos =
                 device.getBlockPos()
                         .relative(
@@ -49,11 +52,11 @@ final class PlayerMachines {
                         ? candidate.controller(level)
                         : candidate;
         if (core == null || core.kind != PowerKind.NUCLEAR_REACTOR) return false;
-        for (int i = 0; i < core.inventory.getContainerSize(); i++) {
+        for (int i = 0; i < 54; i++) {
             if (core.inventory.part(i).equals(component) && core.inventory.wear(i) > threshold) {
                 core.inventory.wear(i, 0);
                 core.setChanged();
-                device.inventory.removeItem(0, 1);
+                device.inventory.removeItem(input, 1);
                 device.energy -= 1000;
                 device.setChanged();
                 return true;

@@ -154,9 +154,13 @@ final class WorkshopMatter {
     }
 
     static void recordOrSelect(WorkshopNode node, ServerLevel level, Player player) {
+        recordOrSelect(node, level, player, 1);
+    }
+
+    static void recordOrSelect(WorkshopNode node, ServerLevel level, Player player, int step) {
         if (node.kind == WorkshopKind.PATTERN_STORAGE) {
             for (int offset = 1; offset <= END_PATTERNS - FIRST_PATTERN; offset++) {
-                int next = Math.floorMod(node.cycles + offset, END_PATTERNS - FIRST_PATTERN);
+                int next = Math.floorMod(node.cycles + offset * step, END_PATTERNS - FIRST_PATTERN);
                 if (!node.inventory.getItem(FIRST_PATTERN + next).isEmpty()) {
                     node.cycles = next;
                     node.setChanged();

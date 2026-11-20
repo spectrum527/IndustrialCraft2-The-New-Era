@@ -117,6 +117,8 @@ public final class WorldPlatform {
         for (String name : SUPPLIES) registerItem(name, props -> WorldNative.supply(name, props));
         WorldBlocks.install();
         WorldSigns.install(modBus, client);
+        WorldMenus.install(modBus, client);
+        com.industrialage.ia2.industrial.ToolMenus.install(modBus, client);
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
         ENTITIES.register(modBus);

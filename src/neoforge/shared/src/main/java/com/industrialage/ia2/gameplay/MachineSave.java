@@ -6,7 +6,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 /** Native representation shared by the machine variants. Inventory is stored by the host. */
 record MachineSave(
-        double energy, int fuelTicks, int progress, String recipe, int redstoneMode, int duration) {
+        double energy,
+        int fuelTicks,
+        int progress,
+        String recipe,
+        int redstoneMode,
+        int duration,
+        int fuelCapacity) {
     private static final Codec<MachineSave> CODEC =
             RecordCodecBuilder.create(
                     instance ->
@@ -28,9 +34,12 @@ record MachineSave(
                                                     .forGetter(MachineSave::redstoneMode),
                                             Codec.intRange(0, Integer.MAX_VALUE)
                                                     .optionalFieldOf("duration", 0)
-                                                    .forGetter(MachineSave::duration))
+                                                    .forGetter(MachineSave::duration),
+                                            Codec.intRange(0, Integer.MAX_VALUE)
+                                                    .optionalFieldOf("fuel_capacity", 0)
+                                                    .forGetter(MachineSave::fuelCapacity))
                                     .apply(instance, MachineSave::new));
 
     static final SavedState<MachineSave> FORMAT =
-            new SavedState<>("machine", CODEC, new MachineSave(0, 0, 0, "", 0, 0));
+            new SavedState<>("machine", CODEC, new MachineSave(0, 0, 0, "", 0, 0, 0));
 }

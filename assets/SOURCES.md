@@ -1240,6 +1240,7 @@
 | `assets/ic2/textures/entity/boat/boat_carbon.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/entity/boat/boat_electric.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/entity/boat/boat_rubber.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
+| `assets/ic2/gui/workshop-layouts.json` | new | IC2 净室重建项目 | CC BY-SA 4.0 | 用户回交图稿量测、公开 GUI 平面坐标 | 2026-11-20 |
 | `assets/ic2/textures/gui/common.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/gui_canner_classic.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/gui_cropmatron_classic.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
@@ -1763,3 +1764,4 @@
 | `assets/ic2/equipment/solar_helmet.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
 | `assets/ic2/equipment/static_boots.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
 | `assets/ic2/textures/entity/signs/rubber.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/entity/signs/rubber.png`，原样适配橡胶告示牌 | 2026-11-20 |
+| `assets/ic2/gui/power-layouts.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 根据作者专用 GUI 图稿、游戏公开槽位和像素测量重新编写的玩家界面布局 | 2026-11-20 |

@@ -1,10 +1,13 @@
 package com.industrialage.ia2.gameplay;
 
+import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.gameplay.MachineKind.SlotRole;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -15,13 +18,9 @@ import net.minecraft.world.item.ItemStack;
 
 /** Inventory and display data synchronized by Minecraft's normal container protocol. */
 public final class MachineMenu extends AbstractContainerMenu {
-    /** Width and height of the machine inventory panel. */
-    public static final int WIDTH = 176, HEIGHT = 177;
-
-    private static final int DATA_COUNT = 7;
-    private static final int FIRST_INVENTORY_ROW = 95;
-    private static final int HOTBAR = 153;
+    private static final int DATA_COUNT = 9;
     private final MachineKind kind;
+    private final MachineLayout layout;
     private final Container container;
     private final ContainerData machineData;
 
@@ -50,12 +49,14 @@ public final class MachineMenu extends AbstractContainerMenu {
             ContainerData machineData) {
         super(IndustrialContent.MACHINE_MENU.get(), id);
         this.kind = kind;
+        this.layout = MachineLayout.byPath(kind.path);
         this.container = container;
         this.machineData = machineData;
         for (int i = 0; i < kind.slots.size(); i++) {
             var role = kind.slots.get(i);
+            var position = layout.item(slotRole(i), Math.max(0, i - 3));
             addSlot(
-                    new Slot(container, i, machineSlotX(i), machineSlotY(i)) {
+                    new Slot(container, i, position.x(), position.y()) {
                         @Override
                         public boolean mayPlace(ItemStack stack) {
                             if (role == SlotRole.UPGRADE)
@@ -74,6 +75,19 @@ public final class MachineMenu extends AbstractContainerMenu {
                         }
                     });
         }
+        if (layout == MachineLayout.STORAGE) {
+            int x = 8;
+            for (var armor :
+                    new EquipmentSlot[] {
+                        EquipmentSlot.FEET,
+                        EquipmentSlot.LEGS,
+                        EquipmentSlot.CHEST,
+                        EquipmentSlot.HEAD
+                    }) {
+                addSlot(com.industrialage.ia2.gui.EquipmentSlots.worn(player, armor, x, 84));
+                x += 18;
+            }
+        }
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(
@@ -81,11 +95,11 @@ public final class MachineMenu extends AbstractContainerMenu {
                                 player,
                                 9 + 9 * row + col,
                                 8 + 18 * col,
-                                FIRST_INVENTORY_ROW + 18 * row));
+                                layout.inventoryTop() + 1 + 18 * row));
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(player, col, 8 + 18 * col, HOTBAR));
+            addSlot(new Slot(player, col, 8 + 18 * col, layout.hotbarTop() + 1));
         }
         addDataSlots(machineData);
     }
@@ -95,32 +109,21 @@ public final class MachineMenu extends AbstractContainerMenu {
         return kind.slots.size();
     }
 
-    /** Horizontal coordinate of an individual machine slot. */
-    public int machineSlotX(int slot) {
-        if (kind.electricProcessor()) {
-            return switch (kind.slots.get(slot)) {
-                case INPUT -> 23;
-                case OUTPUT -> 101;
-                case DISCHARGE -> 62;
-                default -> 151;
-            };
-        }
-        return WIDTH * (1 + 2 * slot) / (2 * kind.slots.size()) - 8;
+    /** Authored panel type and native inventory anchors. */
+    public MachineLayout layout() {
+        return layout;
     }
 
-    /** Vertical location of a slot, sharing the column with the processor's four upgrades. */
-    public int machineSlotY(int slot) {
-        return upgradeSlot(slot) ? 7 + 18 * (slot - 3) : 40;
-    }
-
-    /** Identifies the grouped upgrade column for the native GUI. */
-    public boolean upgradeSlot(int slot) {
-        return kind.slots.get(slot) == SlotRole.UPGRADE;
+    /** Purpose of a machine slot within this panel. */
+    public MachineLayout.Kind slotRole(int slot) {
+        return MachineLayout.Kind.valueOf(kind.slots.get(slot).name());
     }
 
     /** Translated slot label shown to the player. */
     public Component slotLabel(int slot) {
-        return Component.translatable("container.ic2." + kind.slots.get(slot).label);
+        return slot >= 0 && slot < machineSlots()
+                ? Component.translatable("container.ic2." + kind.slots.get(slot).label)
+                : null;
     }
 
     /** Energy, rounded to whole EU for display. */
@@ -152,21 +155,45 @@ public final class MachineMenu extends AbstractContainerMenu {
         return machineData.get(6) & 0xffff;
     }
 
-    /** Whether the machine can accept combustible fuel. */
+    /** Remaining heat or burn time relative to the current fuel's initial duration. */
+    public double fuelRatio() {
+        return machineData.get(8) / 10_000.0;
+    }
+
+    /** Whether the native inventory takes combustible fuel. */
     public boolean usesFuel() {
         return kind.slots.contains(SlotRole.FUEL);
+    }
+
+    /** Currently selected redstone behavior of the energy storage. */
+    public int redstoneMode() {
+        return machineData.get(7);
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (id == 0
+                && layout.storage()
+                && stillValid(player)
+                && player instanceof ServerPlayer server
+                && container instanceof IndustrialMachine machine) {
+            machine.cycleRedstoneMode(server);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         Slot slot = slots.get(index);
-        if (!slot.hasItem()) {
+        if (!slot.hasItem() || !slot.mayPickup(player)) {
             return ItemStack.EMPTY;
         }
         ItemStack stack = slot.getItem();
         ItemStack original = stack.copy();
-        if (index < machineSlots()) {
-            if (!moveItemStackTo(stack, machineSlots(), slots.size(), true)) {
+        int firstInventory = slots.size() - 36;
+        if (index < firstInventory) {
+            if (!moveItemStackTo(stack, firstInventory, slots.size(), true)) {
                 return ItemStack.EMPTY;
             }
         } else {
@@ -205,6 +232,15 @@ public final class MachineMenu extends AbstractContainerMenu {
                 case 4 -> machine.progress();
                 case 5 -> machine.duration();
                 case 6 -> Math.min(machine.fuelRemaining(), 0xffff);
+                case 7 -> machine.redstoneMode();
+                case 8 ->
+                        machine.fuelCapacity() == 0
+                                ? 0
+                                : (int)
+                                        Math.round(
+                                                10_000.0
+                                                        * machine.fuelRemaining()
+                                                        / machine.fuelCapacity());
                 default -> 0;
             };
         }

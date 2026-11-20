@@ -19,6 +19,8 @@ abstract class TransportSaveBase extends BlockEntity {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         var node = (TransportNode) this;
+        for (int i = 0; i < node.upgrades.getContainerSize(); i++)
+            tag.put("upgrade_" + i, node.upgrades.getItem(i).saveOptional(registries));
         tag.put("cargo", node.cargo.saveOptional(registries));
         tag.put("fluid", TransportPlatform.fluid(node).saveOptional(registries));
         tag.putInt("closed", node.closed);
@@ -29,6 +31,10 @@ abstract class TransportSaveBase extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        var tank = (TransportNode) this;
+        for (int i = 0; i < tank.upgrades.getContainerSize(); i++)
+            tank.upgrades.setItem(
+                    i, ItemStack.parseOptional(registries, tag.getCompound("upgrade_" + i)));
         TransportPlatform.restore(
                 (TransportNode) this,
                 ItemStack.parseOptional(registries, tag.getCompound("cargo")),

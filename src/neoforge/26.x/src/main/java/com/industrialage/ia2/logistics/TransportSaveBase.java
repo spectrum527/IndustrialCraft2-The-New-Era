@@ -40,6 +40,8 @@ abstract class TransportSaveBase extends BlockEntity {
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         var node = (TransportNode) this;
+        for (int i = 0; i < node.upgrades.getContainerSize(); i++)
+            output.store("upgrade_" + i, ItemStack.OPTIONAL_CODEC, node.upgrades.getItem(i));
         output.store("cargo", ItemStack.OPTIONAL_CODEC, node.cargo);
         output.store("fluid", FluidStack.OPTIONAL_CODEC, TransportPlatform.fluid(node));
         output.putInt("closed", node.closed);
@@ -50,6 +52,11 @@ abstract class TransportSaveBase extends BlockEntity {
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        var tank = (TransportNode) this;
+        for (int i = 0; i < tank.upgrades.getContainerSize(); i++)
+            tank.upgrades.setItem(
+                    i,
+                    input.read("upgrade_" + i, ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY));
         TransportPlatform.restore(
                 (TransportNode) this,
                 input.read("cargo", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY),

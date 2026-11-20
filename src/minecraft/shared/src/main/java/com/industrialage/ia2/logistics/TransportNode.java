@@ -10,10 +10,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 /** Physical contents, pump covers and side valves belonging to one placed transport block. */
-public final class TransportNode extends TransportSaveBase {
+public final class TransportNode extends TransportSaveBase
+        implements net.minecraft.world.MenuProvider {
     static final Direction[] SIDES = Direction.values();
     final TransportSpec spec;
     ItemStack cargo = ItemStack.EMPTY;
+    final net.minecraft.world.SimpleContainer upgrades;
     FluidKey liquid;
     int amount;
     int closed;
@@ -26,9 +28,36 @@ public final class TransportNode extends TransportSaveBase {
     public TransportNode(BlockPos pos, BlockState state) {
         super(TransportPlatform.type(), pos, state);
         spec = ((TransportBlock) state.getBlock()).spec;
+        upgrades =
+                new net.minecraft.world.SimpleContainer(spec.path().equals("tank") ? 4 : 0) {
+                    @Override
+                    public void setChanged() {
+                        super.setChanged();
+                        TransportNode.this.setChanged();
+                    }
+                };
+    }
+
+    @Override
+    public net.minecraft.network.chat.Component getDisplayName() {
+        return getBlockState().getBlock().getName();
+    }
+
+    @Override
+    public net.minecraft.world.inventory.AbstractContainerMenu createMenu(
+            int id,
+            net.minecraft.world.entity.player.Inventory player,
+            net.minecraft.world.entity.player.Player who) {
+        return spec.kind() == Kind.TANK
+                ? new TankMenu(id, player, this, upgrades.getContainerSize() > 0)
+                : null;
     }
 
     void tick(ServerLevel world) {
+        if (upgrades.getContainerSize() > 0) {
+            if (world.getGameTime() % 8 == 0 && !upgrades.isEmpty()) runUpgrades(world);
+            return;
+        }
         if (spec.kind() == Kind.ITEM_PIPE) {
             tickItems(world);
         } else if (spec.kind() == Kind.FLUID_PIPE && lastFluidTick != world.getGameTime()) {
@@ -156,7 +185,54 @@ public final class TransportNode extends TransportSaveBase {
         return true;
     }
 
+    static boolean isFluidUpgrade(ItemStack item) {
+        String id = TransportPlatform.itemId(item);
+        return id.equals("ic2:fluid_ejector_upgrade") || id.equals("ic2:fluid_pulling_upgrade");
+    }
+
+    private void runUpgrades(ServerLevel level) {
+        for (int i = 0; i < upgrades.getContainerSize(); i++) {
+            var upgrade = upgrades.getItem(i);
+            if (!isFluidUpgrade(upgrade)) continue;
+            boolean eject = TransportPlatform.itemId(upgrade).equals("ic2:fluid_ejector_upgrade");
+            int remaining =
+                    Math.min(
+                            1000,
+                            100
+                                    * com.industrialage.ia2.content.ProcessingUpgrades
+                                            .transferLimit(upgrade.getCount()));
+            for (var side : com.industrialage.ia2.world.MachineAutomation.faces(upgrade)) {
+                var neighbor = worldPosition.relative(side);
+                if (remaining == 0) break;
+                if (!level.hasChunkAt(neighbor)) continue;
+                if (eject && liquid != null) {
+                    int moved =
+                            TransportPlatform.offerFluid(
+                                    level,
+                                    neighbor,
+                                    side.getOpposite(),
+                                    liquid,
+                                    Math.min(amount, remaining),
+                                    false);
+                    debit(moved);
+                    remaining -= moved;
+                } else if (!eject && amount < spec.capacity()) {
+                    var batch =
+                            TransportPlatform.takeFluid(
+                                    level,
+                                    neighbor,
+                                    side.getOpposite(),
+                                    liquid,
+                                    Math.min(remaining, spec.capacity() - amount));
+                    if (batch != null) remaining -= fill(null, batch.key(), batch.amount(), false);
+                }
+            }
+        }
+    }
+
     void dropContents(ServerLevel level) {
+        if (!upgrades.isEmpty())
+            net.minecraft.world.Containers.dropContents(level, worldPosition, upgrades);
         if (!cargo.isEmpty()) {
             Block.popResource(level, worldPosition, cargo);
             cargo = ItemStack.EMPTY;

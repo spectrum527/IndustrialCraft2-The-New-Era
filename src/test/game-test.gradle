@@ -8,7 +8,7 @@ def smokeId = 'harnesssmoke'
 
 sourceSets {
     gameTest {
-        java.setSrcDirs([fixtures.dir('java')])
+        java.setSrcDirs([fixtures.dir('java'), rootProject.file('src/test/src/ui/java')])
         resources.setSrcDirs([fixtures.dir('resources')])
     }
 }

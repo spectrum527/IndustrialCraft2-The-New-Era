@@ -42,6 +42,10 @@ public final class IndustrialAge2 {
         if (dist == Dist.CLIENT)
             com.industrialage.ia2.industrial.ChargeTypes.installRenderer(modBus);
         BoxPlatform.install(modBus);
+        if (dist == Dist.CLIENT) {
+            BoxPlatform.installScreens(modBus);
+            com.industrialage.ia2.logistics.TankMenus.clients(modBus);
+        }
         Radiation.install(modBus, net.neoforged.neoforge.common.NeoForge.EVENT_BUS);
         SoundPlatform.install(modBus, dist == Dist.CLIENT);
         container.registerExtensionPoint(NeoForgePlatform.class, platform);

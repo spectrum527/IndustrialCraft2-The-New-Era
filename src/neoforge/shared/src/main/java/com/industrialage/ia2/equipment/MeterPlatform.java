@@ -37,7 +37,8 @@ public final class MeterPlatform {
                         () ->
                                 new MenuType<>(
                                         (id, inventory) ->
-                                                new MeterMenu(menu.get(), id, null, null),
+                                                new MeterMenu(
+                                                        menu.get(), id, inventory, null, null),
                                         FeatureFlags.DEFAULT_FLAGS));
         items.registerItem("meter", props -> new Reader(props.stacksTo(1)));
         if (side == Dist.CLIENT) Client.install(modBus);
@@ -65,7 +66,8 @@ public final class MeterPlatform {
             }
             player.openMenu(
                     new SimpleMenuProvider(
-                            (id, inventory, opener) -> new MeterMenu(menu.get(), id, level, pos),
+                            (id, inventory, opener) ->
+                                    new MeterMenu(menu.get(), id, inventory, level, pos),
                             Component.translatable("item.ic2.meter")));
             return InteractionResult.SUCCESS;
         }

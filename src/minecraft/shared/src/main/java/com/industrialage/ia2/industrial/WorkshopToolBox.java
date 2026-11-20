@@ -9,16 +9,12 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 final class WorkshopToolBox {
     enum Kind {
         TOOLS("tool_box", 9),
         CONTAINMENT("containment_box", 12);
-
         final String path;
         final int capacity;
         final int rows;
@@ -31,9 +27,8 @@ final class WorkshopToolBox {
 
         boolean accepts(ItemStack stack) {
             String id = WorkshopPlatform.itemId(stack);
-            if (stack.isEmpty() || id.equals("ic2:tool_box") || id.equals("ic2:containment_box")) {
+            if (stack.isEmpty() || id.equals("ic2:tool_box") || id.equals("ic2:containment_box"))
                 return false;
-            }
             return this == CONTAINMENT
                     ? RadiationRules.isRadioactive(id)
                     : stack.getMaxStackSize() == 1;
@@ -49,7 +44,7 @@ final class WorkshopToolBox {
                         Component.translatable("item.ic2." + kind.path)));
     }
 
-    static ChestMenu createMenu(
+    static ToolBoxMenu createMenu(
             int id, Inventory player, Player owner, InteractionHand hand, Kind kind) {
         var stack = owner.getItemInHand(hand);
         var saved = WorkshopPlatform.loadToolBox(stack, kind.rows * 9);
@@ -65,52 +60,10 @@ final class WorkshopToolBox {
                     public void setChanged() {
                         super.setChanged();
                         var current = new ArrayList<ItemStack>(kind.capacity);
-                        for (int slot = 0; slot < kind.capacity; slot++) {
-                            current.add(getItem(slot));
-                        }
+                        for (int slot = 0; slot < kind.capacity; slot++) current.add(getItem(slot));
                         WorkshopPlatform.saveToolBox(stack, current);
                     }
                 };
-        return new ToolMenu(id, player, contents, kind);
-    }
-
-    private static final class ToolMenu extends ChestMenu {
-        private final Kind kind;
-
-        ToolMenu(int id, Inventory player, SimpleContainer contents, Kind kind) {
-            super(
-                    kind.rows == 1 ? MenuType.GENERIC_9x1 : MenuType.GENERIC_9x2,
-                    id,
-                    player,
-                    contents,
-                    kind.rows);
-            this.kind = kind;
-            for (int index = 0; index < kind.rows * 9; index++) {
-                var position = slots.get(index);
-                boolean usable = index < kind.capacity;
-                var storageSlot =
-                        new Slot(contents, index, position.x, position.y) {
-                            @Override
-                            public boolean isActive() {
-                                return usable;
-                            }
-
-                            @Override
-                            public boolean mayPlace(ItemStack stack) {
-                                return usable && kind.accepts(stack);
-                            }
-                        };
-                storageSlot.index = index;
-                slots.set(index, storageSlot);
-            }
-        }
-
-        @Override
-        public ItemStack quickMoveStack(Player player, int index) {
-            var stack = slots.get(index).getItem();
-            return index < kind.capacity || index >= kind.rows * 9 && kind.accepts(stack)
-                    ? super.quickMoveStack(player, index)
-                    : ItemStack.EMPTY;
-        }
+        return new ToolBoxMenu(ToolMenus.type(kind), id, player, kind, contents, stack);
     }
 }

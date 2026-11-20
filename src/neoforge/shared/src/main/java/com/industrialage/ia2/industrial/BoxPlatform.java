@@ -47,9 +47,15 @@ public final class BoxPlatform {
             ITEMS.registerSimpleBlockItem(block);
         }
         BoxNative.install(bus);
+        BoxMenus.install(bus);
         BLOCKS.register(bus);
         ITEMS.register(bus);
         TYPES.register(bus);
+    }
+
+    /** Register the authored box and workbench screens after creating all menu types. */
+    public static void installScreens(IEventBus bus) {
+        BoxMenus.clients(bus);
     }
 
     static BlockEntityType<BoxNode> type() {

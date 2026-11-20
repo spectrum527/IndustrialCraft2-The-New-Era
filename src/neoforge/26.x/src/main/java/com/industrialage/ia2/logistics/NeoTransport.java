@@ -162,6 +162,30 @@ final class NeoTransport {
         }
     }
 
+    static ItemStack exchangeCursor(TransportNode node, ItemStack carried, Player who) {
+        var one = carried.copyWithCount(1);
+        var container = new net.minecraft.world.SimpleContainer(one);
+        var cell =
+                ItemAccess.forHandlerIndex(
+                                net.neoforged.neoforge.transfer.item.VanillaContainerWrapper.of(
+                                        container),
+                                0)
+                        .getCapability(Capabilities.Fluid.ITEM);
+        if (cell == null) return null;
+        var tank = new FluidPort(node, Direction.UP);
+        try (var tx = Transaction.openRoot()) {
+            int moved =
+                    ResourceHandlerUtil.move(cell, tank, resource -> true, Integer.MAX_VALUE, tx);
+            if (moved == 0)
+                moved =
+                        ResourceHandlerUtil.move(
+                                tank, cell, resource -> true, Integer.MAX_VALUE, tx);
+            if (moved == 0) return null;
+            tx.commit();
+        }
+        return container.getItem(0);
+    }
+
     static boolean containerInteraction(
             TransportNode node, Direction side, Player player, InteractionHand hand) {
         var held = ItemAccess.forPlayerInteraction(player, hand);

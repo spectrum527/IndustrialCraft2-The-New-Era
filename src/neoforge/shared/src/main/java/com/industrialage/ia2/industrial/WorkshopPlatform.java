@@ -228,7 +228,8 @@ public final class WorkshopPlatform {
         return liquid.isEmpty() ? 0 : BuiltInRegistries.FLUID.getId(liquid.getFluid());
     }
 
-    static Component previewFluid(int id) {
+    /** Localized fluid name shared with the material tank readout. */
+    public static Component previewFluid(int id) {
         if (id != 0) {
             var fluid = BuiltInRegistries.FLUID.byId(id);
             if (fluid != null) {
@@ -319,7 +320,12 @@ public final class WorkshopPlatform {
     }
 
     static ContainerResult containerRecipe(WorkshopNode node, ItemStack input, boolean filling) {
-        return WorkshopNative.containerRecipe(node, input, filling);
+        return containerRecipe(filling ? node.inlet : node.outlet, input, filling);
+    }
+
+    static ContainerResult containerRecipe(
+            WorkshopNode.Tank tank, ItemStack input, boolean filling) {
+        return WorkshopNative.containerRecipe(tank, input, filling);
     }
 
     static boolean interactFluid(

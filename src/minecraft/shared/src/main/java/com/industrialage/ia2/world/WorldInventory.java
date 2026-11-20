@@ -17,6 +17,10 @@ final class WorldInventory extends SimpleContainer implements WorldlyContainer {
         slots = java.util.stream.IntStream.range(0, size).toArray();
     }
 
+    WorldMachine owner() {
+        return owner;
+    }
+
     @Override
     public void setChanged() {
         super.setChanged();

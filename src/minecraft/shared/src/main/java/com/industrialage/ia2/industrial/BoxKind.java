@@ -10,7 +10,7 @@ enum BoxKind {
     STEEL_STORAGE_BOX(63),
     IRIDIUM_STORAGE_BOX(126),
     PERSONAL_CHEST(54),
-    INDUSTRIAL_WORKBENCH(0);
+    INDUSTRIAL_WORKBENCH(31);
 
     final int slots;
     final String path;
@@ -21,6 +21,6 @@ enum BoxKind {
     }
 
     boolean portable() {
-        return slots > 0 && this != PERSONAL_CHEST;
+        return this != INDUSTRIAL_WORKBENCH && this != PERSONAL_CHEST;
     }
 }

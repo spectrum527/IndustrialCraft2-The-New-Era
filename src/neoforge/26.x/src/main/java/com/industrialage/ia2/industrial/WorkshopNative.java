@@ -257,7 +257,8 @@ final class WorkshopNative {
         return full != filling;
     }
 
-    static ContainerResult containerRecipe(WorkshopNode node, ItemStack item, boolean filling) {
+    static ContainerResult containerRecipe(
+            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
         var scratch = new net.minecraft.world.SimpleContainer(item.copyWithCount(1));
         var access = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(scratch), 0);
         var handler = access.getCapability(Capabilities.Fluid.ITEM);
@@ -267,19 +268,19 @@ final class WorkshopNative {
         try (var transaction = Transaction.openRoot()) {
             Liquid liquid;
             if (filling) {
-                var current = WorkshopPlatform.fluid(node.inlet.id, node.inlet.amount);
+                var current = WorkshopPlatform.fluid(tank.id, tank.amount);
                 if (current.isEmpty()) {
                     return null;
                 }
                 int accepted =
                         handler.insert(FluidResource.of(current), current.getAmount(), transaction);
-                liquid = new Liquid(node.inlet.id, accepted);
+                liquid = new Liquid(tank.id, accepted);
             } else {
                 var extracted =
                         ResourceHandlerUtil.extractFirst(
                                 handler,
                                 resource -> resource.getComponentsPatch().isEmpty(),
-                                node.outlet.capacity - node.outlet.amount,
+                                tank.capacity - tank.amount,
                                 transaction);
                 if (extracted == null) {
                     return null;

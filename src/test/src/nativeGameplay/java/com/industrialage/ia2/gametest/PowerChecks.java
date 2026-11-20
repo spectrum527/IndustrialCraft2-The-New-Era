@@ -42,6 +42,7 @@ final class PowerChecks {
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
+            utilities.coldTank(world, check);
             var core = unit(world, CORE);
             check.accept(
                     "reactor-cold-exact",

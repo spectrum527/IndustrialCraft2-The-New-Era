@@ -17,6 +17,10 @@ final class FluidKey {
         return fluid.copyWithAmount(amount);
     }
 
+    int registryId() {
+        return net.minecraft.core.registries.BuiltInRegistries.FLUID.getId(stack(1).getFluid());
+    }
+
     @Override
     public boolean equals(Object other) {
         return other instanceof FluidKey key

@@ -5,7 +5,7 @@ import java.util.List;
 
 /** Native menu layouts of the machines with block entities. */
 enum MachineKind {
-    GENERATOR("generator", SlotRole.FUEL, SlotRole.CHARGE, SlotRole.OUTPUT),
+    GENERATOR("generator", SlotRole.FUEL, SlotRole.CHARGE),
     BATBOX("batbox", SlotRole.CHARGE, SlotRole.DISCHARGE),
     CESU("cesu", SlotRole.CHARGE, SlotRole.DISCHARGE),
     MFE("mfe", SlotRole.CHARGE, SlotRole.DISCHARGE),

@@ -139,6 +139,16 @@ final class NeoTransport {
                 : new LiquidNetwork.Batch(new FluidKey(liquid), liquid.getAmount());
     }
 
+    static ItemStack exchangeCursor(TransportNode node, ItemStack carried, Player who) {
+        var single = carried.copy();
+        single.setCount(1);
+        var port = new FluidPort(node, Direction.UP);
+        var result = FluidUtil.tryEmptyContainer(single, port, Integer.MAX_VALUE, who, true);
+        if (!result.isSuccess())
+            result = FluidUtil.tryFillContainer(single, port, Integer.MAX_VALUE, who, true);
+        return result.isSuccess() ? result.getResult() : null;
+    }
+
     static boolean containerInteraction(
             TransportNode node, Direction side, Player player, InteractionHand hand) {
         var held = player.getItemInHand(hand);

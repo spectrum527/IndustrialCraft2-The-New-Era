@@ -245,7 +245,8 @@ final class WorkshopNative {
                         == filling;
     }
 
-    static ContainerResult containerRecipe(WorkshopNode node, ItemStack item, boolean filling) {
+    static ContainerResult containerRecipe(
+            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
         var stack = item.copyWithCount(1);
         var handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (handler == null) {
@@ -253,10 +254,9 @@ final class WorkshopNative {
         }
         var liquid =
                 filling
-                        ? WorkshopPlatform.fluid(node.inlet.id, node.inlet.amount)
+                        ? WorkshopPlatform.fluid(tank.id, tank.amount)
                         : handler.drain(
-                                node.outlet.capacity - node.outlet.amount,
-                                IFluidHandler.FluidAction.EXECUTE);
+                                tank.capacity - tank.amount, IFluidHandler.FluidAction.EXECUTE);
         if (liquid.isEmpty() || !liquid.getComponentsPatch().isEmpty()) {
             return null;
         }

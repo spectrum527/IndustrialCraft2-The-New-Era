@@ -14,7 +14,7 @@ def runs = [:]
         systemProperty 'ic2.qa.clientAcceptance', 'true'
         logLevel.set(Level.DEBUG)
         if (side == 'client') {
-            programArguments.addAll '--username', 'P2Tester'
+            programArguments.addAll '--username', 'P2Tester', '--width', '960', '--height', '600'
         } else {
             programArgument '--nogui'
         }

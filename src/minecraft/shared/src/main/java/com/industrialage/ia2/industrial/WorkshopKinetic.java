@@ -108,14 +108,8 @@ final class WorkshopKinetic {
     }
 
     private static int motor(WorkshopNode node, int maximum) {
-        var motors = node.inventory.getItem(0);
-        if (!WorkshopPlatform.itemId(motors).equals("ic2:electric_motor")) {
-            return 0;
-        }
-        int provided =
-                Math.min(
-                        maximum,
-                        Math.min((int) (node.energy * 4), Math.min(10, motors.getCount()) * 100));
+        int motors = node.inventory.installedComponents("ic2:electric_motor");
+        int provided = Math.min(maximum, Math.min((int) (node.energy * 4), motors * 100));
         node.energy -= provided * 0.25;
         return provided;
     }

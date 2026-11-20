@@ -1,0 +1,569 @@
+[
+  {
+    "id": "crop_harvester",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guicropharvester",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "cropmatron",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guicropmatron",
+    "size": [
+      176,
+      192
+    ],
+    "anchors": [
+      [
+        8,
+        110
+      ],
+      [
+        8,
+        168
+      ]
+    ]
+  },
+  {
+    "id": "classic_cropmatron",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "gui_cropmatron_classic",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "terraformer",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "miner",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guiminer",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ]
+  },
+  {
+    "id": "advanced_miner",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guiadvminer",
+    "size": [
+      176,
+      203
+    ],
+    "anchors": [
+      [
+        8,
+        121
+      ],
+      [
+        8,
+        179
+      ]
+    ]
+  },
+  {
+    "id": "batch_crafter",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guibatchcrafter",
+    "size": [
+      176,
+      206
+    ],
+    "anchors": [
+      [
+        8,
+        124
+      ],
+      [
+        8,
+        182
+      ]
+    ]
+  },
+  {
+    "id": "item_buffer",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guiitembuffer",
+    "size": [
+      176,
+      233
+    ],
+    "anchors": [
+      [
+        8,
+        151
+      ],
+      [
+        8,
+        209
+      ]
+    ]
+  },
+  {
+    "id": "sorting_machine",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guisortingmachine",
+    "size": [
+      212,
+      243
+    ],
+    "anchors": [
+      [
+        8,
+        161
+      ],
+      [
+        8,
+        219
+      ]
+    ],
+    "slots": 52,
+    "clicks": [
+      {
+        "at": [
+          25,
+          8
+        ],
+        "snapshot": "sorting_machine_page_2",
+        "layout": {
+          "slots": 52
+        }
+      }
+    ]
+  },
+  {
+    "id": "weighted_item_distributor",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guiweighteditemdistributor",
+    "size": [
+      176,
+      211
+    ],
+    "anchors": [
+      [
+        8,
+        129
+      ],
+      [
+        8,
+        187
+      ]
+    ],
+    "slots": 45,
+    "clicks": [
+      {
+        "at": [
+          25,
+          8
+        ],
+        "snapshot": "weighted_item_distributor_page_2",
+        "layout": {
+          "slots": 45
+        }
+      },
+      {
+        "at": [
+          40,
+          8
+        ],
+        "snapshot": "weighted_item_distributor_page_3",
+        "layout": {
+          "slots": 43
+        }
+      }
+    ]
+  },
+  {
+    "id": "chunk_loader",
+    "kind": "block",
+    "screen": "WorldScreen",
+    "atlas": "guichunkloader",
+    "size": [
+      176,
+      250
+    ],
+    "anchors": [
+      [
+        8,
+        168
+      ],
+      [
+        8,
+        226
+      ]
+    ]
+  },
+  {
+    "id": "tool_box",
+    "kind": "item",
+    "screen": "ToolBoxScreen",
+    "atlas": "guitoolbox",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ],
+    "setup": [
+      "item replace entity {player} hotbar.1 with minecraft:iron_pickaxe"
+    ],
+    "clicks": [
+      {
+        "at": [
+          34,
+          150
+        ]
+      },
+      {
+        "at": [
+          16,
+          49
+        ],
+        "expectSlot": {
+          "at": [
+            8,
+            41
+          ],
+          "item": "minecraft:iron_pickaxe",
+          "count": 1
+        }
+      }
+    ],
+    "reopen": {
+      "at": [
+        8,
+        41
+      ],
+      "item": "minecraft:iron_pickaxe",
+      "count": 1
+    }
+  },
+  {
+    "id": "containment_box",
+    "kind": "item",
+    "screen": "ToolBoxScreen",
+    "atlas": "guicontainmentbox",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ],
+    "setup": [
+      "item replace entity {player} hotbar.1 with ic2:uranium_235 3"
+    ],
+    "clicks": [
+      {
+        "at": [
+          34,
+          150
+        ]
+      },
+      {
+        "at": [
+          61,
+          27
+        ],
+        "expectSlot": {
+          "at": [
+            53,
+            19
+          ],
+          "item": "ic2:uranium_235",
+          "count": 3
+        }
+      }
+    ],
+    "reopen": {
+      "at": [
+        53,
+        19
+      ],
+      "item": "ic2:uranium_235",
+      "count": 3
+    }
+  },
+  {
+    "id": "cropnalyzer",
+    "kind": "item",
+    "screen": "AnalyzerScreen",
+    "atlas": "guicropnalyzer",
+    "size": [
+      176,
+      223
+    ],
+    "anchors": [
+      [
+        8,
+        141
+      ],
+      [
+        8,
+        199
+      ]
+    ],
+    "setup": [
+      "item replace entity {player} weapon.mainhand with ic2:cropnalyzer[ic2:eu=1000.0d]",
+      "item replace entity {player} weapon.offhand with minecraft:air",
+      "item replace entity {player} hotbar.1 with ic2:crop_seed_bag[ic2:crop_genome=\"potato,1,1,1,0\"]"
+    ],
+    "clicks": [
+      {
+        "at": [
+          34,
+          207
+        ]
+      },
+      {
+        "at": [
+          16,
+          15
+        ]
+      },
+      {
+        "at": [
+          32,
+          15
+        ],
+        "expectSlot": {
+          "at": [
+            41,
+            7
+          ],
+          "item": "ic2:crop_seed_bag",
+          "ic2:crop_genome": "potato,1,1,1,1"
+        },
+        "snapshot": "cropnalyzer_scanned"
+      }
+    ],
+    "returnItem": {
+      "item": "ic2:crop_seed_bag",
+      "ic2:crop_genome": "potato,1,1,1,1"
+    }
+  },
+  {
+    "id": "scanner",
+    "kind": "item",
+    "screen": "ScannerScreen",
+    "atlas": "guitoolscanner",
+    "size": [
+      176,
+      230
+    ],
+    "slots": 37,
+    "anchors": [
+      [
+        8,
+        148
+      ],
+      [
+        152,
+        206
+      ]
+    ],
+    "items": [
+      {
+        "at": [
+          10,
+          22
+        ],
+        "item": "minecraft:diamond_ore"
+      }
+    ],
+    "setup": [
+      "item replace entity {player} weapon.mainhand with ic2:scanner[ic2:eu=1000.0d]",
+      "setblock 2 100 1 minecraft:diamond_ore",
+      "setblock 5 100 0 minecraft:emerald_ore"
+    ]
+  },
+  {
+    "id": "advanced_scanner",
+    "kind": "item",
+    "screen": "ScannerScreen",
+    "atlas": "guitoolscanner",
+    "size": [
+      176,
+      230
+    ],
+    "slots": 38,
+    "anchors": [
+      [
+        8,
+        148
+      ],
+      [
+        152,
+        206
+      ]
+    ],
+    "items": [
+      {
+        "at": [
+          10,
+          22
+        ],
+        "item": "minecraft:diamond_ore"
+      },
+      {
+        "at": [
+          49,
+          22
+        ],
+        "item": "minecraft:emerald_ore"
+      }
+    ],
+    "setup": [
+      "item replace entity {player} weapon.mainhand with ic2:advanced_scanner[ic2:eu=1000.0d]",
+      "setblock 2 100 1 minecraft:diamond_ore",
+      "setblock 5 100 0 minecraft:emerald_ore"
+    ]
+  },
+  {
+    "id": "advanced_ejector_upgrade",
+    "kind": "item",
+    "screen": "UpgradeScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        98,
+        21
+      ],
+      [
+        116,
+        39
+      ],
+      [
+        134,
+        57
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ],
+    "setup": [
+      "item replace entity {player} weapon.offhand with minecraft:air"
+    ]
+  },
+  {
+    "id": "advanced_pulling_upgrade",
+    "kind": "item",
+    "screen": "UpgradeScreen",
+    "atlas": "common",
+    "size": [
+      176,
+      166
+    ],
+    "anchors": [
+      [
+        98,
+        21
+      ],
+      [
+        116,
+        39
+      ],
+      [
+        134,
+        57
+      ],
+      [
+        8,
+        84
+      ],
+      [
+        8,
+        142
+      ]
+    ],
+    "setup": [
+      "item replace entity {player} weapon.offhand with minecraft:air"
+    ]
+  }
+]

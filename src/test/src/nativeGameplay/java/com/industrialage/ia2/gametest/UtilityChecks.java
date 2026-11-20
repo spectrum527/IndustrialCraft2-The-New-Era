@@ -31,7 +31,8 @@ final class UtilityChecks {
             INJECTOR = new BlockPos(6, 200, 5),
             PAD = new BlockPos(4, 215, 7),
             PACK = new BlockPos(8, 225, 8),
-            CHARGE = new BlockPos(3, 240, 11);
+            CHARGE = new BlockPos(3, 240, 11),
+            TANK = new BlockPos(10, 235, 12);
 
     private static ItemStack stack(String path) {
         return new ItemStack(NativeGameplayFixture.item(path));
@@ -223,12 +224,121 @@ final class UtilityChecks {
                                         .getItem()
                                         .getCount()
                                 == 7);
+        check.accept(
+                "iridium-author-grid-18-columns-last-slot",
+                returned.menu(7, player.getInventory(), 0).getSlot(125).x == 314
+                        && returned.menu(7, player.getInventory(), 0)
+                                        .getSlot(125)
+                                        .getItem()
+                                        .getCount()
+                                == 7);
+        var bench = PACK.above(3);
+        block(level, bench, "industrial_workbench");
+        var station = (BoxNode) level.getBlockEntity(bench);
+        var work = station.menu(8, player.getInventory(), 0);
+        work.getSlot(0).set(new ItemStack(Items.OAK_LOG));
+        work.getSlot(9).set(stack("forge_hammer"));
+        work.getSlot(10).set(new ItemStack(Items.IRON_INGOT, 2));
+        work.getSlot(11).set(stack("cutter"));
+        work.getSlot(12).set(stack("copper_plate"));
+        work.getSlot(30).set(new ItemStack(Items.CARROT, 4));
+        work.broadcastChanges();
+        check.accept(
+                "author-workbench-three-real-recipes-and-buffer",
+                work.slots.size() == 70
+                        && work.getSlot(31).getItem().is(Items.OAK_PLANKS)
+                        && work.getSlot(32).getItem().is(NativeGameplayFixture.item("iron_plate"))
+                        && work.getSlot(33).getItem().is(NativeGameplayFixture.item("copper_cable"))
+                        && station.menu(9, player.getInventory(), 0)
+                                        .getSlot(30)
+                                        .getItem()
+                                        .getCount()
+                                == 4);
+        var hammerResult = work.quickMoveStack(player, 32);
+        check.accept(
+                "authored-workbench-takes-iron-plate",
+                hammerResult.is(NativeGameplayFixture.item("iron_plate")));
+        check.accept(
+                "authored-workbench-debits-single-ingot",
+                work.getSlot(10).getItem().getCount() == 1);
+        check.accept(
+                "authored-workbench-preserves-tool",
+                work.getSlot(9).getItem().is(NativeGameplayFixture.item("forge_hammer")));
+        player.setPos(bench.getX() + .5, bench.getY() + 1, bench.getZ() + .5);
+        check.accept(
+                "author-workbench-clear-grid-reclaims-log",
+                work.clickMenuButton(player, 0)
+                        && work.getSlot(0).getItem().isEmpty()
+                        && quantity(player.getInventory(), Items.OAK_LOG) >= 1);
+        var tankPos = PACK.above(6);
+        block(level, tankPos, "iridium_tank");
+        var tank = (com.industrialage.ia2.logistics.TransportNode) level.getBlockEntity(tankPos);
+        var tankMenu = tank.createMenu(10, player.getInventory(), player);
+        player.setPos(tankPos.getX() + .5, tankPos.getY() + 1, tankPos.getZ() + .5);
+        tankMenu.setCarried(new ItemStack(Items.WATER_BUCKET));
+        boolean put = tankMenu.clickMenuButton(player, 0) && tankMenu.getCarried().is(Items.BUCKET);
+        boolean take =
+                tankMenu.clickMenuButton(player, 0) && tankMenu.getCarried().is(Items.WATER_BUCKET);
+        check.accept("authored-fluid-well-bucket-roundtrip", put && take);
+        block(level, TANK, "tank");
+        block(level, TANK.below(), "bronze_tank");
+        var upgradable =
+                ((net.minecraft.world.MenuProvider) level.getBlockEntity(TANK))
+                        .createMenu(11, player.getInventory(), player);
+        player.setPos(TANK.getX() + .5, TANK.getY() + 1, TANK.getZ() + .5);
+        upgradable.setCarried(new ItemStack(Items.WATER_BUCKET));
+        var eject = stack("fluid_ejector_upgrade");
+        check.accept(
+                "standard-tank-four-upgrades-and-real-fluid",
+                upgradable.slots.size() == 40
+                        && upgradable.getSlot(0).x == 152
+                        && upgradable.getSlot(3).y == 62
+                        && upgradable.getSlot(0).mayPlace(eject)
+                        && !upgradable.getSlot(0).mayPlace(new ItemStack(Items.DIRT))
+                        && upgradable.clickMenuButton(player, 0)
+                        && upgradable.getCarried().is(Items.BUCKET));
+        upgradable.getSlot(0).set(eject);
+        var transformer = PACK.above(9);
+        block(level, transformer, "lv_transformer");
+        player.setPos(transformer.getX() + .5, transformer.getY() + 1, transformer.getZ() + .5);
+        var transform = menu(level, transformer, player);
+        check.accept(
+                "authored-transformer-control",
+                transform.clickMenuButton(player, 0) && transform.clickMenuButton(player, 0));
+        var classic = PACK.above(11);
+        block(level, classic, "classic_mfe");
+        player.setPos(classic.getX() + .5, classic.getY() + .5, classic.getZ() + .5);
+        var machine = node(level, classic);
+        var classicUI = menu(level, classic, player);
+        for (int click = 0; click < 4; click++) classicUI.clickMenuButton(player, 0);
+        check.accept(
+                "authored-classic-storage-equipment-and-redstone",
+                classicUI.getSlot(9).x == 8
+                        && classicUI.getSlot(12).x == 62
+                        && level.getSignal(classic, Direction.NORTH) == 15);
         block(level, CHARGE, "itnt");
         block(level, CHARGE.east(5), "classic_nuke");
         block(level, CHARGE.east(10), "nuke");
         for (int i = 0; i < 3; i++)
             level.setBlockAndUpdate(
                     CHARGE.east(i * 5).below(), Blocks.REDSTONE_BLOCK.defaultBlockState());
+    }
+
+    void coldTank(ServerLevel level, BiConsumer<String, Boolean> check) {
+        var player = FakePlayerFactory.getMinecraft(level);
+        player.setPos(TANK.getX() + .5, TANK.getY(), TANK.getZ() + .5);
+        var upper =
+                ((net.minecraft.world.MenuProvider) level.getBlockEntity(TANK))
+                        .createMenu(7, player.getInventory(), player);
+        var lower =
+                ((net.minecraft.world.MenuProvider) level.getBlockEntity(TANK.below()))
+                        .createMenu(8, player.getInventory(), player);
+        lower.setCarried(new ItemStack(Items.BUCKET));
+        check.accept(
+                "standard-tank-ejects-full-bucket-and-keeps-upgrade-on-restart",
+                upper.getSlot(0).getItem().is(NativeGameplayFixture.item("fluid_ejector_upgrade"))
+                        && lower.clickMenuButton(player, 0)
+                        && lower.getCarried().is(Items.WATER_BUCKET));
     }
 
     void sample(ServerLevel level, int tick, BiConsumer<String, Boolean> check) {
