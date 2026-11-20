@@ -2,7 +2,10 @@ package com.industrialage.ia2.gametest;
 
 import com.industrialage.ia2.gameplay.IndustrialMachine;
 import com.industrialage.ia2.worldtest.WorldChecks;
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Properties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,11 +34,6 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Properties;
 
 /** Exercises the actual registered factories, block tickers, inventories, and recipes. */
 @Mod("ic2_native_gameplay")

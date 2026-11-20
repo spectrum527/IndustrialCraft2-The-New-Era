@@ -2,8 +2,8 @@ package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.audio.IndustrialSounds;
 import com.industrialage.ia2.compat.CuriosBack;
-import com.industrialage.ia2.content.PortableEquipment.Kind;
 import com.industrialage.ia2.content.PortableEquipment;
+import com.industrialage.ia2.content.PortableEquipment.Kind;
 import com.industrialage.ia2.equipment.ArmorEffects;
 import com.industrialage.ia2.equipment.JetpackMount;
 import com.industrialage.ia2.equipment.WindMeter;

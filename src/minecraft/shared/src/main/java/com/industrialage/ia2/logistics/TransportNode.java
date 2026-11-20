@@ -1,7 +1,7 @@
 package com.industrialage.ia2.logistics;
 
-import com.industrialage.ia2.content.TransportSpec.Kind;
 import com.industrialage.ia2.content.TransportSpec;
+import com.industrialage.ia2.content.TransportSpec.Kind;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

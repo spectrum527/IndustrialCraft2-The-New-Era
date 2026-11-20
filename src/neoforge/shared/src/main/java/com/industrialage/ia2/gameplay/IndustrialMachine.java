@@ -2,8 +2,8 @@ package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.compat.CuriosBack;
 import com.industrialage.ia2.content.PowerGrid;
-import com.industrialage.ia2.content.ProcessingMachine.Recipe;
 import com.industrialage.ia2.content.ProcessingMachine;
+import com.industrialage.ia2.content.ProcessingMachine.Recipe;
 import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
 import com.industrialage.ia2.energy.graph.PacketBudget;
 import com.industrialage.ia2.gameplay.MachineKind.SlotRole;

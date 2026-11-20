@@ -3,7 +3,11 @@ package com.industrialage.ia2.gametest;
 import com.industrialage.ia2.industrial.BoxBlock;
 import com.industrialage.ia2.industrial.BoxNode;
 import com.mojang.authlib.GameProfile;
-
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -21,12 +25,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
-
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 /** Real survival break, pickup and item placement for each registered storage inventory. */
 final class StorageChecks {
