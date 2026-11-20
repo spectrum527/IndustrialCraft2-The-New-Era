@@ -105,6 +105,9 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
         if (node.kind == WorkshopKind.PUMP && slot == 0) {
             return WorkshopPlatform.canSupplyContainer(stack, true);
         }
+        if (node.kind == WorkshopKind.CANNER || node.kind == WorkshopKind.SOLID_CANNER) {
+            return WorkshopPlans.acceptsCanningInput(node.kind, node.mode, slot, stack);
+        }
         if (slot < node.kind.inputs(node.mode)) {
             String id = WorkshopPlatform.itemId(stack);
             switch (node.kind) {

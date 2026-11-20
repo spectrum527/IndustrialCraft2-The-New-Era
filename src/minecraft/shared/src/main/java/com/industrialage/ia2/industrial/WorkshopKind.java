@@ -74,7 +74,7 @@ enum WorkshopKind {
 
     int inputs(int mode) {
         return switch (this) {
-            case CANNER -> mode == 0 ? 2 : 1;
+            case CANNER -> mode == 1 || mode == 2 ? 1 : 2;
             case INDUCTION, CLASSIC_CANNER, SOLID_CANNER, FLUID_BOTTLER, UU_ASSEMBLY -> 2;
             case RADIOISOTOPE_HEAT -> 6;
             case ELECTRIC_HEAT,
