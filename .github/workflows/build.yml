@@ -36,6 +36,20 @@ jobs:
         run: |
           xvfb-run -a python3 src/forge/1.19.2/qa/verify.py play --output build/evidence-play
           xvfb-run -a python3 src/forge/1.19.2/qa/verify.py mismatch --output build/evidence-mismatch --prepared
+      - name: Install the Forge 43.5.0 dedicated server for optional mod checks
+        run: |
+          installer="$RUNNER_TEMP/forge-1.19.2-43.5.0-installer.jar"
+          server_dir="$RUNNER_TEMP/ic2-optional-forge"
+          mkdir -p "$server_dir"
+          curl --fail --location --retry 3 --output "$installer" https://maven.minecraftforge.net/net/minecraftforge/forge/1.19.2-43.5.0/forge-1.19.2-43.5.0-installer.jar
+          printf '%s  %s\n' 4869e60456321e99eb5120ae39171c382c27a05858cdfd4b90ff123e3750e681 "$installer" | sha256sum --check
+          java -jar "$installer" --installServer "$server_dir"
+      - name: Check The One Probe and Curios individually and together
+        timeout-minutes: 15
+        run: |
+          for mode in none top curios both; do
+            ./gradlew :forge:1.19.2:runOptionalCompat "-Pic2.compat.mode=$mode" "-Pic2.compat.forgeServer=$RUNNER_TEMP/ic2-optional-forge" --console=plain
+          done
       - name: Test the similarity checker
         run: python3 -m unittest discover -s tools/similarity -p 'test_*.py'
       - uses: actions/upload-artifact@v4
@@ -45,6 +59,7 @@ jobs:
           path: |
             src/forge/1.19.2/build/libs/*.jar
             src/forge/1.19.2/build/qa-machine/fixtures/*.jar
+            src/forge/1.19.2/build/run/optional-compat-*/run-*/compat-checks.txt
             src/test/build/test-results/test/TEST-*.xml
             build/evidence-*/**/result.json
             build/evidence-*/**/*.properties
