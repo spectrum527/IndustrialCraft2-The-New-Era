@@ -46,6 +46,7 @@ final class PlatformWorldFixture {
     private final RegistryFacade.Handle<BlockItem> item;
     private final ConfigFacade config;
     private final PlatformWorldServices services;
+    private final GeneratorFixture generator;
     private RegisterEvent blockEvent;
     private int blockCalls;
     private int itemCalls;
@@ -60,6 +61,7 @@ final class PlatformWorldFixture {
                         .getCustomExtension(ForgePlatform.class)
                         .orElseThrow();
         var registry = host.services().registry();
+        generator = new GeneratorFixture(registry, modBus);
         config = host.services().config();
         var blocks = new RegistryFacade.Kind<>("block", Block.class);
         block =
@@ -103,10 +105,11 @@ final class PlatformWorldFixture {
         if (ran || tick.phase != TickEvent.Phase.END) {
             return;
         }
-        ran = true;
         var server = tick.getServer();
         var world = server.overworld();
         try {
+            if (!generator.step(phase, world, this::check)) return;
+            ran = true;
             var id = new ResourceLocation(ID.value());
             check(
                     "block-bound-once",
@@ -166,6 +169,7 @@ final class PlatformWorldFixture {
             }
             PlatformWorldConfig.verify(phase, server, config);
             services.watchWorldUnload(world, SURVIVOR, phase);
+            generator.evidence(report);
             report.setProperty("phase", phase);
             report.setProperty("pid", Long.toString(ProcessHandle.current().pid()));
             report.setProperty("assertions", String.join(",", assertions));
@@ -176,13 +180,15 @@ final class PlatformWorldFixture {
                 report.store(writer, "IndustrialCraft 2 dedicated server assertions");
             }
         } catch (IOException e) {
+            ran = true;
             recordFailure(e);
             throw new UncheckedIOException(e);
         } catch (RuntimeException | AssertionError failure) {
+            ran = true;
             recordFailure(failure);
             throw failure;
         } finally {
-            server.halt(false);
+            if (ran) server.halt(false);
         }
     }
 
