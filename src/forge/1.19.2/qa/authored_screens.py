@@ -18,6 +18,7 @@ POSITION = "29 90 25"
 WORKSHOP_LAYOUTS = ROOT / "assets/ic2/gui/workshop-layouts.json"
 TEXTURES = ROOT / "assets/ic2/textures/gui"
 POWER_LAYOUTS = ROOT / "assets/ic2/gui/power-layouts.json"
+ELECTROLYZER_WELLS = ((78, 16), (36, 61), (57, 61), (78, 61), (99, 61), (120, 61))
 
 
 def initial_state(path):
@@ -55,6 +56,8 @@ def assert_artwork(file, panel, artwork, limit, layout, strict):
         sampled = 0
         masks = [field["rect"] for key in ("controls", "draw", "meters", "labels")
                  for field in layout.get(key, [])]
+        if artwork.name == "guielectrolyzer.png":
+            masks.extend((x, y, 18, 18) for x, y in ELECTROLYZER_WELLS)
         for index in layout.get("frames", []):
             x, y = layout["slots"][str(index)]
             masks.append((x-1, y-1, 18, 18))
@@ -98,6 +101,29 @@ def water_well(file, panel):
     if pixels < 16 * 16 * 3 // 4:
         raise AssertionError(f"Native water well contained only {pixels}/256 blue water pixels")
     return {"blueLiquidPixels": pixels, "sampledPixels": 16 * 16}
+
+
+def electrolyzer_wells(file, panel):
+    """Verify all six empty native fluid wells against their 18px frame sprite."""
+    from PIL import Image
+
+    results = []
+    with Image.open(file) as screenshot, Image.open(TEXTURES / "common.png") as atlas:
+        screen = screenshot.convert("RGB")
+        source = atlas.convert("RGBA")
+        for x, y in ELECTROLYZER_WELLS:
+            compared = identical = 0
+            for dy in range(18):
+                for dx in range(18):
+                    expected = source.getpixel((8 + dx, 160 + dy))
+                    if expected[3] != 255:
+                        continue
+                    compared += 1
+                    identical += screen.getpixel(framebuffer_pixel(panel, x + dx, y + dy)) == expected[:3]
+            if not compared or identical != compared:
+                raise AssertionError(f"electrolyzer well at {x},{y} matched {identical}/{compared} pixels")
+            results.append({"at": [x, y], "compared": compared, "identical": identical})
+    return {"atlas": "common.png", "source": [8, 160, 18, 18], "wells": results}
 
 
 def reactor_tiles(file, panel, layout):
@@ -314,6 +340,27 @@ def verify_other(path, device, panel):
         raise AssertionError(f"{path} does not show all specified slot anchors")
 
 
+def check_chunk_grid(client):
+    session = client.run
+    log = session.directory / "server.log"
+    selected = []
+    for cell in (27, 28, 80):
+        row, column = divmod(cell, 9)
+        marker = f"IC2_CHUNK_SELECTED_{cell}"
+        query = f"{{chunk_x:{column + 1}.0d,chunk_z:{row + 1}.0d}}"
+        client.act(f"click-ui:{32 + column * 16},{23 + row * 16}")
+        with log.open("r", encoding="utf-8", errors="replace") as stream:
+            stream.seek(0, 2)
+
+            def selected_on_server():
+                session.command(f"execute if data block {POSITION} {query} run say {marker}")
+                return marker in stream.read()
+
+            until(selected_on_server, marker, session.server, timeout=10)
+        selected.append(cell)
+    return selected
+
+
 def inspect(client, device, layouts):
     session = client.run
     path = device["id"].removeprefix("ic2:")
@@ -365,10 +412,14 @@ def inspect(client, device, layouts):
                                      path in ("metal_former", "ore_washing_plant"))
     result = {"png": str(file), "screen": state["screen"], "title": state["title"],
               "geometry": geometry, "atlas": atlas, "pixels": pixel_audit}
+    if path == "chunk_loader":
+        result["selectedCells"] = check_chunk_grid(client)
     if closed_cells is not None:
         result["closedChamberPixels"] = closed_cells
     if path == "tank":
         result["nativeFluidPixels"] = water_well(file, geometry)
+    if path == "electrolyzer":
+        result["nativeFluidWells"] = electrolyzer_wells(file, geometry)
     actions = list(device.get("steps", []))
     for click in device.get("clicks", []):
         number = len(actions) + 1
