@@ -1,0 +1,16 @@
+modLoader="javafml"
+loaderVersion="[43,44)"
+license="LGPL-3.0-only"
+
+[[mods]]
+modId="ic2_qa"
+version="1"
+displayName="IndustrialCraft 2 Forge QA"
+description="Development-only P2 world, GameTest and physical client fixtures."
+
+[[dependencies.ic2_qa]]
+modId="ic2"
+mandatory=true
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"

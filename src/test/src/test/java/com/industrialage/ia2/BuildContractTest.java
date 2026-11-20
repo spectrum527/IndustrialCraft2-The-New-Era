@@ -27,9 +27,9 @@ class BuildContractTest {
                 try (var bytes = new DataInputStream(jar.getInputStream(entry))) {
                     assertEquals(0xCAFEBABE, bytes.readInt());
                     bytes.readUnsignedShort();
-                    assertEquals(path.contains("1.21.1") ? 65 : 69, bytes.readUnsignedShort());
+                    assertEquals(61, bytes.readUnsignedShort());
                 }
-                var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
+                var metadata = jar.getJarEntry("META-INF/mods.toml");
                 assertNotNull(metadata);
                 var text =
                         new String(
@@ -39,12 +39,12 @@ class BuildContractTest {
                 assertTrue(text.contains("displayName=\"IndustrialCraft 2\""));
                 assertTrue(text.contains("[[dependencies.ic2]]"));
                 assertFalse(text.contains("modId=\"ia2\""));
-                assertTrue(
-                        text.contains(
-                                "versionRange=\"["
-                                        + (path.contains("1.21.1") ? "1.21.1" : "26.1")
-                                        + "]\""));
-                assertTrue(!text.contains("${"));
+                assertTrue(text.contains("modLoader=\"javafml\""));
+                assertTrue(text.contains("versionRange=\"[1.19.2]\""));
+                assertTrue(text.contains("versionRange=\"[43.5.0,44)\""));
+                assertFalse(text.contains("${"));
+                assertNotNull(jar.getJarEntry("com/industrialage/ia2/config/active-keys.tsv"));
+                assertNotNull(jar.getJarEntry("assets/ic2/status/client.json"));
                 assertNotNull(jar.getJarEntry("LICENSE"));
                 assertNotNull(jar.getJarEntry("COPYING"));
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));
@@ -63,6 +63,10 @@ class BuildContractTest {
                                 .filter(
                                         name ->
                                                 name.startsWith("com/industrialage/ia2/gametest/")
+                                                        || name.startsWith(
+                                                                "com/industrialage/ia2/forge/qa/")
+                                                        || name.startsWith("data/ic2_qa/")
+                                                        || name.startsWith("assets/ic2_qa/")
                                                         || name.startsWith("data/ic2_gametest/")
                                                         || name.startsWith("data/ia2_gametest/")
                                                         || name.startsWith("assets/ia2/")
@@ -75,12 +79,12 @@ class BuildContractTest {
                 assertTrue(
                         unexpectedEntries.isEmpty(),
                         () -> path + " contains unexpected entries: " + unexpectedEntries);
-                var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
+                var metadata = jar.getJarEntry("META-INF/mods.toml");
                 assertNotNull(metadata);
                 try (var stream = jar.getInputStream(metadata)) {
                     assertFalse(
                             new String(stream.readAllBytes(), StandardCharsets.UTF_8)
-                                    .contains("ic2_gametest"),
+                                    .contains("ic2_qa"),
                             path);
                 }
             }

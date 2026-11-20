@@ -1,4 +1,4 @@
-import groovy.xml.XmlSlurper
+import groovy.util.XmlSlurper
 
 plugins { id 'java-library' }
 dependencies {
@@ -6,20 +6,17 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
 }
-def targets = providers.gradleProperty('ic2.testTarget')
-        .orElse(providers.gradleProperty('ia2.testTarget')).map { [it] }.getOrElse(['1.21.1', '26.1'])
 def junit = tasks.named('test', Test) {
     useJUnitPlatform()
     outputs.upToDateWhen { false }
     outputs.doNotCacheIf('JUnit evidence must come from the current run') { true }
     doFirst { delete reports.junitXml.outputLocation }
     finalizedBy 'requireJUnitExecution'
-    dependsOn targets.collect { ":neoforge:$it:verifyDevelopmentJar" }
+    dependsOn ':forge:1.19.2:reobfJar'
     systemProperty 'ia2.testClassesDirs', testClassesDirs.asPath
     systemProperty 'ic2.activeKeysTable', rootProject.file('spec/config/active-keys.tsv').absolutePath
-    systemProperty 'ia2.jars', targets.collect {
-        rootProject.project(":neoforge:$it").tasks.named('jar').get().archiveFile.get().asFile.absolutePath
-    }.join(File.pathSeparator)
+    def jarFile = project(':forge:1.19.2').tasks.named('jar', Jar).flatMap { it.archiveFile }
+    systemProperty 'ia2.jars', jarFile.get().asFile.absolutePath
 }
 tasks.register('requireJUnitExecution') {
     doLast {
@@ -33,17 +30,12 @@ tasks.register('requireJUnitExecution') {
         }
     }
 }
+
 tasks.register('runGameTest') {
     group = 'verification'
-    description = 'Runs the 1.21.1 development GameTest server.'
-    dependsOn ':neoforge:1.21.1:runGameTest'
-}
-tasks.register('runPlatformWorldTest') {
-    group = 'verification'
-    description = 'Verifies platform services across two 1.21.1 dedicated server processes.'
-    dependsOn ':neoforge:1.21.1:runPlatformRead'
+    dependsOn ':forge:1.19.2:runQaGameTestServer'
 }
 tasks.register('runPlatformHostTest') {
     group = 'verification'
-    dependsOn ':neoforge:1.21.1:platformHostTest'
+    dependsOn junit
 }

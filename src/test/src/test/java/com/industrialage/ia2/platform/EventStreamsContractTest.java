@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import net.neoforged.bus.api.BusBuilder;
 import org.junit.jupiter.api.Test;
 
-class NeoForgeEventContractTest {
-    private final NeoForgeEvents events = new NeoForgeEvents(BusBuilder.builder().build());
+class EventStreamsContractTest {
+    private final EventStreams events = new EventStreams();
 
     @Test
     void aClosedListenerIsSkippedAndOnlyNestedDispatchSeesNewSubscriptions() {
