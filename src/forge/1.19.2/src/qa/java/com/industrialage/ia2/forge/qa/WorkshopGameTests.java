@@ -359,7 +359,7 @@ public final class WorkshopGameTests {
                 pos,
                 world.getBlockState(pos).setValue(BlockStateProperties.FACING, Direction.DOWN));
         world.setBlockAndUpdate(pos.below(), Blocks.WATER.defaultBlockState());
-        put(owner, menu, 0, new ItemStack(Items.BUCKET));
+        put(owner, menu, 0, stack("empty_cell"));
         menu.getSlot(9).set(new ItemStack(Items.WATER_BUCKET));
         put(owner, menu, 18, stack("overclocker_upgrade"));
         put(owner, menu, 19, stack("transformer_upgrade"));
@@ -377,8 +377,8 @@ public final class WorkshopGameTests {
                             helper,
                             menu.tank(0).amount() == 1000
                                     && !world.getFluidState(pos.below()).isSource()
-                                    && menu.getSlot(0).getItem().is(Items.BUCKET),
-                            "Blocked result conserved the empty bucket and water taken from the world");
+                                    && menu.getSlot(0).getItem().is(stack("empty_cell").getItem()),
+                            "Blocked result conserved the basic shell and water taken from the world");
                     menu.clicked(9, 0, ClickType.PICKUP, owner);
                     check(
                             helper,
@@ -392,8 +392,10 @@ public final class WorkshopGameTests {
                                         menu.tank(0).amount() == 0
                                                 && menu.energy() == 458
                                                 && menu.getSlot(0).getItem().isEmpty()
-                                                && menu.getSlot(9).getItem().is(Items.WATER_BUCKET),
-                                        "Free output made exactly one filled bucket from one stored liter");
+                                                && menu.getSlot(9)
+                                                        .getItem()
+                                                        .is(stack("basic_water_cell").getItem()),
+                                        "Free output made exactly one basic water cell from one stored liter");
                                 helper.succeed();
                             });
                 });

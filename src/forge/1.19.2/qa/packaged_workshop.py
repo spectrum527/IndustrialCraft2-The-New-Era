@@ -138,7 +138,7 @@ def resume_bottling(server):
                    f'if data block {BOTTLER} {{ic2_input_fluid:{{FluidName:"minecraft:water",Amount:5000}}}}')
     server.send(*feed(GENERATOR, "minecraft:coal", 1))
     server.require("fuel_item_fluid_and_eu_line_exported_five_water_cells",
-                   items(OUTPUT_BARREL, "ic2:water_cell", 5), f"unless data block {BOTTLER} Items[0]",
+                   items(OUTPUT_BARREL, "ic2:basic_water_cell", 5), f"unless data block {BOTTLER} Items[0]",
                    *(f"unless data block 320 158 {z} ic2_fluid" for z in (321, 322, 323)),
                    f"unless data block {BOTTLER} ic2_input_fluid")
     server.send("forceload add 0 0")
@@ -150,7 +150,7 @@ def resume_bottling(server):
         merge(dual, '{Items:[{Slot:0b,id:"minecraft:raw_iron",Count:1b},'
                                                        '{Slot:1b,id:"minecraft:raw_iron",Count:1b}]}'),
         f"item replace block 2 159 4 container.0 with minecraft:air")
-    server.require("bottler_reverse_cell_operation", items(drain, "ic2:empty_cell", 2, 9),
+    server.require("bottler_reverse_cell_operation", items(drain, "ic2:fluid_cell", 2, 9),
                    f'if data block {drain} {{ic2_input_fluid:{{FluidName:"minecraft:water",Amount:2000}}}}',
                    f"unless data block {drain} Items[{{Slot:1b}}]")
     server.require("induction_preserved_two_equal_output_lanes",

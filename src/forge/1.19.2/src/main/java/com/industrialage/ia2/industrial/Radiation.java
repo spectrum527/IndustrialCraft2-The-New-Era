@@ -28,8 +28,10 @@ public final class Radiation {
 
     /** Registers the exposure effect and ships the iodine consumable. */
     public static void install(IEventBus bus, IEventBus game) {
-        ITEMS.register("iodine", () -> new Item(ForgeContent.itemProperties()));
-        ITEMS.register("iodine_tablet", () -> new IodineTablet(ForgeContent.itemProperties()));
+        ITEMS.register("iodine", () -> new Item(ForgeContent.itemProperties("iodine")));
+        ITEMS.register(
+                "iodine_tablet",
+                () -> new IodineTablet(ForgeContent.itemProperties("iodine_tablet")));
         game.addListener(
                 (TickEvent.PlayerTickEvent e) -> {
                     if (e.phase == TickEvent.Phase.END && e.player instanceof ServerPlayer player)

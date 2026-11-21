@@ -1,7 +1,9 @@
 package com.industrialage.ia2.forge.client;
 
+import com.industrialage.ia2.content.PortableEquipment;
 import com.industrialage.ia2.forge.ForgeNetwork;
 import com.industrialage.ia2.forge.content.ForgeContent;
+import com.industrialage.ia2.forge.equipment.ForgeGear;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
 import com.industrialage.ia2.industrial.WorkshopScreen;
 import com.industrialage.ia2.network.EchoProtocol;
@@ -26,6 +28,7 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /** Hooks the physical client into Forge's input, resource and connection lifecycles. */
 public final class ForgeClient {
@@ -69,20 +72,35 @@ public final class ForgeClient {
                 });
     }
 
-    /** Wires machine menus and battery models to the physical client. */
+    /** Wires machine menus and electrically powered item models to the physical client. */
     public static void registerContent(IEventBus modBus) {
         registerMenuScreen(modBus, ForgeContent::machineMenu, MachineScreen::new);
         registerMenuScreen(modBus, WorkshopPlatform::menuType, WorkshopScreen::new);
         modBus.addListener(
                 (FMLClientSetupEvent event) ->
                         event.enqueueWork(
-                                () ->
+                                () -> {
+                                    ItemProperties.register(
+                                            ForgeContent.battery(),
+                                            ResourceLocation.fromNamespaceAndPath("ic2", "charge"),
+                                            (stack, world, holder, seed) ->
+                                                    ForgeContent.batteryCharge(stack));
+                                    var charged =
+                                            ResourceLocation.fromNamespaceAndPath(
+                                                    "ic2", "quantum_charged");
+                                    for (var piece : PortableEquipment.CATALOG) {
+                                        if (!piece.path.startsWith("quantum_")) continue;
+                                        var item =
+                                                ForgeRegistries.ITEMS.getValue(
+                                                        ResourceLocation.fromNamespaceAndPath(
+                                                                "ic2", piece.path));
                                         ItemProperties.register(
-                                                ForgeContent.battery(),
-                                                ResourceLocation.fromNamespaceAndPath(
-                                                        "ic2", "charge"),
+                                                item,
+                                                charged,
                                                 (stack, world, holder, seed) ->
-                                                        ForgeContent.batteryCharge(stack))));
+                                                        ForgeGear.stored(stack) > 0 ? 1 : 0);
+                                    }
+                                }));
     }
 
     /** Registers a screen factory on the client thread after its menu type is available. */

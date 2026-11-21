@@ -7,6 +7,8 @@ The output pack is specific to the selected game and loader.
 """
 from world_resources import generate as generate_world
 
+from cell_recipes import cell_recipe, generate_cell_recipes
+
 import argparse
 import csv
 import json
@@ -33,6 +35,8 @@ workspace = tempfile.TemporaryDirectory(prefix=".ic2-pack-", dir=destination.par
 out = Path(workspace.name)
 
 def write(path, value):
+    if path.startswith(("data/ic2/recipes/", "data/ic2/recipe/")):
+        value = cell_recipe(value, newest)
     file = out / (path + '.json')
     file.parent.mkdir(parents=True, exist_ok=True)
     file.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
@@ -372,7 +376,7 @@ if args.logistics:
     R['wrench']=(['B B','BBB',' B '],{'B':'ic2:bronze_ingot'},1)
     R['wrench_down']=([' B ','BBB','B B'],{'B':'ic2:bronze_ingot'},1)
     R['crowbar']=([' DB','DBD','BD '],{'D':'minecraft:red_dye','B':'ic2:bronze_ingot'},1)
-    R['empty_cell']=([' T ','TGT',' T '],{'T':'ic2:tin_casing','G':'minecraft:glass_pane'},1)
+    R['empty_cell']=(['TGT'],{'T':'ic2:tin_casing','G':'minecraft:glass_pane'},4)
     for material in ('bronze','iron','steel'):
         R[material+'_tank']=(['PCP','C C','PCP'],{'P':f'ic2:{material}_plate','C':'ic2:empty_cell'},1)
     shapeless['pump_cover_lv']=(['ic2:bronze_fluid_pipe_medium','minecraft:piston','ic2:insulated_copper_cable'],1)
@@ -510,13 +514,23 @@ else:
     tree_config['dirt_provider']={'type':'minecraft:simple_state_provider','state':{'Name':'minecraft:dirt'}}
     tree_config['force_dirt']=False
 data('worldgen/configured_feature/rubber_tree', {'type':'minecraft:tree','config':tree_config})
+rubber_ground = {'type': 'minecraft:any_of', 'predicates': [
+    {'type': 'minecraft:would_survive', 'state': state('rubber_sapling', stage='0')},
+    {'type': 'minecraft:all_of', 'predicates': [
+        {'type': 'minecraft:matching_blocks', 'offset': [0, -1, 0], 'blocks': ['minecraft:snow_block']},
+        {'type': 'minecraft:matching_block_tag', 'offset': [0, -2, 0], 'tag': 'minecraft:dirt'},
+    ]},
+]}
 data('worldgen/placed_feature/rubber_tree', {'feature':mod('rubber_tree'),'placement':[
  {'type':'minecraft:rarity_filter','chance':6}, {'type':'minecraft:in_square'},
  {'type':'minecraft:surface_water_depth_filter','max_water_depth':0}, {'type':'minecraft:heightmap','heightmap':'OCEAN_FLOOR'},
- {'type':'minecraft:biome'}, {'type':'minecraft:block_predicate_filter','predicate':{'type':'minecraft:would_survive',
- 'state':state('rubber_sapling',stage='0')}}]})
+ {'type':'minecraft:biome'}, {'type':'minecraft:block_predicate_filter','predicate':rubber_ground}]})
+data('tags/worldgen/biome/has_rubber_trees', {'replace': False, 'values': [
+    '#minecraft:is_forest', '#minecraft:is_jungle', 'minecraft:plains',
+    'minecraft:sunflower_plains', 'minecraft:snowy_plains', 'minecraft:ice_spikes',
+]})
 loader='forge' if forge else 'neoforge'
-for name,biomes,step in [('tin_ore','#minecraft:is_overworld','underground_ores'), ('rubber_tree','#minecraft:is_forest','vegetal_decoration')]:
+for name,biomes,step in [('tin_ore','#minecraft:is_overworld','underground_ores'), ('rubber_tree','#ic2:has_rubber_trees','vegetal_decoration')]:
     data(loader + '/biome_modifier/add_' + name, {'type':loader + ':add_features','biomes':biomes,'features':mod(name),'step':step})
 
 # Extended native families use the same recipe formats and authored art inventory.
@@ -546,6 +560,9 @@ for entry in classic["recipes"]:
                   "ingredients": [ingredient(v) for v in entry["ingredients"]]}
     recipe["result"] = result(entry["output"], entry["count"])
     data(recipe_dir + "classic/" + entry["output"], recipe)
+
+if args.logistics:
+    generate_cell_recipes(repo, forge, newest, write)
 
 count = sum(1 for _ in out.rglob("*.json"))
 publish(out, destination)

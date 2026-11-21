@@ -109,7 +109,7 @@ def thermal_lines(server):
         *feed("12 158 10", "ic2:empty_cell", 2),
     )
     server.require("semifluid_pumped_fermentation_gas_powered_bottler",
-                   items("14 158 10", "ic2:water_cell", 2), "unless data block 12 158 10 ic2_input_fluid",
+                   items("14 158 10", "ic2:basic_water_cell", 2), "unless data block 12 158 10 ic2_input_fluid",
                    "unless data block 12 158 8 ic2_fluid")
     server.state("7 158 3", "8 157 19", "8 159 19", "6 158 10", "8 158 10", "10 158 10", "14 158 10")
 

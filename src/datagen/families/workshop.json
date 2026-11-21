@@ -1,6 +1,8 @@
 {
   "items": {
     "air_cell": {},
+    "basic_water_cell": {"texture": "items/cell/basic_water_cell"},
+    "basic_lava_cell": {"texture": "items/cell/basic_lava_cell"},
     "iron_cutting_blade": {},
     "steel_cutting_blade": {},
     "diamond_cutting_blade": {},

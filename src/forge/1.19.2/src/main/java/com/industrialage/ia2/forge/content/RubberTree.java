@@ -91,7 +91,7 @@ final class RubberTree {
 
     static final class Tap extends Item {
         Tap() {
-            super(ForgeContent.itemProperties().durability(16));
+            super(ForgeContent.itemProperties("treetap").durability(16));
         }
 
         @Override

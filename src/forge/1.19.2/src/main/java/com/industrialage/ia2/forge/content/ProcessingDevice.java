@@ -5,6 +5,8 @@ import com.industrialage.ia2.content.ProcessingMachine.Recipe;
 import com.industrialage.ia2.forge.content.MachineKind.Slot;
 import com.industrialage.ia2.forge.equipment.ForgeGear;
 import com.industrialage.ia2.industrial.WorkshopNode;
+import com.industrialage.ia2.logistics.CellProcessing;
+import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.world.MachineAutomation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.registries.ForgeRegistries;
 
 final class ProcessingDevice extends InventoryDevice {
@@ -64,7 +65,7 @@ final class ProcessingDevice extends InventoryDevice {
 
         boolean upgradeChanged = refreshUpgrades();
         var battery = inventory.stack(Slot.DISCHARGE);
-        receive(ForgeGear.discharge(battery, capacity() - energy(), itemTier()));
+        receive(ForgeGear.discharge(battery, capacity() - energy(), capacity(), itemTier()));
         if (battery.is(Items.REDSTONE) && capacity() - energy() >= 800) {
             receive(800);
             battery.shrink(1);
@@ -137,11 +138,7 @@ final class ProcessingDevice extends InventoryDevice {
             return null;
         }
         String id = ForgeRegistries.ITEMS.getKey(input.getItem()).toString();
-        if (kind == MachineKind.COMPRESSOR
-                && id.equals("ic2:empty_cell")
-                && FluidUtil.getFluidContained(input)
-                        .filter(fluid -> !fluid.isEmpty())
-                        .isPresent()) {
+        if (kind == MachineKind.COMPRESSOR && TransportPlatform.cellContainsFluid(input)) {
             return null;
         }
         if (kind == MachineKind.IRON_FURNACE || kind == MachineKind.ELECTRIC_FURNACE) {
@@ -156,7 +153,12 @@ final class ProcessingDevice extends InventoryDevice {
             return null;
         }
         var item = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(recipe.output()));
-        return item == null ? null : new Work(recipe, new ItemStack(item, recipe.outputCount()));
+        return item == null
+                ? null
+                : new Work(
+                        recipe,
+                        CellProcessing.result(
+                                kind.path, input, new ItemStack(item, recipe.outputCount())));
     }
 
     private static int room(ItemStack current, ItemStack result) {

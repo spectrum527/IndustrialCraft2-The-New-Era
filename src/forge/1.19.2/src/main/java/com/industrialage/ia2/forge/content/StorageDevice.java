@@ -38,7 +38,7 @@ final class StorageDevice extends InventoryDevice implements WorldPowerStorage {
         var charge = inventory().stack(MachineKind.Slot.CHARGE);
         var discharge = inventory().stack(MachineKind.Slot.DISCHARGE);
         draw(ForgeGear.charge(charge, energy, storage.tier()));
-        receive(ForgeGear.discharge(discharge, capacity() - energy, storage.tier()));
+        receive(ForgeGear.discharge(discharge, capacity() - energy, capacity(), storage.tier()));
         charging = chargepad && chargePlayers();
         updateSignal();
     }

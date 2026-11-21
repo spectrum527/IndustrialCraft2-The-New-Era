@@ -37,7 +37,7 @@ public final class MeterPlatform {
                                         (id, inventory, data) ->
                                                 new MeterMenu(
                                                         menu.get(), id, inventory, null, null)));
-        items.register("meter", () -> new Reader(ForgeContent.itemProperties().stacksTo(1)));
+        items.register("meter", () -> new Reader(ForgeContent.itemProperties("meter").stacksTo(1)));
         if (FMLEnvironment.dist == Dist.CLIENT) Client.install(modBus);
     }
 

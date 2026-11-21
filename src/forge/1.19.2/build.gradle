@@ -102,6 +102,7 @@ tasks.named('processResources') {
     }
 }
 tasks.named('jar') {
+    manifest { attributes 'MixinConfigs': 'ic2.mixins.json' }
     inputs.file(rootProject.file('NOTICE.md'))
     from rootProject.files('LICENSE', 'COPYING', 'LICENSE-ASSETS', 'NOTICE.md')
     finalizedBy 'reobfJar'

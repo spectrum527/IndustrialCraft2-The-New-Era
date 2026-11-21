@@ -6,6 +6,7 @@ import com.industrialage.ia2.forge.equipment.ForgeGear;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -25,6 +27,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -64,6 +67,7 @@ public final class ArmorPlatform {
                         ArmorEffects.appendChargeTooltip(event.getItemStack(), event.getToolTip()));
         gameBus.addListener(ArmorPlatform::protect);
         gameBus.addListener(ArmorPlatform::protectiveAttributes);
+        gameBus.addListener(ArmorPlatform::miningSpeed);
     }
 
     private static void protectiveAttributes(ItemAttributeModifierEvent event) {
@@ -76,7 +80,7 @@ public final class ArmorPlatform {
                     Attributes.ARMOR,
                     new AttributeModifier(
                             uuid, id, defense.armor(), AttributeModifier.Operation.ADDITION));
-        else
+        else if (defense.toughness() > 0)
             event.addModifier(
                     Attributes.ARMOR_TOUGHNESS,
                     new AttributeModifier(
@@ -93,9 +97,15 @@ public final class ArmorPlatform {
                 && ArmorEffects.fullHazmat(player)) {
             player.clearFire();
             event.setCanceled(true);
-        } else if (!source.isBypassArmor()) {
-            ArmorEffects.absorbImpact(player, event.getAmount());
+        } else if (!(source == DamageSource.OUT_OF_WORLD && event.getAmount() >= 1.0e30F)) {
+            float fraction = ArmorEffects.absorbImpact(player, event.getAmount());
+            if (fraction > 0) event.setAmount(event.getAmount() * (1 - fraction));
         }
+    }
+
+    private static void miningSpeed(PlayerEvent.BreakSpeed event) {
+        if (ArmorEffects.poweredQuantum(event.getEntity()))
+            event.setNewSpeed(event.getNewSpeed() * 1.4F);
     }
 
     static boolean grounded(ServerPlayer player) {
@@ -211,8 +221,16 @@ public final class ArmorPlatform {
         private final Piece piece;
 
         SuitItem(Piece piece) {
-            super(new Material(piece), piece.slot(), ForgeContent.itemProperties().stacksTo(1));
+            super(
+                    new Material(piece),
+                    piece.slot(),
+                    ForgeContent.itemProperties(piece.path()).stacksTo(1));
             this.piece = piece;
+        }
+
+        @Override
+        public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> output) {
+            if (allowedIn(tab)) ForgeGear.addCreativeStacks(this, output);
         }
 
         @Override

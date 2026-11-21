@@ -1122,14 +1122,14 @@ assets/ic2/textures/items/armor/nano_chestplate.png,edeaa012fa4eee3fa025ad44c946
 assets/ic2/textures/items/armor/nano_helmet.png,60cae1502d5dd0d8cc6cced9d31d56ec77c15a3561b09d08ad7ea6eeb4606858,assets/ic2/textures/items/armor/nano_helmet.png
 assets/ic2/textures/items/armor/nano_leggings.png,e377f79066e87c66eb0431b3d8a77b764a7f19fcbf4949827ad98ac491b1dce3,assets/ic2/textures/items/armor/nano_leggings.png
 assets/ic2/textures/items/armor/nightvision_goggles.png,7e88898d6c603b4839f9714aa405839de623fda3264f0f023ea61b1805fd9925,assets/ic2/textures/items/armor/nightvision_goggles.png
-assets/ic2/textures/items/armor/quantum_boots.png,e534c4fb69e038c4239a03bf19fb0c6afe614deb061c2f581f1ecf85c1c96344,assets/ic2/textures/items/armor/quantum_boots.png
-assets/ic2/textures/items/armor/quantum_boots_overlay.png,a6b2eaddb9bf1a54bc953ddd5c49be3f3ab6485b87d2a2f8bd1e4111ccbff5e8,assets/ic2/textures/items/armor/quantum_boots_overlay.png
-assets/ic2/textures/items/armor/quantum_chestplate.png,ae9f6acec55b0fdf71c2ddc5991ed38b43932aea25194f389c5a99cda2ee6e70,assets/ic2/textures/items/armor/quantum_chestplate.png
-assets/ic2/textures/items/armor/quantum_chestplate_overlay.png,afb06f8b33a9115a7f26bdb992f4af33f245c71d7cd8c28f66de5b7443e569dd,assets/ic2/textures/items/armor/quantum_chestplate_overlay.png
-assets/ic2/textures/items/armor/quantum_helmet.png,4eb191ebdb5e102c0dfb5016fb460e0a9cca4310ea5d78e3d187ef27b96af20e,assets/ic2/textures/items/armor/quantum_helmet.png
-assets/ic2/textures/items/armor/quantum_helmet_overlay.png,1c9b12a734ca85f258dac3fe573817bc08905c8ed2782443b6cd16097dcf204b,assets/ic2/textures/items/armor/quantum_helmet_overlay.png
-assets/ic2/textures/items/armor/quantum_leggings.png,0731243aeb047aa6a1d2d536dbbcbd418cc231538d8ae89ff5f72edf512df865,assets/ic2/textures/items/armor/quantum_leggings.png
-assets/ic2/textures/items/armor/quantum_leggings_overlay.png,73fa57e84f8b2b233cbfe5c7af8174018653ee7a0115f54fba181653c3640a86,assets/ic2/textures/items/armor/quantum_leggings_overlay.png
+assets/ic2/textures/items/armor/quantum_boots.png,04c4b20664bea09b55b537ad13fac81c27dd63c19f8aa8f9f3a891d9b840f45d,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/armor/quantum_boots_overlay.png,387e4b4ad1decada9bf81bc45d1f8e5aafb03c416e4930b64ccf854d9e45fb99,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/armor/quantum_chestplate.png,fd2e731547a23763cb3493ca18de4dd02067af8cc83033043b2a85ad4548e747,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/armor/quantum_chestplate_overlay.png,4f0bb11e1f92364f4c78d885ab6ce4590b8538cb922098401d1391b18688f58a,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/armor/quantum_helmet.png,ccad6569ca8c32d99e4c87e4d26bbb273b1389edc95afa29d1e34b20d66c0b05,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/armor/quantum_helmet_overlay.png,23bbe955a2c29b32400d79e782663cbea3ce5eead34293742c1f1a732cbfb80a,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/armor/quantum_leggings.png,2badd7e4c8453a28e1a2b699d4fe742b2cc69953d932c3b7ad3b7637c9f35b29,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/armor/quantum_leggings_overlay.png,6a10da1b8c604c3a18d0aa77318849876246be4d9730e98fc0e18ce05727950c,1.0.4 手工绘制 16×16 像素网格
 assets/ic2/textures/items/armor/rubber_boots.png,4eca032743404f59cce73973037a1550bc87157efde06dfab506f5497947c661,assets/ic2/textures/items/armor/rubber_boots.png
 assets/ic2/textures/items/armor/solar_helmet.png,1a5f74c6a0ada3b2dee11911845ab5bdbc8efafeb51cb4c5314da9624a4d234b,assets/ic2/textures/items/armor/solar_helmet.png
 assets/ic2/textures/items/armor/static_boots.png,ef6edc966c84560e45668e616453c32b2b636073d3ced8715fcfc2aad0b77de3,assets/ic2/textures/items/armor/static_boots.png
@@ -1224,6 +1224,8 @@ assets/ic2/textures/items/cable/tin_cable_0.png,b5c061b89d9276afbb0df103dc430df5
 assets/ic2/textures/items/cable/tin_cable_1.png,f8dccb6c94461c0df3a299304055d9829755ea318cc5e6005c6b66f772433bc6,assets/ic2/textures/items/cable/tin_cable_1.png
 assets/ic2/textures/items/cell/air_cell.png,e932a7c759e5460b88d11f34f77cb6e363f792bb5fd8748833c0e016dd2dc7e7,assets/ic2/textures/items/cell/air_cell.png
 assets/ic2/textures/items/cell/bio_cell.png,fa96ddeaa0008387f0014048413d51ff20cc32c53d22a7b0b31398081021b0c0,assets/ic2/textures/items/cell/bio_cell.png
+assets/ic2/textures/items/cell/basic_lava_cell.png,75ecd3ad6efe131063045c6eb51338b91e238bc171a15f2f73cb4e628ebd6fd1,1.0.4 沿用项目作者的基础空单元外框，手工绘制 16×16 彩色液面
+assets/ic2/textures/items/cell/basic_water_cell.png,6f5921c147277a2f7e01faaac42ed75a0211790f84302622608b90397aed64c6,1.0.4 沿用项目作者的基础空单元外框，手工绘制 16×16 彩色液面
 assets/ic2/textures/items/cell/biogas_cell.png,297ee30fa433bf4cfdbb332e55dbd0658d9594e3bdcab7e754b8c4fa1fcd61c2,assets/ic2/textures/items/cell/biogas_cell.png
 assets/ic2/textures/items/cell/biomass_cell.png,08198dea4e62fbc6b73bd2a83d65d176416e7bef6a79a8069b47040b814c4523,assets/ic2/textures/items/cell/biomass_cell.png
 assets/ic2/textures/items/cell/cf_cell.png,ba0b8f1ab914aaf24d6ee1bda93e6e3658fafd98ede5cffbabc9e51d4afda9bf,assets/ic2/textures/items/cell/cf_cell.png
@@ -1523,7 +1525,7 @@ assets/ic2/textures/items/tool/electric/plasma_launcher.png,57f4e8dc2016cd93fdc8
 assets/ic2/textures/items/tool/electric/scanner.png,35eb792e10ef551d94b279041fadbdf23af2e9400f61498231598d60fd867d5a,assets/ic2/textures/items/tool/electric/scanner.png
 assets/ic2/textures/items/tool/electric/wind_meter.png,f6245fb5b36f1983f7d953816a093ffc90d9025b20a1f87692935278ce29c96f,assets/ic2/textures/items/tool/electric/wind_meter.png
 assets/ic2/textures/items/tool/foam_sprayer.png,6860b87a53f4218cc1e373ea3a07464c0fee799d2a0e80bc140ef150b08c9454,assets/ic2/textures/items/tool/foam_sprayer.png
-assets/ic2/textures/items/tool/forge_hammer.png,7fedcf925407ddb26ed26c4d1d0628e6a2e1f7ae2556ab57851d998c5cb006df,assets/ic2/textures/items/tool/forge_hammer.png
+assets/ic2/textures/items/tool/forge_hammer.png,8ae5bf2d9516b5216318c111dd71a6e449183b903767a660c3630e18ea067315,1.0.4 手工绘制 16×16 像素网格
 assets/ic2/textures/items/tool/frequency_transmitter.png,4d1e73d047d6aeb13d679ccc19ef68c3f4f18a9615087c5cfd0cc83b4f9bdce2,assets/ic2/textures/items/tool/frequency_transmitter.png
 assets/ic2/textures/items/tool/meter.png,44dc9c4fc0e48b53836435f9e5de56537adf7d3377139a7c57b13f7284f07de2,assets/ic2/textures/items/tool/meter.png
 assets/ic2/textures/items/tool/painter/painter.png,7feace002f8cd968c9b78a79dd128f664f6bed650d23b9bc1c04f4b6e1826745,assets/ic2/textures/items/tool/painter/painter.png

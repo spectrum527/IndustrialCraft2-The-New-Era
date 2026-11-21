@@ -256,14 +256,17 @@ public final class LogisticsGameTests {
                 new CraftingMenu(
                         2, owner.getInventory(), ContainerLevelAccess.create(world, bench));
         owner.containerMenu = crafting;
-        for (int slot : new int[] {2, 4, 6, 8}) {
-            crafting.getSlot(slot).set(stack("tin_casing"));
-        }
-        crafting.getSlot(5).set(new ItemStack(Items.GLASS_PANE));
+        crafting.getSlot(1).set(stack("tin_casing"));
+        crafting.getSlot(2).set(new ItemStack(Items.GLASS_PANE));
+        crafting.getSlot(3).set(stack("tin_casing"));
         check(
                 helper,
                 crafting.getSlot(0).getItem().is(stack("empty_cell").getItem()),
-                "Original legacy pane recipe");
+                "Basic cells are made from a pane between two tin casings");
+        for (int slot : new int[] {1, 2, 3}) crafting.getSlot(slot).set(ItemStack.EMPTY);
+        for (int slot : new int[] {2, 4, 6, 8}) {
+            crafting.getSlot(slot).set(stack("tin_casing"));
+        }
         crafting.getSlot(5).set(new ItemStack(Items.GLASS));
         var cell = crafting.getSlot(0).getItem().copy();
         check(
@@ -313,7 +316,9 @@ public final class LogisticsGameTests {
         held = owner.getItemInHand(InteractionHand.MAIN_HAND);
         check(
                 helper,
-                FluidUtil.getFluidContained(held).orElse(FluidStack.EMPTY).getAmount() == 1000
+                held.is(stack("water_cell").getItem())
+                        && FluidUtil.getFluidContained(held).orElse(FluidStack.EMPTY).getAmount()
+                                == 1000
                         && world.getFluidState(source).isEmpty(),
                 "Picked up a real world water source");
         owner.gameMode.useItem(owner, world, held, InteractionHand.MAIN_HAND);

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,6 +36,11 @@ public final class HeldFluidCellGameTests {
                         PlayableGameTests::block,
                         cell -> liquid(FluidUtil.getFluidContained(cell).orElse(FluidStack.EMPTY)),
                         HeldFluidCellGameTests::seed,
+                        (stack, contents) -> {
+                            stack.addTagElement(
+                                    "Fluid", fluid(contents).writeToNBT(new CompoundTag()));
+                            return stack;
+                        },
                         ItemStack::setHoverName,
                         pos -> liquid(tank(helper, pos).getFluidInTank(0)),
                         (pos, contents, simulate) ->

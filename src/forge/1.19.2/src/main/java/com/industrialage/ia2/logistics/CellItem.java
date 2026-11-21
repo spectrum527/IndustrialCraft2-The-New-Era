@@ -1,13 +1,12 @@
 package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.forge.content.ForgeContent;
-import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.List;
-import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,58 +22,48 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /** Native container for the legacy and universal cell families. */
 public final class CellItem extends Item {
-    private static final int CAPACITY = 1000;
-    private final Supplier<FluidStack> fixedContents;
-    private final Supplier<ItemStack> emptyRemainder;
+    private static final String CONTENTS = "Fluid";
+    private final String path;
 
-    CellItem(boolean universal) {
-        this(
-                universal
-                        ? ForgeContent.itemProperties().stacksTo(1)
-                        : ForgeContent.itemProperties(),
-                null,
-                null);
-    }
-
-    private CellItem(
-            Properties properties,
-            Supplier<FluidStack> fixedContents,
-            Supplier<ItemStack> emptyRemainder) {
-        super(properties);
-        this.fixedContents = fixedContents;
-        this.emptyRemainder = emptyRemainder;
-    }
-
-    /** Creates a legacy prefilled cell with its own registry identity and reusable shell. */
-    public static Item named(Supplier<FluidStack> fluid, Supplier<ItemStack> emptyRemainder) {
-        return new CellItem(ForgeContent.itemProperties(), fluid, emptyRemainder);
+    CellItem(String path) {
+        super(ForgeContent.itemProperties(path));
+        this.path = path;
     }
 
     @Override
     public ICapabilityProvider initCapabilities(ItemStack carried, CompoundTag ignored) {
-        if (fixedContents == null) {
-            return new FluidHandlerItemStack(carried, CAPACITY);
-        }
-        return new FluidHandlerItemStackSimple.SwapEmpty(carried, emptyRemainder.get(), CAPACITY) {
+        return new FluidHandlerItemStack(carried, CellFamily.CAPACITY) {
             @Override
             public FluidStack getFluid() {
-                return fixedContents.get();
+                return contents(container);
             }
 
             @Override
             public boolean canFillFluidType(FluidStack resource) {
-                return false;
+                return CellFamily.of(path(container)).admits(fluidId(resource));
+            }
+
+            @Override
+            protected void setFluid(FluidStack fluid) {
+                container = withContents(container, fluid);
+            }
+
+            @Override
+            protected void setContainerToEmpty() {
+                setFluid(FluidStack.EMPTY);
             }
         };
     }
 
     @Override
     public int getMaxStackSize(ItemStack stack) {
-        return fixedContents != null || content(stack).isEmpty() ? super.getMaxStackSize(stack) : 1;
+        return stack.getTagElement(CONTENTS) == null || contents(stack).isEmpty()
+                ? super.getMaxStackSize(stack)
+                : 1;
     }
 
     @Override
@@ -99,8 +88,7 @@ public final class CellItem extends Item {
             ServerLevel level, BlockPos pos, Direction face, Player player, InteractionHand hand) {
         return level.mayInteract(player, pos)
                 && player.mayUseItemAt(pos, face, player.getItemInHand(hand))
-                && (WorkshopPlatform.fillNamedHand(level, pos, face, player, hand)
-                        || FluidUtil.interactWithFluidHandler(player, hand, level, pos, face));
+                && FluidUtil.interactWithFluidHandler(player, hand, level, pos, face);
     }
 
     @Override
@@ -111,19 +99,59 @@ public final class CellItem extends Item {
                 player,
                 hand,
                 getPlayerPOVHitResult(world, player, ClipContext.Fluid.SOURCE_ONLY),
-                CAPACITY);
+                CellFamily.CAPACITY);
     }
 
     @Override
     public void appendHoverText(
             ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        var fluid = content(stack);
+        var fluid = contents(stack);
         if (!fluid.isEmpty()) {
             tooltip.add(fluid.getDisplayName().copy().append(" " + fluid.getAmount() + " mB"));
         }
     }
 
-    private static FluidStack content(ItemStack stack) {
-        return FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
+    static FluidStack contents(ItemStack stack) {
+        var data = stack.getTagElement(CONTENTS);
+        var stored = data == null ? FluidStack.EMPTY : FluidStack.loadFluidStackFromNBT(data);
+        if (!stored.isEmpty()) return stored;
+        String path = path(stack);
+        var fixed = CellFamily.of(path).namedLiquids().get(path);
+        if (fixed == null) return FluidStack.EMPTY;
+        var fluid = ForgeRegistries.FLUIDS.getValue(ResourceLocation.parse(fixed));
+        return fluid == null ? FluidStack.EMPTY : new FluidStack(fluid, CellFamily.CAPACITY);
+    }
+
+    static ItemStack withContents(ItemStack stack, FluidStack fluid) {
+        String current = path(stack);
+        var family = CellFamily.of(current);
+        String liquid = fluidId(fluid);
+        String target = family.resultingPath(liquid, fluid.getAmount());
+        if (!current.equals(target)) {
+            stack = retype(stack, target);
+        }
+        if (!fluid.isEmpty()
+                && (fluid.hasTag() || !liquid.equals(family.namedLiquids().get(target)))) {
+            stack.addTagElement(CONTENTS, fluid.writeToNBT(new CompoundTag()));
+        } else if (stack.getTag() != null) {
+            stack.removeTagKey(CONTENTS);
+        }
+        return stack;
+    }
+
+    private static String path(ItemStack stack) {
+        return ((CellItem) stack.getItem()).path;
+    }
+
+    static ItemStack retype(ItemStack stack, String target) {
+        var saved = stack.save(new CompoundTag());
+        saved.putString("id", "ic2:" + target);
+        saved.putByte("Count", (byte) 1);
+        return ItemStack.of(saved);
+    }
+
+    static String fluidId(FluidStack fluid) {
+        var id = ForgeRegistries.FLUIDS.getKey(fluid.getFluid());
+        return id == null ? "" : id.toString();
     }
 }

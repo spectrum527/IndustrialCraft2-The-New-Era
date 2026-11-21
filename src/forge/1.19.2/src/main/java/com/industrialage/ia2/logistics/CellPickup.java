@@ -1,6 +1,5 @@
 package com.industrialage.ia2.logistics;
 
-import com.industrialage.ia2.industrial.WorkshopPlatform;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -44,12 +43,7 @@ final class CellPickup {
 
         var sound = moved.getFluid().getFluidType().getSound(moved, SoundActions.BUCKET_FILL);
         if (sound != null) level.playSound(null, source.pos(), sound, SoundSource.BLOCKS, 1, 1);
-        var result = cell.getContainer();
-        if (TransportPlatform.isPristineCell(held)) {
-            var named = WorkshopPlatform.namedFilledCell(moved);
-            if (!named.isEmpty()) result = named;
-        }
-        return InteractionResultHolder.consume(stowFilledCell(held, player, result));
+        return InteractionResultHolder.consume(stowFilledCell(held, player, cell.getContainer()));
     }
 
     private static ItemStack stowFilledCell(ItemStack held, Player player, ItemStack filled) {

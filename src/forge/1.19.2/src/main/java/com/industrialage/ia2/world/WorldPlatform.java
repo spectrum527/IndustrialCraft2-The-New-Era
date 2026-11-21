@@ -29,7 +29,6 @@ public final class WorldPlatform {
             List.of(
                     "fertilizer",
                     "hydration_cell",
-                    "weed_ex_cell",
                     "hops",
                     "bobs_yer_uncle_ranks_berry",
                     "coffee_beans",
@@ -78,7 +77,7 @@ public final class WorldPlatform {
                                                                 WorldBlocks.metal(props), kind),
                                                 true))
                         .toList());
-        ITEMS.register("crop_seed_bag", () -> new CropSeed(new Item.Properties()));
+        registerItem("crop_seed_bag", CropSeed::new);
         for (String name : SUPPLIES) registerItem(name, props -> WorldNative.supply(name, props));
         WorldBlocks.install();
         WorldSigns.install(modBus);
@@ -118,13 +117,12 @@ public final class WorldPlatform {
     static RegistryObject<Block> registerBlock(
             String path, Function<Block.Properties, Block> make, boolean hasItem) {
         var block = BLOCKS.register(path, () -> make.apply(WorldNative.properties(path)));
-        if (hasItem)
-            ITEMS.register(path, () -> new BlockItem(block.get(), ForgeContent.itemProperties()));
+        if (hasItem) registerItem(path, properties -> new BlockItem(block.get(), properties));
         return block;
     }
 
     static void registerItem(String path, Function<Item.Properties, Item> make) {
-        ITEMS.register(path, () -> make.apply(ForgeContent.itemProperties()));
+        ITEMS.register(path, () -> make.apply(ForgeContent.itemProperties(path)));
     }
 
     private static void addCompost() {

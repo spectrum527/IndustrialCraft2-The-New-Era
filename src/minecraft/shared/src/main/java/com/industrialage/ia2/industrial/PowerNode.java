@@ -22,7 +22,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -202,6 +201,7 @@ public final class PowerNode extends PowerSaveBase
                         PowerPlatform.discharge(
                                 inventory.getItem(dischargeSlot),
                                 Math.max(0, room - energy),
+                                capacity(),
                                 kind == PowerKind.ENERGY_O_MAT ? 4 : upgradeTier());
                 if (used > 0) {
                     energy += used;
@@ -241,6 +241,7 @@ public final class PowerNode extends PowerSaveBase
                             ? PowerPlatform.discharge(
                                     inventory.getItem(1),
                                     Math.max(0, capacity() - energy),
+                                    capacity(),
                                     kind.itemTier())
                             : 0;
             energy += input;
@@ -294,14 +295,8 @@ public final class PowerNode extends PowerSaveBase
                         * PowerSettings.multiplier("wind");
             case WATER_GENERATOR:
                 if (fuel == 0 && energy < capacity()) {
-                    ItemStack input = inventory.getItem(0);
-                    ItemStack empty =
-                            input.is(Items.WATER_BUCKET)
-                                    ? Items.BUCKET.getDefaultInstance()
-                                    : inventory.part(0).equals("water_cell")
-                                            ? PowerPlatform.item("empty_cell")
-                                            : ItemStack.EMPTY;
-                    if (!empty.isEmpty() && storeContainerRemainder(empty)) {
+                    var water = WorkshopCells.measure(inventory.getItem(0), "minecraft:water");
+                    if (water != null && storeContainerRemainder(water.stack())) {
                         inventory.removeItem(0, 1);
                         fuel = 500;
                     }

@@ -1,5 +1,6 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.logistics.TransportPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -158,7 +159,9 @@ final class WorldInteractions {
                     player,
                     hand,
                     stack,
-                    item.endsWith("_bucket") ? new ItemStack(Items.BUCKET) : cell());
+                    item.endsWith("_bucket")
+                            ? new ItemStack(Items.BUCKET)
+                            : TransportPlatform.emptyUniversalCell(stack));
         } else if (protection && (crop.species == CropSpecies.WEED || plot.protection == 0)) {
             plot.clearWeed(world);
             if (level.getBlockEntity(pos) instanceof CropPlot again) {
@@ -169,7 +172,9 @@ final class WorldInteractions {
                     player,
                     hand,
                     stack,
-                    item.endsWith("_bucket") ? new ItemStack(Items.BUCKET) : cell());
+                    item.endsWith("_bucket")
+                            ? new ItemStack(Items.BUCKET)
+                            : TransportPlatform.emptyUniversalCell(stack));
         } else if (analyze && crop.species != null) {
             scan(player, stack, crop.species, plot.genes, false);
         } else if (emptyHand && plot.ripe() && crop.species != CropSpecies.WEED) {
@@ -301,9 +306,5 @@ final class WorldInteractions {
         if (returnItem.isEmpty()) return;
         if (stack.isEmpty()) player.setItemInHand(hand, returnItem);
         else if (!player.getInventory().add(returnItem)) player.drop(returnItem, false);
-    }
-
-    private static ItemStack cell() {
-        return new ItemStack(WorldNative.item("ic2:empty_cell"));
     }
 }

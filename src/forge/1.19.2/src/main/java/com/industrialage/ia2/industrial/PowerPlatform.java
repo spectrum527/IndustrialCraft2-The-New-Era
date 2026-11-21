@@ -58,7 +58,8 @@ public final class PowerPlatform {
                                             kind));
             DEVICES.add(block);
             ITEMS.register(
-                    kind.path, () -> new BlockItem(block.get(), ForgeContent.itemProperties()));
+                    kind.path,
+                    () -> new BlockItem(block.get(), ForgeContent.itemProperties(kind.path)));
         }
         for (String path : PowerKind.PARTS)
             ITEMS.register(
@@ -66,9 +67,10 @@ public final class PowerPlatform {
                     () ->
                             new Item(
                                     path.equals("rtg_pellet")
-                                            ? ForgeContent.itemProperties().stacksTo(1)
-                                            : ForgeContent.itemProperties()));
-        ITEMS.register("debug_item", () -> new DebugItem(ForgeContent.itemProperties()));
+                                            ? ForgeContent.itemProperties(path).stacksTo(1)
+                                            : ForgeContent.itemProperties(path)));
+        ITEMS.register(
+                "debug_item", () -> new DebugItem(ForgeContent.itemProperties("debug_item")));
         PowerMenus.install(bus);
         ChargeTypes.install(bus);
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist
@@ -86,8 +88,13 @@ public final class PowerPlatform {
         return com.industrialage.ia2.forge.equipment.ForgeGear.canDischarge(stack, tier);
     }
 
-    static double discharge(ItemStack stack, double energy, int tier) {
-        return com.industrialage.ia2.forge.equipment.ForgeGear.discharge(stack, energy, tier);
+    static double discharge(ItemStack stack, double room, double capacity, int tier) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.discharge(
+                stack, room, capacity, tier);
+    }
+
+    static int powerSlotLimit(ItemStack stack) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.powerSlotLimit(stack);
     }
 
     static double charge(ItemStack stack, double energy, int tier) {

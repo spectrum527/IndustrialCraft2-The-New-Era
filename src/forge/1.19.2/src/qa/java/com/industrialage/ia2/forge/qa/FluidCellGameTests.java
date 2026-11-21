@@ -7,9 +7,13 @@ import static com.industrialage.ia2.forge.qa.PlayableGameTests.place;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.player;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.stack;
 
+import com.industrialage.ia2.industrial.WorkshopNode;
+import com.industrialage.ia2.logistics.TransportPlatform;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +31,151 @@ import net.minecraftforge.registries.ForgeRegistries;
 @PrefixGameTestTemplate(false)
 public final class FluidCellGameTests {
     private FluidCellGameTests() {}
+
+    /** The native compressor and extractor keep the item identity and data of one paid job. */
+    @GameTest(template = "smoke", timeoutTicks = 700)
+    public static void cellProcessorRoundTrip(GameTestHelper helper) {
+        var pos = helper.absolutePos(new BlockPos(1, 2, 1));
+        var operator = player(helper, pos);
+        place(helper, operator, pos, stack("compressor"));
+        place(helper, operator, pos.east(2), stack("extractor"));
+        var compressor = machine(helper, pos);
+        var extractor = machine(helper, pos.east(2));
+        var source =
+                compressor
+                        .getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP)
+                        .orElseThrow(AssertionError::new);
+        var sink =
+                extractor
+                        .getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP)
+                        .orElseThrow(AssertionError::new);
+        var dirty = filledCell(new FluidStack(Fluids.WATER, 650));
+        check(
+                helper,
+                source.insertItem(0, dirty, false).getCount() == 1
+                        && TransportPlatform.cellContents(dirty).amount() == 650,
+                "The compressor refuses a liquid-bearing universal shell");
+        var mark = Component.literal("Air cell circuit");
+        check(
+                helper,
+                source.insertItem(0, stack("fluid_cell").setHoverName(mark), false).isEmpty(),
+                "A genuine empty universal shell entered the compressor");
+        check(
+                helper,
+                sink.insertItem(0, stack("basic_water_cell").setHoverName(mark), false).isEmpty(),
+                "A basic water cell entered the extractor");
+        charge(compressor);
+        charge(extractor);
+        helper.runAfterDelay(
+                315,
+                () -> {
+                    var air =
+                            compressor
+                                    .getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN)
+                                    .orElseThrow(AssertionError::new)
+                                    .extractItem(0, 1, false);
+                    var worked =
+                            extractor
+                                    .getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.DOWN)
+                                    .orElseThrow(AssertionError::new);
+                    var basic = worked.extractItem(0, 1, false);
+                    check(
+                            helper,
+                            air.is(stack("air_cell").getItem())
+                                    && TransportPlatform.cellContents(air).amount() == 1000
+                                    && air.getHoverName().equals(mark),
+                            "Compressor outputs one marked air cell");
+                    check(
+                            helper,
+                            basic.is(stack("empty_cell").getItem())
+                                    && basic.getHoverName().equals(mark),
+                            "Extractor returns a marked basic shell");
+                    check(
+                            helper,
+                            sink.insertItem(0, air, false).isEmpty(),
+                            "Extract the compressed air cell");
+                    charge(extractor);
+                    helper.runAfterDelay(
+                            315,
+                            () -> {
+                                var universal = worked.extractItem(0, 1, false);
+                                check(
+                                        helper,
+                                        universal.is(stack("fluid_cell").getItem())
+                                                && universal.getHoverName().equals(mark)
+                                                && TransportPlatform.cellContents(universal)
+                                                                .amount()
+                                                        == 0,
+                                        "Extractor returns exactly one marked universal shell");
+                                helper.succeed();
+                            });
+                });
+    }
+
+    /** The combined canner applies separate native fill and drain modes without losing a cell. */
+    @GameTest(template = "smoke", timeoutTicks = 145)
+    public static void cannerUsesBothCellFamilies(GameTestHelper helper) {
+        var pos = helper.absolutePos(new BlockPos(1, 2, 1));
+        var operator = player(helper, pos);
+        place(helper, operator, pos, stack("canner"));
+        place(helper, operator, pos.east(2), stack("canner"));
+        var filler = (WorkshopNode) machine(helper, pos);
+        var drainer = (WorkshopNode) machine(helper, pos.east(2));
+        configureCanner(filler, 1);
+        configureCanner(drainer, 2);
+        var fill = filler.createMenu(30, operator.getInventory(), operator);
+        var drain = drainer.createMenu(31, operator.getInventory(), operator);
+        var water =
+                filler.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP)
+                        .orElseThrow(AssertionError::new);
+        check(
+                helper,
+                water.fill(new FluidStack(Fluids.WATER, 1000), FluidAction.EXECUTE) == 1000,
+                "Canner inlet metered one full source");
+        fill.getSlot(0).set(stack("fluid_cell"));
+        fill.getSlot(9).set(new ItemStack(Items.COBBLESTONE, 64));
+        drain.getSlot(0).set(stack("basic_lava_cell"));
+        helper.runAfterDelay(
+                13,
+                () -> {
+                    check(
+                            helper,
+                            fill.getSlot(0).getItem().is(stack("fluid_cell").getItem())
+                                    && filler.fluidContents().get(0).amount() == 1000,
+                            "Blocked canner output preserves both the shell and its fluid");
+                    fill.getSlot(9).set(ItemStack.EMPTY);
+                });
+        helper.runAfterDelay(
+                128,
+                () -> {
+                    check(
+                            helper,
+                            fill.getSlot(0).getItem().isEmpty()
+                                    && fill.getSlot(9).getItem().is(stack("water_cell").getItem())
+                                    && filler.fluidContents().get(0).amount() == 0,
+                            "Canner filled a universal shell with a named liter of water");
+                    check(
+                            helper,
+                            drain.getSlot(0).getItem().isEmpty()
+                                    && drain.getSlot(9).getItem().is(stack("empty_cell").getItem())
+                                    && drainer.fluidContents().get(1).amount() == 1000,
+                            "Canner drained basic lava and returned the basic shell");
+                    helper.succeed();
+                });
+    }
+
+    private static void configureCanner(WorkshopNode node, int mode) {
+        var state = node.saveWithoutMetadata();
+        state.putInt("ic2_mode", mode);
+        node.load(state);
+        node.receive(400);
+    }
+
+    private static void charge(net.minecraft.world.level.block.entity.BlockEntity machine) {
+        var tag = machine.saveWithoutMetadata();
+        tag.putDouble("ic2_energy", 600);
+        machine.load(tag);
+    }
 
     /** Nine cells prefill eight liters without ore or power; the ninth remains until it fits. */
     @GameTest(template = "smoke", timeoutTicks = 100)
@@ -52,7 +201,7 @@ public final class FluidCellGameTests {
                             helper,
                             menu.getSlot(6).getItem().is(stack("water_cell").getItem())
                                     && menu.getSlot(6).getItem().getCount() == 1
-                                    && menu.getSlot(14).getItem().is(stack("empty_cell").getItem())
+                                    && menu.getSlot(14).getItem().is(stack("fluid_cell").getItem())
                                     && menu.getSlot(14).getItem().getCount() == 8
                                     && state.getCompound("ic2_input_fluid").getInt("Amount")
                                             == 8000,
@@ -125,7 +274,7 @@ public final class FluidCellGameTests {
                                 "Each batch consumes exactly 100 mB");
                         check(
                                 helper,
-                                menu.getSlot(14).getItem().is(stack("empty_cell").getItem())
+                                menu.getSlot(14).getItem().is(stack("fluid_cell").getItem())
                                         && menu.getSlot(14).getItem().getCount() == 1,
                                 "Only one shell returned");
                         batches[0] = done;
@@ -206,7 +355,7 @@ public final class FluidCellGameTests {
                             "Blocked products should not prevent prefill");
                     check(
                             helper,
-                            menu.getSlot(14).getItem().is(stack("empty_cell").getItem()),
+                            menu.getSlot(14).getItem().is(stack("fluid_cell").getItem()),
                             "Prefilled cell returned a shell");
                     check(
                             helper,
@@ -273,7 +422,7 @@ public final class FluidCellGameTests {
                             "Lava cell was not consumed");
                     check(
                             helper,
-                            menu.getSlot(1).getItem().is(stack("empty_cell").getItem()),
+                            menu.getSlot(1).getItem().is(stack("fluid_cell").getItem()),
                             "Lava cell shell was not returned");
                     check(
                             helper,
@@ -333,7 +482,7 @@ public final class FluidCellGameTests {
                             state.getDouble("eu") == 2400
                                     && state.getInt("millibuckets") == 8000
                                     && menu.getSlot(0).getItem().isEmpty()
-                                    && menu.getSlot(1).getItem().is(stack("empty_cell").getItem()),
+                                    && menu.getSlot(1).getItem().is(stack("fluid_cell").getItem()),
                             "Saturated geothermal prefills whole cell when exactly 1000 mB fits");
                     helper.succeed();
                 });
@@ -441,7 +590,7 @@ public final class FluidCellGameTests {
                     check(
                             helper,
                             menu.getSlot(4).getItem().getCount() == 1
-                                    && menu.getSlot(13).getItem().is(stack("empty_cell").getItem())
+                                    && menu.getSlot(13).getItem().is(stack("fluid_cell").getItem())
                                     && menu.getSlot(13).getItem().getCount() == 8
                                     && remaining > 7000
                                     && remaining < 8000
@@ -558,7 +707,7 @@ public final class FluidCellGameTests {
                                             .getItem()
                                             .is(stack("purified_copper").getItem())
                                     && menu.getSlot(6).getItem().isEmpty()
-                                    && menu.getSlot(14).getItem().is(stack("empty_cell").getItem()),
+                                    && menu.getSlot(14).getItem().is(stack("fluid_cell").getItem()),
                             "Completed job makes exactly enough room for one full liter");
                     helper.succeed();
                 });
@@ -742,7 +891,7 @@ public final class FluidCellGameTests {
                                             == 10000
                                     && menu.getSlot(0).getItem().is(stack("lava_cell").getItem())
                                     && menu.getSlot(0).getItem().getCount() == 1
-                                    && menu.getSlot(9).getItem().is(stack("empty_cell").getItem())
+                                    && menu.getSlot(9).getItem().is(stack("fluid_cell").getItem())
                                     && menu.getSlot(9).getItem().getCount() == 10,
                             "Unconnected heater must prefill ten cells and keep the eleventh");
                     helper.succeed();

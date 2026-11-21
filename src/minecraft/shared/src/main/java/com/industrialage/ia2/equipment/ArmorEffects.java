@@ -222,36 +222,57 @@ public final class ArmorEffects {
         }
     }
 
-    static void absorbImpact(ServerPlayer player, float incoming) {
+    /** Whether the four matching quantum pieces currently contain usable charge. */
+    public static boolean poweredQuantum(LivingEntity wearer) {
+        if (wearer == null || completeSuit(wearer) != Suit.QUANTUM) return false;
         for (var slot : ARMOR) {
-            var item = player.getItemBySlot(slot);
-            var suit = suit(item);
-            if (suit != null) {
-                double charge = ArmorPlatform.energy(item);
-                if (charge > 0)
-                    ArmorPlatform.restoreEnergy(
-                            item,
-                            Math.max(
-                                    0,
-                                    charge
-                                            - Math.max(
-                                                    suit.minimum(), incoming * suit.perDamage())));
+            if (ArmorPlatform.energy(wearer.getItemBySlot(slot)) <= 0) return false;
+        }
+        return true;
+    }
+
+    private static Suit completeSuit(LivingEntity wearer) {
+        Suit material = suit(wearer.getItemBySlot(HEAD));
+        if (material == null) return null;
+        for (var slot : ARMOR) {
+            var stack = wearer.getItemBySlot(slot);
+            if (suit(stack) != material
+                    || !(stack.getItem() instanceof Wearable piece)
+                    || piece.piece().slot() != slot) return null;
+        }
+        return material;
+    }
+
+    /** Charges only the proportion of the impact that the complete suit actually absorbs. */
+    static float absorbImpact(ServerPlayer player, float incoming) {
+        Suit material = completeSuit(player);
+        if (material == null || !Float.isFinite(incoming) || incoming <= 0) return 0;
+        double cost = Math.max(material.minimum(), incoming * (double) material.perDamage());
+        double absorbed = 0;
+        for (var slot : ARMOR) {
+            var stack = player.getItemBySlot(slot);
+            double charge = ArmorPlatform.energy(stack);
+            double paid = Math.min(charge, cost);
+            if (paid > 0) {
+                ArmorPlatform.restoreEnergy(stack, charge - paid);
+                absorbed += paid / cost / ARMOR.size();
             }
         }
+        return (float) Math.min(1, absorbed);
     }
 
     static Defense protection(ItemStack stack) {
         var suit = suit(stack);
         if (suit == null || !(stack.getItem() instanceof Wearable wearable)) return null;
         var slot = wearable.piece().slot();
-        if (ArmorPlatform.energy(stack) < suit.minimum()) return new Defense(slot, 0, 2);
         int points =
-                switch (slot) {
-                    case HEAD, FEET -> 3;
-                    case CHEST -> 8;
-                    case LEGS -> 6;
-                    default -> 0;
-                };
+                suit == Suit.QUANTUM
+                        ? switch (slot) {
+                            case HEAD, LEGS, FEET -> 2;
+                            case CHEST -> 4;
+                            default -> 0;
+                        }
+                        : 0;
         return new Defense(slot, points, 0);
     }
 
