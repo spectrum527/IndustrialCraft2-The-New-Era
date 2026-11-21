@@ -15,7 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
-/** Draws the shaft and installed wind rotor in the world. */
+/** Draws the shaft and installed wind or water rotor in the world. */
 @EventBusSubscriber(modid = "ic2", bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class WindRotorRenderer implements BlockEntityRenderer<WorkshopNode> {
     private final WindRotorModel model = new WindRotorModel();
@@ -43,18 +43,21 @@ public final class WindRotorRenderer implements BlockEntityRenderer<WorkshopNode
             MultiBufferSource buffers,
             int packedLight,
             int overlay) {
-        if (node.kind != WorkshopKind.WIND_KINETIC) return;
+        if (!node.kind.hasWorldRotor()) return;
         var material = WindRotorMount.material(node.visualRotorType());
         var angle = model.angle(node, material, partialTick);
         if (material == null || node.getLevel() == null) return;
 
         var face = WindRotorMount.face(node);
-        var parts = model.parts(material);
+        var parts = model.parts(node.kind, material);
         var vertices = buffers.getBuffer(layers.get(material));
         int light = LevelRenderer.getLightColor(node.getLevel(), node.getBlockPos().relative(face));
         pose.pushPose();
         WindRotorModel.translateToHub(pose, face);
-        pose.mulPose(Axis.YP.rotationDegrees(-face.toYRot()));
+        pose.mulPose(
+                face.getAxis().isVertical()
+                        ? Axis.XP.rotationDegrees(-90 * face.getStepY())
+                        : Axis.YP.rotationDegrees(-face.toYRot()));
         parts.shaft().render(pose, vertices, light, overlay);
         pose.mulPose(Axis.ZP.rotationDegrees(angle));
         parts.wheel().render(pose, vertices, light, overlay);
@@ -65,13 +68,12 @@ public final class WindRotorRenderer implements BlockEntityRenderer<WorkshopNode
     public boolean shouldRenderOffScreen(WorkshopNode node) {
         // The axle can be outside the current section's visible bounds while its blades are in
         // view.
-        return node.kind == WorkshopKind.WIND_KINETIC;
+        return node.kind.hasWorldRotor();
     }
 
     @Override
     public boolean shouldRender(WorkshopNode node, Vec3 camera) {
-        return node.kind == WorkshopKind.WIND_KINETIC
-                && BlockEntityRenderer.super.shouldRender(node, camera);
+        return node.kind.hasWorldRotor() && BlockEntityRenderer.super.shouldRender(node, camera);
     }
 
     @Override
