@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.wrench.WrenchTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -19,11 +20,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 /** A player-placeable workshop device with a native inventory, recipe mode and powered face. */
-public class WorkshopBlock extends WorkshopBlockBase implements EntityBlock {
+public class WorkshopBlock extends WorkshopBlockBase implements EntityBlock, WrenchTarget {
     private static final EnumProperty<Direction> HORIZONTAL =
             BlockStateProperties.HORIZONTAL_FACING;
     private static final EnumProperty<Direction> ALL_FACES = BlockStateProperties.FACING;
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+    static final BooleanProperty FORMED = BooleanProperty.create("formed");
     final WorkshopKind kind;
 
     WorkshopBlock(Properties properties, WorkshopKind kind) {
@@ -39,6 +41,7 @@ public class WorkshopBlock extends WorkshopBlockBase implements EntityBlock {
     }
 
     static WorkshopBlock create(Properties properties, WorkshopKind kind) {
+        if (kind == WorkshopKind.COKE_KILN) return new KilnController(properties);
         return kind.sixDirections()
                 ? new SixDirections(properties, kind)
                 : new WorkshopBlock(properties, kind);
@@ -52,9 +55,19 @@ public class WorkshopBlock extends WorkshopBlockBase implements EntityBlock {
         return state.setValue(state.hasProperty(ALL_FACES) ? ALL_FACES : HORIZONTAL, direction);
     }
 
+    /** True for the two automatic ports of a coke kiln. */
+    public static boolean isKilnPort(BlockState state) {
+        return state.getBlock() instanceof WorkshopBlock device && device.kind.kilnPort();
+    }
+
     /** Whether a neighboring EU cable may visually connect to this block. */
     public boolean acceptsPower() {
         return kind.capacity > 0;
+    }
+
+    @Override
+    public boolean wrenchable(BlockState state) {
+        return !kind.kilnPort();
     }
 
     @Override
@@ -64,7 +77,7 @@ public class WorkshopBlock extends WorkshopBlockBase implements EntityBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        if (kind == WorkshopKind.COKE_HATCH || kind == WorkshopKind.COKE_GRATE) {
+        if (kind.kilnPort()) {
             return defaultBlockState();
         }
         return withDirection(
@@ -93,16 +106,15 @@ public class WorkshopBlock extends WorkshopBlockBase implements EntityBlock {
     @Override
     boolean interact(
             Level world, BlockPos pos, Player player, InteractionHand hand, Direction side) {
-        if (!(world.getBlockEntity(pos) instanceof WorkshopNode node)) {
+        if (kind.kilnPort() || !(world.getBlockEntity(pos) instanceof WorkshopNode node)) {
             return false;
         }
         var held = player.getItemInHand(hand);
-        if (WorkshopPlatform.itemId(held).equals("ic2:wrench")) {
-            if (world instanceof ServerLevel
-                    && (kind.sixDirections() || side.getAxis().isHorizontal())) {
-                world.setBlockAndUpdate(pos, withDirection(node.getBlockState(), side));
-            }
-        } else if (player.isShiftKeyDown()
+        if (kind == WorkshopKind.COKE_KILN
+                && !held.isEmpty()
+                && world instanceof ServerLevel level
+                && WorkshopCokeKiln.takeCreosote(node, level, player, hand)) return true;
+        if (player.isShiftKeyDown()
                 && held.isEmpty()
                 && kind == WorkshopKind.WEIGHTED_DISTRIBUTOR
                 && side != direction(node.getBlockState())) {
@@ -138,6 +150,20 @@ public class WorkshopBlock extends WorkshopBlockBase implements EntityBlock {
             }
         }
         return true;
+    }
+
+    private static final class KilnController extends WorkshopBlock {
+        KilnController(Properties properties) {
+            super(properties, WorkshopKind.COKE_KILN);
+            registerDefaultState(defaultBlockState().setValue(FORMED, false));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(
+                StateDefinition.Builder<Block, BlockState> builder) {
+            super.createBlockStateDefinition(builder);
+            builder.add(FORMED);
+        }
     }
 
     private static final class SixDirections extends WorkshopBlock {

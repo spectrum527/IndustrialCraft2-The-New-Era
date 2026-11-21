@@ -62,6 +62,10 @@ enum WorkshopKind {
         this.tier = tier;
     }
 
+    boolean kilnPort() {
+        return this == COKE_HATCH || this == COKE_GRATE;
+    }
+
     int modes() {
         return switch (this) {
             case METAL_FORMER -> 3;
