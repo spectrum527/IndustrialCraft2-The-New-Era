@@ -4,7 +4,7 @@
 
 ![IndustrialCraft²: The New Era project cover](assets/brand/cover.jpg)
 
-Start with a rubber tree, a coal-fired generator and a length of copper cable. Build your way up to an ore-washing line, a steel furnace or a closed-loop steam plant. **IndustrialCraft²: The New Era** is an independent community reimplementation of IC2 Experimental gameplay. Route items, fluids and EU between machines, breed crops, manage an in-game reactor or use UU-matter to replicate a scanned pattern.
+**IndustrialCraft²: The New Era** is an independent community reimplementation of IC2 Experimental gameplay.
 
 ## Download and install
 
@@ -17,9 +17,9 @@ Start with a rubber tree, a coal-fired generator and a length of copper cable. B
 | 26.1.2 | NeoForge 26.1.2.128 | 25 | [NeoForge 26.1.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.0/ic2-neoforge-26.1.2-1.0.0.jar) |
 | 26.2 | NeoForge 26.2.0.95 | 25 | [NeoForge 26.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.0/ic2-neoforge-26.2-1.0.0.jar) |
 
-For a first survival build, collect resin with a treetap and insulate your copper cable with rubber. Connect a generator to a macerator, feed it ore, and collect the output with a hopper or item pipe. [Player guide and wiring examples, in Chinese](docs/first-playable.md)
+Gameplay starts with your first machine and a coal-fired generator. To get rubber, look for rubber trees, a distinct tree added by the mod. See the player guide linked here, or check MC百科 (linked in the credits below) for more guidance. [Player guide and wiring examples](docs/first-playable.en.md)
 
-The One Probe and Curios are optional. The One Probe shows the energy held in a machine and the contents of its tanks. With Curios installed, a battery pack or electric jetpack worn in the back slot can charge directly from a pad of the appropriate tier. [Integration behavior and tests](spec/platform/optional-integrations.md)
+The One Probe and Curios are optional. The One Probe shows the energy held in a machine and the contents of its tanks. Curios adds a back slot so you can wear a battery pack or electric jetpack on your back and charge it by standing on a charge pad of the matching tier. [Integration behavior and tests](spec/platform/optional-integrations.md)
 
 ## Source, artwork and authorization
 
