@@ -32,7 +32,7 @@ jobs:
         timeout-minutes: 15
         shell: bash
         run: ./gradlew :test:runPlatformHostTest :test:runPlatformWorldTest --console=plain 2>&1 | tee platform-world-ci.log
-      - name: Run the 26.x dedicated server and verify fuel and saves
+      - name: Check 26.x recipe synchronization, fuel and saved state
         if: matrix.target != '1.21.1'
         timeout-minutes: 12
         run: ./gradlew :neoforge:${{ matrix.target }}:runModernServerSmoke --console=plain
@@ -46,6 +46,9 @@ jobs:
           :neoforge:${{ matrix.target }}:runNativeGameplayHeldFluidCell
           :neoforge:${{ matrix.target }}:runNativeGameplayCableShock
           --console=plain
+      - name: Assemble the wind turbine in survival and restart its world
+        timeout-minutes: 10
+        run: ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayWindRead --console=plain
       - name: Check The One Probe and Curios individually and together
         timeout-minutes: 18
         run: |
@@ -106,5 +109,7 @@ jobs:
             src/neoforge/${{ matrix.target }}/build/run/native-storage/storage.properties
             src/neoforge/${{ matrix.target }}/build/run/native-workshop/workshop.properties
             src/neoforge/${{ matrix.target }}/build/run/native-held-cell/heldFluidCell.properties
+            src/neoforge/${{ matrix.target }}/build/run/native-wind/windWrite.properties
+            src/neoforge/${{ matrix.target }}/build/run/native-wind/windRead.properties
             src/neoforge/${{ matrix.target }}/build/run/native-cable-shock/cableShock.properties
             src/neoforge/${{ matrix.target }}/build/run/optional-compat-*/compat-checks.txt
