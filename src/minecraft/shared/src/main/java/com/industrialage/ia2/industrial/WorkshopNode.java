@@ -660,7 +660,7 @@ public final class WorkshopNode extends WorkshopSaveBase
 
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory player, Player opener) {
-        return new WorkshopMenu(id, player, this);
+        return kind.kilnPort() ? null : new WorkshopMenu(id, player, this);
     }
 
     @Override

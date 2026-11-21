@@ -226,46 +226,6 @@
     ]
   },
   {
-    "id": "coke_kiln_grate",
-    "kind": "block",
-    "screen": "WorkshopScreen",
-    "atlas": "common",
-    "size": [
-      176,
-      166
-    ],
-    "anchors": [
-      [
-        8,
-        84
-      ],
-      [
-        8,
-        142
-      ]
-    ]
-  },
-  {
-    "id": "coke_kiln_hatch",
-    "kind": "block",
-    "screen": "WorkshopScreen",
-    "atlas": "common",
-    "size": [
-      176,
-      166
-    ],
-    "anchors": [
-      [
-        8,
-        84
-      ],
-      [
-        8,
-        142
-      ]
-    ]
-  },
-  {
     "id": "uu_assembly_bench",
     "kind": "block",
     "screen": "WorkshopScreen",
