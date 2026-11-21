@@ -11,10 +11,13 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -44,6 +47,8 @@ public final class ArmorPlatform {
                 event ->
                         ArmorEffects.appendChargeTooltip(event.getItemStack(), event.getToolTip()));
         gameBus.addListener(LivingIncomingDamageEvent.class, ArmorPlatform::protect);
+        gameBus.addListener(LivingDamageEvent.Pre.class, ArmorPlatform::absorb);
+        gameBus.addListener(PlayerEvent.BreakSpeed.class, ArmorPlatform::miningSpeed);
         gameBus.addListener(ItemAttributeModifierEvent.class, ArmorPlatform::protectiveAttributes);
     }
 
@@ -55,7 +60,7 @@ public final class ArmorPlatform {
         if (defense.armor() > 0)
             event.addModifier(
                     Attributes.ARMOR, NativeArmor.protectionModifier(id, defense.armor()), group);
-        else
+        else if (defense.toughness() > 0)
             event.addModifier(
                     Attributes.ARMOR_TOUGHNESS,
                     NativeArmor.protectionModifier(id, defense.toughness()),
@@ -71,9 +76,28 @@ public final class ArmorPlatform {
                 && ArmorEffects.fullHazmat(player)) {
             player.clearFire();
             event.setCanceled(true);
-        } else if (!source.is(DamageTypeTags.BYPASSES_ARMOR)) {
-            ArmorEffects.absorbImpact(player, event.getAmount());
         }
+    }
+
+    private static void absorb(LivingDamageEvent.Pre event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)
+                || event.getNewDamage() <= 0
+                || event.getSource().is(DamageTypes.GENERIC_KILL)) return;
+        var container = event.getContainer();
+        float incoming =
+                Math.max(
+                        0,
+                        container.getOriginalDamage()
+                                - container.getBlockedDamage()
+                                - container.getReduction(
+                                        DamageContainer.Reduction.INVULNERABILITY));
+        float fraction = ArmorEffects.absorbImpact(player, incoming);
+        if (fraction > 0) event.setNewDamage(event.getNewDamage() * (1 - fraction));
+    }
+
+    private static void miningSpeed(PlayerEvent.BreakSpeed event) {
+        if (ArmorEffects.poweredQuantum(event.getEntity()))
+            event.setNewSpeed(event.getNewSpeed() * 1.4F);
     }
 
     static boolean grounded(ServerPlayer player) {

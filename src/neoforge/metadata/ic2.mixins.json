@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "com.industrialage.ia2.equipment.client",
+  "compatibilityLevel": "JAVA_17",
+  "client": ["QuantumLightmapMixin"],
+  "injectors": {"defaultRequire": 1}
+}

@@ -155,8 +155,14 @@ final class ArmorChecks {
         player.getFoodData().setFoodLevel(20);
         player.setHealth(20);
         mountedPack(level, player, check);
-        poweredImpact(level, player, "nano", 12_500, 4_999, check);
-        poweredImpact(level, player, "quantum", 50_000, 19_999, check);
+        var priorDifficulty = level.getDifficulty();
+        level.getServer().setDifficulty(net.minecraft.world.Difficulty.NORMAL, true);
+        poweredImpact(level, player, "nano", 12_500, check);
+        poweredImpact(level, player, "quantum", 50_000, check);
+        level.getServer().setDifficulty(priorDifficulty, true);
+        miningAndNightVision(level, player, check);
+        unchargedQuantumPieces(player, check);
+        killBoundary(level, check);
     }
 
     private static void mountedPack(
@@ -216,48 +222,168 @@ final class ArmorChecks {
         check.accept("recovery-clears-mounted-identity", !JetpackMount.installed(chest));
     }
 
+    private static final EquipmentSlot[] SUIT_SLOTS = {
+        EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
+    };
+    private static final String[] SUIT_PARTS = {"helmet", "chestplate", "leggings", "boots"};
+
+    private static java.util.List<ItemStack> suit(ServerPlayer player, String family, int charge) {
+        var stacks = new java.util.ArrayList<ItemStack>(4);
+        for (int i = 0; i < SUIT_SLOTS.length; i++)
+            stacks.add(equip(player, SUIT_SLOTS[i], family + "_" + SUIT_PARTS[i], charge));
+        player.doTick();
+        return stacks;
+    }
+
     private static void poweredImpact(
             ServerLevel level,
             ServerPlayer player,
             String family,
             int cost,
-            int tooLow,
             BiConsumer<String, Boolean> check) {
-        var slots =
-                new EquipmentSlot[] {
-                    EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET
-                };
-        var parts = new String[] {"helmet", "chestplate", "leggings", "boots"};
-        for (int trial = 0; trial < 2; trial++) {
-            int charge = trial == 0 ? 90_000 : tooLow;
-            var suit = new java.util.ArrayList<ItemStack>(4);
-            for (int index = 0; index < slots.length; index++) {
-                suit.add(equip(player, slots[index], family + "_" + parts[index], charge));
-            }
-            player.doTick();
-            int points = player.getArmorValue();
+        suit(player, family, 0);
+        check.accept(
+                family + "-empty-native-armor",
+                player.getArmorValue() == (family.equals("quantum") ? 10 : 0));
+        for (String source : new String[] {"melee", "fire", "fall", "magic", "void"}) {
+            var stacks = suit(player, family, 200_000);
             player.setHealth(20);
             player.invulnerableTime = 0;
-            NativeArmorCheckAccess.strike(level, player, 10);
-            if (trial == 0) {
-                check.accept(
-                        family + "-powered-impact-parity",
-                        points == 20
-                                && player.getHealth() == 16
-                                && suit.stream()
-                                        .allMatch(
-                                                piece ->
-                                                        PortableGear.stored(piece)
-                                                                == charge - cost));
-            } else {
-                check.accept(
-                        family + "-low-energy-impact-parity",
-                        points == 0
-                                && player.getHealth() == 10
-                                && suit.stream()
-                                        .allMatch(piece -> PortableGear.stored(piece) == 0));
-            }
+            NativeArmorCheckAccess.impact(level, player, source, 10);
+            boolean blocked =
+                    player.getHealth() == 20
+                            && stacks.stream()
+                                    .allMatch(
+                                            piece -> PortableGear.stored(piece) == 200_000 - cost);
+            if (!blocked)
+                throw new AssertionError(
+                        family
+                                + " "
+                                + source
+                                + " health="
+                                + player.getHealth()
+                                + " charge="
+                                + stacks.stream().map(PortableGear::stored).toList()
+                                + " invulnerableTicks="
+                                + player.invulnerableTime);
+            check.accept(family + "-blocks-" + source, true);
         }
+        var stacks = suit(player, family, 200_000);
+        player.setHealth(20);
+        player.invulnerableTime = 0;
+        NativeArmorCheckAccess.impact(level, player, "magic", 25);
+        check.accept(family + "-blocks-lethal-damage", player.getHealth() == 20);
+
+        stacks = suit(player, family, cost / 2);
+        player.setHealth(20);
+        player.invulnerableTime = 0;
+        NativeArmorCheckAccess.impact(level, player, "magic", 10);
+        check.accept(
+                family + "-low-energy-leaves-damage",
+                player.getHealth() < 20
+                        && player.getHealth() > 10
+                        && stacks.stream().allMatch(piece -> PortableGear.stored(piece) == 0));
+
+        stacks = suit(player, family, 200_000);
+        PortableGear.restoreEnergy(stacks.get(0), 0);
+        player.setHealth(20);
+        player.invulnerableTime = 0;
+        NativeArmorCheckAccess.impact(level, player, "magic", 10);
+        check.accept(
+                family + "-one-empty-piece-leaves-one-quarter-damage",
+                Math.abs(player.getHealth() - 17.5F) < 0.0001F
+                        && PortableGear.stored(stacks.get(0)) == 0
+                        && stacks.subList(1, 4).stream()
+                                .allMatch(piece -> PortableGear.stored(piece) == 200_000 - cost));
+
+        stacks = suit(player, family, 200_000);
+        var mixed =
+                equip(
+                        player,
+                        EquipmentSlot.HEAD,
+                        (family.equals("nano") ? "quantum" : "nano") + "_helmet",
+                        200_000);
+        player.setHealth(20);
+        player.invulnerableTime = 0;
+        NativeArmorCheckAccess.impact(level, player, "magic", 10);
+        check.accept(
+                family + "-mixed-suit-has-no-powered-shield",
+                player.getHealth() < 20
+                        && PortableGear.stored(mixed) == 200_000
+                        && stacks.stream()
+                                .allMatch(piece -> PortableGear.stored(piece) == 200_000));
+
+        stacks = suit(player, family, 200_000);
+        player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        player.setHealth(20);
+        player.invulnerableTime = 0;
+        NativeArmorCheckAccess.impact(level, player, "magic", 10);
+        check.accept(
+                family + "-incomplete-has-no-powered-shield",
+                player.getHealth() < 20
+                        && stacks.stream()
+                                .allMatch(piece -> PortableGear.stored(piece) == 200_000));
+
+        stacks = suit(player, family, 200_000);
+        player.setHealth(20);
+        player.invulnerableTime = 0;
+        NativeArmorCheckAccess.impact(level, player, "melee", 10);
+        double spent = PortableGear.stored(stacks.get(0));
+        NativeArmorCheckAccess.impact(level, player, "melee", 10);
+        check.accept(
+                family + "-hurt-cooldown-does-not-charge-twice",
+                stacks.stream().allMatch(piece -> PortableGear.stored(piece) == spent));
+    }
+
+    private static void miningAndNightVision(
+            ServerLevel level, ServerPlayer player, BiConsumer<String, Boolean> check) {
+        suit(player, "quantum", 50_000);
+        check.accept(
+                "quantum-vision-no-potion",
+                ArmorEffects.poweredQuantum(player) && !player.hasEffect(MobEffects.NIGHT_VISION));
+        float boosted = NativeArmorCheckAccess.miningSpeed(player);
+        float boostedProgress =
+                Blocks.STONE
+                        .defaultBlockState()
+                        .getDestroyProgress(player, level, player.blockPosition());
+        player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        float normal = NativeArmorCheckAccess.miningSpeed(player);
+        float normalProgress =
+                Blocks.STONE
+                        .defaultBlockState()
+                        .getDestroyProgress(player, level, player.blockPosition());
+        check.accept(
+                "quantum-native-break-progress-one-point-four",
+                normalProgress > 0 && Math.abs(boostedProgress - normalProgress * 1.4F) < 0.0001F);
+        check.accept(
+                "quantum-mining-speed-one-point-four", Math.abs(boosted - normal * 1.4F) < 0.0001F);
+        check.accept("quantum-effect-stops-on-removal", !ArmorEffects.poweredQuantum(player));
+        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200));
+        suit(player, "quantum", 50_000);
+        player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        tick(player);
+        check.accept("player-night-vision-is-preserved", player.hasEffect(MobEffects.NIGHT_VISION));
+        player.removeEffect(MobEffects.NIGHT_VISION);
+    }
+
+    private static void unchargedQuantumPieces(
+            ServerPlayer player, BiConsumer<String, Boolean> check) {
+        int[] expected = {2, 4, 2, 2};
+        for (int i = 0; i < SUIT_SLOTS.length; i++) {
+            for (var slot : SUIT_SLOTS) player.setItemSlot(slot, ItemStack.EMPTY);
+            equip(player, SUIT_SLOTS[i], "quantum_" + SUIT_PARTS[i], 0);
+            player.doTick();
+            check.accept(
+                    "quantum-empty-" + SUIT_PARTS[i] + "-armor-points",
+                    player.getArmorValue() == expected[i]);
+        }
+    }
+
+    private static void killBoundary(ServerLevel level, BiConsumer<String, Boolean> check) {
+        var player = NativeArmorCheckAccess.player(level);
+        suit(player, "quantum", 200_000);
+        NativeArmorCheckAccess.kill(level, player);
+        check.accept("administrative-native-kill-still-kills", !player.isAlive());
     }
 
     private static ItemStack equip(ServerPlayer player, EquipmentSlot slot, String id, int charge) {
