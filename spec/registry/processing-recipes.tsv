@@ -9,7 +9,7 @@ compressor	compressor/coal_chunk_to_industrial_diamond	ic2:coal_chunk	1	ic2:indu
 compressor	compressor/copper_ingot_to_copper_block	minecraft:copper_ingot	9	minecraft:copper_block	1
 compressor	compressor/dusts_lapis_to_lapis_plate	#forge:dusts/lapis	1	ic2:lapis_plate	1
 compressor	compressor/dusts_obsidian_to_obsidian_plate	#forge:dusts/obsidian	1	ic2:obsidian_plate	1
-compressor	compressor/empty_cell_to_air_cell	ic2:empty_cell	1	ic2:air_cell	1
+compressor	compressor/empty_cell_to_air_cell	ic2:fluid_cell	1	ic2:air_cell	1
 compressor	compressor/energium_dust_to_energy_crystal	ic2:energium_dust	9	ic2:energy_crystal	1
 compressor	compressor/glowstone_dust_to_glowstone	minecraft:glowstone_dust	4	minecraft:glowstone	1
 compressor	compressor/gold_ingot_to_gold_block	minecraft:gold_ingot	9	minecraft:gold_block	1
@@ -61,7 +61,16 @@ compressor	compressor/small_tin_dust_to_tin_dust	ic2:small_tin_dust	9	ic2:tin_du
 compressor	compressor/small_uranium_235_to_uranium_235	ic2:small_uranium_235	9	ic2:uranium_235	1
 compressor	compressor/snow_block_to_ice	minecraft:snow_block	1	minecraft:ice	1
 compressor	compressor/snowball_to_snow_block	minecraft:snowball	4	minecraft:snow_block	1
-extractor	extractor/air_cell_to_empty_cell	ic2:air_cell	1	ic2:empty_cell	1
+extractor	extractor/air_cell_to_empty_cell	ic2:air_cell	1	ic2:fluid_cell	1
+extractor	extractor/coalfuel_cell_to_fluid_cell	ic2:coalfuel_cell	1	ic2:fluid_cell	1
+extractor	extractor/biofuel_cell_to_fluid_cell	ic2:biofuel_cell	1	ic2:fluid_cell	1
+extractor	extractor/hydration_cell_to_fluid_cell	ic2:hydration_cell	1	ic2:fluid_cell	1
+extractor	extractor/electrolyzed_water_cell_to_fluid_cell	ic2:electrolyzed_water_cell	1	ic2:fluid_cell	1
+extractor	extractor/weed_ex_cell_to_fluid_cell	ic2:weed_ex_cell	1	ic2:fluid_cell	1
+extractor	extractor/lava_cell_to_fluid_cell	ic2:lava_cell	1	ic2:fluid_cell	1
+extractor	extractor/water_cell_to_fluid_cell	ic2:water_cell	1	ic2:fluid_cell	1
+extractor	extractor/basic_lava_cell_to_empty_cell	ic2:basic_lava_cell	1	ic2:empty_cell	1
+extractor	extractor/basic_water_cell_to_empty_cell	ic2:basic_water_cell	1	ic2:empty_cell	1
 extractor	extractor/bamboo_to_stick	minecraft:bamboo	1	minecraft:stick	1
 extractor	extractor/bee_nest_to_honeycomb	minecraft:bee_nest	1	minecraft:honeycomb	2
 extractor	extractor/bobs_yer_uncle_ranks_berry_to_small_emerald_dust	ic2:bobs_yer_uncle_ranks_berry	1	ic2:small_emerald_dust	1

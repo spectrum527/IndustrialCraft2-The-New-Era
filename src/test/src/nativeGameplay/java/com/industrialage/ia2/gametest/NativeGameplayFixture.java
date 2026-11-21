@@ -74,6 +74,7 @@ public final class NativeGameplayFixture {
     private double storageAtDisconnection;
     private boolean finishedEnergyLine;
     private boolean verifiedBoats;
+    private int coldBoatMisses;
 
     /** Installs the two phases on the dedicated server. */
     public NativeGameplayFixture() {
@@ -208,8 +209,9 @@ public final class NativeGameplayFixture {
             } else {
                 coldState(level);
             }
-            if ("worldProgram".equals(phase) || "worldDetails".equals(phase))
-                server.tickRateManager().setTickRate(200F);
+            if ("worldProgram".equals(phase)
+                    || "worldDetails".equals(phase)
+                    || "read".equals(phase)) server.tickRateManager().setTickRate(200F);
             else if ("cableShock".equals(phase)
                     || "heldFluidCell".equals(phase)
                     || "windWrite".equals(phase)
@@ -399,9 +401,16 @@ public final class NativeGameplayFixture {
         var server = event.getServer();
         try {
             if (++ticks
-                    > ("workshop".equals(phase) ? 8_400 : naturalWater != null ? 4_000 : 1_250)) {
+                    > ("workshop".equals(phase)
+                            ? 8_400
+                            : (naturalWater != null || "read".equals(phase)) ? 4_000 : 1_250)) {
                 var details =
-                        "read".equals(phase) ? "; " + transport.diagnostic(server.overworld()) : "";
+                        "read".equals(phase)
+                                ? "; "
+                                        + transport.diagnostic(server.overworld())
+                                        + "; boats="
+                                        + GearChecks.coldBoatDiagnostic(server.overworld())
+                                : "";
                 throw new AssertionError("Native production line timed out" + details);
             }
             boolean done =
@@ -511,11 +520,16 @@ public final class NativeGameplayFixture {
 
     private boolean readStage(ServerLevel level) {
         if (!verifiedBoats && ticks >= 20) {
-            GearChecks.verifyColdBoats(level, this::check);
-            verifiedBoats = true;
+            verifiedBoats = GearChecks.verifyColdBoats(level, this::check);
+            if (verifiedBoats) {
+                checks.setProperty("cold-boats-ready-tick", Integer.toString(ticks));
+                checks.setProperty("cold-boats-wait-attempts", Integer.toString(coldBoatMisses));
+            } else {
+                coldBoatMisses++;
+            }
         }
         boolean transportDone = transport.tick(level, this::check);
-        if (finishedEnergyLine) return transportDone;
+        if (finishedEnergyLine) return transportDone && verifiedBoats;
         var generator = machine(level, GENERATOR);
         var storage = machine(level, STORAGE);
         var mill = machine(level, MILL);
@@ -555,7 +569,7 @@ public final class NativeGameplayFixture {
                                 .stream()
                                 .anyMatch(entity -> entity.getItem().is(Items.COAL)));
         finishedEnergyLine = true;
-        return transportDone;
+        return transportDone && verifiedBoats;
     }
 
     private void complete(MinecraftServer server, Throwable failure) {

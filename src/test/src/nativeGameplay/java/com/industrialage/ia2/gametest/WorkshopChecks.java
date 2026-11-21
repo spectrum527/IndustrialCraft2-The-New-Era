@@ -38,6 +38,7 @@ final class WorkshopChecks {
     private static final BlockPos SCRAP_HAND = new BlockPos(20, 121, 28);
     private static final BlockPos BIO_HEATER = FERMENTER.west();
     private final FluidCellChecks fluidCells = new FluidCellChecks();
+    private final CellMachineChecks cellMachines = new CellMachineChecks();
     private int elapsed;
     private boolean advancedCold;
     private boolean fermentationVerified;
@@ -53,6 +54,7 @@ final class WorkshopChecks {
         world.getChunk(chunkX, chunkZ);
         var player = FakePlayerFactory.getMinecraft(world);
         fluidCells.setup(world, check);
+        cellMachines.setup(world, check);
         var scrapBox = NativeGameplayFixture.item("scrap_box");
         world.setBlockAndUpdate(SCRAP_HAND.below(), Blocks.STONE.defaultBlockState());
         world.setBlockAndUpdate(
@@ -260,7 +262,10 @@ final class WorkshopChecks {
                 InteractionHand.MAIN_HAND);
         check.accept(
                 "universal-cell-actual-source-pickup",
-                NativeTransferAccess.cellVolume(player.getItemInHand(InteractionHand.MAIN_HAND))
+                player.getItemInHand(InteractionHand.MAIN_HAND)
+                                .is(NativeGameplayFixture.item("water_cell"))
+                        && NativeTransferAccess.cellVolume(
+                                        player.getItemInHand(InteractionHand.MAIN_HAND))
                                 == 1000
                         && world.getFluidState(source).isEmpty());
         player.gameMode.useItem(
@@ -281,6 +286,7 @@ final class WorkshopChecks {
         }
         ++elapsed;
         var cellsReady = fluidCells.tick(world, check);
+        var machinesReady = cellMachines.tick(world, check);
         if (elapsed == 3) {
             check.accept(
                     "native-ore-washer-dry-break",
@@ -352,7 +358,7 @@ final class WorkshopChecks {
             var bottled = NativeTransferAccess.cargo(world, BOTTLER, Direction.EAST);
             check.accept(
                     "native-bottler-yields-two-named-water-cells",
-                    bottled.is(NativeGameplayFixture.item("water_cell"))
+                    bottled.is(NativeGameplayFixture.item("basic_water_cell"))
                             && bottled.getCount() == 2
                             && NativeTransferAccess.volume(world, BOTTLER, Direction.NORTH) == 0);
             var electrolyzer = (WorkshopNode) world.getBlockEntity(ELECTROLYZER);
@@ -395,7 +401,11 @@ final class WorkshopChecks {
             }
         }
         var steel = NativeTransferAccess.cargo(world, FURNACE, Direction.DOWN);
-        if (!advancedCold || !fermentationVerified || !cellsReady || steel.isEmpty()) {
+        if (!advancedCold
+                || !fermentationVerified
+                || !cellsReady
+                || !machinesReady
+                || steel.isEmpty()) {
             return false;
         }
         check.accept(

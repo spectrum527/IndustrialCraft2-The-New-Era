@@ -68,9 +68,10 @@ public final class MachineMenu extends AbstractContainerMenu {
 
                         @Override
                         public int getMaxStackSize(ItemStack stack) {
-                            return (role == SlotRole.CHARGE || role == SlotRole.DISCHARGE)
-                                            && PortableGear.electricalItem(stack)
-                                    ? 1
+                            return role == SlotRole.CHARGE || role == SlotRole.DISCHARGE
+                                    ? Math.min(
+                                            super.getMaxStackSize(stack),
+                                            PortableGear.powerSlotLimit(stack))
                                     : super.getMaxStackSize(stack);
                         }
                     });

@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.transfer.ResourceHandler;
@@ -20,7 +21,6 @@ import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
-import net.neoforged.neoforge.transfer.fluid.ItemAccessFluidHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
@@ -62,14 +62,13 @@ final class NeoTransport {
                                             : null);
                     event.registerItem(
                             Capabilities.Fluid.ITEM,
-                            (stack, access) ->
-                                    new ItemAccessFluidHandler(
-                                            access,
-                                            TransportPlatform.CELL_FLUID.get(),
-                                            CELL_CAPACITY),
-                            TransportPlatform.CELL.get(),
-                            TransportPlatform.FLUID_CELL.get());
+                            (stack, access) -> new CellAccess(access),
+                            TransportPlatform.cells());
                 });
+    }
+
+    static FluidStack bucketFluid(ItemStack stack) {
+        return FluidUtil.getFirstStackContained(stack.copyWithCount(1));
     }
 
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {

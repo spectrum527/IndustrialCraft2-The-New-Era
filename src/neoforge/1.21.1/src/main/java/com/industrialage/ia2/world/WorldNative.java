@@ -217,6 +217,10 @@ final class WorldNative {
         return com.industrialage.ia2.gameplay.PortableGear.stored(stack);
     }
 
+    static double discharge(ItemStack stack, double room, double capacity, int tier) {
+        return com.industrialage.ia2.gameplay.PortableGear.discharge(stack, room, capacity, tier);
+    }
+
     static double discharge(ItemStack stack, double available, int tier) {
         return com.industrialage.ia2.gameplay.PortableGear.discharge(stack, available, tier);
     }

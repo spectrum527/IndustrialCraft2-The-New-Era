@@ -2,7 +2,6 @@ package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
-import com.industrialage.ia2.logistics.CellItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -83,7 +82,6 @@ public final class WorkshopPlatform {
         for (String blade : new String[] {"iron", "steel", "diamond"}) {
             ITEMS.registerSimpleItem(blade + "_cutting_blade");
         }
-        WorkshopCells.FILLED.keySet().forEach(path -> ITEMS.registerItem(path, CellItem::new));
         registerCans();
         ITEMS.registerSimpleItem("electrolyzed_water_cell");
         ITEMS.registerSimpleItem("uu_matter");
@@ -285,7 +283,8 @@ public final class WorkshopPlatform {
         return !id.isEmpty() && !WorkshopNative.fluid(id, 1).isEmpty();
     }
 
-    static FluidStack fluid(String id, int amount) {
+    /** Creates a native stack for a registered fluid identifier. */
+    public static FluidStack fluid(String id, int amount) {
         return id.isEmpty() || amount <= 0 ? FluidStack.EMPTY : WorkshopNative.fluid(id, amount);
     }
 
@@ -330,19 +329,7 @@ public final class WorkshopPlatform {
 
     static boolean interactFluid(
             WorkshopNode node, Player player, InteractionHand hand, Direction side) {
-        return WorkshopCells.fillNamedHand(node, side, player, hand)
-                || WorkshopNative.interact(node, player, hand, side);
-    }
-
-    /** Handles the named-cell result when Minecraft dispatches directly to the held item. */
-    public static boolean fillNamedHand(
-            ServerLevel level, BlockPos pos, Direction side, Player player, InteractionHand hand) {
-        return level.getBlockEntity(pos) instanceof WorkshopNode node
-                && WorkshopCells.fillNamedHand(node, side, player, hand);
-    }
-
-    static void playPickup(WorkshopNode node, Player player, Liquid moved) {
-        WorkshopNative.playPickup(node, player, fluid(moved.id(), moved.amount()));
+        return WorkshopNative.interact(node, player, hand, side);
     }
 
     static boolean canOpen(WorkshopNode node, Player player) {
@@ -357,14 +344,6 @@ public final class WorkshopPlatform {
         if (player instanceof ServerPlayer server) {
             server.openMenu(node, buffer -> buffer.writeEnum(node.kind));
         }
-    }
-
-    /** Returns the named original cell item for a plain, supported industrial liquid. */
-    public static ItemStack namedFilledCell(FluidStack liquid) {
-        if (liquid.isEmpty() || !liquid.getComponentsPatch().isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-        return WorkshopCells.namedStack(fluidId(liquid));
     }
 
     static void announceRoute(Player player, Direction face, int priority) {

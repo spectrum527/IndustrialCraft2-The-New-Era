@@ -16,7 +16,6 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -59,12 +58,13 @@ final class NeoTransport {
                                             : null);
                     event.registerItem(
                             Capabilities.FluidHandler.ITEM,
-                            (stack, ignored) ->
-                                    new FluidHandlerItemStack(
-                                            TransportPlatform.CELL_FLUID, stack, CELL_CAPACITY),
-                            TransportPlatform.CELL.get(),
-                            TransportPlatform.FLUID_CELL.get());
+                            (stack, access) -> CellItem.handler(stack),
+                            TransportPlatform.cells());
                 });
+    }
+
+    static FluidStack bucketFluid(ItemStack stack) {
+        return FluidUtil.getFluidContained(stack.copyWithCount(1)).orElse(FluidStack.EMPTY);
     }
 
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {

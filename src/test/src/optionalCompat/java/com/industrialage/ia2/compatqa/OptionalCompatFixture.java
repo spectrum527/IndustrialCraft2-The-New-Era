@@ -1,9 +1,11 @@
 package com.industrialage.ia2.compatqa;
 
 import com.industrialage.ia2.compat.CuriosBack;
+import com.industrialage.ia2.content.CreativeCategory;
 import com.industrialage.ia2.gameplay.PortableGear;
 import com.industrialage.ia2.industrial.PowerNode;
 import com.industrialage.ia2.industrial.WorkshopNode;
+import com.industrialage.ia2.power.EuBuffer;
 import com.industrialage.ia2.power.WorldPowerStorage;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +15,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
@@ -156,6 +160,8 @@ public final class OptionalCompatFixture {
                 report.add("Curios retained 100 EU after unequipping");
             }
             player.stopRiding();
+            dischargeBatteries(level, player, report);
+            verifyCreativeCatalog(report);
             chargeQuantumSuit(level, player, report);
             player.discard();
             Files.writeString(
@@ -174,6 +180,89 @@ public final class OptionalCompatFixture {
         } finally {
             server.halt(false);
         }
+    }
+
+    private static void dischargeBatteries(
+            ServerLevel level, ServerPlayer player, List<String> report) {
+        var boxPosition = PAD.offset(3, 4, 0);
+        var furnacePosition = PAD.offset(0, 4, 3);
+        place(level, boxPosition, "batbox");
+        place(level, furnacePosition, "electric_furnace");
+        var box = (WorldPowerStorage) level.getBlockEntity(boxPosition);
+        require(box.exchangeStoredEnergy(38_801, false), "seed BatBox to 1199 EU of room");
+        var boxSlot = insertThreeBatteries(level, boxPosition, player);
+        CompatHost.tick(level, boxPosition);
+        require(
+                box.availableStoredEnergy() == 38_801 && boxSlot.getItem().getCount() == 3,
+                "wait for a whole battery");
+        require(box.exchangeStoredEnergy(-1, false), "make 1200 EU of space");
+        CompatHost.tick(level, boxPosition);
+        require(
+                box.availableStoredEnergy() == 40_000 && boxSlot.getItem().getCount() == 2,
+                "consume one at exactly 1200 EU");
+        require(box.exchangeStoredEnergy(-2_400, false), "make room for two batteries");
+        CompatHost.tick(level, boxPosition);
+        require(
+                box.availableStoredEnergy() == 38_800 && boxSlot.getItem().getCount() == 1,
+                "one battery per machine tick");
+        CompatHost.tick(level, boxPosition);
+        require(
+                box.availableStoredEnergy() == 40_000 && boxSlot.getItem().isEmpty(),
+                "second battery on the following tick");
+        var furnace = (EuBuffer) level.getBlockEntity(furnacePosition);
+        var furnaceSlot = insertThreeBatteries(level, furnacePosition, player);
+        CompatHost.tick(level, furnacePosition);
+        require(
+                furnace.bufferedEu().stored() == 600 && furnaceSlot.getItem().getCount() == 2,
+                "small buffer retains 600 EU from one battery");
+        CompatHost.tick(level, furnacePosition);
+        require(
+                furnace.bufferedEu().stored() == 600 && furnaceSlot.getItem().getCount() == 2,
+                "full small buffer keeps the remaining stack");
+        report.add(
+                "Disposable battery: 1199 EU free holds three, 1200 uses one, 2400 uses two on distinct ticks, full 600 EU furnace keeps the stack.");
+    }
+
+    private static Slot insertThreeBatteries(ServerLevel level, BlockPos pos, ServerPlayer player) {
+        var provider = (MenuProvider) level.getBlockEntity(pos);
+        var menu = provider.createMenu(67, player.getInventory(), player);
+        var battery = new ItemStack(CompatHost.item("single_use_battery"), 3);
+        player.getInventory().setItem(9, battery);
+        menu.quickMoveStack(player, menu.slots.size() - 36);
+        var discharge =
+                menu.slots.stream()
+                        .filter(slot -> slot.x == 56 && slot.y == 53)
+                        .findFirst()
+                        .orElseThrow();
+        require(
+                discharge.getItem().getCount() == 3 && player.getInventory().getItem(9).isEmpty(),
+                "shift-click a stack of three into the discharge slot");
+        return discharge;
+    }
+
+    private static void verifyCreativeCatalog(List<String> report) {
+        var registered = new java.util.HashSet<String>();
+        for (var id : net.minecraft.core.registries.BuiltInRegistries.ITEM.keySet()) {
+            if (id.getNamespace().equals("ic2")) registered.add(id.getPath());
+        }
+        var catalog = new java.util.HashSet<String>();
+        for (var category : CreativeCategory.values()) {
+            require(
+                    category.entries().contains(category.icon()),
+                    "tab icon belongs to " + category);
+            for (var path : category.entries()) {
+                require(
+                        catalog.add(path) && CreativeCategory.forItem(path) == category,
+                        "unique creative category for " + path);
+            }
+        }
+        require(catalog.equals(registered), "creative catalog equals registered IC2 items");
+        report.add(
+                "Creative catalog: "
+                        + catalog.size()
+                        + " registered items in "
+                        + CreativeCategory.values().length
+                        + " categories.");
     }
 
     private static void chargeQuantumSuit(

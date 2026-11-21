@@ -2,6 +2,7 @@ package com.industrialage.ia2.gametest;
 
 import com.industrialage.ia2.celltest.HeldCellChecks;
 import com.industrialage.ia2.celltest.HeldCellChecks.Liquid;
+import com.industrialage.ia2.logistics.TransportPlatform;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 
 /** Native fluid capability observations for the common hand-use matrix. */
 final class NativeHeldCellHost {
@@ -30,6 +32,12 @@ final class NativeHeldCellHost {
                 NativeGameplayFixture::block,
                 stack -> liquid(FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY)),
                 (stack, contents) -> NativeTransferAccess.filledCell(stack, nativeFluid(contents)),
+                (stack, contents) -> {
+                    stack.set(
+                            TransportPlatform.cellFluidComponent(),
+                            SimpleFluidContent.copyOf(nativeFluid(contents)));
+                    return stack;
+                },
                 (stack, name) -> stack.set(DataComponents.CUSTOM_NAME, name),
                 pos -> tank(level, pos),
                 (pos, contents, simulate) ->

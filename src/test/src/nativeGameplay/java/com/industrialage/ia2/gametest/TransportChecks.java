@@ -205,7 +205,9 @@ final class TransportChecks {
                         new ItemStack(NativeGameplayFixture.item("empty_cell")));
         check.accept(
                 "usable-1000mb-cell",
-                NativeTransferAccess.itemFluidVolume(cell) == 1_000 && volume(level, TANK) == 222);
+                cell.is(NativeGameplayFixture.item("basic_water_cell"))
+                        && NativeTransferAccess.itemFluidVolume(cell) == 1_000
+                        && volume(level, TANK) == 222);
         click(
                 level,
                 FLUID_PIPE,

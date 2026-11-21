@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.util.FakePlayer;
 
 final class NativeArmorCheckAccess {
@@ -30,6 +31,30 @@ final class NativeArmorCheckAccess {
 
     static void strike(ServerLevel level, ServerPlayer player, float amount) {
         player.hurt(player.damageSources().cactus(), amount);
+    }
+
+    static void impact(ServerLevel level, ServerPlayer player, String kind, float amount) {
+        var source =
+                switch (kind) {
+                    case "melee" ->
+                            player.damageSources()
+                                    .mobAttack(
+                                            new net.minecraft.world.entity.monster.Zombie(level));
+                    case "fire" -> player.damageSources().inFire();
+                    case "fall" -> player.damageSources().fall();
+                    case "magic" -> player.damageSources().magic();
+                    case "void" -> player.damageSources().fellOutOfWorld();
+                    default -> player.damageSources().cactus();
+                };
+        player.hurt(source, amount);
+    }
+
+    static void kill(ServerLevel level, ServerPlayer player) {
+        player.kill();
+    }
+
+    static float miningSpeed(ServerPlayer player) {
+        return player.getDigSpeed(Blocks.STONE.defaultBlockState(), player.blockPosition());
     }
 
     static ItemStack craft(ServerLevel level, CraftingInput input) {

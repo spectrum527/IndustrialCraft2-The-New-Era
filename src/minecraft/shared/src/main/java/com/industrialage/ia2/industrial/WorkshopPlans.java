@@ -157,8 +157,7 @@ final class WorkshopPlans {
         if (!WorkshopPlatform.canSupplyContainer(vessel, true)) return null;
         var tank = new WorkshopNode.Tank(product.amount());
         tank.fill(product.id(), product.amount(), false);
-        var filled = WorkshopCells.namedFill(tank, vessel);
-        if (filled == null) filled = WorkshopPlatform.fillContainer(tank, vessel);
+        var filled = WorkshopPlatform.fillContainer(tank, vessel);
         if (filled == null
                 || filled.stack().isEmpty()
                 || filled.liquid().amount() != product.amount()) return null;
@@ -207,8 +206,7 @@ final class WorkshopPlans {
         if (slot >= kind.inputs(mode) || item.isEmpty()) return false;
         if (kind == WorkshopKind.CANNER) {
             if (mode == 1 || mode == 3 && slot == 0)
-                return WorkshopPlatform.itemId(item).equals("ic2:empty_cell")
-                        || WorkshopPlatform.canSupplyContainer(item, true);
+                return WorkshopPlatform.canSupplyContainer(item, true);
             if (mode == 2)
                 return WorkshopCells.canDrain(item, kind.outputVolume(), ignored -> true);
         }
@@ -284,13 +282,10 @@ final class WorkshopPlans {
         if (item.isEmpty()) {
             return null;
         }
-        var moved = filling ? WorkshopCells.namedFill(node.inlet, item) : null;
-        if (moved == null) {
-            moved =
-                    filling
-                            ? WorkshopPlatform.fillContainer(node.inlet, item)
-                            : WorkshopPlatform.drainWholeContainer(node.outlet, item);
-        }
+        var moved =
+                filling
+                        ? WorkshopPlatform.fillContainer(node.inlet, item)
+                        : WorkshopPlatform.drainWholeContainer(node.outlet, item);
         if (moved == null || moved.stack().isEmpty()) {
             return null;
         }

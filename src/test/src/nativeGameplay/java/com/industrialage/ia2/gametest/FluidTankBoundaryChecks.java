@@ -79,7 +79,7 @@ final class FluidTankBoundaryChecks {
                     "washer-7000-gap-1000-accepts-whole-cell",
                     amount(1) == 8000
                             && menus[1].getSlot(6).getItem().isEmpty()
-                            && is(1, 14, "empty_cell"));
+                            && is(1, 14, "fluid_cell"));
             check.accept(
                     "washer-7751-gap-249-preserves-250-cell",
                     amount(2) == 7751
@@ -113,7 +113,7 @@ final class FluidTankBoundaryChecks {
                         "washer-7000-after-work-refills-next-full-cell",
                         amount(4) == 8000
                                 && menus[4].getSlot(6).getItem().isEmpty()
-                                && is(4, 14, "empty_cell"));
+                                && is(4, 14, "fluid_cell"));
                 crossed = true;
             }
         }

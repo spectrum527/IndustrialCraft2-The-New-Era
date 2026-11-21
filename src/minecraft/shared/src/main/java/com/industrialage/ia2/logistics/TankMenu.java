@@ -87,16 +87,7 @@ final class TankMenu extends AbstractContainerMenu {
         if (button != 0 || node == null || !stillValid(player) || getCarried().isEmpty())
             return false;
         var carried = getCarried();
-        ItemStack changed;
-        if (node.liquid != null
-                && TransportPlatform.isPristineCell(carried)
-                && node.amount >= 1000) {
-            changed =
-                    com.industrialage.ia2.industrial.WorkshopPlatform.namedFilledCell(
-                            node.liquid.stack(1));
-            if (!changed.isEmpty()) node.debit(1000);
-            else changed = TransportPlatform.exchangeCursor(node, carried, player);
-        } else changed = TransportPlatform.exchangeCursor(node, carried, player);
+        var changed = TransportPlatform.exchangeCursor(node, carried, player);
         if (changed == null) return false;
         if (carried.getCount() == 1) setCarried(changed);
         else {
