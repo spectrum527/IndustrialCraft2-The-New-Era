@@ -789,6 +789,18 @@ assets/ic2/textures/blocks/steam/coke_kiln_grate.png,3571a246151cb7582d690138c78
 assets/ic2/textures/blocks/steam/coke_kiln_hatch.png,415179d577bf147201a1778ec16fabc58040b08609d2abbdd4f3e510ecf1149b,assets/ic2/textures/blocks/steam/coke_kiln_hatch.png
 assets/ic2/textures/blocks/steam/refractory_bricks.png,8d1bff358134ff343ca151d917d09adc615197fefa8b93bd4228e8afc1a75fbb,assets/ic2/textures/blocks/steam/refractory_bricks.png
 assets/ic2/textures/blocks/storage_box.png,f51ac3b0c18fa1847b8f75edb633c4545b3216421631ce0554f02ddb32b60436,assets/ic2/textures/blocks/storage_box.png
+assets/ic2/textures/blocks/storage_box/bronze_bottom.png,cee597b5650cf50823faea2eff8fd5d1564b611ff001fb3e9b177e69e5455184,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/bronze_side.png,2d98d3c15091e2ef8207dd8371df9662fafe77c9e52cdb5a39c384afdc047f6a,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/bronze_top.png,c4a534df31494f85cef0e0f9587fdbc160d737ce25901fa0af9dc50de3f27e29,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/iron_bottom.png,b73dad1e67429787d8de42a2b80a90a788dc71e64411f60967b2352dd859781c,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/iron_side.png,f3fa5eb8aa37fd44092b2106ad687c667ba71a1fed5f3da04e7883a1d6e441aa,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/iron_top.png,d6e9f3c2cde7ffc58bb8b30aeb7b8e86003d76c0d31bc097a83361b95c136c89,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/steel_bottom.png,ef30b86e09d0dc875236b802781ee8f1671ff14510b4d25f676b4c96baf271ec,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/steel_side.png,b4c2147b5f0a089c8851115be6c627885a98fbc196d257c1e6db5518e5f56cae,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/steel_top.png,d552a9231e514422c9fd9961ada9bbc5c3a0bc6ded7da792d0206a1b57299d8d,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/wooden_bottom.png,5ccfddb6099df54192b8b476220660e75321d83027dc3ae9774c7cfb7990caf7,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/wooden_side.png,c9228cb7df2c05e187746e360ca25c1f5704df48f3a660a819476d1bf7f72a39,1.0.5 手工绘制 16×16 储物箱纹理
+assets/ic2/textures/blocks/storage_box/wooden_top.png,6bc605175c55d9998e21b936ff6785a57738f18b15439b587ea846d65b772d4e,1.0.5 手工绘制 16×16 储物箱纹理
 assets/ic2/textures/blocks/storage_box_old.png,86d9278a3a3b12ee10199013dd36e3df592f83d19219923c39e60282acda3a82,assets/ic2/textures/blocks/storage_box_old.png
 assets/ic2/textures/blocks/transport/bronze/pipe_large.png,abf27192feb579f42e04ac97db79c8e85663a3851c70a6f04499eeae1e9c9c62,assets/ic2/textures/blocks/transport/pipe_large.png，逐像素乘色 #AE5111
 assets/ic2/textures/blocks/transport/bronze/pipe_medium.png,c21b8d10aa5816e2bb7b9d3f2f06b48926e947c7e19bc90db79bfeafc52aed45,assets/ic2/textures/blocks/transport/pipe_medium.png，逐像素乘色 #AE5111
@@ -1525,7 +1537,7 @@ assets/ic2/textures/items/tool/electric/plasma_launcher.png,57f4e8dc2016cd93fdc8
 assets/ic2/textures/items/tool/electric/scanner.png,35eb792e10ef551d94b279041fadbdf23af2e9400f61498231598d60fd867d5a,assets/ic2/textures/items/tool/electric/scanner.png
 assets/ic2/textures/items/tool/electric/wind_meter.png,f6245fb5b36f1983f7d953816a093ffc90d9025b20a1f87692935278ce29c96f,assets/ic2/textures/items/tool/electric/wind_meter.png
 assets/ic2/textures/items/tool/foam_sprayer.png,6860b87a53f4218cc1e373ea3a07464c0fee799d2a0e80bc140ef150b08c9454,assets/ic2/textures/items/tool/foam_sprayer.png
-assets/ic2/textures/items/tool/forge_hammer.png,8ae5bf2d9516b5216318c111dd71a6e449183b903767a660c3630e18ea067315,1.0.4 手工绘制 16×16 像素网格
+assets/ic2/textures/items/tool/forge_hammer.png,cc6982af97d9dd922977e5407b83adcc587ddd2061889e7b77b2af956302f04c,1.0.5 手工绘制 16×16 木柄和金属锤头
 assets/ic2/textures/items/tool/frequency_transmitter.png,4d1e73d047d6aeb13d679ccc19ef68c3f4f18a9615087c5cfd0cc83b4f9bdce2,assets/ic2/textures/items/tool/frequency_transmitter.png
 assets/ic2/textures/items/tool/meter.png,44dc9c4fc0e48b53836435f9e5de56537adf7d3377139a7c57b13f7284f07de2,assets/ic2/textures/items/tool/meter.png
 assets/ic2/textures/items/tool/painter/painter.png,7feace002f8cd968c9b78a79dd128f664f6bed650d23b9bc1c04f4b6e1826745,assets/ic2/textures/items/tool/painter/painter.png
