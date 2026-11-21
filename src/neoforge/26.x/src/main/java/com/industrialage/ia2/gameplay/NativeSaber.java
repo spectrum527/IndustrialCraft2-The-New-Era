@@ -1,12 +1,10 @@
 package com.industrialage.ia2.gameplay;
 
-import com.industrialage.ia2.audio.SaberAudio;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 
-/** Named melee attributes and held audio for 26.x. */
+/** Named melee attributes for 26.x. */
 final class NativeSaber {
     static final AttributeModifier ACTIVE_DAMAGE =
             new AttributeModifier(
@@ -27,10 +25,8 @@ final class NativeSaber {
     private NativeSaber() {}
 
     static final class Client {
-        static void install(IEventBus bus, IEventBus game) {
-            var sound = new SaberAudio();
-            game.addListener(
-                    ClientTickEvent.Post.class, event -> sound.reconcile(NeoSaber::active));
+        static void install(IEventBus bus) {
+            // The item model selects the active blade from the synced component.
         }
     }
 }

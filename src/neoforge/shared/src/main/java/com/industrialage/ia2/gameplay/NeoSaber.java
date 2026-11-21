@@ -1,6 +1,6 @@
 package com.industrialage.ia2.gameplay;
 
-import com.industrialage.ia2.audio.IndustrialSounds;
+import com.industrialage.ia2.audio.SaberAudio;
 import com.industrialage.ia2.content.PortableEquipment;
 import com.mojang.serialization.Codec;
 import java.util.function.Supplier;
@@ -60,7 +60,7 @@ final class NeoSaber {
                     }
                 });
         gameBus.addListener(LivingIncomingDamageEvent.class, NeoSaber::onHit);
-        if (side == Dist.CLIENT) NativeSaber.Client.install(modBus, gameBus);
+        if (side == Dist.CLIENT) NativeSaber.Client.install(modBus);
     }
 
     static boolean active(ItemStack stack) {
@@ -83,10 +83,7 @@ final class NeoSaber {
         if (active(stack)) stack.remove(state.get());
         else {
             stack.set(state.get(), true);
-            IndustrialSounds.play(
-                    (ServerLevel) player.level(),
-                    player.blockPosition(),
-                    "item.nanosaber.power_up");
+            SaberAudio.play((ServerLevel) player.level(), player, "power_up");
         }
     }
 
@@ -110,11 +107,6 @@ final class NeoSaber {
             return;
         }
         var level = (ServerLevel) player.level();
-        IndustrialSounds.play(
-                level,
-                player.blockPosition(),
-                level.getRandom().nextBoolean()
-                        ? "item.nanosaber.swing1"
-                        : "item.nanosaber.swing2");
+        SaberAudio.play(level, player, level.getRandom().nextBoolean() ? "swing1" : "swing2");
     }
 }
