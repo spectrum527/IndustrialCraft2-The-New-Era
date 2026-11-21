@@ -37,10 +37,7 @@ final class PowerInventory extends SimpleContainer
             if (!device.fluidMode) return false;
             if (slot == 56) return WorkshopPlatform.canSupplyContainer(stack, true);
             if (slot != 54) return false;
-            var drain =
-                    WorkshopPlatform.containerRecipe(
-                            new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY), stack, false);
-            return drain != null && drain.liquid().id().equals("ic2:coolant");
+            return WorkshopCells.canDrain(stack, ReactorVessel.TANK_CAPACITY, "ic2:coolant");
         }
         int upgrades =
                 device.kind == PowerKind.MAGNETIZER

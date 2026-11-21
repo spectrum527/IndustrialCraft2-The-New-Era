@@ -19,7 +19,7 @@ final class WorkshopThermal {
             case SEMIFLUID -> active = semifluid(node);
             case RADIOISOTOPE_HEAT -> active = pellets(node) > 0;
             case FLUID_HEAT -> {
-                refill(node);
+                node.refillContainers(0, WorkshopInventory.OUTPUT_START);
                 active = node.inlet.amount > 0;
             }
             case FERMENTER -> active = ferment(node, level, facing);
@@ -47,7 +47,7 @@ final class WorkshopThermal {
     }
 
     private static boolean semifluid(WorkshopNode node) {
-        refill(node);
+        node.refillContainers(0, WorkshopInventory.OUTPUT_START);
         int produced = node.inlet.id.equals(BIOGAS) ? 16 : 8;
         if (node.inlet.amount == 0 || node.energy + produced > node.kind.capacity) {
             return false;
@@ -56,25 +56,6 @@ final class WorkshopThermal {
         node.energy += produced;
         node.setChanged();
         return true;
-    }
-
-    private static void refill(WorkshopNode node) {
-        if (node.inlet.amount > 0) return;
-        var stack = node.inventory.getItem(0);
-        if (stack.isEmpty()) {
-            return;
-        }
-        var drained = WorkshopPlatform.containerRecipe(node, stack, false);
-        if (drained == null
-                || drained.stack().isEmpty()
-                || node.receiveFluid(drained.liquid().id(), drained.liquid().amount(), true)
-                        != drained.liquid().amount()
-                || !node.canOutputTo(0, drained.stack())) {
-            return;
-        }
-        node.receiveFluid(drained.liquid().id(), drained.liquid().amount(), false);
-        node.inventory.removeItem(0, 1);
-        node.appendOutput(drained.stack());
     }
 
     private static int pellets(WorkshopNode node) {

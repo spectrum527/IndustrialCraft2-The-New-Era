@@ -453,29 +453,44 @@ public final class WorkshopPlatform {
                 .orElse(false);
     }
 
-    static ContainerResult containerRecipe(WorkshopNode node, ItemStack item, boolean filling) {
-        return containerRecipe(filling ? node.inlet : node.outlet, item, filling);
+    static ContainerResult fillContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var copy = item.copy();
+        copy.setCount(1);
+        var handler = FluidUtil.getFluidHandler(copy).orElse(null);
+        var liquid = fluid(tank.id, tank.amount);
+        if (handler == null || liquid.isEmpty() || liquid.hasTag()) return null;
+        int amount = handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE);
+        return amount > 0
+                ? new ContainerResult(handler.getContainer(), new Liquid(fluidId(liquid), amount))
+                : null;
     }
 
-    static ContainerResult containerRecipe(
-            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
+    static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
         var copy = item.copy();
         copy.setCount(1);
         var handler = FluidUtil.getFluidHandler(copy).orElse(null);
         if (handler == null) return null;
-        var liquid =
-                filling
-                        ? fluid(tank.id, tank.amount)
-                        : handler.drain(
-                                tank.capacity - tank.amount, IFluidHandler.FluidAction.EXECUTE);
-        if (liquid.isEmpty() || liquid.hasTag()) return null;
-        int amount =
-                filling
-                        ? handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE)
-                        : liquid.getAmount();
-        return amount > 0
-                ? new ContainerResult(handler.getContainer(), new Liquid(fluidId(liquid), amount))
-                : null;
+        var contents =
+                WorkshopCells.wholeContents(
+                        tank,
+                        handler.getTanks(),
+                        slot -> {
+                            var stored = handler.getFluidInTank(slot);
+                            if (stored.isEmpty()) return Liquid.EMPTY;
+                            return stored.hasTag()
+                                    ? null
+                                    : new Liquid(fluidId(stored), stored.getAmount());
+                        });
+        if (contents.amount() == 0) return null;
+        var drained =
+                handler.drain(
+                        fluid(contents.id(), contents.amount()), IFluidHandler.FluidAction.EXECUTE);
+        return drained.isEmpty()
+                        || drained.hasTag()
+                        || drained.getAmount() != contents.amount()
+                        || !fluidId(drained).equals(contents.id())
+                ? null
+                : new ContainerResult(handler.getContainer(), contents);
     }
 
     static boolean interactFluid(

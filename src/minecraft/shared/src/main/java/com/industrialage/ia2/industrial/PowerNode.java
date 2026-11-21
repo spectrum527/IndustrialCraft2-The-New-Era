@@ -152,7 +152,10 @@ public final class PowerNode extends PowerSaveBase
                 chambers = count;
                 int shell = chambers == 6 ? ReactorVessel.inspect(level, worldPosition) : -1;
                 fluidMode = shell >= 0;
-                if (fluidMode) powered |= shell > 0;
+                if (fluidMode) {
+                    powered |= shell > 0;
+                    refillCoolant();
+                }
                 if ((now + worldPosition.asLong()) % 20 == 0) {
                     reactor.cycle(inventory, count, powered, PowerSettings.multiplier("nuclear"));
                     if (fluidMode) {
@@ -175,11 +178,12 @@ public final class PowerNode extends PowerSaveBase
                         return;
                     }
                 }
+            } else if (fluidMode) {
+                refillCoolant();
             }
             remaining = fluidMode ? 0 : reactor.output();
             active = reactor.output() > 0 || reactor.heat() >= 1000;
             if (fluidMode) {
-                serviceContainer(54, false);
                 serviceContainer(56, true);
             }
         } else if (kind.playerMachine()) {
@@ -267,7 +271,7 @@ public final class PowerNode extends PowerSaveBase
                         ? 0
                         : (1 << (pellets - 1)) * PowerSettings.multiplier("radioisotope");
             case GEO_GENERATOR:
-                if (liquid == 0 || liquid < LAVA_PER_TICK && energy < capacity()) refillLava();
+                refillLava();
                 if (energy >= capacity() || liquid < LAVA_PER_TICK) return 0;
                 liquid -= LAVA_PER_TICK;
                 setChanged();
@@ -354,16 +358,17 @@ public final class PowerNode extends PowerSaveBase
     }
 
     private void refillLava() {
-        var fuelStack = inventory.getItem(0);
-        if (fuelStack.isEmpty()) return;
-        var intake = new WorkshopNode.Tank(LAVA_CAPACITY);
-        intake.fill(LAVA, liquid, false);
-        var fuel = WorkshopCells.drain(intake, fuelStack, LAVA);
-        if (fuel == null) return;
-        int volume = fuel.liquid().amount();
-        if (fillLava(volume, true) != volume || !storeContainerRemainder(fuel.stack())) return;
-        inventory.removeItem(0, 1);
-        fillLava(volume, false);
+        for (int queued = inventory.getItem(0).getCount(); queued > 0; queued--) {
+            if (liquid >= LAVA_CAPACITY) return;
+            var intake = new WorkshopNode.Tank(LAVA_CAPACITY);
+            intake.fill(LAVA, liquid, false);
+            var fuel = WorkshopPlatform.drainWholeContainer(intake, inventory.getItem(0));
+            if (fuel == null || !LAVA.equals(fuel.liquid().id())) return;
+            int volume = fuel.liquid().amount();
+            if (fillLava(volume, true) != volume || !storeContainerRemainder(fuel.stack())) return;
+            inventory.removeItem(0, 1);
+            fillLava(volume, false);
+        }
     }
 
     private boolean storeContainerRemainder(ItemStack remainder) {
@@ -527,30 +532,40 @@ public final class PowerNode extends PowerSaveBase
         return Math.min(5, 1 + upgradeCount("transformer_upgrade"));
     }
 
-    private void serviceContainer(int slot, boolean filling) {
+    private void refillCoolant() {
+        for (int queued = inventory.getItem(54).getCount(); queued > 0; queued--) {
+            if (!serviceContainer(54, false)) return;
+        }
+    }
+
+    private boolean serviceContainer(int slot, boolean filling) {
         var input = inventory.getItem(slot);
-        if (input.isEmpty()) return;
+        if (input.isEmpty() || !filling && coolant >= ReactorVessel.TANK_CAPACITY) return false;
         String liquid = filling ? "ic2:hot_coolant" : "ic2:coolant";
         var tank = new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY);
         tank.fill(liquid, filling ? hotCoolant : coolant, false);
-        var move = WorkshopPlatform.containerRecipe(tank, input, filling);
-        if (move == null || !liquid.equals(move.liquid().id())) return;
+        var move =
+                filling
+                        ? WorkshopPlatform.fillContainer(tank, input)
+                        : WorkshopPlatform.drainWholeContainer(tank, input);
+        if (move == null || !liquid.equals(move.liquid().id())) return false;
         int volume = move.liquid().amount();
         if (volume <= 0 || (filling ? hotCoolant : ReactorVessel.TANK_CAPACITY - coolant) < volume)
-            return;
+            return false;
         var returned = move.stack();
         var output = inventory.getItem(slot + 1);
         if (!returned.isEmpty()
                 && !output.isEmpty()
                 && (!WorkshopPlatform.sameItem(output, returned)
                         || returned.getCount() + output.getCount() > output.getMaxStackSize()))
-            return;
+            return false;
         inventory.removeItem(slot, 1);
         if (output.isEmpty()) inventory.setItem(slot + 1, returned);
         else if (!returned.isEmpty()) output.grow(returned.getCount());
         if (filling) hotCoolant -= volume;
         else coolant += volume;
         setChanged();
+        return true;
     }
 
     private void servicePort(ServerLevel level) {
