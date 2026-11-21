@@ -2,6 +2,21 @@
 
 0.1.0 四个平台的安装包与游戏验收汇总见[首版验收](evidence/first-playable-0.1.0/README.md)。
 
+## 裸线放电回归
+
+在 Forge 1.19.2 分支以 Java 17 运行原生 GameTest。输出目录需为新目录。
+
+```bash
+./gradlew :forge:1.19.2:prepareQaWorld
+python3 -B src/forge/1.19.2/qa/verify.py smoke --prepared \
+  --server-launch src/forge/1.19.2/build/qa-machine/server-launch.json \
+  --output build/qa/bare-cable
+```
+
+`smoke/game-test.xml` 记录 `barecabledamageusesdeliveredenergy`。试验放置并接通真实电缆，检查储能箱的实际收发、固定位置铁傀儡的生命值及原生魔法伤害源。场景覆盖无负载、满接收端、无用支路、绝缘和泡沫覆盖、部分接收、多段、多源、各电流档位的碰撞距离、不同线路交叠及防化套装。
+
+## 场景数据与相似度
+
 依据项目规则 §1、QA 容差条款、已批准计划 §8.2（本任务给定表）及 WP-F 约定。工具需求先于正式领域 spec；这里定义交换格式，不定义游戏行为，也不包含采集器或实测期望。
 
 `schema/scenario.schema.json` 使用 JSON Schema 2020-12。`schema_version` 标识格式；`data_version` 标识采集批次/数据修订。场景记录整数坐标 `[x,y,z]`、方块标识、初始状态、随机种子、运行 tick 数；采样记录目标、指标、单位与采样时刻；结果以 `sample_id` 对应采样计划，保留双方原始值。`results:[]` 表示未运行，不构成验收通过。
