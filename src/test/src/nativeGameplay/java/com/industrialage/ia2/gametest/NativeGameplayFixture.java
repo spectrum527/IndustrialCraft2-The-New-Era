@@ -1,6 +1,5 @@
 package com.industrialage.ia2.gametest;
 
-import com.industrialage.ia2.celltest.HeldCellChecks;
 import com.industrialage.ia2.gameplay.IndustrialMachine;
 import com.industrialage.ia2.shocktest.CableShockChecks;
 import com.industrialage.ia2.worldtest.WorldChecks;
@@ -399,11 +398,10 @@ public final class NativeGameplayFixture {
                         case "heldFluidCell" -> {
                             var level = server.overworld();
                             if (!level.isPositionEntityTicking(HELD_CELL_ORIGIN)) yield false;
-                            HeldCellChecks.run(
+                            NativeHeldCellHost.run(
                                     level,
                                     FakePlayerFactory.getMinecraft(level),
                                     HELD_CELL_ORIGIN,
-                                    NativeHeldCellHost.access(level),
                                     this::check);
                             yield true;
                         }
