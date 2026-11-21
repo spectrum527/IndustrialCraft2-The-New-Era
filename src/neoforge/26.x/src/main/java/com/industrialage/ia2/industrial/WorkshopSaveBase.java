@@ -4,6 +4,9 @@ import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +42,39 @@ abstract class WorkshopSaveBase extends BlockEntity {
 
     WorkshopSaveBase(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ((WorkshopNode) this).kind == WorkshopKind.WIND_KINETIC
+                ? ClientboundBlockEntityDataPacket.create(this)
+                : null;
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        var node = (WorkshopNode) this;
+        if (node.kind != WorkshopKind.WIND_KINETIC) return super.getUpdateTag(registries);
+        var tag = new CompoundTag();
+        tag.putInt("rotor", node.visualRotorType());
+        tag.putInt("speed", node.visualRotorSpeed());
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        var node = (WorkshopNode) this;
+        if (node.kind == WorkshopKind.WIND_KINETIC)
+            node.acceptWindVisual(input.getIntOr("rotor", 0), input.getIntOr("speed", 0));
+        else super.handleUpdateTag(input);
+    }
+
+    @Override
+    public void onDataPacket(net.minecraft.network.Connection connection, ValueInput input) {
+        var node = (WorkshopNode) this;
+        if (node.kind == WorkshopKind.WIND_KINETIC)
+            node.acceptWindVisual(input.getIntOr("rotor", 0), input.getIntOr("speed", 0));
+        else super.onDataPacket(connection, input);
     }
 
     @Override

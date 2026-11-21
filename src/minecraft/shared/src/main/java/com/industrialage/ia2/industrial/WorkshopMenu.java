@@ -139,6 +139,10 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         if ((kind == WorkshopKind.FLUID_HEAT || kind == WorkshopKind.SEMIFLUID) && slot == 0) {
             return WorkshopInventory.acceptsFluidFuel(kind, item);
         }
+        if ((kind == WorkshopKind.WIND_KINETIC || kind == WorkshopKind.WATER_KINETIC)
+                && slot == 0) {
+            return WorkshopKinetic.ROTOR_RATINGS.containsKey(WorkshopPlatform.itemId(item));
+        }
         if (kind == WorkshopKind.ELECTROLYZER
                 && slot >= WorkshopInventory.UPGRADE_START
                 && slot < WorkshopInventory.UPGRADE_END) {
@@ -322,7 +326,8 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         return get(Metric.MODE);
     }
 
-    int motion() {
+    /** Kinetic KU/t synchronized to this machine menu. */
+    public int motion() {
         return get(Metric.KINETIC);
     }
 
