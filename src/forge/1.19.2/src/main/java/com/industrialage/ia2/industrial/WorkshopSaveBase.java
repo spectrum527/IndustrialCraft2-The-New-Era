@@ -30,14 +30,14 @@ abstract class WorkshopSaveBase extends BlockEntity {
     @Override
     public net.minecraft.world.phys.AABB getRenderBoundingBox() {
         var node = (WorkshopNode) this;
-        return node.kind == WorkshopKind.WIND_KINETIC
+        return node.kind.hasWorldRotor()
                 ? WindRotorMount.bounds(node)
                 : super.getRenderBoundingBox();
     }
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ((WorkshopNode) this).kind == WorkshopKind.WIND_KINETIC
+        return ((WorkshopNode) this).kind.hasWorldRotor()
                 ? ClientboundBlockEntityDataPacket.create(this)
                 : null;
     }
@@ -45,7 +45,7 @@ abstract class WorkshopSaveBase extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag() {
         var node = (WorkshopNode) this;
-        if (node.kind != WorkshopKind.WIND_KINETIC) return super.getUpdateTag();
+        if (!node.kind.hasWorldRotor()) return super.getUpdateTag();
         var tag = new CompoundTag();
         tag.putInt("rotor", node.visualRotorType());
         tag.putInt("speed", node.visualRotorSpeed());
@@ -55,8 +55,8 @@ abstract class WorkshopSaveBase extends BlockEntity {
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         var node = (WorkshopNode) this;
-        if (node.kind == WorkshopKind.WIND_KINETIC)
-            node.acceptWindVisual(tag.getInt("rotor"), tag.getInt("speed"));
+        if (node.kind.hasWorldRotor())
+            node.acceptRotorVisual(tag.getInt("rotor"), tag.getInt("speed"));
         else super.handleUpdateTag(tag);
     }
 
@@ -64,9 +64,9 @@ abstract class WorkshopSaveBase extends BlockEntity {
     public void onDataPacket(
             net.minecraft.network.Connection connection, ClientboundBlockEntityDataPacket packet) {
         var node = (WorkshopNode) this;
-        if (node.kind == WorkshopKind.WIND_KINETIC) {
+        if (node.kind.hasWorldRotor()) {
             var tag = packet.getTag();
-            if (tag != null) node.acceptWindVisual(tag.getInt("rotor"), tag.getInt("speed"));
+            if (tag != null) node.acceptRotorVisual(tag.getInt("rotor"), tag.getInt("speed"));
         } else super.onDataPacket(connection, packet);
     }
 

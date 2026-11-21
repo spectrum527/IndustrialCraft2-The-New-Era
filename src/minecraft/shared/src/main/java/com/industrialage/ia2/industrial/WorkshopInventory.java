@@ -140,8 +140,11 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                 case STEAM_TURBINE -> {
                     return id.equals("ic2:steam_turbine");
                 }
-                case WIND_KINETIC, WATER_KINETIC -> {
+                case WIND_KINETIC -> {
                     return WorkshopKinetic.ROTOR_RATINGS.containsKey(id);
+                }
+                case WATER_KINETIC -> {
+                    return WorkshopKinetic.validWaterRotor(stack);
                 }
                 default -> {}
             }
