@@ -61,8 +61,9 @@ public final class TransportPlatform {
         return CELL_FLUID.get();
     }
 
-    static final DeferredHolder<Item, Item> CELL = ITEMS.registerSimpleItem("empty_cell");
-    static final DeferredHolder<Item, Item> FLUID_CELL = NeoTransport.fluidCell(ITEMS);
+    static final DeferredHolder<Item, Item> CELL = ITEMS.registerItem("empty_cell", CellItem::new);
+    static final DeferredHolder<Item, Item> FLUID_CELL =
+            ITEMS.registerItem("fluid_cell", properties -> new CellItem(properties.stacksTo(1)));
     private static final DeferredHolder<Item, Item> LV = ITEMS.registerSimpleItem("pump_cover_lv");
     private static final DeferredHolder<Item, Item> MV = ITEMS.registerSimpleItem("pump_cover_mv");
 

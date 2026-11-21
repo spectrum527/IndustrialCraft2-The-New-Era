@@ -311,7 +311,7 @@ This rebuild also adds several survival crafting recipes.
 
 - Tank, UU Assembly Bench, Advanced Ejector Upgrade, and Advanced Pulling Upgrade each have a standalone survival recipe.
 - Bronze Dust, Lapis Dust, Diamond Dust, Obsidian Dust, and Uranium 238 split 1-to-9 into tiny piles on the crafting table.
-- Universal Fluid Cell uses a glass block in the center, while Empty Cell keeps a glass pane in the center, so both containers are craftable side by side.
+- Craft a Universal Fluid Cell with a glass block in the center, or an Empty Cell with a glass pane. Right-click a water or lava source with an empty cell to collect it. Right-click a tank or a machine’s fluid input to transfer the liquid. Right-clicking ordinary ground keeps the liquid in the cell.
 
 See the full list in [Classic and supplemental recipes](../spec/registry/classic-playable-recipes.json).
 

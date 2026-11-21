@@ -2,6 +2,7 @@ package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
+import com.industrialage.ia2.logistics.CellItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -82,7 +83,7 @@ public final class WorkshopPlatform {
         for (String blade : new String[] {"iron", "steel", "diamond"}) {
             ITEMS.registerSimpleItem(blade + "_cutting_blade");
         }
-        WorkshopCells.FILLED.keySet().forEach(ITEMS::registerSimpleItem);
+        WorkshopCells.FILLED.keySet().forEach(path -> ITEMS.registerItem(path, CellItem::new));
         registerCans();
         ITEMS.registerSimpleItem("electrolyzed_water_cell");
         ITEMS.registerSimpleItem("uu_matter");
