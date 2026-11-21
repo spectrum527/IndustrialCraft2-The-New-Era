@@ -46,7 +46,7 @@ abstract class WorkshopSaveBase extends BlockEntity {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ((WorkshopNode) this).kind == WorkshopKind.WIND_KINETIC
+        return ((WorkshopNode) this).kind.hasWorldRotor()
                 ? ClientboundBlockEntityDataPacket.create(this)
                 : null;
     }
@@ -54,7 +54,7 @@ abstract class WorkshopSaveBase extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         var node = (WorkshopNode) this;
-        if (node.kind != WorkshopKind.WIND_KINETIC) return super.getUpdateTag(registries);
+        if (!node.kind.hasWorldRotor()) return super.getUpdateTag(registries);
         var tag = new CompoundTag();
         tag.putInt("rotor", node.visualRotorType());
         tag.putInt("speed", node.visualRotorSpeed());
@@ -64,16 +64,16 @@ abstract class WorkshopSaveBase extends BlockEntity {
     @Override
     public void handleUpdateTag(ValueInput input) {
         var node = (WorkshopNode) this;
-        if (node.kind == WorkshopKind.WIND_KINETIC)
-            node.acceptWindVisual(input.getIntOr("rotor", 0), input.getIntOr("speed", 0));
+        if (node.kind.hasWorldRotor())
+            node.acceptRotorVisual(input.getIntOr("rotor", 0), input.getIntOr("speed", 0));
         else super.handleUpdateTag(input);
     }
 
     @Override
     public void onDataPacket(net.minecraft.network.Connection connection, ValueInput input) {
         var node = (WorkshopNode) this;
-        if (node.kind == WorkshopKind.WIND_KINETIC)
-            node.acceptWindVisual(input.getIntOr("rotor", 0), input.getIntOr("speed", 0));
+        if (node.kind.hasWorldRotor())
+            node.acceptRotorVisual(input.getIntOr("rotor", 0), input.getIntOr("speed", 0));
         else super.onDataPacket(connection, input);
     }
 
