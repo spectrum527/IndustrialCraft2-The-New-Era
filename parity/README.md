@@ -74,3 +74,15 @@ python3 -m json.tool parity/schema/scenario.schema.json > /dev/null
 单文件分数 **>25%** 失败、**>15%** 警告；恰好 25% 仅警告，恰好 15% 不警告。stdout 始终输出 JSON（`--help` 除外）。退出码：`0` 完整扫描且通过/警告；`1` 相似度或八行规则失败；`2` 参数、读取、无 Java 文件或不足五 token 等无法评估；`3` CI 缺少参考目录而跳过（同时向 stderr 发警告）。空文件和短文件在任一侧均不形成通过结论。
 
 完整检查只能在本地或持有私有参考目录的 runner 运行。`CI` 为非空且不为 `0/false/no` 时，候选目录存在（即使没有 Java 文件）且省略 `--reference` 得到 `skipped`/退出码 3；显式给错目录仍为错误/退出码 2。公共 CI 应把 3 标为跳过并展示警告，不能转换成门禁通过。自测只在工具目录创建并清理自造样本，不读取真实参考目录。玩家版游戏内逐项验收见本页开头的 0.1.0 记录。
+
+## 风力动能与转子
+
+三个 NeoForge 目标分别运行以下命令。每个任务先在专服用玩家交互放置风机、动能发电机和储电箱，再启动第二个专服进程加载同一存档。
+
+```sh
+./gradlew :neoforge:1.21.1:runNativeGameplayWindRead
+./gradlew :neoforge:26.1.2:runNativeGameplayWindRead
+./gradlew :neoforge:26.2:runNativeGameplayWindRead
+```
+
+各目标的 `build/run/native-wind/windWrite.properties` 与 `windRead.properties` 记录正反接、可用 KU、实际换电、扫掠遮挡和冷启动恢复的结果。26.x 的 `runModernServerSmoke` 还会把服务器已加载的工作台配方写入原生配方同步包并解码，检查喷气背包挂载配方能到达接收端。[风机规格](../spec/energy/wind-kinetic.md) · [联机规格](../spec/platform/network.md)

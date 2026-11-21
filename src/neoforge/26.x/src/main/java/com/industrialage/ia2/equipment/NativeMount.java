@@ -14,9 +14,9 @@ import net.minecraft.world.level.Level;
 
 /** Recipe codec and wearable recognition on the 26.x component-backed crafting API. */
 final class NativeMount {
+    private static final AttachRecipe ATTACHMENT = new AttachRecipe();
     private static final RecipeSerializer<AttachRecipe> SERIALIZER =
-            new RecipeSerializer<>(
-                    MapCodec.unit(AttachRecipe::new), StreamCodec.unit(new AttachRecipe()));
+            new RecipeSerializer<>(MapCodec.unit(ATTACHMENT), StreamCodec.unit(ATTACHMENT));
 
     private NativeMount() {}
 

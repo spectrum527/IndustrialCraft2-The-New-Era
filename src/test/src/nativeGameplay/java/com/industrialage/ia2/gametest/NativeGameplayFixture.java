@@ -62,6 +62,7 @@ public final class NativeGameplayFixture {
     private final PowerChecks power = new PowerChecks();
     private final WorkshopChecks workshop = new WorkshopChecks();
     private final StorageChecks storage = new StorageChecks();
+    private com.industrialage.ia2.windtest.WindKineticChecks wind;
     private WorldChecks worldProgram;
     private com.industrialage.ia2.worldtest.FoodPaintChecks worldDetails;
     private int ticks;
@@ -103,7 +104,15 @@ public final class NativeGameplayFixture {
                 complete(server, null);
                 return;
             }
-            if (phase.equals("heldFluidCell")) {
+            if (phase.equals("windWrite") || phase.equals("windRead")) {
+                wind =
+                        new com.industrialage.ia2.windtest.WindKineticChecks(
+                                NativeGameplayFixture::block,
+                                NativeGameplayFixture::item,
+                                this::check,
+                                new BlockPos(72, 200, 72));
+                wind.start(level, FakePlayerFactory.getMinecraft(level), phase.equals("windRead"));
+            } else if (phase.equals("heldFluidCell")) {
                 level.setChunkForced(1, 1, true);
                 level.getChunk(1, 1);
             } else if (phase.equals("cableShock")) {
@@ -179,8 +188,10 @@ public final class NativeGameplayFixture {
             }
             if ("worldProgram".equals(phase) || "worldDetails".equals(phase))
                 server.tickRateManager().setTickRate(200F);
-            else if ("cableShock".equals(phase) || "heldFluidCell".equals(phase))
-                server.tickRateManager().setTickRate(20F);
+            else if ("cableShock".equals(phase)
+                    || "heldFluidCell".equals(phase)
+                    || "windWrite".equals(phase)
+                    || "windRead".equals(phase)) server.tickRateManager().setTickRate(20F);
             else
                 server.tickRateManager()
                         .requestGameToSprint("workshop".equals(phase) ? 8_500 : 1_300);
@@ -421,6 +432,7 @@ public final class NativeGameplayFixture {
                         }
                         case "write" -> writeStage(server.overworld());
                         case "workshop" -> workshop.tick(server.overworld(), this::check);
+                        case "windWrite", "windRead" -> wind.tick(server.overworld());
                         default -> readStage(server.overworld());
                     };
             if (done) {

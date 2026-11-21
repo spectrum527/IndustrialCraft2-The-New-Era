@@ -461,6 +461,8 @@
   "gui.ic2.workshop.slot.template": "Reusable UU recipe template",
   "gui.ic2.workshop.detail_tank": "%s · %s · %s / %s mB",
   "gui.ic2.workshop.kinetic": "%s KU",
+  "gui.ic2.workshop.kinetic_available": "Available %s KU/t",
+  "gui.ic2.workshop.kinetic_input": "Input %s KU/t",
   "gui.ic2.workshop.control.previous": "Previous recorded pattern",
   "gui.ic2.workshop.control.next": "Next recorded pattern",
   "gui.ic2.workshop.control.stop": "Stop replication",

@@ -47,7 +47,7 @@ def report = tasks.register('reportModernServerSmoke') {
             }
             def evidence = new Properties()
             ready.withReader('UTF-8') { evidence.load(it) }
-            def checks = ['ic2-loaded', 'lava-rejected', 'coal-4000-eu', 'native-codec', 'packet-32', 'world-save']
+            def checks = ['ic2-loaded', 'crafting-recipe-sync', 'lava-rejected', 'coal-4000-eu', 'native-codec', 'packet-32', 'world-save']
             def actualChecks = evidence.getProperty('checks', '').tokenize(',')
             if (evidence.status != 'passed' || evidence.runId != new File(dir, 'run-id').text.trim() ||
                     evidence.minecraft != minecraftVersion || evidence.neoforge != neoForgeVersion ||

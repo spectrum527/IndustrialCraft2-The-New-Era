@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -13,6 +14,43 @@ import net.minecraft.world.level.block.state.BlockState;
 abstract class WorkshopSaveBase extends BlockEntity {
     WorkshopSaveBase(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ((WorkshopNode) this).kind == WorkshopKind.WIND_KINETIC
+                ? ClientboundBlockEntityDataPacket.create(this)
+                : null;
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        var node = (WorkshopNode) this;
+        if (node.kind != WorkshopKind.WIND_KINETIC) return super.getUpdateTag(registries);
+        var tag = new CompoundTag();
+        tag.putInt("rotor", node.visualRotorType());
+        tag.putInt("speed", node.visualRotorSpeed());
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+        var node = (WorkshopNode) this;
+        if (node.kind == WorkshopKind.WIND_KINETIC)
+            node.acceptWindVisual(tag.getInt("rotor"), tag.getInt("speed"));
+        else super.handleUpdateTag(tag, registries);
+    }
+
+    @Override
+    public void onDataPacket(
+            net.minecraft.network.Connection connection,
+            ClientboundBlockEntityDataPacket packet,
+            HolderLookup.Provider registries) {
+        var node = (WorkshopNode) this;
+        if (node.kind == WorkshopKind.WIND_KINETIC) {
+            var tag = packet.getTag();
+            if (tag != null) node.acceptWindVisual(tag.getInt("rotor"), tag.getInt("speed"));
+        } else super.onDataPacket(connection, packet, registries);
     }
 
     @Override

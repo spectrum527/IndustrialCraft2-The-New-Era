@@ -2,6 +2,7 @@ package com.industrialage.ia2.modernsmoke;
 
 import com.industrialage.ia2.machine.FuelGenerator;
 import com.industrialage.ia2.machine.FuelGeneratorBlockEntity;
+import io.netty.buffer.Unpooled;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -10,13 +11,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Properties;
+import java.util.Set;
 import java.util.function.Supplier;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -30,6 +36,8 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.neoforged.neoforge.network.connection.ConnectionType;
+import net.neoforged.neoforge.network.payload.RecipeContentPayload;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /** Isolated 26.x server fixture; all machine behavior under test is production code. */
@@ -79,6 +87,7 @@ public final class ModernServerSmoke {
                         neoforge.equals(System.getProperty("ic2.smoke.neoforge")),
                         "NeoForge version");
                 require(ModList.get().isLoaded("ic2"), "IC2 mod loaded");
+                checkRecipeSync(world);
                 world.setChunkForced(POS.getX() >> 4, POS.getZ() >> 4, true);
                 require(
                         world.setBlockAndUpdate(POS, BLOCK.get().defaultBlockState()),
@@ -148,7 +157,7 @@ public final class ModernServerSmoke {
         result.setProperty("pid", Long.toString(ProcessHandle.current().pid()));
         result.setProperty(
                 "checks",
-                "ic2-loaded,lava-rejected,coal-4000-eu,native-codec,packet-32,world-save");
+                "ic2-loaded,crafting-recipe-sync,lava-rejected,coal-4000-eu,native-codec,packet-32,world-save");
         result.setProperty("codecBeforeSave", "363 ticks, 370 EU");
         result.setProperty("finalEnergy", "3968");
         var temporary = Path.of("ready.properties.tmp");
@@ -156,6 +165,24 @@ public final class ModernServerSmoke {
             result.store(writer, "26.x dedicated server smoke");
         }
         Files.move(temporary, Path.of("ready.properties"), StandardCopyOption.ATOMIC_MOVE);
+    }
+
+    private static void checkRecipeSync(ServerLevel level) {
+        var key = ResourceKey.create(Registries.RECIPE, Identifier.parse("ic2:jetpack_attachment"));
+        var recipes = level.getServer().getRecipeManager().recipeMap();
+        var payload = RecipeContentPayload.create(Set.of(RecipeType.CRAFTING), recipes);
+        var buffer =
+                new RegistryFriendlyByteBuf(
+                        Unpooled.buffer(), level.registryAccess(), ConnectionType.NEOFORGE);
+        try {
+            RecipeContentPayload.STREAM_CODEC.encode(buffer, payload);
+            var received = RecipeContentPayload.STREAM_CODEC.decode(buffer);
+            require(
+                    received.recipes().stream().anyMatch(holder -> holder.id().equals(key)),
+                    "Synced crafting recipes include the jetpack attachment");
+        } finally {
+            buffer.release();
+        }
     }
 
     private static String version(String id) {
