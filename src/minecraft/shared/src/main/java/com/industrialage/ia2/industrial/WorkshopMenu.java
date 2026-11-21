@@ -283,8 +283,10 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                             case PRODUCT -> WorkshopPlatform.previewItemId(machine.preview);
                             case IN_FLUID -> WorkshopPlatform.previewFluidId(machine.inlet.id);
                             case IN_AMOUNT -> machine.inlet.amount;
-                            case OUT_FLUID -> WorkshopPlatform.previewFluidId(machine.outlet.id);
-                            case OUT_AMOUNT -> machine.outlet.amount;
+                            case OUT_FLUID ->
+                                    WorkshopPlatform.previewFluidId(
+                                            WorkshopCokeKiln.displayedOutlet(machine).id);
+                            case OUT_AMOUNT -> WorkshopCokeKiln.displayedOutlet(machine).amount;
                             case BY_FLUID -> WorkshopPlatform.previewFluidId(machine.byproduct.id);
                             case BY_AMOUNT -> machine.byproduct.amount;
                             case TIER -> machine.energyTier();
@@ -375,7 +377,9 @@ public final class WorkshopMenu extends AbstractContainerMenu {
             case 1 ->
                     new TankReadout(
                             "fluid_out",
-                            kind.singleTank() ? 0 : kind.outputVolume(),
+                            kind == WorkshopKind.COKE_KILN
+                                    ? WorkshopKind.COKE_GRATE.outputVolume()
+                                    : kind.singleTank() ? 0 : kind.outputVolume(),
                             get(Metric.OUT_AMOUNT),
                             WorkshopPlatform.previewFluid(get(Metric.OUT_FLUID)));
             case 2 ->

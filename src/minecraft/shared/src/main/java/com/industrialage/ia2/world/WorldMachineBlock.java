@@ -1,5 +1,6 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.wrench.WrenchTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 /** Native block hosting powered agriculture and geographic equipment. */
-public final class WorldMachineBlock extends WorldNative.MachineBase {
+public final class WorldMachineBlock extends WorldNative.MachineBase implements WrenchTarget {
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     final Kind kind;
 

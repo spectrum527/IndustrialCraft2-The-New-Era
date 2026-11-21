@@ -192,19 +192,6 @@ public final class ForgeContent {
         }
     }
 
-    /** Uses a wrench to rotate a machine, or remove it while sneaking. */
-    public static InteractionResult wrenchBlock(UseOnContext context) {
-        return wrenchBlock(context, true);
-    }
-
-    /** Applies a wrench interaction with optional mechanical durability wear. */
-    public static InteractionResult wrenchBlock(UseOnContext context, boolean mechanical) {
-        var state = context.getLevel().getBlockState(context.getClickedPos());
-        return state.getBlock() instanceof MachineBlock block
-                ? block.wrench(state, context, mechanical)
-                : InteractionResult.PASS;
-    }
-
     /** Reuses the mechanical tap's resin and hit-face rules with an EU cost. */
     public static InteractionResult electricTap(UseOnContext context, int cost) {
         return RubberTree.Tap.tap(context, cost);

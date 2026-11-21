@@ -3,6 +3,7 @@ package com.industrialage.ia2.forge.equipment;
 import com.industrialage.ia2.audio.IndustrialSounds;
 import com.industrialage.ia2.content.MiningLaserModes;
 import com.industrialage.ia2.content.MiningLaserModes.Mode;
+import com.industrialage.ia2.content.PortableEquipment;
 import java.util.Map;
 import java.util.WeakHashMap;
 import net.minecraft.client.renderer.entity.TippableArrowRenderer;
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -58,21 +60,33 @@ final class ForgeLaser {
         if (FMLEnvironment.dist == Dist.CLIENT) Client.install(bus);
     }
 
+    private static int setting(ItemStack stack) {
+        return stack.hasTag() ? stack.getTag().getInt(MODE) : 0;
+    }
+
+    private static Component label(int index) {
+        return Component.translatable(
+                "item.ic2.mining_laser.mode",
+                Component.translatable(MiningLaserModes.translationKey(index)),
+                MiningLaserModes.get(index).cost());
+    }
+
+    static void tooltip(ItemTooltipEvent event) {
+        var stack = event.getItemStack();
+        if (ForgeGear.type(stack) == PortableEquipment.MINING_LASER)
+            event.getToolTip().add(label(setting(stack)));
+    }
+
     static void use(PlayerInteractEvent.RightClickItem event) {
         event.setCancellationResult(InteractionResult.SUCCESS);
         event.setCanceled(true);
         if (!(event.getEntity() instanceof ServerPlayer player) || player.isSpectator()) return;
         var stack = event.getItemStack();
-        int index = stack.hasTag() ? stack.getTag().getInt(MODE) : 0;
+        int index = setting(stack);
         if (player.isShiftKeyDown()) {
             int next = MiningLaserModes.next(index);
             stack.getOrCreateTag().putInt(MODE, next);
-            player.displayClientMessage(
-                    Component.translatable(
-                            "item.ic2.mining_laser.mode",
-                            next + 1,
-                            MiningLaserModes.get(next).cost()),
-                    true);
+            player.displayClientMessage(label(next), true);
             return;
         }
         Mode profile = MiningLaserModes.get(index);

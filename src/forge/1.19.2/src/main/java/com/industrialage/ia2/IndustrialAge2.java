@@ -40,6 +40,7 @@ public final class IndustrialAge2 {
         ForgeContent.register(context.getModEventBus(), gameBus, platform.services().config());
         com.industrialage.ia2.forge.equipment.ForgeGear.install(context.getModEventBus(), gameBus);
         TransportPlatform.register(context.getModEventBus());
+        com.industrialage.ia2.wrench.WrenchNative.install(gameBus);
         com.industrialage.ia2.world.WorldPlatform.install(context.getModEventBus(), gameBus);
         WorkshopPlatform.install(context.getModEventBus());
         FluidContent.register(context.getModEventBus());

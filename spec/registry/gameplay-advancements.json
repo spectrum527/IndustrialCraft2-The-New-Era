@@ -1,0 +1,638 @@
+{
+  "schemaVersion": 1,
+  "advancements": [
+    {
+      "id": "ic2:industry/root",
+      "parent": null,
+      "icon": "ic2:treetap",
+      "frame": "task",
+      "xp": 0,
+      "trigger": {
+        "kind": "inventory",
+        "require": "any",
+        "items": [
+          "ic2:resin",
+          "ic2:raw_tin",
+          "ic2:treetap"
+        ]
+      },
+      "title": {
+        "zh_cn": "工业起步",
+        "en_us": "The First Shift"
+      },
+      "description": {
+        "zh_cn": "取得树脂、粗锡或木龙头。",
+        "en_us": "Obtain resin, raw tin, or a treetap."
+      }
+    },
+    {
+      "id": "ic2:industry/materials/rubber",
+      "parent": "ic2:industry/root",
+      "icon": "ic2:rubber",
+      "frame": "task",
+      "xp": 5,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:rubber"
+        ]
+      },
+      "title": {
+        "zh_cn": "树脂变橡胶",
+        "en_us": "From Resin to Rubber"
+      },
+      "description": {
+        "zh_cn": "取得橡胶。",
+        "en_us": "Obtain rubber."
+      }
+    },
+    {
+      "id": "ic2:industry/power/insulation",
+      "parent": "ic2:industry/materials/rubber",
+      "icon": "ic2:insulated_copper_cable",
+      "frame": "task",
+      "xp": 5,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:insulated_copper_cable"
+        ]
+      },
+      "title": {
+        "zh_cn": "给铜线加层皮",
+        "en_us": "Insulate the Line"
+      },
+      "description": {
+        "zh_cn": "取得绝缘铜导线。",
+        "en_us": "Obtain an insulated copper cable."
+      }
+    },
+    {
+      "id": "ic2:industry/power/generator",
+      "parent": "ic2:industry/power/insulation",
+      "icon": "ic2:generator",
+      "frame": "task",
+      "xp": 10,
+      "trigger": {
+        "kind": "placed",
+        "blocks": [
+          "ic2:generator"
+        ]
+      },
+      "title": {
+        "zh_cn": "点火之前",
+        "en_us": "Ready to Generate"
+      },
+      "description": {
+        "zh_cn": "放置一台火力发电机。",
+        "en_us": "Place a Generator."
+      }
+    },
+    {
+      "id": "ic2:industry/power/local_storage",
+      "parent": "ic2:industry/power/generator",
+      "icon": "ic2:batbox",
+      "frame": "task",
+      "xp": 10,
+      "trigger": {
+        "kind": "placed",
+        "blocks": [
+          "ic2:batbox"
+        ]
+      },
+      "title": {
+        "zh_cn": "把电存起来",
+        "en_us": "Power in Reserve"
+      },
+      "description": {
+        "zh_cn": "放置一台 BatBox 储电箱。",
+        "en_us": "Place a BatBox."
+      }
+    },
+    {
+      "id": "ic2:industry/power/renewable_pair",
+      "parent": "ic2:industry/power/local_storage",
+      "icon": "ic2:water_kinetic_generator",
+      "frame": "goal",
+      "xp": 30,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:water_kinetic_generator",
+          "ic2:kinetic_generator"
+        ]
+      },
+      "title": {
+        "zh_cn": "水轮与发电机",
+        "en_us": "Water to Wire"
+      },
+      "description": {
+        "zh_cn": "在物品栏同时备齐水力动能发生机和动能发电机。",
+        "en_us": "Have a Kinetic Water Generator and a Kinetic Generator in your inventory."
+      }
+    },
+    {
+      "id": "ic2:industry/power/high_storage",
+      "parent": "ic2:industry/power/local_storage",
+      "icon": "ic2:mfsu",
+      "frame": "goal",
+      "xp": 40,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:mfsu"
+        ]
+      },
+      "title": {
+        "zh_cn": "工业级储电",
+        "en_us": "Industrial Reserve"
+      },
+      "description": {
+        "zh_cn": "取得一台 MFSU 储电箱。",
+        "en_us": "Obtain an MFSU."
+      }
+    },
+    {
+      "id": "ic2:industry/machines/first_macerator",
+      "parent": "ic2:industry/power/generator",
+      "icon": "ic2:macerator",
+      "frame": "task",
+      "xp": 10,
+      "trigger": {
+        "kind": "placed",
+        "blocks": [
+          "ic2:macerator"
+        ]
+      },
+      "title": {
+        "zh_cn": "矿石先打细",
+        "en_us": "The First Grind"
+      },
+      "description": {
+        "zh_cn": "放置一台打粉机。",
+        "en_us": "Place a Macerator."
+      }
+    },
+    {
+      "id": "ic2:industry/machines/processing_pair",
+      "parent": "ic2:industry/machines/first_macerator",
+      "icon": "ic2:compressor",
+      "frame": "goal",
+      "xp": 20,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:extractor",
+          "ic2:compressor"
+        ]
+      },
+      "title": {
+        "zh_cn": "加工各有工位",
+        "en_us": "The Machine Room"
+      },
+      "description": {
+        "zh_cn": "在物品栏同时备齐提取机和压缩机。",
+        "en_us": "Have an Extractor and a Compressor in your inventory."
+      }
+    },
+    {
+      "id": "ic2:industry/machines/washed_tin",
+      "parent": "ic2:industry/machines/first_macerator",
+      "icon": "ic2:purified_tin",
+      "frame": "goal",
+      "xp": 20,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:purified_tin"
+        ]
+      },
+      "title": {
+        "zh_cn": "洗去矿砂",
+        "en_us": "Clean Tin"
+      },
+      "description": {
+        "zh_cn": "取得纯净粉碎锡矿石。",
+        "en_us": "Obtain purified crushed tin ore."
+      }
+    },
+    {
+      "id": "ic2:industry/machines/coke_byproducts",
+      "parent": "ic2:industry/machines/processing_pair",
+      "icon": "ic2:coke",
+      "frame": "goal",
+      "xp": 30,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:coke",
+          "ic2:creosote_bucket"
+        ]
+      },
+      "title": {
+        "zh_cn": "炼焦留油",
+        "en_us": "Coke and Creosote"
+      },
+      "description": {
+        "zh_cn": "在物品栏同时备齐焦炭和一桶杂酚油。",
+        "en_us": "Have coke and a bucket of creosote in your inventory."
+      }
+    },
+    {
+      "id": "ic2:industry/materials/steel",
+      "parent": "ic2:industry/machines/processing_pair",
+      "icon": "ic2:steel_ingot",
+      "frame": "goal",
+      "xp": 25,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:steel_ingot"
+        ]
+      },
+      "title": {
+        "zh_cn": "迈入炼钢",
+        "en_us": "A Steel Supply"
+      },
+      "description": {
+        "zh_cn": "取得钢锭。",
+        "en_us": "Obtain a steel ingot."
+      }
+    },
+    {
+      "id": "ic2:industry/logistics/filled_cell",
+      "parent": "ic2:industry/root",
+      "icon": "ic2:basic_water_cell",
+      "frame": "task",
+      "xp": 5,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:basic_water_cell"
+        ]
+      },
+      "title": {
+        "zh_cn": "装一份水",
+        "en_us": "Water to Go"
+      },
+      "description": {
+        "zh_cn": "取得一枚满装基本水单元。",
+        "en_us": "Obtain a filled Basic Water Cell."
+      }
+    },
+    {
+      "id": "ic2:industry/logistics/pipework",
+      "parent": "ic2:industry/logistics/filled_cell",
+      "icon": "ic2:bronze_fluid_pipe_small",
+      "frame": "goal",
+      "xp": 20,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:bronze_fluid_pipe_small",
+          "ic2:bronze_item_pipe_small",
+          "ic2:bronze_storage_box"
+        ]
+      },
+      "title": {
+        "zh_cn": "两路运输",
+        "en_us": "Pipes and Storage"
+      },
+      "description": {
+        "zh_cn": "在物品栏备齐小型青铜流体管、小型青铜物品管和青铜储物箱。",
+        "en_us": "Have a small bronze fluid pipe, a small bronze item pipe, and a bronze storage box in your inventory."
+      }
+    },
+    {
+      "id": "ic2:industry/tools/drill",
+      "parent": "ic2:industry/power/local_storage",
+      "icon": "ic2:drill",
+      "frame": "task",
+      "xp": 10,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:drill"
+        ]
+      },
+      "title": {
+        "zh_cn": "电动钻进",
+        "en_us": "An Electric Drill"
+      },
+      "description": {
+        "zh_cn": "取得采矿钻头。",
+        "en_us": "Obtain a Mining Drill."
+      }
+    },
+    {
+      "id": "ic2:industry/tools/powered_hit",
+      "parent": "ic2:industry/power/local_storage",
+      "icon": "ic2:chainsaw",
+      "frame": "goal",
+      "xp": 25,
+      "trigger": {
+        "kind": "action",
+        "event": "powered_tool_hit",
+        "items": [
+          "ic2:chainsaw",
+          "ic2:drill",
+          "ic2:diamond_drill",
+          "ic2:iridium_drill"
+        ]
+      },
+      "title": {
+        "zh_cn": "带电的一击",
+        "en_us": "A Powered Hit"
+      },
+      "description": {
+        "zh_cn": "用有足够电量的链锯或钻头对生物造成一次实际伤害。",
+        "en_us": "Deal damage to a living creature with a chainsaw or a drill while it has enough charge."
+      }
+    },
+    {
+      "id": "ic2:industry/tools/diamond_drill",
+      "parent": "ic2:industry/tools/drill",
+      "icon": "ic2:diamond_drill",
+      "frame": "goal",
+      "xp": 25,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:diamond_drill"
+        ]
+      },
+      "title": {
+        "zh_cn": "钻上镶钻",
+        "en_us": "Diamond Tipped"
+      },
+      "description": {
+        "zh_cn": "取得钻石钻头。",
+        "en_us": "Obtain a Diamond Drill."
+      }
+    },
+    {
+      "id": "ic2:industry/tools/iridium_drill",
+      "parent": "ic2:industry/tools/diamond_drill",
+      "icon": "ic2:iridium_drill",
+      "frame": "challenge",
+      "xp": 85,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:iridium_drill"
+        ]
+      },
+      "title": {
+        "zh_cn": "给钻头镶铱",
+        "en_us": "Iridium Tipped"
+      },
+      "description": {
+        "zh_cn": "取得铱钻头。",
+        "en_us": "Obtain an Iridium Drill."
+      }
+    },
+    {
+      "id": "ic2:industry/tools/mining_laser",
+      "parent": "ic2:industry/tools/diamond_drill",
+      "icon": "ic2:mining_laser",
+      "frame": "goal",
+      "xp": 35,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:mining_laser"
+        ]
+      },
+      "title": {
+        "zh_cn": "用光采矿",
+        "en_us": "Mining with Light"
+      },
+      "description": {
+        "zh_cn": "取得采矿镭射枪。",
+        "en_us": "Obtain a Mining Laser."
+      }
+    },
+    {
+      "id": "ic2:industry/tools/nano_saber",
+      "parent": "ic2:industry/power/high_storage",
+      "icon": "ic2:nano_saber",
+      "frame": "goal",
+      "xp": 35,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:nano_saber"
+        ]
+      },
+      "title": {
+        "zh_cn": "电力出鞘",
+        "en_us": "An Electric Blade"
+      },
+      "description": {
+        "zh_cn": "取得纳米剑。",
+        "en_us": "Obtain a Nano Saber."
+      }
+    },
+    {
+      "id": "ic2:industry/armor/nano_suit",
+      "parent": "ic2:industry/power/high_storage",
+      "icon": "ic2:nano_chestplate",
+      "frame": "challenge",
+      "xp": 70,
+      "trigger": {
+        "kind": "equipped",
+        "slots": {
+          "head": "ic2:nano_helmet",
+          "chest": "ic2:nano_chestplate",
+          "legs": "ic2:nano_leggings",
+          "feet": "ic2:nano_boots"
+        }
+      },
+      "title": {
+        "zh_cn": "纳米四件套",
+        "en_us": "The Complete NanoSuit"
+      },
+      "description": {
+        "zh_cn": "同时穿戴纳米头盔、胸甲、护腿和靴子。",
+        "en_us": "Wear a NanoSuit helmet, chestplate, leggings, and boots at the same time."
+      }
+    },
+    {
+      "id": "ic2:industry/armor/quantum_suit",
+      "parent": "ic2:industry/armor/nano_suit",
+      "icon": "ic2:quantum_chestplate",
+      "frame": "challenge",
+      "xp": 150,
+      "trigger": {
+        "kind": "equipped",
+        "slots": {
+          "head": "ic2:quantum_helmet",
+          "chest": "ic2:quantum_chestplate",
+          "legs": "ic2:quantum_leggings",
+          "feet": "ic2:quantum_boots"
+        }
+      },
+      "title": {
+        "zh_cn": "量子四件套",
+        "en_us": "The Complete QuantumSuit"
+      },
+      "description": {
+        "zh_cn": "同时穿戴量子头盔、胸甲、护腿和靴子。",
+        "en_us": "Wear a QuantumSuit helmet, chestplate, leggings, and boots at the same time."
+      }
+    },
+    {
+      "id": "ic2:industry/world/crop_sticks",
+      "parent": "ic2:industry/root",
+      "icon": "ic2:crop_stick",
+      "frame": "task",
+      "xp": 5,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:crop_stick"
+        ]
+      },
+      "title": {
+        "zh_cn": "给作物搭架",
+        "en_us": "A Place to Grow"
+      },
+      "description": {
+        "zh_cn": "取得作物架。",
+        "en_us": "Obtain crop sticks."
+      }
+    },
+    {
+      "id": "ic2:industry/world/teleporter",
+      "parent": "ic2:industry/power/high_storage",
+      "icon": "ic2:teleporter",
+      "frame": "goal",
+      "xp": 40,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:teleporter",
+          "ic2:frequency_transmitter"
+        ]
+      },
+      "title": {
+        "zh_cn": "给跃迁对个频",
+        "en_us": "Tune the Teleporter"
+      },
+      "description": {
+        "zh_cn": "在物品栏同时备齐传送机和频率发射器。",
+        "en_us": "Have a Teleporter and a Frequency Transmitter in your inventory."
+      }
+    },
+    {
+      "id": "ic2:industry/reactor/fuel_and_core",
+      "parent": "ic2:industry/machines/processing_pair",
+      "icon": "ic2:nuclear_reactor",
+      "frame": "goal",
+      "xp": 40,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:nuclear_reactor",
+          "ic2:uranium_fuel_rod"
+        ]
+      },
+      "title": {
+        "zh_cn": "备好堆芯",
+        "en_us": "A Fueled Core"
+      },
+      "description": {
+        "zh_cn": "在物品栏同时备齐核反应堆和铀燃料棒。",
+        "en_us": "Have a Nuclear Reactor and a uranium fuel rod in your inventory."
+      }
+    },
+    {
+      "id": "ic2:industry/reactor/pressure_system",
+      "parent": "ic2:industry/reactor/fuel_and_core",
+      "icon": "ic2:reactor_vessel",
+      "frame": "challenge",
+      "xp": 100,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:reactor_vessel",
+          "ic2:reactor_access_hatch",
+          "ic2:reactor_fluid_port"
+        ]
+      },
+      "title": {
+        "zh_cn": "备好流体堆部件",
+        "en_us": "A Pressure Vessel Kit"
+      },
+      "description": {
+        "zh_cn": "在物品栏备齐反应堆压力容器方块、检修口和流体接口。",
+        "en_us": "Have reactor pressure vessel blocks, an access hatch, and a fluid port in your inventory."
+      }
+    },
+    {
+      "id": "ic2:industry/matter/uu_bucket",
+      "parent": "ic2:industry/power/high_storage",
+      "icon": "ic2:uu_matter_bucket",
+      "frame": "goal",
+      "xp": 50,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:uu_matter_bucket"
+        ]
+      },
+      "title": {
+        "zh_cn": "装起一桶 UU",
+        "en_us": "A Bucket of UU"
+      },
+      "description": {
+        "zh_cn": "取得一桶 UU 物质。",
+        "en_us": "Obtain a bucket of UU-Matter."
+      }
+    },
+    {
+      "id": "ic2:industry/matter/replicator_kit",
+      "parent": "ic2:industry/matter/uu_bucket",
+      "icon": "ic2:replicator",
+      "frame": "challenge",
+      "xp": 120,
+      "trigger": {
+        "kind": "inventory",
+        "require": "all",
+        "items": [
+          "ic2:replicator",
+          "ic2:pattern_storage",
+          "ic2:scanner"
+        ]
+      },
+      "title": {
+        "zh_cn": "备好复制产线",
+        "en_us": "A Replication Line"
+      },
+      "description": {
+        "zh_cn": "在物品栏备齐复制机、模式存储机和扫描仪。",
+        "en_us": "Have a Replicator, a Pattern Storage, and a Scanner in your inventory."
+      }
+    }
+  ]
+}

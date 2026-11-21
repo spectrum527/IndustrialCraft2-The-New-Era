@@ -106,9 +106,10 @@
       "panel": [176,166],
       "inventory": [8,84,142],
       "inventoryTitle": true,
-      "source": "Published repair 1.2.4 guidef coke_kiln.xml on authored Common frame; controller input retained to support this inventory",
+      "source": "Controller inventory with the formed kiln’s shared creosote gauge on the authored Common panel",
       "slots": {"0": [53,36],"9": [92,36]},
-      "meters": [{"value": "progress","rect": [71,36,13,13],"direction": "up","sprite": ["common",112,80]}]
+      "meters": [{"value": "progress","rect": [71,36,13,13],"direction": "up","sprite": ["common",112,80]},
+                 {"value": "outlet","rect": [126,36,16,16],"direction": "up"}]
     },
     "coke_kiln_grate": {
       "atlas": "common",

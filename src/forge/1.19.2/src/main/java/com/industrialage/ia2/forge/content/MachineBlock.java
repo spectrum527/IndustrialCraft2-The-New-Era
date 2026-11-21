@@ -1,9 +1,11 @@
 package com.industrialage.ia2.forge.content;
 
+import com.industrialage.ia2.wrench.WrenchTarget;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -13,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -35,9 +36,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 
-class MachineBlock extends BaseEntityBlock {
+class MachineBlock extends BaseEntityBlock implements WrenchTarget {
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     static final DirectionProperty OUTPUT_FACE = BlockStateProperties.FACING;
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -124,10 +124,6 @@ class MachineBlock extends BaseEntityBlock {
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-        if (ForgeContent.id("wrench")
-                .equals(ForgeRegistries.ITEMS.getKey(player.getItemInHand(hand).getItem()))) {
-            return InteractionResult.PASS;
-        }
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
@@ -139,66 +135,11 @@ class MachineBlock extends BaseEntityBlock {
         return InteractionResult.PASS;
     }
 
-    InteractionResult wrench(BlockState state, UseOnContext context, boolean mechanical) {
-        var level = context.getLevel();
-        var pos = context.getClickedPos();
-        var player = context.getPlayer();
-        if (player == null
-                || !level.mayInteract(player, pos)
-                || !player.mayUseItemAt(pos, context.getClickedFace(), context.getItemInHand())) {
-            return InteractionResult.PASS;
-        }
-
-        var side =
-                !mechanical && player.isShiftKeyDown()
-                        ? context.getClickedFace().getOpposite()
-                        : context.getClickedFace();
-        var property = facingProperty();
-        boolean dismantle = mechanical ? player.isShiftKeyDown() : state.getValue(property) == side;
-        boolean rotate =
-                (kind.storesEnergy() || side.getAxis().isHorizontal())
-                        && state.getValue(property) != side;
-        if (!dismantle && !rotate) {
-            return InteractionResult.PASS;
-        }
-        var tool = context.getItemInHand();
-        int cost =
-                dismantle
-                        ? 1_000
-                        : com.industrialage.ia2.content.PortableEquipment.ELECTRIC_WRENCH.cost;
-        if (!mechanical
-                && !player.isCreative()
-                && com.industrialage.ia2.forge.equipment.ForgeGear.stored(tool) < cost) {
-            return InteractionResult.FAIL;
-        }
-        if (!level.isClientSide) {
-            if (dismantle) {
-                if (player instanceof ServerPlayer server
-                        && net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(
-                                        level, server.gameMode.getGameModeForPlayer(), server, pos)
-                                < 0) {
-                    return InteractionResult.FAIL;
-                }
-                var drop = new ItemStack(this);
-                if (level.getBlockEntity(pos) instanceof StorageDevice storage) {
-                    storage.retainIn(drop);
-                }
-                if (!level.removeBlock(pos, false)) return InteractionResult.FAIL;
-                if (!player.isCreative()) {
-                    Block.popResource(level, pos, drop);
-                }
-            } else if (!level.setBlockAndUpdate(pos, state.setValue(property, side))) {
-                return InteractionResult.FAIL;
-            }
-            if (mechanical) {
-                context.getItemInHand()
-                        .hurtAndBreak(
-                                1, player, holder -> holder.broadcastBreakEvent(context.getHand()));
-            } else if (!player.isCreative()) {
-                com.industrialage.ia2.forge.equipment.ForgeGear.spend(tool, cost);
-            }
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+    @Override
+    public ItemStack wrenchDrop(ServerLevel level, BlockPos pos, BlockState state) {
+        var drop = WrenchTarget.super.wrenchDrop(level, pos, state);
+        if (level.getBlockEntity(pos) instanceof StorageDevice storage) storage.retainIn(drop);
+        return drop;
     }
 
     @Override

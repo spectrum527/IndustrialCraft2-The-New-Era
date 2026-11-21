@@ -7,6 +7,7 @@ import com.industrialage.ia2.industrial.WorkshopBlock;
 import com.industrialage.ia2.world.CableColors;
 import com.industrialage.ia2.world.FoamCasing;
 import com.industrialage.ia2.world.WorldMachineBlock;
+import com.industrialage.ia2.wrench.WrenchTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -25,12 +27,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CableBlock extends Block implements EntityBlock {
+public class CableBlock extends Block implements EntityBlock, SimpleWaterloggedBlock, WrenchTarget {
+    @Override
+    public boolean wrenchUsesLoot() {
+        return true;
+    }
+
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     private static final VoxelShape CORE = box(6, 6, 6, 10, 10, 10);
     private static final VoxelShape[] SHAPES = buildShapes();
@@ -55,6 +64,7 @@ public class CableBlock extends Block implements EntityBlock {
 
     private CableBlock(String path, Mode mode, Properties settings) {
         super(settings);
+        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
         loss = PowerGrid.cableLoss(path);
         rating = PowerGrid.cableRating(path);
         this.mode = mode;
@@ -89,16 +99,28 @@ public class CableBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.WATERLOGGED);
         for (Direction side : Direction.values()) {
             builder.add(arm(side));
         }
     }
 
     @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(BlockStateProperties.WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         var level = context.getLevel();
         var pos = context.getClickedPos();
-        var state = defaultBlockState();
+        var state =
+                defaultBlockState()
+                        .setValue(
+                                BlockStateProperties.WATERLOGGED,
+                                level.getFluidState(pos).getType() == Fluids.WATER);
         if (mode == Mode.SPLITTER) {
             state = state.setValue(ACTIVE, level.hasNeighborSignal(pos));
         }
@@ -117,6 +139,9 @@ public class CableBlock extends Block implements EntityBlock {
             LevelAccessor level,
             BlockPos pos,
             BlockPos neighborPos) {
+        if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
         return state.setValue(arm(side), connects(state, neighbor));
     }
 

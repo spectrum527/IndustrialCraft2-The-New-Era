@@ -1,5 +1,7 @@
 package com.industrialage.ia2.forge.equipment;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.industrialage.ia2.audio.IndustrialSounds;
 import com.industrialage.ia2.compat.CuriosBack;
 import com.industrialage.ia2.content.PortableEquipment;
@@ -10,6 +12,7 @@ import com.industrialage.ia2.equipment.JetpackMount;
 import com.industrialage.ia2.equipment.MountPlatform;
 import com.industrialage.ia2.equipment.WindMeter;
 import com.industrialage.ia2.forge.content.ForgeContent;
+import com.industrialage.ia2.progress.IndustrialProgress;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +23,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.HoeItem;
@@ -36,7 +43,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -129,10 +139,20 @@ public final class ForgeGear {
         ITEMS.register(modBus);
         ForgeBoats.install(modBus);
         ForgeLaser.install(modBus);
+        gameBus.addListener(ForgeLaser::tooltip);
         ForgeSaber.install(modBus, gameBus);
         JetpackControls.install(modBus, gameBus);
         gameBus.addListener(ForgeGear::tickPlayer);
         gameBus.addListener(ForgeGear::manualTransfer);
+        gameBus.addListener(EventPriority.LOWEST, ForgeGear::paidToolHit);
+        gameBus.addListener(
+                (AttackEntityEvent event) -> {
+                    var player = event.getEntity();
+                    var stack = player.getMainHandItem();
+                    if (player.level instanceof ServerLevel
+                            && stack.getItem() instanceof PoweredItem item)
+                        item.refreshMelee(player, stack);
+                });
     }
 
     private static void tickPlayer(TickEvent.PlayerTickEvent event) {
@@ -150,6 +170,23 @@ public final class ForgeGear {
         if (type(off) != null && type(off).kind == Kind.CHARGER) transfer(off, main);
         ForgeSaber.tick(player, main);
         ForgeSaber.tick(player, off);
+    }
+
+    private static void paidToolHit(LivingDamageEvent event) {
+        var source = event.getSource();
+        if (!(event.getEntity().level instanceof ServerLevel)
+                || event.getAmount() <= 0
+                || !(source.getEntity() instanceof LivingEntity attacker)
+                || source.getDirectEntity() != attacker
+                || !("player".equals(source.getMsgId()) || "mob".equals(source.getMsgId()))
+                || attacker instanceof ServerPlayer player && player.isCreative()) return;
+        var stack = attacker.getMainHandItem();
+        var tool = type(stack);
+        if (tool == null || tool.poweredMeleeDamage() == 0 || !spend(stack, tool.cost)) return;
+        if (stored(stack) < tool.cost && stack.getItem() instanceof PoweredItem item)
+            item.refreshMelee(attacker, stack);
+        if (attacker instanceof ServerPlayer player)
+            IndustrialProgress.poweredToolHit(player, stack);
     }
 
     private static void manualTransfer(PlayerInteractEvent.RightClickItem event) {
@@ -425,10 +462,7 @@ public final class ForgeGear {
             if (device == PortableEquipment.WIND_METER) {
                 return windReading(context.getPlayer(), stack, context.getClickedPos());
             }
-            if (device != PortableEquipment.ELECTRIC_WRENCH) {
-                return InteractionResult.PASS;
-            }
-            return ForgeContent.wrenchBlock(context, false);
+            return InteractionResult.PASS;
         }
 
         @Override
@@ -466,6 +500,52 @@ public final class ForgeGear {
                 }
             }
             return supports(state);
+        }
+
+        private static final AttributeModifier TOOL_SPEED =
+                new AttributeModifier(
+                        BASE_ATTACK_SPEED_UUID,
+                        "Tool attack speed",
+                        -2.4,
+                        AttributeModifier.Operation.ADDITION);
+
+        private AttributeModifier meleeDamage() {
+            return new AttributeModifier(
+                    BASE_ATTACK_DAMAGE_UUID,
+                    "Tool damage",
+                    device.poweredMeleeDamage() - 1,
+                    AttributeModifier.Operation.ADDITION);
+        }
+
+        // The held tool can run out of charge before vanilla's next equipment refresh.
+        private void refreshMelee(LivingEntity attacker, ItemStack stack) {
+            if (device.poweredMeleeDamage() == 0) return;
+            boolean charged = stored(stack) >= device.cost;
+            refresh(attacker.getAttribute(Attributes.ATTACK_DAMAGE), meleeDamage(), charged);
+            refresh(attacker.getAttribute(Attributes.ATTACK_SPEED), TOOL_SPEED, charged);
+        }
+
+        private static void refresh(
+                AttributeInstance attribute, AttributeModifier desired, boolean charged) {
+            if (attribute == null) return;
+            var old = attribute.getModifier(desired.getId());
+            if (old != null && charged && old.getAmount() == desired.getAmount()) return;
+            if (old != null) attribute.removeModifier(old);
+            if (charged) attribute.addTransientModifier(desired);
+        }
+
+        @Override
+        public Multimap<Attribute, AttributeModifier> getAttributeModifiers(
+                EquipmentSlot slot, ItemStack stack) {
+            var base = super.getAttributeModifiers(slot, stack);
+            if (slot != EquipmentSlot.MAINHAND
+                    || device.poweredMeleeDamage() == 0
+                    || stored(stack) < device.cost) return base;
+            return ImmutableMultimap.<Attribute, AttributeModifier>builder()
+                    .putAll(base)
+                    .put(Attributes.ATTACK_DAMAGE, meleeDamage())
+                    .put(Attributes.ATTACK_SPEED, TOOL_SPEED)
+                    .build();
         }
 
         private boolean supports(BlockState state) {

@@ -70,7 +70,7 @@ def generatedResources = layout.buildDirectory.dir('generated/ic2-resources')
 def generateResources = tasks.register('generatePlayableResources', Exec) {
     def generator = rootProject.file('src/datagen/generate_resources.py')
     inputs.files(rootProject.fileTree('src/datagen') { include '*.py', '*.tsv', '*.json', 'families/*.json' })
-    inputs.files(rootProject.fileTree('spec/registry') { include '*.tsv', 'repair-recipe-book.json', 'classic-playable-recipes.json' })
+    inputs.files(rootProject.fileTree('spec/registry') { include '*.tsv', 'repair-recipe-book.json', 'classic-playable-recipes.json', 'gameplay-advancements.json' })
     inputs.file(rootProject.file('assets/REGISTRY-ART-CATALOG.csv'))
     inputs.dir(rootProject.file('assets/ic2'))
     outputs.dir(generatedResources)
