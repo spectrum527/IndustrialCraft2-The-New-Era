@@ -461,6 +461,8 @@
   "gui.ic2.workshop.slot.template": "放入可重复使用的 UU 图样",
   "gui.ic2.workshop.detail_tank": "%s · %s · %s / %s mB",
   "gui.ic2.workshop.kinetic": "%s KU",
+  "gui.ic2.workshop.kinetic_available": "可供 %s KU/t",
+  "gui.ic2.workshop.kinetic_input": "动能输入 %s KU/t",
   "gui.ic2.workshop.control.previous": "上一个已记录样式",
   "gui.ic2.workshop.control.next": "下一个已记录样式",
   "gui.ic2.workshop.control.stop": "停止复制",

@@ -314,7 +314,7 @@
       "source": "Authored guikineticgenerator.png; Published repair 1.2.4 guidef kinetic_generator.xml readout",
       "slots": {},
       "meters": [{"value": "energy","rect": [42,50,93,10],"direction": "right"}],
-      "labels": [{"text": "energy","rect": [42,51,93,9]}]
+      "labels": [{"text": "kinetic_input","rect": [41,33,94,10],"light": false},{"text": "energy","rect": [42,51,93,9]}]
     },
     "electric_kinetic_generator": {
       "atlas": "guielectrickineticgenerator",
@@ -349,10 +349,10 @@
       "atlas": "guiwindkineticgenerator",
       "panel": [176,166],
       "inventory": [8,84,142],
-      "inventoryTitle": true,
+      "inventoryTitle": false,
       "source": "Authored IC2 redraw guiwindkineticgenerator.png",
       "slots": {"0": [80,27]},
-      "labels": [{"text": "kinetic","rect": [17,49,139,10]},{"text": "active","rect": [17,67,139,10]}]
+      "labels": [{"text": "kinetic_available","rect": [17,49,139,10]},{"text": "active","rect": [17,67,139,10]}]
     },
     "water_kinetic_generator": {
       "atlas": "guiwaterkineticgenerator",

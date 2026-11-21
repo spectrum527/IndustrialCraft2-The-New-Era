@@ -186,6 +186,8 @@ final class WorkshopPanel {
             case ENERGY -> label("energy", menu.energy(), menu.capacity());
             case HEAT -> label("heat", menu.heat());
             case KINETIC -> label("kinetic", menu.motion());
+            case KINETIC_AVAILABLE -> label("kinetic_available", menu.motion());
+            case KINETIC_INPUT -> label("kinetic_input", menu.motion());
             case MODE -> menu.controlLabel();
             case RECIPE -> menu.job();
             case PATTERN -> menu.patternName();
