@@ -25,6 +25,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -64,6 +65,7 @@ public final class ArmorPlatform {
                         ArmorEffects.appendChargeTooltip(event.getItemStack(), event.getToolTip()));
         gameBus.addListener(ArmorPlatform::protect);
         gameBus.addListener(ArmorPlatform::protectiveAttributes);
+        gameBus.addListener(ArmorPlatform::miningSpeed);
     }
 
     private static void protectiveAttributes(ItemAttributeModifierEvent event) {
@@ -76,7 +78,7 @@ public final class ArmorPlatform {
                     Attributes.ARMOR,
                     new AttributeModifier(
                             uuid, id, defense.armor(), AttributeModifier.Operation.ADDITION));
-        else
+        else if (defense.toughness() > 0)
             event.addModifier(
                     Attributes.ARMOR_TOUGHNESS,
                     new AttributeModifier(
@@ -93,9 +95,15 @@ public final class ArmorPlatform {
                 && ArmorEffects.fullHazmat(player)) {
             player.clearFire();
             event.setCanceled(true);
-        } else if (!source.isBypassArmor()) {
-            ArmorEffects.absorbImpact(player, event.getAmount());
+        } else if (!(source == DamageSource.OUT_OF_WORLD && event.getAmount() >= 1.0e30F)) {
+            float fraction = ArmorEffects.absorbImpact(player, event.getAmount());
+            if (fraction > 0) event.setAmount(event.getAmount() * (1 - fraction));
         }
+    }
+
+    private static void miningSpeed(PlayerEvent.BreakSpeed event) {
+        if (ArmorEffects.poweredQuantum(event.getEntity()))
+            event.setNewSpeed(event.getNewSpeed() * 1.4F);
     }
 
     static boolean grounded(ServerPlayer player) {
