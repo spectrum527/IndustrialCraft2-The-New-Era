@@ -512,13 +512,23 @@ else:
     tree_config['dirt_provider']={'type':'minecraft:simple_state_provider','state':{'Name':'minecraft:dirt'}}
     tree_config['force_dirt']=False
 data('worldgen/configured_feature/rubber_tree', {'type':'minecraft:tree','config':tree_config})
+rubber_ground = {'type': 'minecraft:any_of', 'predicates': [
+    {'type': 'minecraft:would_survive', 'state': state('rubber_sapling', stage='0')},
+    {'type': 'minecraft:all_of', 'predicates': [
+        {'type': 'minecraft:matching_blocks', 'offset': [0, -1, 0], 'blocks': ['minecraft:snow_block']},
+        {'type': 'minecraft:matching_block_tag', 'offset': [0, -2, 0], 'tag': 'minecraft:dirt'},
+    ]},
+]}
 data('worldgen/placed_feature/rubber_tree', {'feature':mod('rubber_tree'),'placement':[
  {'type':'minecraft:rarity_filter','chance':6}, {'type':'minecraft:in_square'},
  {'type':'minecraft:surface_water_depth_filter','max_water_depth':0}, {'type':'minecraft:heightmap','heightmap':'OCEAN_FLOOR'},
- {'type':'minecraft:biome'}, {'type':'minecraft:block_predicate_filter','predicate':{'type':'minecraft:would_survive',
- 'state':state('rubber_sapling',stage='0')}}]})
+ {'type':'minecraft:biome'}, {'type':'minecraft:block_predicate_filter','predicate':rubber_ground}]})
+data('tags/worldgen/biome/has_rubber_trees', {'replace': False, 'values': [
+    '#minecraft:is_forest', '#minecraft:is_jungle', 'minecraft:plains',
+    'minecraft:sunflower_plains', 'minecraft:snowy_plains', 'minecraft:ice_spikes',
+]})
 loader='forge' if forge else 'neoforge'
-for name,biomes,step in [('tin_ore','#minecraft:is_overworld','underground_ores'), ('rubber_tree','#minecraft:is_forest','vegetal_decoration')]:
+for name,biomes,step in [('tin_ore','#minecraft:is_overworld','underground_ores'), ('rubber_tree','#ic2:has_rubber_trees','vegetal_decoration')]:
     data(loader + '/biome_modifier/add_' + name, {'type':loader + ':add_features','biomes':biomes,'features':mod(name),'step':step})
 
 repo = Path(__file__).resolve().parents[2]
