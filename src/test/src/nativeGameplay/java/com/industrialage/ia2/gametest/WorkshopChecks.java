@@ -269,10 +269,10 @@ final class WorkshopChecks {
                 player.getItemInHand(InteractionHand.MAIN_HAND),
                 InteractionHand.MAIN_HAND);
         check.accept(
-                "universal-cell-actual-source-placement",
+                "universal-cell-does-not-place-fluid-into-world",
                 NativeTransferAccess.cellVolume(player.getItemInHand(InteractionHand.MAIN_HAND))
-                                == 0
-                        && world.getFluidState(source).isSource());
+                                == 1000
+                        && world.getFluidState(source).isEmpty());
     }
 
     boolean tick(ServerLevel world, BiConsumer<String, Boolean> check) {

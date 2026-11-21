@@ -54,6 +54,7 @@ final class FluidCellChecks {
     private int batches;
     private int activeTicks;
     private int dryTicks;
+    private final FluidTankBoundaryChecks boundaries = new FluidTankBoundaryChecks();
     private boolean doubleCompleted;
     private boolean blastConsumedAir;
     private boolean done;
@@ -104,7 +105,7 @@ final class FluidCellChecks {
         geo7001Menu = geo7001.createMenu(11, owner.getInventory(), owner);
         var ore = new ItemStack(NativeGameplayFixture.item("crushed_copper"), 11);
         var water = new ItemStack(NativeGameplayFixture.item("water_cell"));
-        var twoWater = new ItemStack(NativeGameplayFixture.item("water_cell"), 2);
+        var twoWater = new ItemStack(NativeGameplayFixture.item("water_cell"), 9);
         check.accept(
                 "washer-menu-accepts-water-rejects-lava",
                 singleMenu.getSlot(6).mayPlace(water)
@@ -115,8 +116,6 @@ final class FluidCellChecks {
         singleMenu.getSlot(6).set(water);
         single.receive(16_000);
         doubleMenu.getSlot(6).set(twoWater);
-        doubled.receive(16_000);
-        noPowerMenu.getSlot(0).set(new ItemStack(NativeGameplayFixture.item("crushed_copper")));
         noPowerMenu.getSlot(6).set(new ItemStack(NativeGameplayFixture.item("water_cell")));
         check.accept(
                 "geothermal-menu-accepts-lava-rejects-water",
@@ -135,7 +134,6 @@ final class FluidCellChecks {
                         == 7000);
         geoFuelledMenu.getSlot(0).set(new ItemStack(NativeGameplayFixture.item("lava_cell")));
         heaterMenu.getSlot(0).set(new ItemStack(NativeGameplayFixture.item("lava_cell"), 3));
-        furnaceMenu.getSlot(0).set(new ItemStack(Items.IRON_INGOT));
         furnaceMenu.getSlot(4).set(new ItemStack(NativeGameplayFixture.item("air_cell"), 2));
         var biogas =
                 BuiltInRegistries.FLUID.stream()
@@ -167,6 +165,11 @@ final class FluidCellChecks {
                                 false)
                         == 7001);
         geo7001Menu.getSlot(0).set(new ItemStack(NativeGameplayFixture.item("lava_cell")));
+        var commands = world.getServer().getCommands();
+        var console = world.getServer().createCommandSourceStack().withSuppressedOutput();
+        commands.performPrefixedCommand(console, "data merge block 25 140 18 {eu:2400.0d}");
+        commands.performPrefixedCommand(console, "data merge block 30 140 24 {eu:2400.0d}");
+        boundaries.setup(world, check);
     }
 
     boolean tick(ServerLevel world, BiConsumer<String, Boolean> check) {
@@ -175,20 +178,17 @@ final class FluidCellChecks {
                 || !single.ranThisTick(world)
                 || !doubled.ranThisTick(world)) return false;
         int elapsed = ++activeTicks;
+        boolean boundaryDone = boundaries.tick(world, check);
         if (elapsed == 3) {
             check.accept(
-                    "washer-idle-does-not-open-either-cell",
-                    doubleMenu.getSlot(6).getItem().getCount() == 2
-                            && doubleMenu.getSlot(14).getItem().isEmpty()
-                            && doubled.fluidContents().getFirst().amount() == 0);
-            check.accept(
-                    "washer-without-power-does-not-open-cell",
-                    noPowerMenu.getSlot(6).getItem().is(NativeGameplayFixture.item("water_cell"))
-                            && noPowerMenu.getSlot(14).getItem().isEmpty()
-                            && noPower.fluidContents().getFirst().amount() == 0);
-            noPower.receive(16_000);
+                    "washer-no-ore-or-power-prefills-single-cell",
+                    noPowerMenu.getSlot(6).getItem().isEmpty()
+                            && noPowerMenu
+                                    .getSlot(14)
+                                    .getItem()
+                                    .is(NativeGameplayFixture.item("empty_cell"))
+                            && noPower.fluidContents().getFirst().amount() == 1000);
             noPowerMenu.getSlot(6).set(new ItemStack(NativeGameplayFixture.item("lava_cell")));
-            doubleMenu.getSlot(0).set(new ItemStack(NativeGameplayFixture.item("crushed_copper")));
             check.accept(
                     "geothermal-rejects-wrong-fluid-on-tick",
                     geoMenu.getSlot(0).getItem().is(NativeGameplayFixture.item("water_cell"))
@@ -199,23 +199,14 @@ final class FluidCellChecks {
         }
         if (elapsed == 7) {
             check.accept(
-                    "washer-second-cell-stays-closed-while-first-liter-suffices",
-                    doubleMenu.getSlot(6).getItem().getCount() == 1
-                            && doubleMenu
-                                    .getSlot(14)
-                                    .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
-                            && doubleMenu.getSlot(14).getItem().getCount() == 1
-                            && doubled.fluidContents().getFirst().amount() == 1000);
-            check.accept(
                     "geothermal-blocked-return-preserves-cell",
                     geoMenu.getSlot(0).getItem().is(NativeGameplayFixture.item("lava_cell"))
                             && geo.fluidContents().getFirst().amount() == 0);
             check.accept(
                     "washer-wrong-liquid-does-not-consume",
                     noPowerMenu.getSlot(6).getItem().is(NativeGameplayFixture.item("lava_cell"))
-                            && noPowerMenu.getSlot(14).getItem().isEmpty()
-                            && noPower.fluidContents().getFirst().amount() == 0);
+                            && noPowerMenu.getSlot(14).getItem().getCount() == 1
+                            && noPower.fluidContents().getFirst().amount() == 1000);
             noPowerMenu.getSlot(6).set(new ItemStack(NativeGameplayFixture.item("water_cell")));
             noPowerMenu.getSlot(14).set(new ItemStack(Items.STONE, 64));
             geoMenu.getSlot(1).set(ItemStack.EMPTY);
@@ -224,7 +215,7 @@ final class FluidCellChecks {
             check.accept(
                     "washer-blocked-shell-output-preserves-cell",
                     noPowerMenu.getSlot(6).getItem().is(NativeGameplayFixture.item("water_cell"))
-                            && noPower.fluidContents().getFirst().amount() == 0);
+                            && noPower.fluidContents().getFirst().amount() == 1000);
             noPowerMenu.getSlot(14).set(ItemStack.EMPTY);
             for (int slot = 9; slot <= 11; slot++) {
                 noPowerMenu.getSlot(slot).set(new ItemStack(Items.STONE, 64));
@@ -232,10 +223,25 @@ final class FluidCellChecks {
         }
         if (elapsed == 15) {
             check.accept(
-                    "washer-blocked-products-preserve-cell",
-                    noPowerMenu.getSlot(6).getItem().is(NativeGameplayFixture.item("water_cell"))
-                            && noPowerMenu.getSlot(14).getItem().isEmpty()
-                            && noPower.fluidContents().getFirst().amount() == 0);
+                    "washer-with-no-ore-or-power-fills-eight-of-nine-cells",
+                    doubleMenu.getSlot(6).getItem().is(NativeGameplayFixture.item("water_cell"))
+                            && doubleMenu.getSlot(6).getItem().getCount() == 1
+                            && doubleMenu
+                                    .getSlot(14)
+                                    .getItem()
+                                    .is(NativeGameplayFixture.item("empty_cell"))
+                            && doubleMenu.getSlot(14).getItem().getCount() == 8
+                            && doubled.fluidContents().getFirst().amount() == 8000);
+            doubleMenu.getSlot(0).set(new ItemStack(NativeGameplayFixture.item("crushed_copper")));
+            doubled.receive(16_000);
+            check.accept(
+                    "washer-blocked-products-still-prefill",
+                    noPowerMenu.getSlot(6).getItem().isEmpty()
+                            && noPowerMenu
+                                    .getSlot(14)
+                                    .getItem()
+                                    .is(NativeGameplayFixture.item("empty_cell"))
+                            && noPower.fluidContents().getFirst().amount() == 2000);
             check.accept(
                     "geothermal-lava-cell-returns-shell-and-generates",
                     geoMenu.getSlot(0).getItem().isEmpty()
@@ -245,15 +251,34 @@ final class FluidCellChecks {
                             && geo.fluidContents().getFirst().amount() > 0
                             && geo.bufferedEu().stored() > 0);
             check.accept(
-                    "geothermal-fuelled-7000-keeps-cell-queued",
-                    geoFuelledMenu.getSlot(0).getItem().is(NativeGameplayFixture.item("lava_cell"))
-                            && geoFuelledMenu.getSlot(1).getItem().isEmpty()
-                            && geoFuelled.fluidContents().getFirst().amount() < 7000);
+                    "geothermal-saturated-7000-prefills-whole-cell",
+                    geoFuelledMenu.getSlot(0).getItem().isEmpty()
+                            && geoFuelledMenu
+                                    .getSlot(1)
+                                    .getItem()
+                                    .is(NativeGameplayFixture.item("empty_cell"))
+                            && geoFuelled.fluidContents().getFirst().amount() == 8000
+                            && geoFuelled.bufferedEu().stored() == 2400);
             check.accept(
-                    "geothermal-fuelled-7001-keeps-cell-queued",
+                    "geothermal-saturated-7001-preserves-whole-cell",
                     geo7001Menu.getSlot(0).getItem().is(NativeGameplayFixture.item("lava_cell"))
                             && geo7001Menu.getSlot(1).getItem().isEmpty()
-                            && geo7001.fluidContents().getFirst().amount() < 7001);
+                            && geo7001.fluidContents().getFirst().amount() == 7001
+                            && geo7001.bufferedEu().stored() == 2400);
+            check.accept(
+                    "geothermal-pipe-may-partially-fill-999-mb-gap",
+                    NativeTransferAccess.fill(
+                                            world,
+                                            GEO_7001,
+                                            Direction.UP,
+                                            new FluidStack(Fluids.LAVA, 1000),
+                                            false)
+                                    == 999
+                            && geo7001.fluidContents().getFirst().amount() == 8000
+                            && geo7001Menu
+                                    .getSlot(0)
+                                    .getItem()
+                                    .is(NativeGameplayFixture.item("lava_cell")));
             check.accept(
                     "geothermal-partial-universal-cell-generates-and-returns-empty",
                     geoPartialMenu.getSlot(0).getItem().isEmpty()
@@ -267,44 +292,39 @@ final class FluidCellChecks {
                             && geoPartial.fluidContents().getFirst().amount() > 0
                             && geoPartial.fluidContents().getFirst().amount() < 250
                             && geoPartial.bufferedEu().stored() > 0);
-            int room = 8000 - geoFuelled.fluidContents().getFirst().amount();
             check.accept(
-                    "geothermal-pipe-still-fills-remaining-capacity",
-                    NativeTransferAccess.fill(
-                                    world,
-                                    GEO_FUELLED,
-                                    Direction.UP,
-                                    new FluidStack(Fluids.LAVA, 2000),
-                                    false)
-                            == room);
-            check.accept(
-                    "fluid-heater-uses-first-lava-cell-keeps-second-queued",
-                    heaterMenu.getSlot(0).getItem().getCount() == 2
+                    "fluid-heater-prefills-all-three-cells",
+                    heaterMenu.getSlot(0).getItem().isEmpty()
                             && heaterMenu
                                     .getSlot(9)
                                     .getItem()
                                     .is(NativeGameplayFixture.item("empty_cell"))
-                            && heater.fluidContents().getFirst().amount() > 0
-                            && heater.fluidContents().getFirst().amount() < 1000);
+                            && heaterMenu.getSlot(9).getItem().getCount() == 3
+                            && heater.fluidContents().getFirst().amount() > 2000
+                            && heater.fluidContents().getFirst().amount() <= 3000);
             check.accept(
-                    "blast-furnace-prefills-one-air-cell-keeps-next",
-                    furnaceMenu.getSlot(4).getItem().getCount() == 1
+                    "cold-furnace-without-iron-prefills-two-air-cells",
+                    furnaceMenu.getSlot(4).getItem().isEmpty()
                             && furnaceMenu
                                     .getSlot(13)
                                     .getItem()
                                     .is(NativeGameplayFixture.item("empty_cell"))
-                            && furnace.fluidContents().getFirst().amount() == 1000);
+                            && furnaceMenu.getSlot(13).getItem().getCount() == 2
+                            && furnace.fluidContents().getFirst().amount() == 2000);
+            furnaceMenu.getSlot(0).set(new ItemStack(Items.IRON_INGOT));
             check.accept(
-                    "semifluid-consumes-piped-biogas-keeps-filled-cell-queued",
-                    semiMenu.getSlot(0).getItem().is(NativeGameplayFixture.item("fluid_cell"))
-                            && NativeTransferAccess.itemFluidVolume(semiMenu.getSlot(0).getItem())
-                                    == 1000
-                            && semiMenu.getSlot(9).getItem().isEmpty()
-                            && semi.fluidContents().getFirst().amount() > 0
-                            && semi.fluidContents().getFirst().amount() < 1000
+                    "semifluid-prefills-cell-while-consuming-piped-biogas",
+                    semiMenu.getSlot(0).getItem().isEmpty()
+                            && semiMenu.getSlot(9)
+                                    .getItem()
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
+                            && NativeTransferAccess.itemFluidVolume(semiMenu.getSlot(9).getItem())
+                                    == 0
+                            && semi.fluidContents().getFirst().amount() > 1000
+                            && semi.fluidContents().getFirst().amount() < 2000
                             && semi.bufferedEu().stored() > 0);
             check.accept(
-                    "semifluid-empty-tank-opens-one-universal-cell",
+                    "semifluid-empty-tank-opens-universal-cell",
                     semiEmptyMenu.getSlot(0).getItem().isEmpty()
                             && semiEmptyMenu
                                     .getSlot(9)
@@ -337,23 +357,23 @@ final class FluidCellChecks {
         }
         if (!doubleCompleted && !doubleMenu.getSlot(9).getItem().isEmpty()) {
             check.accept(
-                    "washer-first-batch-leaves-900-and-second-cell",
+                    "washer-full-tank-first-batch-leaves-7900-and-ninth-cell",
                     doubleMenu
                                     .getSlot(9)
                                     .getItem()
                                     .is(NativeGameplayFixture.item("purified_copper"))
-                            && doubled.fluidContents().getFirst().amount() == 900
+                            && doubled.fluidContents().getFirst().amount() == 7900
                             && doubleMenu.getSlot(6).getItem().getCount() == 1
-                            && doubleMenu.getSlot(14).getItem().getCount() == 1);
+                            && doubleMenu.getSlot(14).getItem().getCount() == 8);
             doubleCompleted = true;
         }
         if (!blastConsumedAir && furnaceMenu.progress() > 0) {
             check.accept(
-                    "blast-furnace-consumes-air-keeps-second-cell-queued",
-                    furnace.fluidContents().getFirst().amount() > 0
-                            && furnace.fluidContents().getFirst().amount() < 1000
-                            && furnaceMenu.getSlot(4).getItem().getCount() == 1
-                            && furnaceMenu.getSlot(13).getItem().getCount() == 1);
+                    "blast-furnace-consumes-prefilled-air",
+                    furnace.fluidContents().getFirst().amount() > 1000
+                            && furnace.fluidContents().getFirst().amount() < 2000
+                            && furnaceMenu.getSlot(4).getItem().isEmpty()
+                            && furnaceMenu.getSlot(13).getItem().getCount() == 2);
             blastConsumedAir = true;
         }
         if (batches == 10) {
@@ -365,7 +385,7 @@ final class FluidCellChecks {
                                 && single.fluidContents().getFirst().amount() == 0);
                 ++dryTicks;
             }
-            if (dryTicks == 10) done = doubleCompleted && blastConsumedAir;
+            if (dryTicks == 10) done = doubleCompleted && blastConsumedAir && boundaryDone;
         }
         return done;
     }
