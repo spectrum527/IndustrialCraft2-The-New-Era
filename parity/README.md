@@ -15,6 +15,17 @@ Gradle 用 Java 21 运行 1.21.1，用 Java 25 运行 26.1.2 和 26.2。三个�
 
 断言结果写入 `build/qa/bare-cable/<版本>/run/native-cable-shock/cableShock.properties`。试验放置并接通真实电缆，检查储能箱的实际收发、固定位置铁傀儡的生命值及原生魔法伤害源。场景覆盖无负载、满接收端、无用支路、绝缘和泡沫覆盖、部分接收、多段、多源、各电流档位的碰撞距离、不同线路交叠及防化套装。
 
+## 手持流体单元回归
+
+```bash
+./gradlew :neoforge:1.21.1:runNativeGameplayHeldFluidCell \
+  :neoforge:26.1.2:runNativeGameplayHeldFluidCell \
+  :neoforge:26.2:runNativeGameplayHeldFluidCell \
+  -Pic2.native.runRoot=build/qa/held-cell
+```
+
+`build/qa/held-cell/<版本>/run/native-held-cell/heldFluidCell.properties` 写入专服断言。两个单元家族通过原生手持和方块交互入口检验水和熔岩源、流动液、混液、余量不足、生存堆叠与满背包掉落、创造物品栏去重，地面拒放，以及对储罐和兼容机器灌注时的液量与容器守恒。
+
 ## 场景数据与相似度
 
 依据项目规则 §1、QA 容差条款、已批准计划 §8.2（本任务给定表）及 WP-F 约定。工具需求先于正式领域 spec；这里定义交换格式，不定义游戏行为，也不包含采集器或实测期望。

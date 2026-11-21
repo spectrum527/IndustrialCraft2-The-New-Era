@@ -1,5 +1,6 @@
 package com.industrialage.ia2.gametest;
 
+import com.industrialage.ia2.celltest.HeldCellChecks;
 import com.industrialage.ia2.gameplay.IndustrialMachine;
 import com.industrialage.ia2.shocktest.CableShockChecks;
 import com.industrialage.ia2.worldtest.WorldChecks;
@@ -49,6 +50,7 @@ public final class NativeGameplayFixture {
     private static final BlockPos FURNACE = MILL.east(2);
     private static final BlockPos RUBBER = FURNACE.east(2);
     private static final BlockPos CABLE_TEST_ORIGIN = new BlockPos(23, 96, 23);
+    private static final BlockPos HELD_CELL_ORIGIN = new BlockPos(22, 106, 22);
 
     private final String phase = System.getProperty("ic2.native.phase");
     private final Properties checks = new Properties();
@@ -102,7 +104,10 @@ public final class NativeGameplayFixture {
                 complete(server, null);
                 return;
             }
-            if (phase.equals("cableShock")) {
+            if (phase.equals("heldFluidCell")) {
+                level.setChunkForced(1, 1, true);
+                level.getChunk(1, 1);
+            } else if (phase.equals("cableShock")) {
                 arrangeCableShock(level);
             } else if (phase.equals("worldDetails") || phase.equals("worldDetailsCold")) {
                 worldDetails =
@@ -175,7 +180,8 @@ public final class NativeGameplayFixture {
             }
             if ("worldProgram".equals(phase) || "worldDetails".equals(phase))
                 server.tickRateManager().setTickRate(200F);
-            else if ("cableShock".equals(phase)) server.tickRateManager().setTickRate(20F);
+            else if ("cableShock".equals(phase) || "heldFluidCell".equals(phase))
+                server.tickRateManager().setTickRate(20F);
             else
                 server.tickRateManager()
                         .requestGameToSprint("workshop".equals(phase) ? 8_500 : 1_300);
@@ -390,6 +396,17 @@ public final class NativeGameplayFixture {
                                         server.overworld(),
                                         FakePlayerFactory.getMinecraft(server.overworld()),
                                         ticks);
+                        case "heldFluidCell" -> {
+                            var level = server.overworld();
+                            if (!level.isPositionEntityTicking(HELD_CELL_ORIGIN)) yield false;
+                            HeldCellChecks.run(
+                                    level,
+                                    FakePlayerFactory.getMinecraft(level),
+                                    HELD_CELL_ORIGIN,
+                                    NativeHeldCellHost.access(level),
+                                    this::check);
+                            yield true;
+                        }
                         case "cableShock" -> {
                             if (cableShockAt == 0) {
                                 if (!server.overworld()
