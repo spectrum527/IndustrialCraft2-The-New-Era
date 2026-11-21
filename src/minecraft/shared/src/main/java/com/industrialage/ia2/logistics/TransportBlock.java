@@ -2,6 +2,7 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
+import com.industrialage.ia2.wrench.WrenchTarget;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +28,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /** A physical item pipe, fluid pipe or tank. Each shape has only its relevant state properties. */
-public class TransportBlock extends TransportBlockBase implements EntityBlock {
+public class TransportBlock extends TransportBlockBase implements EntityBlock, WrenchTarget {
     final TransportSpec spec;
     static final EnumProperty<Direction> OUT = BlockStateProperties.FACING;
     private static final Map<Direction, BooleanProperty> SIDES =
@@ -79,14 +80,6 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock {
         ItemStack item = player.getItemInHand(hand);
         String id = TransportPlatform.itemId(item);
         boolean server = world instanceof ServerLevel;
-        if (id.equals("ic2:wrench") && spec.kind() != Kind.TANK) {
-            if (server) {
-                if (spec.kind() == Kind.ITEM_PIPE) {
-                    world.setBlockAndUpdate(pos, node.getBlockState().setValue(OUT, side));
-                } else node.toggle(side);
-            }
-            return true;
-        }
         if (spec.kind() == Kind.FLUID_PIPE) {
             if (id.equals("ic2:crowbar")) {
                 if (server) {
@@ -111,6 +104,45 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock {
                 && TransportPlatform.containerInteraction(node, side, player, hand)) return true;
         if (spec.kind() != Kind.TANK) return false;
         if (server) player.openMenu(node);
+        return true;
+    }
+
+    @Override
+    public boolean wrenchUsesLoot() {
+        return true;
+    }
+
+    @Override
+    public boolean wrenchSide(BlockState state, Direction side) {
+        return spec.kind() == Kind.FLUID_PIPE || WrenchTarget.super.wrenchSide(state, side);
+    }
+
+    @Override
+    public boolean wrenchTurn(ServerLevel level, BlockPos pos, BlockState state, Direction side) {
+        if (spec.kind() == Kind.ITEM_PIPE)
+            return WrenchTarget.super.wrenchTurn(level, pos, state, side);
+        if (!(level.getBlockEntity(pos) instanceof TransportNode node) || !node.toggle(side))
+            return false;
+        var adjacent = pos.relative(side);
+        if (level.hasChunkAt(adjacent)) {
+            var neighbor = level.getBlockState(adjacent);
+            var other = level.getBlockEntity(adjacent);
+            boolean open =
+                    node.open(side)
+                            && (!(other instanceof TransportNode transport)
+                                    || transport.open(side.getOpposite()));
+            var current =
+                    open ? connect(state, side, neighbor) : state.setValue(SIDES.get(side), false);
+            level.setBlock(pos, current, Block.UPDATE_CLIENTS);
+            if (neighbor.getBlock() instanceof Pipe pipe) {
+                var opposite = side.getOpposite();
+                var next =
+                        open
+                                ? pipe.connect(neighbor, opposite, state)
+                                : neighbor.setValue(SIDES.get(opposite), false);
+                level.setBlock(adjacent, next, Block.UPDATE_CLIENTS);
+            }
+        }
         return true;
     }
 

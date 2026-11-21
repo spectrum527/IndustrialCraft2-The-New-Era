@@ -106,7 +106,15 @@ def generate(repo, out, target, write):
             for side, rotation in (directions.items() if facing != "none" else [("", {})]):
                 props = (["facing=" + side] if side else []) + (["active=" + str(active).lower()] if entry.get("active") else [])
                 variants[",".join(props)] = {"model": "ic2:block/" + model_name, **rotation}
-        write("assets/ic2/blockstates/" + name, {"variants": variants})
+        if name == "coke_kiln":
+            pieces = [{"when": dict(term.split("=") for term in state.split(",")), "apply": part}
+                      for state, part in variants.items()]
+            for side, rotation in directions.items():
+                pieces.append({"when": {"facing": side, "formed": "true"},
+                               "apply": {"model": "ic2:block/coke_kiln_frame", **rotation}})
+            write("assets/ic2/blockstates/" + name, {"multipart": pieces})
+        else:
+            write("assets/ic2/blockstates/" + name, {"variants": variants})
         if entry.get("worldBlockOnly"):
             continue
         model("item/" + name, {"parent": "ic2:block/" + name})

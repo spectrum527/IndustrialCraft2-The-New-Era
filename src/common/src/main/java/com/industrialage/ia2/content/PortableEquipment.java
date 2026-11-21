@@ -107,6 +107,17 @@ public enum PortableEquipment {
         return kind == Kind.PACK || kind == Kind.FLIGHT;
     }
 
+    /** Full-strength melee damage including the ordinary player’s base point, when powered. */
+    public int poweredMeleeDamage() {
+        return switch (this) {
+            case DRILL -> 6;
+            case DIAMOND_DRILL -> 7;
+            case IRIDIUM_DRILL -> 8;
+            case CHAINSAW -> 10;
+            default -> 0;
+        };
+    }
+
     /** Base stack limit while the item has no stored charge. */
     public int emptyStackSize() {
         if (this == RE_BATTERY || kind == Kind.DISPOSABLE) return 64;

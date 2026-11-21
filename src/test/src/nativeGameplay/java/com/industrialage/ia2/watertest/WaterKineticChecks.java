@@ -4,6 +4,7 @@ import com.industrialage.ia2.industrial.PowerNode;
 import com.industrialage.ia2.industrial.WorkshopMenu;
 import com.industrialage.ia2.industrial.WorkshopNode;
 import com.industrialage.ia2.power.EuBuffer;
+import com.industrialage.ia2.wrenchtest.WrenchHits;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
@@ -583,7 +584,7 @@ public final class WaterKineticChecks {
         player.setPos(water.getX() + 2.5, water.getY(), water.getZ() + 0.5);
         var stack = stack("wrench");
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
-        var hit = new BlockHitResult(Vec3.atCenterOf(water), side, water, false);
+        var hit = WrenchHits.turn(level, water, side);
         check.accept(
                 "native-wrench-" + side.getName(),
                 player.gameMode

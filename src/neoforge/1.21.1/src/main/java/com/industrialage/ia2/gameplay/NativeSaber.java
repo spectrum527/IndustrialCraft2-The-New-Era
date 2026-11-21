@@ -1,13 +1,11 @@
 package com.industrialage.ia2.gameplay;
 
-import com.industrialage.ia2.audio.SaberAudio;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 /** Named melee attributes and item-model binding for 1.21.1. */
 final class NativeSaber {
@@ -25,10 +23,7 @@ final class NativeSaber {
     }
 
     static final class Client {
-        static void install(IEventBus bus, IEventBus game) {
-            var sound = new SaberAudio();
-            game.addListener(
-                    ClientTickEvent.Post.class, event -> sound.reconcile(NeoSaber::active));
+        static void install(IEventBus bus) {
             bus.addListener(
                     FMLClientSetupEvent.class,
                     event ->

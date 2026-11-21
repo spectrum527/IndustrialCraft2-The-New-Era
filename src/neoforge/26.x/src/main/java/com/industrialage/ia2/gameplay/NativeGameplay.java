@@ -48,7 +48,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -296,6 +298,11 @@ public final class NativeGameplay {
         }
     }
 
+    static float healthDamage(
+            net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post event) {
+        return event.getHealthDamage();
+    }
+
     abstract static class CableBlockBase extends Block {
         CableBlockBase(Properties properties) {
             super(properties);
@@ -315,6 +322,9 @@ public final class NativeGameplay {
                 BlockPos neighborPos,
                 BlockState neighbor,
                 RandomSource random) {
+            if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+                ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            }
             return updateConnection(state, side, neighbor);
         }
 

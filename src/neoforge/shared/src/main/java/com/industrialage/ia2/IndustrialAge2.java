@@ -36,6 +36,7 @@ public final class IndustrialAge2 {
         var platform = new NeoForgePlatform(modBus, NeoForge.EVENT_BUS, container, dist);
         IndustrialContent.install(modBus, NeoForge.EVENT_BUS, platform.services().config(), dist);
         TransportPlatform.install(modBus);
+        com.industrialage.ia2.wrench.WrenchNative.install(NeoForge.EVENT_BUS);
         com.industrialage.ia2.world.WorldPlatform.install(
                 modBus, NeoForge.EVENT_BUS, dist == Dist.CLIENT);
         WorkshopPlatform.install(modBus);

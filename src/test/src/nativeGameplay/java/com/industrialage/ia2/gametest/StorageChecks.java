@@ -2,6 +2,7 @@ package com.industrialage.ia2.gametest;
 
 import com.industrialage.ia2.industrial.BoxBlock;
 import com.industrialage.ia2.industrial.BoxNode;
+import com.industrialage.ia2.wrenchtest.WrenchHits;
 import com.mojang.authlib.GameProfile;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 
@@ -45,6 +45,8 @@ final class StorageChecks {
     private ItemStack special;
     private int index;
     private boolean awaitingDrops;
+    private Runnable wrenchDrops;
+    private Runnable utilityDrops;
 
     static void traceDrops(net.neoforged.neoforge.event.level.BlockDropsEvent event) {
         if (event.getPos().equals(POS)) {
@@ -72,9 +74,47 @@ final class StorageChecks {
         outsider = FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "BoxOutsider"));
         owner.setGameMode(GameType.SURVIVAL);
         outsider.setGameMode(GameType.SURVIVAL);
+        wrenchDrops =
+                com.industrialage.ia2.wrenchtest.WrenchChecks.run(
+                        level,
+                        POS.east(5),
+                        owner,
+                        NativeGameplayFixture::item,
+                        NativeGameplayFixture::block,
+                        com.industrialage.ia2.gameplay.PortableGear::restoreEnergy,
+                        com.industrialage.ia2.gameplay.PortableGear::stored,
+                        check);
+        utilityDrops =
+                com.industrialage.ia2.wrenchtest.WrenchLootChecks.run(
+                        level,
+                        POS.east(5).south(5),
+                        owner,
+                        NativeGameplayFixture::item,
+                        NativeGameplayFixture::block,
+                        (pos, stack) ->
+                                NativeTransferAccess.insert(
+                                                level, pos, Direction.WEST, stack, false)
+                                        == stack.getCount(),
+                        (pos, amount) ->
+                                NativeTransferAccess.fill(
+                                                level,
+                                                pos,
+                                                Direction.WEST,
+                                                new net.neoforged.neoforge.fluids.FluidStack(
+                                                        net.minecraft.world.level.material.Fluids
+                                                                .WATER,
+                                                        amount),
+                                                false)
+                                        == amount,
+                        check);
     }
 
     boolean tick(ServerLevel level, BiConsumer<String, Boolean> check) {
+        if (wrenchDrops != null) {
+            wrenchDrops.run();
+            utilityDrops.run();
+            wrenchDrops = null;
+        }
         if (!awaitingDrops) {
             box = BOXES.get(index / METHODS.size());
             method = METHODS.get(index % METHODS.size());
@@ -95,7 +135,7 @@ final class StorageChecks {
         if (box.id().equals("personal_chest")) {
             owner.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             owner.gameMode.useItemOn(
-                    owner, level, ItemStack.EMPTY, InteractionHand.MAIN_HAND, hit());
+                    owner, level, ItemStack.EMPTY, InteractionHand.MAIN_HAND, hit(level));
         }
         var node = (BoxNode) level.getBlockEntity(POS);
         var menu = node.menu(1, owner.getInventory(), 0);
@@ -113,11 +153,10 @@ final class StorageChecks {
                     node.menu(2, outsider.getInventory(), 0) == null
                             && level.getBlockState(POS).getDestroyProgress(outsider, level, POS)
                                     == 0);
-            outsider.setShiftKeyDown(true);
             var tool = new ItemStack(NativeGameplayFixture.item("wrench"));
             outsider.setItemInHand(InteractionHand.MAIN_HAND, tool);
-            outsider.gameMode.useItemOn(outsider, level, tool, InteractionHand.MAIN_HAND, hit());
-            outsider.setShiftKeyDown(false);
+            outsider.gameMode.useItemOn(
+                    outsider, level, tool, InteractionHand.MAIN_HAND, hit(level));
             check.accept(key + "outsider-wrench-denied", level.getBlockEntity(POS) == node);
             check.accept(key + "no-automation-access", !StorageRule.exposesAutomation(level, POS));
         }
@@ -143,9 +182,7 @@ final class StorageChecks {
         dropEvent = "not fired";
         eventEntity = null;
         if (method.equals("wrench")) {
-            owner.setShiftKeyDown(true);
-            owner.gameMode.useItemOn(owner, level, held, InteractionHand.MAIN_HAND, hit());
-            owner.setShiftKeyDown(false);
+            owner.gameMode.useItemOn(owner, level, held, InteractionHand.MAIN_HAND, hit(level));
             check.accept(key + "removed", level.getBlockState(POS).isAir());
         } else check.accept(key + "removed", owner.gameMode.destroyBlock(POS));
     }
@@ -219,7 +256,7 @@ final class StorageChecks {
         level.setBlockAndUpdate(POS, Blocks.AIR.defaultBlockState());
     }
 
-    private static BlockHitResult hit() {
-        return new BlockHitResult(Vec3.atCenterOf(POS), Direction.UP, POS, false);
+    private static BlockHitResult hit(ServerLevel level) {
+        return WrenchHits.center(level, POS, Direction.UP);
     }
 }

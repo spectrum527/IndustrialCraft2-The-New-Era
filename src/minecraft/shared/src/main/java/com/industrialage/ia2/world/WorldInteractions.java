@@ -1,6 +1,8 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.industrial.WorkshopBlock;
 import com.industrialage.ia2.logistics.TransportPlatform;
+import com.industrialage.ia2.wrench.WrenchUse;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -8,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -23,6 +26,8 @@ final class WorldInteractions {
             Level level, Player player, InteractionHand hand, BlockPos pos, Direction face) {
         var stack = player.getItemInHand(hand);
         var state = level.getBlockState(pos);
+        if (WorkshopBlock.isKilnPort(state))
+            return !stack.isEmpty() && !(stack.getItem() instanceof BlockItem);
         String item = WorldNative.itemId(stack);
         String path = WorldNative.blockId(state.getBlock());
         if (!level.mayInteract(player, pos) || !player.mayBuild()) return false;
@@ -89,22 +94,9 @@ final class WorldInteractions {
             return useCrop(level, player, hand, pos, item, crop, stack);
         }
         if (hand == InteractionHand.MAIN_HAND && state.getBlock() instanceof WorldMachineBlock) {
+            if (WrenchUse.hand(player) != null) return false;
             if (server && level.getBlockEntity(pos) instanceof WorldMachine machine) {
-                if (item.endsWith("wrench") && player.isShiftKeyDown()) {
-                    if (((ServerLevel) level).destroyBlock(pos, false, player)
-                            && !player.isCreative()) {
-                        Block.popResource(level, pos, new ItemStack(state.getBlock()));
-                    }
-                } else if (item.endsWith("wrench")) {
-                    var property = BlockStateProperties.HORIZONTAL_FACING;
-                    Direction next =
-                            face.getAxis().isHorizontal()
-                                    ? face
-                                    : state.getValue(property).getClockWise();
-                    level.setBlockAndUpdate(pos, state.setValue(property, next));
-                } else {
-                    machine.interact(player, face);
-                }
+                machine.interact(player, face);
             }
             return true;
         }

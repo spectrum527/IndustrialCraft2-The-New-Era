@@ -2,7 +2,6 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
-import com.industrialage.ia2.gameplay.IndustrialContent;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +16,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -79,7 +75,7 @@ public final class TransportPlatform {
             DEVICES.add(block);
             ITEMS.registerSimpleBlockItem(block);
         }
-        ITEMS.registerItem("wrench", properties -> new Wrench(properties.durability(120)));
+        ITEMS.registerItem("wrench", properties -> new Item(properties.durability(120)));
         ITEMS.registerItem("crowbar", properties -> new Item(properties.stacksTo(1)));
         for (var family : CellFamily.values()) {
             String shell = family.emptyPath();
@@ -310,32 +306,6 @@ public final class TransportPlatform {
             node.closed = closed & 63;
             node.lv = lv & 63;
             node.mv = mv & 63 & ~node.lv;
-        }
-    }
-
-    private static final class Wrench extends Item {
-        Wrench(Properties properties) {
-            super(properties);
-        }
-
-        @Override
-        public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-            var block = context.getLevel().getBlockState(context.getClickedPos()).getBlock();
-            var action =
-                    block instanceof com.industrialage.ia2.industrial.BoxBlock box
-                            ? box.wrench(context)
-                            : IndustrialContent.wrenchBlock(context);
-            if (action.consumesAction()
-                    && context.getLevel() instanceof ServerLevel
-                    && context.getPlayer() != null) {
-                stack.hurtAndBreak(
-                        1,
-                        context.getPlayer(),
-                        context.getHand() == InteractionHand.MAIN_HAND
-                                ? EquipmentSlot.MAINHAND
-                                : EquipmentSlot.OFFHAND);
-            }
-            return action;
         }
     }
 }

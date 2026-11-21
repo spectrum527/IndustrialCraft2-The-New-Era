@@ -7,6 +7,7 @@ import com.industrialage.ia2.industrial.WorkshopBlock;
 import com.industrialage.ia2.world.CableColors;
 import com.industrialage.ia2.world.FoamCasing;
 import com.industrialage.ia2.world.WorldMachineBlock;
+import com.industrialage.ia2.wrench.WrenchTarget;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,16 +17,25 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /** Connectable cable with a collision shape matching its visible branches. */
-public class CableBlock extends NativeGameplay.CableBlockBase {
+public class CableBlock extends NativeGameplay.CableBlockBase
+        implements SimpleWaterloggedBlock, WrenchTarget {
+    @Override
+    public boolean wrenchUsesLoot() {
+        return true;
+    }
+
     private static final int DETECTOR_INTERVAL = 32;
     private static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     private static final Map<Direction, BooleanProperty> CONNECTIONS =
@@ -56,7 +66,7 @@ public class CableBlock extends NativeGameplay.CableBlockBase {
         exposed = !(this instanceof Foamed) && CableShock.isBare(path);
         packetLimit = PowerGrid.cableRating(path);
         size = size(path);
-        BlockState state = stateDefinition.any();
+        BlockState state = stateDefinition.any().setValue(BlockStateProperties.WATERLOGGED, false);
         for (var property : CONNECTIONS.values()) {
             state = state.setValue(property, false);
         }
@@ -108,12 +118,25 @@ public class CableBlock extends NativeGameplay.CableBlockBase {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.WATERLOGGED);
         CONNECTIONS.values().forEach(builder::add);
     }
 
     @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(BlockStateProperties.WATERLOGGED)
+                ? Fluids.WATER.getSource(false)
+                : super.getFluidState(state);
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        var state = defaultBlockState();
+        var state =
+                defaultBlockState()
+                        .setValue(
+                                BlockStateProperties.WATERLOGGED,
+                                context.getLevel().getFluidState(context.getClickedPos()).getType()
+                                        == Fluids.WATER);
         for (var direction : Direction.values()) {
             var neighbor = context.getClickedPos().relative(direction);
             state = updateConnection(state, direction, context.getLevel().getBlockState(neighbor));

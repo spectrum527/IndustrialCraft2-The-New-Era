@@ -1,7 +1,10 @@
 package com.industrialage.ia2.industrial;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 final class WorkshopCokeKiln {
@@ -22,8 +25,39 @@ final class WorkshopCokeKiln {
             return false;
         }
         var kiln = inspect(node, level);
-        node.setActive(level, kiln != null && run(node, kiln.hatch(), kiln.grate()));
+        var current = node.getBlockState();
+        var next =
+                current.setValue(WorkshopBlock.FORMED, kiln != null)
+                        .setValue(
+                                WorkshopBlock.ACTIVE,
+                                kiln != null && run(node, kiln.hatch(), kiln.grate()));
+        if (current != next) level.setBlockAndUpdate(node.getBlockPos(), next);
         return true;
+    }
+
+    static boolean takeCreosote(
+            WorkshopNode node, ServerLevel level, Player player, InteractionHand hand) {
+        if (!node.getBlockState().getValue(WorkshopBlock.FORMED)) return false;
+        var kiln = inspect(node, level);
+        return kiln != null
+                && WorkshopPlatform.interactFluid(kiln.grate(), player, hand, Direction.DOWN);
+    }
+
+    static WorkshopNode.Tank displayedOutlet(WorkshopNode node) {
+        if (node.kind == WorkshopKind.COKE_KILN
+                && node.getLevel() instanceof ServerLevel level
+                && node.getBlockState().getValue(WorkshopBlock.FORMED)) {
+            var pos = center(node).below();
+            if (level.hasChunkAt(pos)
+                    && level.getBlockEntity(pos) instanceof WorkshopNode grate
+                    && grate.kind == WorkshopKind.COKE_GRATE) return grate.outlet;
+        }
+        return node.outlet;
+    }
+
+    private static BlockPos center(WorkshopNode node) {
+        return node.getBlockPos()
+                .relative(WorkshopBlock.direction(node.getBlockState()).getOpposite());
     }
 
     static boolean suitable(ItemStack item) {
@@ -78,8 +112,7 @@ final class WorkshopCokeKiln {
 
     private static Formation inspect(WorkshopNode controller, ServerLevel level) {
         var front = controller.getBlockPos();
-        var center =
-                front.relative(WorkshopBlock.direction(controller.getBlockState()).getOpposite());
+        var center = center(controller);
         if (level.hasChunkAt(center)
                 && level.getBlockEntity(center.above()) instanceof WorkshopNode hatch
                 && level.getBlockEntity(center.below()) instanceof WorkshopNode grate
