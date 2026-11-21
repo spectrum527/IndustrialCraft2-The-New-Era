@@ -512,10 +512,21 @@ public final class WorkshopPlatform {
                 && WorkshopCells.fillNamedHand(node, side, player, hand);
     }
 
-    static void playPickup(ServerLevel level, BlockPos pos, Liquid moved) {
+    static void playPickup(WorkshopNode node, Player player, Liquid moved) {
         var fluid = fluid(moved.id(), moved.amount());
         var sound = fluid.getFluid().getFluidType().getSound(fluid, SoundActions.BUCKET_FILL);
-        if (sound != null) level.playSound(null, pos, sound, SoundSource.BLOCKS, 1, 1);
+        if (sound != null) {
+            node.getLevel()
+                    .playSound(
+                            null,
+                            player.getX(),
+                            player.getY() + 0.5,
+                            player.getZ(),
+                            sound,
+                            SoundSource.BLOCKS,
+                            1,
+                            1);
+        }
     }
 
     static boolean canOpen(WorkshopNode node, Player player) {
