@@ -49,6 +49,16 @@ final class CellPickup {
             var named = WorkshopPlatform.namedFilledCell(moved);
             if (!named.isEmpty()) result = named;
         }
-        return InteractionResultHolder.consume(ItemUtils.createFilledResult(held, player, result));
+        return InteractionResultHolder.consume(stowFilledCell(held, player, result));
+    }
+
+    private static ItemStack stowFilledCell(ItemStack held, Player player, ItemStack filled) {
+        // In 1.19.2 the vanilla creative duplicate check only compares the item type.
+        if (player.getAbilities().instabuild
+                && player.getInventory()
+                        .hasAnyMatching(stack -> ItemStack.isSameItemSameTags(stack, filled))) {
+            return held;
+        }
+        return ItemUtils.createFilledResult(held, player, filled, false);
     }
 }
