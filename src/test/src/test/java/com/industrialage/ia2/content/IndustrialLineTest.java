@@ -14,6 +14,29 @@ import org.junit.jupiter.api.Test;
 /** Gameplay accounting from the repaired release observations and the approved M09 correction. */
 class IndustrialLineTest {
     @Test
+    void laserNamesAndShotCostsFollowTheSameSavedModeThroughWraparound() {
+        var names =
+                List.of(
+                        "mining",
+                        "low_focus",
+                        "long_range",
+                        "horizontal",
+                        "super_heat",
+                        "scatter",
+                        "explosive",
+                        "three_by_three");
+        var energy = List.of(1250, 100, 5000, 3000, 2500, 10000, 5000, 3000);
+        for (int index = -1; index <= 8; index++) {
+            int expected = Math.floorMod(index, names.size());
+            assertEquals(
+                    "item.ic2.mining_laser.mode." + names.get(expected),
+                    MiningLaserModes.translationKey(index));
+            assertEquals(energy.get(expected).intValue(), MiningLaserModes.get(index).cost());
+            assertEquals((expected + 1) % names.size(), MiningLaserModes.next(index));
+        }
+    }
+
+    @Test
     void disposableBatteriesOnlyWasteEnergyInBuffersSmallerThanOneBattery() {
         var cell = PortableEquipment.SINGLE_USE_BATTERY;
         assertEquals(0, cell.disposableCharge(0, 600, 1));

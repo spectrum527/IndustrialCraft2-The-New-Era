@@ -15,21 +15,36 @@ public final class MiningLaserModes {
             boolean blast,
             boolean parallel) {}
 
-    private static final List<Mode> MODES =
+    private record Setting(String name, Mode profile) {}
+
+    private static final List<Setting> MODES =
             List.of(
-                    new Mode(1_250, 1, 8, 20, false, false, false, false),
-                    new Mode(100, 1, 1, 4, false, false, false, false),
-                    new Mode(5_000, 1, 24, 40, false, false, false, false),
-                    new Mode(3_000, 1, 14, 25, true, false, false, false),
-                    new Mode(2_500, 1, 8, 18, false, true, false, false),
-                    new Mode(10_000, 5, 3, 14, false, false, false, false),
-                    new Mode(5_000, 1, 1, 15, false, false, true, false),
-                    new Mode(3_000, 3, 4, 16, false, false, false, true));
+                    new Setting("mining", new Mode(1_250, 1, 8, 20, false, false, false, false)),
+                    new Setting("low_focus", new Mode(100, 1, 1, 4, false, false, false, false)),
+                    new Setting(
+                            "long_range", new Mode(5_000, 1, 24, 40, false, false, false, false)),
+                    new Setting(
+                            "horizontal", new Mode(3_000, 1, 14, 25, true, false, false, false)),
+                    new Setting("super_heat", new Mode(2_500, 1, 8, 18, false, true, false, false)),
+                    new Setting("scatter", new Mode(10_000, 5, 3, 14, false, false, false, false)),
+                    new Setting("explosive", new Mode(5_000, 1, 1, 15, false, false, true, false)),
+                    new Setting(
+                            "three_by_three",
+                            new Mode(3_000, 3, 4, 16, false, false, false, true)));
 
     private MiningLaserModes() {}
 
     /** Resolves any persisted index to a valid setting. */
     public static Mode get(int index) {
+        return setting(index).profile();
+    }
+
+    /** Translatable HUD label for the same persisted index and energy profile. */
+    public static String translationKey(int index) {
+        return "item.ic2.mining_laser.mode." + setting(index).name();
+    }
+
+    private static Setting setting(int index) {
         return MODES.get(Math.floorMod(index, MODES.size()));
     }
 
