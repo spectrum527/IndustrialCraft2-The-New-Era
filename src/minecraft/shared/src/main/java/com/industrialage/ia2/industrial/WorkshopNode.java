@@ -82,13 +82,7 @@ public final class WorkshopNode extends WorkshopSaveBase
         lastServerTick = level.getGameTime();
         servicePowerItem();
         WorkshopAutomation.tick(this, level);
-        if (kind == WorkshopKind.ORE_WASHER) {
-            serviceContainer(
-                    WorkshopInventory.WASHER_WATER_SLOT,
-                    WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT,
-                    false,
-                    "minecraft:water");
-        } else if (kind == WorkshopKind.PUMP) {
+        if (kind == WorkshopKind.PUMP) {
             serviceContainer(0, WorkshopInventory.OUTPUT_START, true, "");
         }
         if (kind == WorkshopKind.SOLID_HEAT) {
@@ -108,18 +102,21 @@ public final class WorkshopNode extends WorkshopSaveBase
         }
         var job = WorkshopPlans.plan(this, level);
         preview = job == null || job.products().isEmpty() ? ItemStack.EMPTY : job.products().get(0);
-        if (kind == WorkshopKind.BLAST_FURNACE) {
-            heatBlastFurnace(level);
-            if (inlet.capacity - inlet.amount >= 1000) {
-                refillAirCell();
-            }
-        }
         var outputs =
                 job == null
                         ? null
                         : kind == WorkshopKind.INDUCTION
                                 ? inductionOutputs(job)
                                 : packed(job.products());
+        if (kind == WorkshopKind.BLAST_FURNACE) {
+            heatBlastFurnace(level);
+            if (inlet.amount == 0
+                    || outputs != null
+                            && heat >= BLAST_FURNACE_WORK_HEAT
+                            && inlet.amount < job.airPerTick()) {
+                refillAirCell();
+            }
+        }
         boolean preheated =
                 (kind == WorkshopKind.CENTRIFUGE || kind == WorkshopKind.INDUCTION)
                         && warmElectric(level, outputs == null ? null : job);
@@ -142,6 +139,16 @@ public final class WorkshopNode extends WorkshopSaveBase
             }
             cycleDuration = duration;
             setChanged();
+        }
+        var required = job.requested();
+        if (kind == WorkshopKind.ORE_WASHER
+                && energy >= stats.energyPerTick()
+                && !inlet.has(required.id(), required.amount())) {
+            serviceContainer(
+                    WorkshopInventory.WASHER_WATER_SLOT,
+                    WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT,
+                    false,
+                    required.id());
         }
         boolean operating = canWork(job, stats.energyPerTick());
         if (operating) {
@@ -393,8 +400,11 @@ public final class WorkshopNode extends WorkshopSaveBase
     private void serviceContainer(int inputSlot, int returnSlot, boolean filling, String allowed) {
         var input = inventory.getItem(inputSlot);
         if (input.isEmpty()) return;
-        var moved = WorkshopPlatform.containerRecipe(inlet, input, filling);
-        if (moved == null || (!allowed.isEmpty() && !allowed.equals(moved.liquid().id()))) return;
+        var moved =
+                filling
+                        ? WorkshopPlatform.containerRecipe(inlet, input, true)
+                        : WorkshopCells.drain(inlet, input, allowed);
+        if (moved == null) return;
         var remainder = moved.stack();
         var previous = inventory.getItem(returnSlot);
         if (!remainder.isEmpty()

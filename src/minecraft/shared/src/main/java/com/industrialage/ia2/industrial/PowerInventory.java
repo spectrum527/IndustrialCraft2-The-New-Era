@@ -81,11 +81,15 @@ final class PowerInventory extends SimpleContainer
                             && (part.equals("fluid_pulling_upgrade")
                                     || part.equals("fluid_ejector_upgrade"));
             case RT_GENERATOR -> slot < 6 && part.equals("rtg_pellet");
-            case GEO_GENERATOR -> slot == 0 && stack.is(Items.LAVA_BUCKET);
+            case GEO_GENERATOR -> acceptsGeothermalFuel(slot, stack);
             case WATER_GENERATOR ->
                     slot == 0 && (stack.is(Items.WATER_BUCKET) || part.equals("water_cell"));
             default -> false;
         };
+    }
+
+    static boolean acceptsGeothermalFuel(int slot, ItemStack stack) {
+        return slot == 0 && WorkshopCells.canDrain(stack, PowerNode.LAVA_CAPACITY, PowerNode.LAVA);
     }
 
     @Override

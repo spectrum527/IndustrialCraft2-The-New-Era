@@ -78,11 +78,9 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
             String id = node.kind == WorkshopKind.ELECTRIC_HEAT ? "ic2:coil" : "ic2:electric_motor";
             return WorkshopPlatform.itemId(stack).equals(id);
         }
-        if (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_WATER_SLOT) {
-            var drain =
-                    WorkshopPlatform.containerRecipe(
-                            new WorkshopNode.Tank(node.inlet.capacity), stack, false);
-            return drain != null && drain.liquid().id().equals("minecraft:water");
+        if (node.kind == WorkshopKind.ORE_WASHER) {
+            if (slot == WASHER_WATER_SLOT) return acceptsWasherWater(stack);
+            if (slot < inputCount()) return WorkshopPlans.storedInput(node.kind, node.mode, stack);
         }
         if (slot >= UPGRADE_START && slot < UPGRADE_END) {
             return WorkshopAutomation.canInstall(node, stack);
@@ -159,17 +157,25 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                 : kind.dischargesItem() && PowerPlatform.canDischarge(stack, tier);
     }
 
+    static boolean acceptsWasherWater(ItemStack stack) {
+        return WorkshopCells.canDrain(
+                stack, WorkshopKind.ORE_WASHER.inputVolume(), WorkshopThermal.WATER);
+    }
+
     @Override
     public int[] getSlotsForFace(Direction direction) {
         var input =
                 switch (node.kind) {
                     case BLAST_FURNACE -> IntStream.of(0, AUX_SLOT);
+                    case ORE_WASHER -> IntStream.of(0, WASHER_WATER_SLOT);
                     case UU_ASSEMBLY -> IntStream.of(1);
                     default -> IntStream.range(0, node.kind.inputs(node.mode));
                 };
         var output = IntStream.range(OUTPUT_START, OUTPUT_START + node.kind.outputSlots());
         if (node.kind == WorkshopKind.BLAST_FURNACE) {
             output = IntStream.concat(output, IntStream.of(RETURN_SLOT));
+        } else if (node.kind == WorkshopKind.ORE_WASHER) {
+            output = IntStream.concat(output, IntStream.of(WASHER_CONTAINER_RETURN_SLOT));
         }
         return (direction == Direction.UP
                         ? IntStream.concat(input, output)
@@ -180,14 +186,16 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return (slot < node.kind.inputs(node.mode)
-                        || node.kind == WorkshopKind.BLAST_FURNACE && slot == AUX_SLOT)
+                        || node.kind == WorkshopKind.BLAST_FURNACE && slot == AUX_SLOT
+                        || node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_WATER_SLOT)
                 && canPlaceItem(slot, stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return (slot >= OUTPUT_START && slot < OUTPUT_START + node.kind.outputSlots())
-                || (node.kind == WorkshopKind.BLAST_FURNACE && slot == RETURN_SLOT);
+                || (node.kind == WorkshopKind.BLAST_FURNACE && slot == RETURN_SLOT)
+                || (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_CONTAINER_RETURN_SLOT);
     }
 
     @Override

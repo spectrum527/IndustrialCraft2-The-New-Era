@@ -59,6 +59,7 @@ final class WorkshopThermal {
     }
 
     private static void refill(WorkshopNode node) {
+        if (node.inlet.amount > 0) return;
         var stack = node.inventory.getItem(0);
         if (stack.isEmpty()) {
             return;

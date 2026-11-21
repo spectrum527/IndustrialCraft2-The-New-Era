@@ -13,6 +13,17 @@ final class WorkshopCells {
 
     private WorkshopCells() {}
 
+    static WorkshopPlans.ContainerResult drain(
+            WorkshopNode.Tank tank, ItemStack stack, String fluid) {
+        if (stack.isEmpty()) return null;
+        var moved = WorkshopPlatform.containerRecipe(tank, stack, false);
+        return moved != null && moved.liquid().id().equals(fluid) ? moved : null;
+    }
+
+    static boolean canDrain(ItemStack stack, int capacity, String fluid) {
+        return drain(new WorkshopNode.Tank(capacity), stack, fluid) != null;
+    }
+
     static WorkshopPlans.ContainerResult namedFill(WorkshopNode.Tank tank, ItemStack stack) {
         if (tank.amount < VOLUME
                 || !WorkshopPlatform.sameItem(stack, WorkshopPlatform.stack("ic2:empty_cell", 1))) {

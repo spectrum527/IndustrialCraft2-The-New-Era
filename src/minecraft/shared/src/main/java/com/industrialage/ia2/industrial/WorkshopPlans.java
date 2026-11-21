@@ -232,18 +232,18 @@ final class WorkshopPlans {
         }
         return switch (node.kind) {
             case INDUCTION -> !WorkshopPlatform.smelt(level, item).isEmpty();
-            case FLUID_BOTTLER, PUMP, RECYCLER, UU_ASSEMBLY -> true;
+            case FLUID_BOTTLER, PUMP, RECYCLER, UU_ASSEMBLY, ORE_WASHER -> true;
             case CANNER, SOLID_CANNER -> true;
             case CLASSIC_CANNER ->
                     WorkshopPlatform.itemId(item).equals("ic2:coalfuel_cell")
                             || WorkshopPlatform.itemId(item).equals("ic2:empty_fuel_can")
-                            || storedInput(node, item);
-            default -> storedInput(node, item);
+                            || storedInput(node.kind, node.mode, item);
+            default -> storedInput(node.kind, node.mode, item);
         };
     }
 
-    private static boolean storedInput(WorkshopNode node, ItemStack item) {
-        return WorkshopRecipes.forType(node.kind.recipes(node.mode)).stream()
+    static boolean storedInput(WorkshopKind kind, int mode, ItemStack item) {
+        return WorkshopRecipes.forType(kind.recipes(mode)).stream()
                 .flatMap(recipe -> recipe.inputs().stream())
                 .anyMatch(input -> matches(item, input));
     }
