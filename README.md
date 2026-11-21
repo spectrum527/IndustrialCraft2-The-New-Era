@@ -17,7 +17,7 @@
 | 26.1.2 | NeoForge 26.1.2.128 | 25 | [NeoForge 26.1.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.1/ic2-neoforge-26.1.2-1.0.1.jar) |
 | 26.2 | NeoForge 26.2.0.95 | 25 | [NeoForge 26.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.1/ic2-neoforge-26.2-1.0.1.jar) |
 
-游玩的整体思路从第一台机器和火力发电机开始，如需取得橡胶，应该寻找一种特有的名为橡胶树的树木。玩家指南如下，也可去MC百科（链接见下方公开资料鸣谢）获取更多指引。 [玩家指南与接线示例](docs/first-playable.md)
+游玩的整体思路从第一台机器和火力发电机开始，如果需要取得橡胶，应该寻找一种特有的名为橡胶树的树木。玩家指南如下，也可去MC百科（链接见下方公开资料鸣谢）获取更多指引。 [玩家指南与接线示例](docs/first-playable.md)
 
 The One Probe 和 Curios 均可按需安装。前者显示机器的实际电量和储罐液量，后者提供背饰栏，安装之后能把电池背包或电动喷气背包装在背饰位，也能站上对应等级的充电座为其充电。 [联动与实测](spec/platform/optional-integrations.md)
 
