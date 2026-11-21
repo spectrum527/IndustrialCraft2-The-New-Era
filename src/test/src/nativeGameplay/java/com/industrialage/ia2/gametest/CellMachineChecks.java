@@ -43,20 +43,24 @@ final class CellMachineChecks {
         NativeGameplayFixture.place(world, owner, "extractor", EXTRACTOR);
         var compressor = (IndustrialMachine) world.getBlockEntity(COMPRESSOR);
         extractor = (IndustrialMachine) world.getBlockEntity(EXTRACTOR);
-        var filled = NativeTransferAccess.filledCell(cell("fluid_cell", false),
-                new FluidStack(Fluids.WATER, 650));
-        check.accept("cell-compressor-rejects-a-650mb-universal-shell",
+        var filled =
+                NativeTransferAccess.filledCell(
+                        cell("fluid_cell", false), new FluidStack(Fluids.WATER, 650));
+        check.accept(
+                "cell-compressor-rejects-a-650mb-universal-shell",
                 NativeTransferAccess.insert(world, COMPRESSOR, Direction.UP, filled, false) == 0
                         && NativeTransferAccess.cellVolume(filled) == 650);
-        check.accept("cell-machine-input-accepts-empty-universal-and-full-basic",
+        check.accept(
+                "cell-machine-input-accepts-empty-universal-and-full-basic",
                 insert(world, COMPRESSOR, cell("fluid_cell", true))
                         && insert(world, EXTRACTOR, cell("basic_water_cell", true)));
         compressor.receive(600);
         extractor.receive(600);
 
         NativeGameplayFixture.place(world, owner, "pump", PUMP);
-        world.setBlockAndUpdate(PUMP, world.getBlockState(PUMP)
-                .setValue(BlockStateProperties.FACING, Direction.DOWN));
+        world.setBlockAndUpdate(
+                PUMP,
+                world.getBlockState(PUMP).setValue(BlockStateProperties.FACING, Direction.DOWN));
         world.setBlockAndUpdate(PUMP.below(), Blocks.WATER.defaultBlockState());
         pump = (WorkshopNode) world.getBlockEntity(PUMP);
         pumpMenu = pump.createMenu(50, owner.getInventory(), owner);
@@ -68,37 +72,50 @@ final class CellMachineChecks {
         drainer = canner(world, owner, DRAINER, 2);
         fillMenu = filler.createMenu(51, owner.getInventory(), owner);
         drainMenu = drainer.createMenu(52, owner.getInventory(), owner);
-        check.accept("cell-canner-receives-one-piped-liter",
-                NativeTransferAccess.fill(world, FILLER, Direction.UP, new FluidStack(Fluids.WATER, 1000), false) == 1000);
+        check.accept(
+                "cell-canner-receives-one-piped-liter",
+                NativeTransferAccess.fill(
+                                world,
+                                FILLER,
+                                Direction.UP,
+                                new FluidStack(Fluids.WATER, 1000),
+                                false)
+                        == 1000);
         fillMenu.getSlot(0).set(cell("fluid_cell", false));
         fillMenu.getSlot(9).set(new ItemStack(Items.COBBLESTONE, 64));
         drainMenu.getSlot(0).set(cell("basic_lava_cell", false));
     }
 
     boolean tick(ServerLevel world, BiConsumer<String, Boolean> check) {
+        if (!pump.ranThisTick(world)) return false;
         ++ticks;
         if (ticks == 30) {
-            check.accept("cell-pump-blocked-output-conserves-one-basic-shell-and-liter",
+            check.accept(
+                    "cell-pump-blocked-output-conserves-one-basic-shell-and-liter",
                     !world.getFluidState(PUMP.below()).isSource()
                             && pump.fluidContents().getFirst().amount() == 1000
                             && is(pumpMenu.getSlot(0).getItem(), "empty_cell"));
-            check.accept("cell-canner-blocked-output-conserves-one-universal-shell-and-liter",
+            check.accept(
+                    "cell-canner-blocked-output-conserves-one-universal-shell-and-liter",
                     filler.fluidContents().getFirst().amount() == 1000
                             && is(fillMenu.getSlot(0).getItem(), "fluid_cell"));
             pumpMenu.getSlot(9).set(ItemStack.EMPTY);
             fillMenu.getSlot(9).set(ItemStack.EMPTY);
         }
         if (ticks == 150) {
-            check.accept("cell-pump-makes-one-basic-water-cell",
+            check.accept(
+                    "cell-pump-makes-one-basic-water-cell",
                     pumpMenu.getSlot(0).getItem().isEmpty()
                             && isFilled(pumpMenu.getSlot(9).getItem(), "basic_water_cell", 1000)
                             && pump.fluidContents().getFirst().amount() == 0);
-            check.accept("cell-canner-fill-makes-one-universal-water-cell",
+            check.accept(
+                    "cell-canner-fill-makes-one-universal-water-cell",
                     fillMenu.getSlot(0).getItem().isEmpty()
                             && isFilled(fillMenu.getSlot(9).getItem(), "water_cell", 1000)
                             && filler.fluidContents().getFirst().amount() == 0);
             var lava = drainer.fluidContents().get(1);
-            check.accept("cell-canner-drain-produces-lava-and-returns-one-basic-shell",
+            check.accept(
+                    "cell-canner-drain-produces-lava-and-returns-one-basic-shell",
                     drainMenu.getSlot(0).getItem().isEmpty()
                             && isFilled(drainMenu.getSlot(9).getItem(), "empty_cell", 0)
                             && lava.name().equals(Fluids.LAVA.getFluidType().getDescription())
@@ -107,30 +124,46 @@ final class CellMachineChecks {
         if (ticks == 315) {
             var air = NativeTransferAccess.cargo(world, COMPRESSOR, Direction.DOWN).copy();
             var basic = NativeTransferAccess.cargo(world, EXTRACTOR, Direction.DOWN);
-            check.accept("cell-compressor-makes-one-marked-air-cell",
+            check.accept(
+                    "cell-compressor-makes-one-marked-air-cell",
                     isFilled(air, "air_cell", 1000) && air.getHoverName().equals(MARK));
-            check.accept("cell-extractor-returns-one-marked-basic-shell",
+            check.accept(
+                    "cell-extractor-returns-one-marked-basic-shell",
                     isFilled(basic, "empty_cell", 0) && basic.getHoverName().equals(MARK));
-            check.accept("cell-air-continues-through-real-extractor-item-port",
+            check.accept(
+                    "cell-air-continues-through-real-extractor-item-port",
                     NativeTransferAccess.extract(world, COMPRESSOR, Direction.DOWN, 1, false) == 1
-                            && NativeTransferAccess.extract(world, EXTRACTOR, Direction.DOWN, 1, false) == 1
+                            && NativeTransferAccess.extract(
+                                            world, EXTRACTOR, Direction.DOWN, 1, false)
+                                    == 1
                             && insert(world, EXTRACTOR, air));
             extractor.receive(600);
         }
         if (ticks == 630) {
             var empty = NativeTransferAccess.cargo(world, EXTRACTOR, Direction.DOWN);
-            check.accept("cell-extractor-returns-one-marked-universal-shell",
+            check.accept(
+                    "cell-extractor-returns-one-marked-universal-shell",
                     isFilled(empty, "fluid_cell", 0) && empty.getHoverName().equals(MARK));
         }
         return ticks >= 630;
     }
 
-    private static WorkshopNode canner(ServerLevel world, FakePlayer owner, BlockPos pos, int mode) {
+    private static WorkshopNode canner(
+            ServerLevel world, FakePlayer owner, BlockPos pos, int mode) {
         NativeGameplayFixture.place(world, owner, "canner", pos);
-        world.getServer().getCommands().performPrefixedCommand(
-                world.getServer().createCommandSourceStack().withSuppressedOutput(),
-                "data merge block " + pos.getX() + " " + pos.getY() + " " + pos.getZ()
-                        + " {ic2_mode:" + mode + "}");
+        world.getServer()
+                .getCommands()
+                .performPrefixedCommand(
+                        world.getServer().createCommandSourceStack().withSuppressedOutput(),
+                        "data merge block "
+                                + pos.getX()
+                                + " "
+                                + pos.getY()
+                                + " "
+                                + pos.getZ()
+                                + " {ic2_mode:"
+                                + mode
+                                + "}");
         var node = (WorkshopNode) world.getBlockEntity(pos);
         node.receive(400);
         return node;

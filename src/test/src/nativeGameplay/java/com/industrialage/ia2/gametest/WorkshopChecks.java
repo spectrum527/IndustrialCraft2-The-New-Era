@@ -401,7 +401,11 @@ final class WorkshopChecks {
             }
         }
         var steel = NativeTransferAccess.cargo(world, FURNACE, Direction.DOWN);
-        if (!advancedCold || !fermentationVerified || !cellsReady || !machinesReady || steel.isEmpty()) {
+        if (!advancedCold
+                || !fermentationVerified
+                || !cellsReady
+                || !machinesReady
+                || steel.isEmpty()) {
             return false;
         }
         check.accept(

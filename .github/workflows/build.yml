@@ -39,6 +39,9 @@ jobs:
       - name: Check survival removal and replacement of all storage boxes
         timeout-minutes: 10
         run: ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayStorage --console=plain
+      - name: Exercise powered armor and reload the survival world
+        timeout-minutes: 10
+        run: ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayRead --console=plain
       - name: Verify machine tanks, held cells and live cables on the dedicated server
         timeout-minutes: 12
         run: >-
@@ -122,6 +125,7 @@ jobs:
             src/neoforge/${{ matrix.target }}/build/run/modern-server-smoke/jar-*.json
             src/neoforge/${{ matrix.target }}/build/run/modern-server-smoke/logs/latest.log
             src/neoforge/${{ matrix.target }}/build/run/native-storage/storage.properties
+            src/neoforge/${{ matrix.target }}/build/run/native-gameplay/*.properties
             src/neoforge/${{ matrix.target }}/build/run/native-workshop/workshop.properties
             src/neoforge/${{ matrix.target }}/build/run/native-held-cell/heldFluidCell.properties
             src/neoforge/${{ matrix.target }}/build/run/native-wind/windWrite.properties

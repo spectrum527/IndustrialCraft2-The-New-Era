@@ -47,21 +47,33 @@ final class NativeHeldCellHost {
     }
 
     private static void verifyRecipePreview(ServerLevel level, BiConsumer<String, Boolean> check) {
-        var grid = CraftingInput.of(2, 1, List.of(
-                new ItemStack(NativeGameplayFixture.item("fluid_cell")),
-                new ItemStack(NativeGameplayFixture.item("coolant_bucket"))));
-        var recipe = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, grid, level)
-                .orElseThrow().value();
+        var grid =
+                CraftingInput.of(
+                        2,
+                        1,
+                        List.of(
+                                new ItemStack(NativeGameplayFixture.item("fluid_cell")),
+                                new ItemStack(NativeGameplayFixture.item("coolant_bucket"))));
+        var recipe =
+                level.getServer()
+                        .getRecipeManager()
+                        .getRecipeFor(RecipeType.CRAFTING, grid, level)
+                        .orElseThrow()
+                        .value();
         var buffer = new RegistryFriendlyByteBuf(Unpooled.buffer(), level.registryAccess());
         try {
             RecipeDisplay.STREAM_CODEC.encode(buffer, recipe.display().getFirst());
             var output = RecipeDisplay.STREAM_CODEC.decode(buffer).result();
-            var stack = output instanceof SlotDisplay.ItemStackSlotDisplay slot
-                    ? slot.stack().create() : ItemStack.EMPTY;
+            var stack =
+                    output instanceof SlotDisplay.ItemStackSlotDisplay slot
+                            ? slot.stack().create()
+                            : ItemStack.EMPTY;
             var contents = TransportPlatform.cellContents(stack);
-            check.accept("craft-book-sync-displays-real-full-coolant-cell",
+            check.accept(
+                    "craft-book-sync-displays-real-full-coolant-cell",
                     stack.is(NativeGameplayFixture.item("fluid_cell"))
-                            && contents.id().equals("ic2:coolant") && contents.amount() == 1000);
+                            && contents.id().equals("ic2:coolant")
+                            && contents.amount() == 1000);
         } finally {
             buffer.release();
         }

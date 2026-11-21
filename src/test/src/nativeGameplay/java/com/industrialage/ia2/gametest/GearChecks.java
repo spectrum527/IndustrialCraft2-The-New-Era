@@ -223,22 +223,41 @@ final class GearChecks {
         return false;
     }
 
-    static void verifyColdBoats(ServerLevel level, BiConsumer<String, Boolean> check) {
+    /** Waits for the saved entity chunk to be restored before asserting individual boats. */
+    static boolean verifyColdBoats(ServerLevel level, BiConsumer<String, Boolean> check) {
         var basin = new AABB(17, 110, 24, 29, 117, 31);
-        for (String kind : new String[] {"rubber_boat", "carbon_boat", "electric_boat"}) {
-            boolean restored =
-                    level.getEntitiesOfClass(
-                                            Entity.class,
-                                            basin,
-                                            entity ->
-                                                    BuiltInRegistries.ENTITY_TYPE
-                                                            .getKey(entity.getType())
-                                                            .toString()
-                                                            .equals("ic2:" + kind))
-                                    .size()
-                            == 1;
-            check.accept("cold-saved-" + kind, restored);
+        var names = new String[] {"rubber_boat", "carbon_boat", "electric_boat"};
+        for (String kind : names) {
+            int count = coldBoatCount(level, basin, kind);
+            if (count > 1) throw new AssertionError("Duplicate cold-saved " + kind + ": " + count);
+            if (count == 0) return false;
         }
+        for (String kind : names) check.accept("cold-saved-" + kind, true);
+        return true;
+    }
+
+    private static int coldBoatCount(ServerLevel level, AABB basin, String kind) {
+        return level.getEntitiesOfClass(
+                        Entity.class,
+                        basin,
+                        entity ->
+                                BuiltInRegistries.ENTITY_TYPE
+                                        .getKey(entity.getType())
+                                        .toString()
+                                        .equals("ic2:" + kind))
+                .size();
+    }
+
+    static String coldBoatDiagnostic(ServerLevel level) {
+        var basin = new AABB(17, 110, 24, 29, 117, 31);
+        return "entityTicking="
+                + level.isPositionEntityTicking(new BlockPos(19, 113, 27))
+                + ", rubber="
+                + coldBoatCount(level, basin, "rubber_boat")
+                + ", carbon="
+                + coldBoatCount(level, basin, "carbon_boat")
+                + ", electric="
+                + coldBoatCount(level, basin, "electric_boat");
     }
 
     private boolean laserModes(ServerLevel level, BiConsumer<String, Boolean> check) {
