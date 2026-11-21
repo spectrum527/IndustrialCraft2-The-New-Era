@@ -5,6 +5,7 @@ import com.industrialage.ia2.content.PowerGrid;
 import com.industrialage.ia2.energy.graph.EnergyGraph;
 import com.industrialage.ia2.energy.graph.EnergyGraph.Position;
 import com.industrialage.ia2.equipment.MeterSampling;
+import com.industrialage.ia2.industrial.CableShock;
 import com.industrialage.ia2.platform.CapabilityFacade.Face;
 import com.industrialage.ia2.platform.ConfigFacade;
 import com.industrialage.ia2.power.WorldPowerPort;
@@ -153,7 +154,8 @@ public final class ForgePower {
                         setting("misc/enableEnetCableMeltdown", Boolean.class, true),
                         setting("misc/enableEnetExplosions", Boolean.class, true),
                         new LinkedHashSet<>(),
-                        new LinkedHashSet<>());
+                        new LinkedHashSet<>(),
+                        new CableShock());
         int first = level.getRandom().nextInt(offers.size());
         for (int offset = 0; offset < offers.size(); offset++) {
             var offer = offers.get((first + offset) % offers.size());
@@ -161,6 +163,7 @@ public final class ForgePower {
                 if (!deliver(level, offer, round)) break;
             }
         }
+        round.shocks.apply(level);
         for (var cable : round.burntCables) {
             if (owns(cable)) {
                 level.destroyBlock(cable.getBlockPos(), false);
@@ -236,7 +239,7 @@ public final class ForgePower {
                         if (watched)
                             MeterSampling.conductor(
                                     level, conductor.getBlockPos(), received, offer.eu);
-                        conductor.markTransfer();
+                        conductor.markTransfer(round.shocks, received);
                         if (round.meltdown && conductor.overCurrent(drawn)) {
                             round.burntCables.add(conductor);
                         }
@@ -342,5 +345,6 @@ public final class ForgePower {
             boolean meltdown,
             boolean explosions,
             Set<BlockEntity> burntCables,
-            Set<BlockEntity> overloadedMachines) {}
+            Set<BlockEntity> overloadedMachines,
+            CableShock shocks) {}
 }

@@ -1,6 +1,7 @@
 package com.industrialage.ia2.forge.content;
 
 import com.industrialage.ia2.content.PowerGrid;
+import com.industrialage.ia2.industrial.CableShock;
 import com.industrialage.ia2.industrial.PowerBlock;
 import com.industrialage.ia2.industrial.WorkshopBlock;
 import com.industrialage.ia2.world.CableColors;
@@ -36,6 +37,7 @@ public class CableBlock extends Block implements EntityBlock {
     private final double loss;
     private final double rating;
     private final Mode mode;
+    private final boolean exposed;
 
     CableBlock(String path) {
         this(path, Mode.NORMAL);
@@ -56,6 +58,7 @@ public class CableBlock extends Block implements EntityBlock {
         loss = PowerGrid.cableLoss(path);
         rating = PowerGrid.cableRating(path);
         this.mode = mode;
+        exposed = !(this instanceof Foamed) && CableShock.isBare(path);
     }
 
     static CableBlock plain(String path) {
@@ -352,8 +355,10 @@ public class CableBlock extends Block implements EntityBlock {
             return debit > cable().rating + 1;
         }
 
-        void markTransfer() {
-            if (cable().mode == Mode.DETECTOR) {
+        void markTransfer(CableShock shocks, double delivered) {
+            var cable = cable();
+            if (cable.exposed) shocks.record(getBlockPos(), delivered);
+            if (cable.mode == Mode.DETECTOR) {
                 lastTransfer = level.getGameTime();
             }
         }
