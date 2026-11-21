@@ -1,52 +1,25 @@
 package com.industrialage.ia2.audio;
 
-import java.util.function.Predicate;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.ItemStack;
+import java.util.Map;
+import java.util.WeakHashMap;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 
-/** Owns the single idle hum of the active saber in the local player's hands. */
+/** Server-side one-shot audio for the nano saber. */
 public final class SaberAudio {
-    private Loop idle;
+    private static final int CUE_INTERVAL = 7;
+    private static final Map<ServerPlayer, Integer> LAST_CUE = new WeakHashMap<>();
 
-    /** Starts or stops the held sound as the active item or world changes. */
-    public void reconcile(Predicate<ItemStack> active) {
-        var client = Minecraft.getInstance();
-        var player = client.player;
-        boolean held =
-                player != null
-                        && (active.test(player.getMainHandItem())
-                                || active.test(player.getOffhandItem()));
-        if (held) {
-            if (idle == null) {
-                idle = new Loop();
-                client.getSoundManager().play(idle);
-            }
-        } else if (idle != null) {
-            idle.finish();
-            idle = null;
+    private SaberAudio() {}
+
+    /** Plays a cue if the player's previous saber sound has had time to finish. */
+    public static void play(ServerLevel level, ServerPlayer player, String cue) {
+        int now = player.tickCount;
+        synchronized (LAST_CUE) {
+            Integer last = LAST_CUE.get(player);
+            if (last != null && now - last < CUE_INTERVAL) return;
+            LAST_CUE.put(player, now);
         }
-    }
-
-    private static final class Loop extends AbstractTickableSoundInstance {
-        Loop() {
-            super(
-                    SoundPlatform.event("item.nanosaber.idle"),
-                    SoundSource.PLAYERS,
-                    SoundInstance.createUnseededRandom());
-            looping = true;
-            attenuation = SoundInstance.Attenuation.NONE;
-            relative = true;
-            volume = 0.35F;
-        }
-
-        void finish() {
-            stop();
-        }
-
-        @Override
-        public void tick() {}
+        IndustrialSounds.play(level, player.blockPosition(), "item.nanosaber." + cue);
     }
 }

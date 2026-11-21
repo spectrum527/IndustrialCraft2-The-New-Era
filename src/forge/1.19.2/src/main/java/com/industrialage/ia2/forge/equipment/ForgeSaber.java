@@ -1,6 +1,5 @@
 package com.industrialage.ia2.forge.equipment;
 
-import com.industrialage.ia2.audio.IndustrialSounds;
 import com.industrialage.ia2.audio.SaberAudio;
 import com.industrialage.ia2.content.PortableEquipment;
 import java.util.UUID;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,7 +20,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/** Powered saber transitions, genuine melee modifiers and a single loop on Forge 1.19.2. */
+/** Powered saber transitions, genuine melee modifiers on Forge 1.19.2. */
 final class ForgeSaber {
     private static final String STATE = "ic2_saber_active";
     private static final int SWING = 400;
@@ -62,7 +60,7 @@ final class ForgeSaber {
                     }
                 });
         gameBus.addListener(ForgeSaber::onHit);
-        if (FMLEnvironment.dist == Dist.CLIENT) Client.install(modBus, gameBus);
+        if (FMLEnvironment.dist == Dist.CLIENT) Client.install(modBus);
     }
 
     private static boolean active(ItemStack stack) {
@@ -86,8 +84,7 @@ final class ForgeSaber {
         if (active(stack)) stack.removeTagKey(STATE);
         else {
             stack.getOrCreateTag().putBoolean(STATE, true);
-            IndustrialSounds.play(
-                    player.getLevel(), player.blockPosition(), "item.nanosaber.power_up");
+            SaberAudio.play(player.getLevel(), player, "power_up");
         }
     }
 
@@ -112,21 +109,11 @@ final class ForgeSaber {
             return;
         }
         var level = player.getLevel();
-        IndustrialSounds.play(
-                level,
-                player.blockPosition(),
-                level.getRandom().nextBoolean()
-                        ? "item.nanosaber.swing1"
-                        : "item.nanosaber.swing2");
+        SaberAudio.play(level, player, level.getRandom().nextBoolean() ? "swing1" : "swing2");
     }
 
     private static final class Client {
-        static void install(IEventBus bus, IEventBus game) {
-            var sound = new SaberAudio();
-            game.addListener(
-                    (TickEvent.ClientTickEvent event) -> {
-                        if (event.phase == TickEvent.Phase.END) sound.reconcile(ForgeSaber::active);
-                    });
+        static void install(IEventBus bus) {
             bus.addListener(
                     (FMLClientSetupEvent event) ->
                             event.enqueueWork(
