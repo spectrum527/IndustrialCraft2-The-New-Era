@@ -5,11 +5,13 @@ import com.industrialage.ia2.content.TransportSpec.Kind;
 import com.industrialage.ia2.gameplay.IndustrialContent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -142,8 +144,22 @@ public final class TransportPlatform {
         return NeoTransport.takeFluid(level, pos, side, requested, amount);
     }
 
-    static boolean isPristineCell(ItemStack cell) {
+    /** A classic empty shell with no additional item data. */
+    public static boolean isPristineCell(ItemStack cell) {
+        var contents = cell.get(CELL_FLUID.get());
+        if (contents != null) {
+            if (!contents.isEmpty()) return false;
+            // The transactional handler can keep an explicitly empty fluid component.
+            cell = cell.copy();
+            cell.remove(CELL_FLUID.get());
+        }
         return sameItem(cell, new ItemStack(CELL.get()));
+    }
+
+    static void appendCellContents(FluidStack fluid, Consumer<Component> tooltip) {
+        if (!fluid.isEmpty()) {
+            tooltip.accept(fluid.getHoverName().copy().append(" " + fluid.getAmount() + " mB"));
+        }
     }
 
     static ItemStack exchangeCursor(TransportNode node, ItemStack carried, Player who) {

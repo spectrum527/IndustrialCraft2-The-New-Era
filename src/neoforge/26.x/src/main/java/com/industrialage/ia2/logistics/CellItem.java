@@ -1,8 +1,10 @@
 package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.industrial.WorkshopPlatform;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -10,6 +12,8 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -88,5 +92,16 @@ public final class CellItem extends Item {
             return InteractionResult.SUCCESS.heldItemTransformedTo(
                     ItemUtils.createFilledResult(held, player, result));
         }
+    }
+
+    @Override
+    public void appendHoverText(
+            ItemStack stack,
+            TooltipContext context,
+            TooltipDisplay display,
+            Consumer<Component> tooltip,
+            TooltipFlag flags) {
+        var fluid = FluidUtil.getFirstStackContained(stack.copyWithCount(1));
+        TransportPlatform.appendCellContents(fluid, tooltip);
     }
 }
