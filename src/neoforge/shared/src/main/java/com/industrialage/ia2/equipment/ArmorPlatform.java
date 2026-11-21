@@ -14,6 +14,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -38,6 +39,10 @@ public final class ArmorPlatform {
                         event.setCanceled(true);
                     }
                 });
+        gameBus.addListener(
+                ItemTooltipEvent.class,
+                event ->
+                        ArmorEffects.appendChargeTooltip(event.getItemStack(), event.getToolTip()));
         gameBus.addListener(LivingIncomingDamageEvent.class, ArmorPlatform::protect);
         gameBus.addListener(ItemAttributeModifierEvent.class, ArmorPlatform::protectiveAttributes);
     }

@@ -18,11 +18,14 @@ public final class CuriosBack {
         return ModList.get().isLoaded("curios") ? Loaded.slots(wearer) : List.of();
     }
 
-    /** The regular chest and hand stacks followed by any functional back-slot stacks. */
+    /** Worn armor and held items followed by any functional Curios back-slot stacks. */
     public static List<ItemStack> chargeableEquipment(LivingEntity wearer) {
         var equipment =
                 List.of(
                         wearer.getItemBySlot(EquipmentSlot.CHEST),
+                        wearer.getItemBySlot(EquipmentSlot.HEAD),
+                        wearer.getItemBySlot(EquipmentSlot.LEGS),
+                        wearer.getItemBySlot(EquipmentSlot.FEET),
                         wearer.getMainHandItem(),
                         wearer.getOffhandItem());
         var accessories = slots(wearer);
