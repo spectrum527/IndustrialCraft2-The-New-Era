@@ -1,6 +1,7 @@
 package com.industrialage.ia2.compatqa;
 
 import com.industrialage.ia2.compat.CuriosBack;
+import com.industrialage.ia2.content.CreativeCategory;
 import com.industrialage.ia2.forge.equipment.ForgeGear;
 import com.industrialage.ia2.industrial.PowerNode;
 import com.industrialage.ia2.industrial.WorkshopNode;
@@ -147,6 +148,7 @@ public final class OptionalCompatFixture {
             }
             player.stopRiding();
             dischargeBatteries(level, player, report);
+            verifyCreativeCatalog(report);
             chargeQuantumSuit(level, player, report);
             player.discard();
             Files.writeString(
@@ -223,6 +225,31 @@ public final class OptionalCompatFixture {
                 discharge.getItem().getCount() == 3 && player.getInventory().getItem(9).isEmpty(),
                 "shift-click a stack of three into the discharge slot");
         return discharge;
+    }
+
+    private static void verifyCreativeCatalog(List<String> report) {
+        var registered = new java.util.HashSet<String>();
+        for (var id : net.minecraftforge.registries.ForgeRegistries.ITEMS.getKeys()) {
+            if (id.getNamespace().equals("ic2")) registered.add(id.getPath());
+        }
+        var catalog = new java.util.HashSet<String>();
+        for (var category : CreativeCategory.values()) {
+            require(
+                    category.entries().contains(category.icon()),
+                    "tab icon belongs to " + category);
+            for (var path : category.entries()) {
+                require(
+                        catalog.add(path) && CreativeCategory.forItem(path) == category,
+                        "unique creative category for " + path);
+            }
+        }
+        require(catalog.equals(registered), "creative catalog equals registered IC2 items");
+        report.add(
+                "Creative catalog: "
+                        + catalog.size()
+                        + " registered items in "
+                        + CreativeCategory.values().length
+                        + " categories.");
     }
 
     private static void chargeQuantumSuit(

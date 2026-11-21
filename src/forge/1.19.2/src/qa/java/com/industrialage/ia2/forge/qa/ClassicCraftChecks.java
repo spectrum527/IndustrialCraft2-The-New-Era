@@ -43,6 +43,7 @@ public final class ClassicCraftChecks {
             for (JsonElement element :
                     JsonParser.parseReader(reader).getAsJsonObject().getAsJsonArray("recipes")) {
                 var recipe = element.getAsJsonObject();
+                String result = recipe.get("output").getAsString();
                 var grid =
                         new CraftingMenu(
                                 55,
@@ -56,7 +57,8 @@ public final class ClassicCraftChecks {
                             if (chars[x] != ' ')
                                 grid.getSlot(1 + row * 3 + x)
                                         .set(
-                                                sample(
+                                                sampleIngredient(
+                                                        result,
                                                         recipe.getAsJsonObject("key")
                                                                 .get(Character.toString(chars[x]))
                                                                 .getAsString()));
@@ -65,10 +67,9 @@ public final class ClassicCraftChecks {
                 } else {
                     int i = 1;
                     for (var ingredient : recipe.getAsJsonArray("ingredients"))
-                        grid.getSlot(i++).set(sample(ingredient.getAsString()));
+                        grid.getSlot(i++).set(sampleIngredient(result, ingredient.getAsString()));
                 }
                 grid.slotsChanged(grid.getSlot(1).container);
-                String result = recipe.get("output").getAsString();
                 var actual = grid.getSlot(0).getItem();
                 check.accept(
                         "craft-" + result,
@@ -78,6 +79,22 @@ public final class ClassicCraftChecks {
         } catch (java.io.IOException e) {
             throw new java.io.UncheckedIOException(e);
         }
+    }
+
+    private static ItemStack sampleIngredient(String output, String id) {
+        // The observed layouts are retained, with the native shell required by this release.
+        if (id.equals("ic2:empty_cell")) {
+            id =
+                    switch (output) {
+                        case "near_depleted_uranium",
+                                        "bio_cell",
+                                        "hydrated_coal_cell",
+                                        "weed_ex_cell" ->
+                                "ic2:fluid_cell";
+                        default -> id;
+                    };
+        }
+        return sample(id);
     }
 
     private static ItemStack sample(String id) {
