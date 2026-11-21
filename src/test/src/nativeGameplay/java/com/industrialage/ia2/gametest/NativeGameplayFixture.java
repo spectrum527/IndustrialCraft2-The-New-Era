@@ -63,6 +63,8 @@ public final class NativeGameplayFixture {
     private final WorkshopChecks workshop = new WorkshopChecks();
     private final StorageChecks storage = new StorageChecks();
     private com.industrialage.ia2.windtest.WindKineticChecks wind;
+    private com.industrialage.ia2.watertest.WaterKineticChecks water;
+    private com.industrialage.ia2.watertest.WaterNaturalChecks naturalWater;
     private WorldChecks worldProgram;
     private com.industrialage.ia2.worldtest.FoodPaintChecks worldDetails;
     private int ticks;
@@ -104,7 +106,27 @@ public final class NativeGameplayFixture {
                 complete(server, null);
                 return;
             }
-            if (phase.equals("windWrite") || phase.equals("windRead")) {
+            if (phase.startsWith("waterNatural")
+                    || phase.equals("waterCanal")
+                    || phase.equals("waterSeabed")
+                    || phase.startsWith("waterFrozen")) {
+                naturalWater =
+                        new com.industrialage.ia2.watertest.WaterNaturalChecks(
+                                NativeGameplayFixture::block,
+                                NativeGameplayFixture::item,
+                                this::check,
+                                phase);
+                naturalWater.start(level, FakePlayerFactory.getMinecraft(level));
+            } else if (phase.startsWith("water")) {
+                water =
+                        new com.industrialage.ia2.watertest.WaterKineticChecks(
+                                NativeGameplayFixture::block,
+                                NativeGameplayFixture::item,
+                                this::check,
+                                new BlockPos(72, 56, 72),
+                                phase);
+                water.start(level, FakePlayerFactory.getMinecraft(level));
+            } else if (phase.equals("windWrite") || phase.equals("windRead")) {
                 wind =
                         new com.industrialage.ia2.windtest.WindKineticChecks(
                                 NativeGameplayFixture::block,
@@ -376,7 +398,8 @@ public final class NativeGameplayFixture {
         }
         var server = event.getServer();
         try {
-            if (++ticks > ("workshop".equals(phase) ? 8_400 : 1_250)) {
+            if (++ticks
+                    > ("workshop".equals(phase) ? 8_400 : naturalWater != null ? 4_000 : 1_250)) {
                 var details =
                         "read".equals(phase) ? "; " + transport.diagnostic(server.overworld()) : "";
                 throw new AssertionError("Native production line timed out" + details);
@@ -433,6 +456,16 @@ public final class NativeGameplayFixture {
                         case "write" -> writeStage(server.overworld());
                         case "workshop" -> workshop.tick(server.overworld(), this::check);
                         case "windWrite", "windRead" -> wind.tick(server.overworld());
+                        case "waterWrite", "waterRead", "waterOcean", "waterDeep", "waterPlains" ->
+                                water.tick(server.overworld());
+                        case "waterNaturalRiver",
+                                "waterNaturalOcean",
+                                "waterNaturalDeep",
+                                "waterCanal",
+                                "waterSeabed",
+                                "waterFrozenRiver",
+                                "waterFrozenOcean" ->
+                                naturalWater.tick(server.overworld());
                         default -> readStage(server.overworld());
                     };
             if (done) {

@@ -49,6 +49,21 @@ jobs:
       - name: Assemble the wind turbine in survival and restart its world
         timeout-minutes: 10
         run: ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayWindRead --console=plain
+      - name: Verify water turbine output and reopen its saved world
+        timeout-minutes: 18
+        run: >-
+          ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayWaterRead
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterOcean
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterDeep
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterPlains
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterNaturalRiver
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterNaturalOcean
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterNaturalDeep
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterCanal
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterSeabed
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterFrozenRiver
+          :neoforge:${{ matrix.target }}:runNativeGameplayWaterFrozenOcean
+          --console=plain
       - name: Check The One Probe and Curios individually and together
         timeout-minutes: 18
         run: |
@@ -111,5 +126,6 @@ jobs:
             src/neoforge/${{ matrix.target }}/build/run/native-held-cell/heldFluidCell.properties
             src/neoforge/${{ matrix.target }}/build/run/native-wind/windWrite.properties
             src/neoforge/${{ matrix.target }}/build/run/native-wind/windRead.properties
+            src/neoforge/${{ matrix.target }}/build/run/native-water*/water*.properties
             src/neoforge/${{ matrix.target }}/build/run/native-cable-shock/cableShock.properties
             src/neoforge/${{ matrix.target }}/build/run/optional-compat-*/compat-checks.txt
