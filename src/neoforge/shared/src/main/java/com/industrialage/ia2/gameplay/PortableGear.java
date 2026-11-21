@@ -54,6 +54,10 @@ public final class PortableGear {
                         NeoSaber.tick(player, player.getOffhandItem());
                     }
                 });
+        ToolMelee.install(gameBus);
+        gameBus.addListener(
+                net.neoforged.neoforge.event.entity.player.ItemTooltipEvent.class,
+                NeoLaser::tooltip);
         gameBus.addListener(PlayerInteractEvent.RightClickItem.class, PortableGear::manualTransfer);
     }
 
@@ -341,10 +345,7 @@ public final class PortableGear {
             if (device == PortableEquipment.WIND_METER) {
                 return windReading(context.getPlayer(), stack, context.getClickedPos());
             }
-            if (device != PortableEquipment.ELECTRIC_WRENCH
-                    || !(context.getLevel().getBlockState(context.getClickedPos()).getBlock()
-                            instanceof MachineBlock)) return InteractionResult.PASS;
-            return IndustrialContent.wrenchBlock(context, true);
+            return InteractionResult.PASS;
         }
 
         @Override

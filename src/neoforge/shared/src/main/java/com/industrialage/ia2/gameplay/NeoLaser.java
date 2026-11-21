@@ -3,6 +3,7 @@ package com.industrialage.ia2.gameplay;
 import com.industrialage.ia2.audio.IndustrialSounds;
 import com.industrialage.ia2.content.MiningLaserModes;
 import com.industrialage.ia2.content.MiningLaserModes.Mode;
+import com.industrialage.ia2.content.PortableEquipment;
 import com.mojang.serialization.Codec;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -49,21 +51,33 @@ final class NeoLaser {
         if (side == Dist.CLIENT) NativeLaser.Client.install(bus, BOLT);
     }
 
+    private static int setting(ItemStack stack) {
+        return stack.getOrDefault(mode.get(), 0);
+    }
+
+    private static Component label(int index) {
+        return Component.translatable(
+                "item.ic2.mining_laser.mode",
+                Component.translatable(MiningLaserModes.translationKey(index)),
+                MiningLaserModes.get(index).cost());
+    }
+
+    static void tooltip(ItemTooltipEvent event) {
+        var stack = event.getItemStack();
+        if (PortableGear.type(stack) == PortableEquipment.MINING_LASER)
+            event.getToolTip().add(label(setting(stack)));
+    }
+
     static void use(PlayerInteractEvent.RightClickItem event) {
         var stack = event.getItemStack();
         event.setCancellationResult(InteractionResult.SUCCESS);
         event.setCanceled(true);
         if (!(event.getEntity() instanceof ServerPlayer player) || player.isSpectator()) return;
-        int index = stack.getOrDefault(mode.get(), 0);
+        int index = setting(stack);
         if (player.isShiftKeyDown()) {
             int next = MiningLaserModes.next(index);
             stack.set(mode.get(), next);
-            NativeGameplay.overlay(
-                    player,
-                    Component.translatable(
-                            "item.ic2.mining_laser.mode",
-                            next + 1,
-                            MiningLaserModes.get(next).cost()));
+            NativeGameplay.overlay(player, label(next));
             return;
         }
         var profile = MiningLaserModes.get(index);
