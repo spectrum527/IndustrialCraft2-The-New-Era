@@ -176,12 +176,20 @@ public final class OptionalCompatFixture {
             player.setItemSlot(
                     slots.get(i), new ItemStack(CompatHost.item("quantum_" + pieces.get(i))));
         }
+        var hand = new ItemStack(CompatHost.item("quantum_helmet"));
+        var offhand = new ItemStack(CompatHost.item("quantum_boots"));
+        var hotbar = new ItemStack(CompatHost.item("quantum_chestplate"));
+        var inventory = new ItemStack(CompatHost.item("quantum_leggings"));
+        player.setItemSlot(EquipmentSlot.MAINHAND, hand);
+        player.setItemSlot(EquipmentSlot.OFFHAND, offhand);
+        player.getInventory().setItem(3, hotbar);
+        player.getInventory().setItem(18, inventory);
         player.setPos(PAD.getX() + 0.5, PAD.getY() + 1, PAD.getZ() + 0.5);
         player.setOnGround(true);
         for (var charger : List.of("mfe_chargepad", "mfsu_chargepad")) {
             place(level, PAD, charger);
             var pad = (WorldPowerStorage) level.getBlockEntity(PAD);
-            require(pad.exchangeStoredEnergy(48_007, false), "seed " + charger);
+            require(pad.exchangeStoredEnergy(96_007, false), "seed " + charger);
             CompatHost.tick(level, PAD);
             int accepted = charger.equals("mfsu_chargepad") ? 12_000 : 0;
             for (var slot : slots) {
@@ -189,12 +197,15 @@ public final class OptionalCompatFixture {
                         ForgeGear.stored(player.getItemBySlot(slot)) == accepted,
                         charger + " charge in " + slot);
             }
+            for (var item : List.of(hand, offhand, hotbar, inventory)) {
+                require(ForgeGear.stored(item) == accepted, charger + " inventory stack " + item);
+            }
             require(
-                    pad.availableStoredEnergy() == 48_007 - 4 * accepted,
+                    pad.availableStoredEnergy() == 96_007 - 8 * accepted,
                     charger + " energy conservation");
         }
         report.add(
-                "Quantum suit: MFE transfers 0 EU; MFSU transfers 12000 EU into each of four worn pieces, 7 EU left");
+                "MFE transfers 0 EU. MFSU transfers 12000 EU per quantum stack across eight positions with 7 EU left.");
     }
 
     private static void place(ServerLevel level, BlockPos pos, String path) {
