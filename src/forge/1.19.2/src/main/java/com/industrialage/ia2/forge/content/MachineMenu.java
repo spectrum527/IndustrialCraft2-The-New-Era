@@ -63,11 +63,12 @@ public final class MachineMenu extends AbstractContainerMenu {
 
                         @Override
                         public int getMaxStackSize(ItemStack stack) {
-                            return (kind == MachineKind.Slot.CHARGE
-                                                    || kind == MachineKind.Slot.DISCHARGE)
-                                            && com.industrialage.ia2.forge.equipment.ForgeGear
-                                                    .electricalItem(stack)
-                                    ? 1
+                            return kind == MachineKind.Slot.CHARGE
+                                            || kind == MachineKind.Slot.DISCHARGE
+                                    ? Math.min(
+                                            super.getMaxStackSize(stack),
+                                            com.industrialage.ia2.forge.equipment.ForgeGear
+                                                    .powerSlotLimit(stack))
                                     : super.getMaxStackSize(stack);
                         }
                     });

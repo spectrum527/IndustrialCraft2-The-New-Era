@@ -84,9 +84,17 @@ public final class WorkshopMenu extends AbstractContainerMenu {
                         }
 
                         @Override
+                        public int getMaxStackSize(ItemStack stack) {
+                            return slot == WorkshopInventory.POWER_ITEM_SLOT
+                                    ? Math.min(
+                                            super.getMaxStackSize(stack),
+                                            PowerPlatform.powerSlotLimit(stack))
+                                    : super.getMaxStackSize(stack);
+                        }
+
+                        @Override
                         public int getMaxStackSize() {
                             return WorkshopInventory.componentBay(kind, slot)
-                                            || slot == WorkshopInventory.POWER_ITEM_SLOT
                                             || role(slot) == Role.TEMPLATE
                                             || kind == WorkshopKind.RADIOISOTOPE_HEAT && slot < 6
                                     ? 1

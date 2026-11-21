@@ -115,7 +115,10 @@ final class WorldMachine extends WorldSaveBase implements WorldPowerPort, EuBuff
         var battery = inventory.getItem(kind.batterySlot());
         if (kind.packet > 0
                 && !battery.isEmpty()
-                && receive(WorldNative.discharge(battery, capacity() - energy, itemTier())) > 0) {
+                && receive(
+                                WorldNative.discharge(
+                                        battery, capacity() - energy, capacity(), itemTier()))
+                        > 0) {
             inventory.setChanged();
         }
         if (kind == WorldMachineBlock.Kind.CROPMATRON) {

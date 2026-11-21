@@ -86,8 +86,13 @@ public final class PowerPlatform {
         return com.industrialage.ia2.forge.equipment.ForgeGear.canDischarge(stack, tier);
     }
 
-    static double discharge(ItemStack stack, double energy, int tier) {
-        return com.industrialage.ia2.forge.equipment.ForgeGear.discharge(stack, energy, tier);
+    static double discharge(ItemStack stack, double room, double capacity, int tier) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.discharge(
+                stack, room, capacity, tier);
+    }
+
+    static int powerSlotLimit(ItemStack stack) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.powerSlotLimit(stack);
     }
 
     static double charge(ItemStack stack, double energy, int tier) {

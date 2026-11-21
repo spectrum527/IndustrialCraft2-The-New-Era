@@ -64,7 +64,7 @@ final class ProcessingDevice extends InventoryDevice {
 
         boolean upgradeChanged = refreshUpgrades();
         var battery = inventory.stack(Slot.DISCHARGE);
-        receive(ForgeGear.discharge(battery, capacity() - energy(), itemTier()));
+        receive(ForgeGear.discharge(battery, capacity() - energy(), capacity(), itemTier()));
         if (battery.is(Items.REDSTONE) && capacity() - energy() >= 800) {
             receive(800);
             battery.shrink(1);

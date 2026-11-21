@@ -202,6 +202,7 @@ public final class PowerNode extends PowerSaveBase
                         PowerPlatform.discharge(
                                 inventory.getItem(dischargeSlot),
                                 Math.max(0, room - energy),
+                                capacity(),
                                 kind == PowerKind.ENERGY_O_MAT ? 4 : upgradeTier());
                 if (used > 0) {
                     energy += used;
@@ -241,6 +242,7 @@ public final class PowerNode extends PowerSaveBase
                             ? PowerPlatform.discharge(
                                     inventory.getItem(1),
                                     Math.max(0, capacity() - energy),
+                                    capacity(),
                                     kind.itemTier())
                             : 0;
             energy += input;

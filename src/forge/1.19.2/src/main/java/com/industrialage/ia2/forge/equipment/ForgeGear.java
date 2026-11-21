@@ -220,6 +220,13 @@ public final class ForgeGear {
         }
     }
 
+    /** Stack limit in a powered equipment slot, including stacks of single-use batteries. */
+    public static int powerSlotLimit(ItemStack stack) {
+        return type(stack) == PortableEquipment.SINGLE_USE_BATTERY || !electricalItem(stack)
+                ? stack.getMaxStackSize()
+                : 1;
+    }
+
     /** Whether this equipment fits a charging slot of the given tier. */
     public static boolean acceptsCharge(ItemStack stack, int tier) {
         var device = type(stack);
@@ -246,11 +253,17 @@ public final class ForgeGear {
 
     /** Draws up to the item's permitted EU output and returns the accepted debit. */
     public static double discharge(ItemStack stack, double requested, int tier) {
+        return discharge(stack, requested, PortableEquipment.SINGLE_USE_BATTERY.capacity, tier);
+    }
+
+    /** Debits one battery only for EU the machine can retain under its buffer rules. */
+    public static double discharge(
+            ItemStack stack, double requested, double bufferCapacity, int tier) {
         var device = type(stack);
         if (device != null && device.kind == Kind.DISPOSABLE) {
-            if (tier < device.tier || requested < device.capacity) return 0;
-            stack.shrink(1);
-            return device.capacity;
+            double accepted = device.disposableCharge(requested, bufferCapacity, tier);
+            if (accepted > 0) stack.shrink(1);
+            return accepted;
         }
         if (device == null || stack.getCount() != 1) return 0;
         double before = stored(stack);

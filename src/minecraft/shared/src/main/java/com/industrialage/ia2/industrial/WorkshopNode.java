@@ -365,7 +365,7 @@ public final class WorkshopNode extends WorkshopSaveBase
             draw(PowerPlatform.charge(stack, energy, tier));
         } else if (kind.dischargesItem()) {
             double room = energyCapacity() - energy;
-            if (room > 0) receive(PowerPlatform.discharge(stack, room, tier));
+            if (room > 0) receive(PowerPlatform.discharge(stack, room, energyCapacity(), tier));
         }
     }
 
