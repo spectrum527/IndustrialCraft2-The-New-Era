@@ -149,6 +149,8 @@ final class WorkshopLayout {
         BYPRODUCT,
         ACTIVE,
         KINETIC,
+        KINETIC_AVAILABLE,
+        KINETIC_INPUT,
         MODE,
         PATTERN,
         RECIPE;
