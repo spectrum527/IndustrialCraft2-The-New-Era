@@ -78,11 +78,12 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
             String id = node.kind == WorkshopKind.ELECTRIC_HEAT ? "ic2:coil" : "ic2:electric_motor";
             return WorkshopPlatform.itemId(stack).equals(id);
         }
-        if (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_WATER_SLOT) {
-            var drain =
-                    WorkshopPlatform.containerRecipe(
-                            new WorkshopNode.Tank(node.inlet.capacity), stack, false);
-            return drain != null && drain.liquid().id().equals("minecraft:water");
+        if (node.kind == WorkshopKind.ORE_WASHER) {
+            if (slot == WASHER_WATER_SLOT) return acceptsWasherWater(stack);
+            if (slot < inputCount()) return WorkshopPlans.storedInput(node.kind, node.mode, stack);
+        }
+        if (node.kind == WorkshopKind.BLAST_FURNACE && slot < inputCount()) {
+            return WorkshopPlans.storedInput(node.kind, node.mode, stack);
         }
         if (slot >= UPGRADE_START && slot < UPGRADE_END) {
             return WorkshopAutomation.canInstall(node, stack);
@@ -95,12 +96,12 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                                 || id.equals("ic2:steel_cutting_blade")
                                 || id.equals("ic2:diamond_cutting_blade");
                 case ELECTRIC_HEAT -> id.equals("ic2:coil");
-                case BLAST_FURNACE -> id.equals("ic2:air_cell");
+                case BLAST_FURNACE -> acceptsBlastAir(stack);
                 default -> false;
             };
         }
         if (node.kind == WorkshopKind.FLUID_BOTTLER && slot < 2) {
-            return WorkshopPlatform.canSupplyContainer(stack, slot == 0);
+            return acceptsBottlerInput(slot, stack);
         }
         if (node.kind == WorkshopKind.PUMP && slot == 0) {
             return WorkshopPlatform.canSupplyContainer(stack, true);
@@ -121,7 +122,7 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                     return id.equals("ic2:rtg_pellet");
                 }
                 case FLUID_HEAT, SEMIFLUID -> {
-                    return WorkshopPlatform.canSupplyContainer(stack, false);
+                    return acceptsFluidFuel(node.kind, stack);
                 }
                 case CLASSIC_ELECTROLYZER -> {
                     return id.equals(
@@ -146,8 +147,6 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
             }
         }
         return slot < node.kind.inputs(node.mode)
-                && (node.kind != WorkshopKind.BLAST_FURNACE
-                        || !WorkshopPlatform.itemId(stack).equals("ic2:air_cell"))
                 && (node.kind != WorkshopKind.SOLID_HEAT
                         || node.getLevel() instanceof net.minecraft.server.level.ServerLevel level
                                 && WorkshopPlatform.solidFuelTime(level, stack) >= 4);
@@ -159,17 +158,41 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                 : kind.dischargesItem() && PowerPlatform.canDischarge(stack, tier);
     }
 
+    static boolean acceptsWasherWater(ItemStack stack) {
+        return WorkshopCells.canDrain(
+                stack, WorkshopKind.ORE_WASHER.inputVolume(), WorkshopThermal.WATER);
+    }
+
+    static boolean acceptsBottlerInput(int slot, ItemStack stack) {
+        return slot == 0
+                ? WorkshopPlatform.canSupplyContainer(stack, true)
+                : WorkshopCells.canDrain(
+                        stack, WorkshopKind.FLUID_BOTTLER.inputVolume(), ignored -> true);
+    }
+
+    static boolean acceptsFluidFuel(WorkshopKind kind, ItemStack stack) {
+        return WorkshopCells.canDrain(
+                stack, kind.inputVolume(), fluid -> WorkshopThermal.validFuel(kind, fluid));
+    }
+
+    static boolean acceptsBlastAir(ItemStack stack) {
+        return WorkshopCells.canDrain(stack, WorkshopKind.BLAST_FURNACE.inputVolume(), "ic2:air");
+    }
+
     @Override
     public int[] getSlotsForFace(Direction direction) {
         var input =
                 switch (node.kind) {
                     case BLAST_FURNACE -> IntStream.of(0, AUX_SLOT);
+                    case ORE_WASHER -> IntStream.of(0, WASHER_WATER_SLOT);
                     case UU_ASSEMBLY -> IntStream.of(1);
                     default -> IntStream.range(0, node.kind.inputs(node.mode));
                 };
         var output = IntStream.range(OUTPUT_START, OUTPUT_START + node.kind.outputSlots());
         if (node.kind == WorkshopKind.BLAST_FURNACE) {
             output = IntStream.concat(output, IntStream.of(RETURN_SLOT));
+        } else if (node.kind == WorkshopKind.ORE_WASHER) {
+            output = IntStream.concat(output, IntStream.of(WASHER_CONTAINER_RETURN_SLOT));
         }
         return (direction == Direction.UP
                         ? IntStream.concat(input, output)
@@ -180,14 +203,16 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return (slot < node.kind.inputs(node.mode)
-                        || node.kind == WorkshopKind.BLAST_FURNACE && slot == AUX_SLOT)
+                        || node.kind == WorkshopKind.BLAST_FURNACE && slot == AUX_SLOT
+                        || node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_WATER_SLOT)
                 && canPlaceItem(slot, stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
         return (slot >= OUTPUT_START && slot < OUTPUT_START + node.kind.outputSlots())
-                || (node.kind == WorkshopKind.BLAST_FURNACE && slot == RETURN_SLOT);
+                || (node.kind == WorkshopKind.BLAST_FURNACE && slot == RETURN_SLOT)
+                || (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_CONTAINER_RETURN_SLOT);
     }
 
     @Override

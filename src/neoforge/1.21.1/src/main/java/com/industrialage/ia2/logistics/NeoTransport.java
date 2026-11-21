@@ -6,18 +6,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -28,19 +20,13 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /** Sided item and fluid handlers for NeoForge 21.1. */
 final class NeoTransport {
-    private static final int CELL_CAPACITY = 1_000;
+    static final int CELL_CAPACITY = 1_000;
 
     private NeoTransport() {}
-
-    static DeferredHolder<Item, Item> fluidCell(DeferredRegister.Items items) {
-        return items.registerItem(
-                "fluid_cell", properties -> new FluidCell(properties.stacksTo(1)));
-    }
 
     static BlockEntityType<TransportNode> type(Block[] blocks) {
         return BlockEntityType.Builder.of(TransportNode::new, blocks).build(null);
@@ -254,74 +240,6 @@ final class NeoTransport {
             }
             int moved = node.drain(side, key, amount, action.simulate());
             return moved == 0 ? FluidStack.EMPTY : key.stack(moved);
-        }
-    }
-
-    private static final class FluidCell extends Item {
-        FluidCell(Properties properties) {
-            super(properties);
-        }
-
-        @Override
-        public InteractionResult useOn(UseOnContext context) {
-            var player = context.getPlayer();
-            if (player == null) {
-                return InteractionResult.PASS;
-            }
-            var level = context.getLevel();
-            if (!(level instanceof ServerLevel server)) {
-                return InteractionResult.PASS;
-            }
-            var tank =
-                    server.getCapability(
-                            Capabilities.FluidHandler.BLOCK,
-                            context.getClickedPos(),
-                            context.getClickedFace());
-            return tank != null
-                            && FluidUtil.interactWithFluidHandler(
-                                    player,
-                                    context.getHand(),
-                                    context.getLevel(),
-                                    context.getClickedPos(),
-                                    context.getClickedFace())
-                    ? InteractionResult.SUCCESS
-                    : InteractionResult.PASS;
-        }
-
-        @Override
-        public InteractionResultHolder<ItemStack> use(
-                Level level, Player player, InteractionHand hand) {
-            var stack = player.getItemInHand(hand);
-            var fluid = FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY);
-            boolean pickup = fluid.isEmpty();
-            if (!pickup && fluid.getAmount() < CELL_CAPACITY) {
-                return InteractionResultHolder.pass(stack);
-            }
-            var hit =
-                    getPlayerPOVHitResult(
-                            level,
-                            player,
-                            pickup ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
-            if (hit.getType() != HitResult.Type.BLOCK) {
-                return InteractionResultHolder.pass(stack);
-            }
-            var pos = hit.getBlockPos();
-            var side = hit.getDirection();
-            var target = pickup ? pos : pos.relative(side);
-            if (!level.mayInteract(player, pos) || !player.mayUseItemAt(target, side, stack)) {
-                return InteractionResultHolder.fail(stack);
-            }
-            if (!(level instanceof ServerLevel)) {
-                return InteractionResultHolder.success(stack);
-            }
-            var moved =
-                    pickup
-                            ? FluidUtil.tryPickUpFluid(stack, player, level, pos, side)
-                            : FluidUtil.tryPlaceFluid(player, level, hand, target, stack, fluid);
-            return moved.isSuccess()
-                    ? InteractionResultHolder.consume(
-                            ItemUtils.createFilledResult(stack, player, moved.getResult()))
-                    : InteractionResultHolder.pass(stack);
         }
     }
 }

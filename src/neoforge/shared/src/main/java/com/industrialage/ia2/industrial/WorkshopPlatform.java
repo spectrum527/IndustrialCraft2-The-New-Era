@@ -2,6 +2,7 @@ package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
+import com.industrialage.ia2.logistics.CellItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -82,7 +83,7 @@ public final class WorkshopPlatform {
         for (String blade : new String[] {"iron", "steel", "diamond"}) {
             ITEMS.registerSimpleItem(blade + "_cutting_blade");
         }
-        WorkshopCells.FILLED.keySet().forEach(ITEMS::registerSimpleItem);
+        WorkshopCells.FILLED.keySet().forEach(path -> ITEMS.registerItem(path, CellItem::new));
         registerCans();
         ITEMS.registerSimpleItem("electrolyzed_water_cell");
         ITEMS.registerSimpleItem("uu_matter");
@@ -319,18 +320,29 @@ public final class WorkshopPlatform {
         return WorkshopNative.canSupplyContainer(item, filling);
     }
 
-    static ContainerResult containerRecipe(WorkshopNode node, ItemStack input, boolean filling) {
-        return containerRecipe(filling ? node.inlet : node.outlet, input, filling);
+    static ContainerResult fillContainer(WorkshopNode.Tank tank, ItemStack item) {
+        return WorkshopNative.fillContainer(tank, item);
     }
 
-    static ContainerResult containerRecipe(
-            WorkshopNode.Tank tank, ItemStack input, boolean filling) {
-        return WorkshopNative.containerRecipe(tank, input, filling);
+    static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
+        return WorkshopNative.drainWholeContainer(tank, item);
     }
 
     static boolean interactFluid(
             WorkshopNode node, Player player, InteractionHand hand, Direction side) {
-        return WorkshopNative.interact(node, player, hand, side);
+        return WorkshopCells.fillNamedHand(node, side, player, hand)
+                || WorkshopNative.interact(node, player, hand, side);
+    }
+
+    /** Handles the named-cell result when Minecraft dispatches directly to the held item. */
+    public static boolean fillNamedHand(
+            ServerLevel level, BlockPos pos, Direction side, Player player, InteractionHand hand) {
+        return level.getBlockEntity(pos) instanceof WorkshopNode node
+                && WorkshopCells.fillNamedHand(node, side, player, hand);
+    }
+
+    static void playPickup(WorkshopNode node, Player player, Liquid moved) {
+        WorkshopNative.playPickup(node, player, fluid(moved.id(), moved.amount()));
     }
 
     static boolean canOpen(WorkshopNode node, Player player) {

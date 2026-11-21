@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -257,45 +258,57 @@ final class WorkshopNative {
         return full != filling;
     }
 
-    static ContainerResult containerRecipe(
-            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
+    static ContainerResult fillContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var current = WorkshopPlatform.fluid(tank.id, tank.amount);
+        if (current.isEmpty()) return null;
         var scratch = new net.minecraft.world.SimpleContainer(item.copyWithCount(1));
         var access = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(scratch), 0);
         var handler = access.getCapability(Capabilities.Fluid.ITEM);
-        if (handler == null) {
-            return null;
-        }
+        if (handler == null) return null;
+        int accepted;
         try (var transaction = Transaction.openRoot()) {
-            Liquid liquid;
-            if (filling) {
-                var current = WorkshopPlatform.fluid(tank.id, tank.amount);
-                if (current.isEmpty()) {
-                    return null;
-                }
-                int accepted =
-                        handler.insert(FluidResource.of(current), current.getAmount(), transaction);
-                liquid = new Liquid(tank.id, accepted);
-            } else {
-                var extracted =
-                        ResourceHandlerUtil.extractFirst(
-                                handler,
-                                resource -> resource.getComponentsPatch().isEmpty(),
-                                tank.capacity - tank.amount,
-                                transaction);
-                if (extracted == null) {
-                    return null;
-                }
-                liquid =
-                        new Liquid(
-                                WorkshopPlatform.fluidId(extracted.resource().toStack(1)),
-                                extracted.amount());
-            }
-            if (liquid.amount() <= 0) {
-                return null;
-            }
+            accepted = handler.insert(FluidResource.of(current), current.getAmount(), transaction);
+            if (accepted <= 0) return null;
             transaction.commit();
-            return new ContainerResult(scratch.getItem(0).copy(), liquid);
         }
+        return new ContainerResult(scratch.getItem(0).copy(), new Liquid(tank.id, accepted));
+    }
+
+    static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var scratch = new net.minecraft.world.SimpleContainer(item.copyWithCount(1));
+        var access = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(scratch), 0);
+        var handler = access.getCapability(Capabilities.Fluid.ITEM);
+        if (handler == null) return null;
+        var contents =
+                WorkshopCells.wholeContents(
+                        tank,
+                        handler.size(),
+                        slot -> {
+                            var resource = handler.getResource(slot);
+                            if (resource.isEmpty()) return Liquid.EMPTY;
+                            return resource.getComponentsPatch().isEmpty()
+                                    ? new Liquid(
+                                            WorkshopPlatform.fluidId(resource.toStack(1)),
+                                            handler.getAmountAsInt(slot))
+                                    : null;
+                        });
+        if (contents.amount() == 0) return null;
+        var expected = FluidResource.of(WorkshopPlatform.fluid(contents.id(), contents.amount()));
+        try (var transaction = Transaction.openRoot()) {
+            if (handler.extract(expected, contents.amount(), transaction) != contents.amount())
+                return null;
+            transaction.commit();
+        }
+        return new ContainerResult(scratch.getItem(0).copy(), contents);
+    }
+
+    static void playPickup(WorkshopNode node, Player player, FluidStack fluid) {
+        FluidUtil.triggerSoundAndGameEvent(
+                FluidResource.of(fluid),
+                node.getLevel(),
+                Vec3.atCenterOf(node.getBlockPos()),
+                player,
+                true);
     }
 
     static boolean interact(

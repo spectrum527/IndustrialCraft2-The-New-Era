@@ -61,10 +61,13 @@ final class PowerMenu extends AbstractContainerMenu {
                     new Slot(contents, backing, at[0], at[1]) {
                         @Override
                         public boolean mayPlace(ItemStack stack) {
-                            return isActive()
-                                    && (live == null
-                                            || permitted(index, player.player)
-                                                    && live.canPlaceItem(backing, stack));
+                            if (!isActive()) return false;
+                            if (live != null) {
+                                return permitted(index, player.player)
+                                        && live.canPlaceItem(backing, stack);
+                            }
+                            return kind != PowerKind.GEO_GENERATOR
+                                    || PowerInventory.acceptsGeothermalFuel(backing, stack);
                         }
 
                         @Override

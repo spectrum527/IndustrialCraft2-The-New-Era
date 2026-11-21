@@ -37,6 +37,7 @@ final class WorkshopChecks {
     private static final BlockPos SCRAP = new BlockPos(28, 121, 27);
     private static final BlockPos SCRAP_HAND = new BlockPos(20, 121, 28);
     private static final BlockPos BIO_HEATER = FERMENTER.west();
+    private final FluidCellChecks fluidCells = new FluidCellChecks();
     private int elapsed;
     private boolean advancedCold;
     private boolean fermentationVerified;
@@ -51,6 +52,7 @@ final class WorkshopChecks {
         world.setChunkForced(chunkX, chunkZ, true);
         world.getChunk(chunkX, chunkZ);
         var player = FakePlayerFactory.getMinecraft(world);
+        fluidCells.setup(world, check);
         var scrapBox = NativeGameplayFixture.item("scrap_box");
         world.setBlockAndUpdate(SCRAP_HAND.below(), Blocks.STONE.defaultBlockState());
         world.setBlockAndUpdate(
@@ -267,17 +269,19 @@ final class WorkshopChecks {
                 player.getItemInHand(InteractionHand.MAIN_HAND),
                 InteractionHand.MAIN_HAND);
         check.accept(
-                "universal-cell-actual-source-placement",
+                "universal-cell-does-not-place-fluid-into-world",
                 NativeTransferAccess.cellVolume(player.getItemInHand(InteractionHand.MAIN_HAND))
-                                == 0
-                        && world.getFluidState(source).isSource());
+                                == 1000
+                        && world.getFluidState(source).isEmpty());
     }
 
     boolean tick(ServerLevel world, BiConsumer<String, Boolean> check) {
         if (complete) {
             return true;
         }
-        if (++elapsed == 3) {
+        ++elapsed;
+        var cellsReady = fluidCells.tick(world, check);
+        if (elapsed == 3) {
             check.accept(
                     "native-ore-washer-dry-break",
                     NativeTransferAccess.cargo(world, WASHER, Direction.DOWN).isEmpty());
@@ -295,10 +299,10 @@ final class WorkshopChecks {
                     extruded.is(NativeGameplayFixture.item("copper_cable"))
                             && extruded.getCount() == 3);
             check.accept(
-                    "native-washer-used-1000-mb",
+                    "native-washer-used-100-mb",
                     washed.is(NativeGameplayFixture.item("purified_copper"))
                             && washed.getCount() == 1
-                            && NativeTransferAccess.volume(world, WASHER, Direction.UP) == 0);
+                            && NativeTransferAccess.volume(world, WASHER, Direction.UP) == 900);
             advancedCold = true;
         }
         if (!scrapVerified && elapsed >= 5) {
@@ -391,7 +395,7 @@ final class WorkshopChecks {
             }
         }
         var steel = NativeTransferAccess.cargo(world, FURNACE, Direction.DOWN);
-        if (!advancedCold || !fermentationVerified || steel.isEmpty()) {
+        if (!advancedCold || !fermentationVerified || !cellsReady || steel.isEmpty()) {
             return false;
         }
         check.accept(

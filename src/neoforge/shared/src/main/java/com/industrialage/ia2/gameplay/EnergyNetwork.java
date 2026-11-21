@@ -7,6 +7,7 @@ import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
 import com.industrialage.ia2.energy.graph.EnergyGraph.Position;
 import com.industrialage.ia2.energy.graph.EnergyGraph.Route;
 import com.industrialage.ia2.equipment.MeterSampling;
+import com.industrialage.ia2.industrial.CableShock;
 import com.industrialage.ia2.machine.FuelGenerator;
 import com.industrialage.ia2.platform.CapabilityFacade.Face;
 import com.industrialage.ia2.platform.ConfigFacade;
@@ -163,21 +164,18 @@ public final class EnergyNetwork {
         boolean meltdown = active.map(values -> values.get(CABLE_MELTDOWN)).orElse(true);
         boolean overload =
                 meltdown && active.map(values -> values.get(MACHINE_OVERLOAD)).orElse(true);
+        var round = new Round(roundLoss, meltdown, overload, new CableShock());
         int offset = level.getRandom().nextInt(sources.size());
         for (int i = 0; i < sources.size(); i++) {
             var source = sources.get((offset + i) % sources.size());
             for (int packet = 0; packet < source.packets(); packet++) {
-                if (!send(level, source, roundLoss, meltdown, overload)) break;
+                if (!send(level, source, round)) break;
             }
         }
+        round.shocks.apply(level);
     }
 
-    private boolean send(
-            ServerLevel level,
-            Source source,
-            boolean roundLoss,
-            boolean meltdown,
-            boolean overload) {
+    private boolean send(ServerLevel level, Source source, Round round) {
         if (dirty) {
             rebuild(level);
         }
@@ -193,12 +191,13 @@ public final class EnergyNetwork {
             var sink = machines.get(route.sink());
             if (sink != null && sink.ranThisTick(level)) {
                 double debit =
-                        PowerGrid.transfer(budget, route.rawLoss(), roundLoss, sink::receive);
+                        PowerGrid.transfer(budget, route.rawLoss(), round.roundLoss, sink::receive);
                 if (debit > 0) {
                     source.machine().draw(debit);
                     budget -= debit;
-                    record(level, source, route, sink, debit, roundLoss);
-                    afterTransfer(level, route, sink, debit, roundLoss, meltdown, overload);
+                    double loss = round.roundLoss ? Math.floor(route.rawLoss()) : route.rawLoss();
+                    record(level, source, route, sink, debit, debit - loss);
+                    afterTransfer(level, route, sink, debit, loss, round);
                     if (dirty) {
                         return true;
                     }
@@ -214,9 +213,8 @@ public final class EnergyNetwork {
             Route route,
             WorldPowerPort sink,
             double sent,
-            boolean roundLoss) {
+            double received) {
         if (!MeterSampling.watching(level)) return;
-        double received = sent - (roundLoss ? Math.floor(route.rawLoss()) : route.rawLoss());
         MeterSampling.transfer(
                 level,
                 source.machine().getBlockPos(),
@@ -234,23 +232,22 @@ public final class EnergyNetwork {
             Route route,
             WorldPowerPort sink,
             double debit,
-            boolean roundLoss,
-            boolean meltdown,
-            boolean overload) {
+            double loss,
+            Round round) {
         for (var conductor : route.conductors()) {
             BlockPos pos = blockPos(conductor);
             if (level.getBlockState(pos).getBlock() instanceof CableBlock cable) {
+                if (cable.exposed) round.shocks.record(pos, debit - loss);
                 if (cable.detector()) {
                     energizedDetectors.add(conductor);
                 }
-                if (meltdown && debit > cable.packetLimit() + 1) {
+                if (round.meltdown && debit > cable.packetLimit() + 1) {
                     level.destroyBlock(pos, false);
                     dirty = true;
                 }
             }
         }
-        double loss = roundLoss ? Math.floor(route.rawLoss()) : route.rawLoss();
-        if (overload && loss == 0 && debit > sink.packetLimit() && !sink.isRemoved()) {
+        if (round.overload && loss == 0 && debit > sink.packetLimit() && !sink.isRemoved()) {
             var pos = sink.getBlockPos();
             level.destroyBlock(pos, false);
             level.explode(
@@ -326,6 +323,9 @@ public final class EnergyNetwork {
     private static BlockPos blockPos(Position pos) {
         return new BlockPos(pos.x(), pos.y(), pos.z());
     }
+
+    private record Round(
+            boolean roundLoss, boolean meltdown, boolean overload, CableShock shocks) {}
 
     private record Source(Position position, WorldPowerPort machine, double offer, int packets) {}
 }

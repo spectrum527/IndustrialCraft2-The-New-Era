@@ -69,6 +69,23 @@ final class NativeTransferAccess {
         }
     }
 
+    static ItemStack filledCell(ItemStack stack, FluidStack fluid) {
+        var scratch = new net.minecraft.world.SimpleContainer(stack.copyWithCount(1));
+        var access =
+                ItemAccess.forHandlerIndex(
+                        net.neoforged.neoforge.transfer.item.VanillaContainerWrapper.of(scratch),
+                        0);
+        var handler = access.getCapability(Capabilities.Fluid.ITEM);
+        if (handler == null) throw new AssertionError("Missing native 26.x cell capability");
+        try (var transaction = Transaction.openRoot()) {
+            if (handler.insert(FluidResource.of(fluid), fluid.getAmount(), transaction)
+                    != fluid.getAmount())
+                throw new AssertionError("Could not fill native 26.x cell");
+            transaction.commit();
+        }
+        return scratch.getItem(0).copy();
+    }
+
     static int itemFluidVolume(ItemStack stack) {
         var handler = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
         return handler == null ? 0 : handler.getAmountAsInt(0);

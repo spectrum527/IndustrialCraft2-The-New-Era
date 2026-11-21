@@ -28,8 +28,8 @@ def loadChecks = { File file ->
     file.withReader('UTF-8') { checks.load(it) }
     checks
 }
-['storage', 'write', 'read', 'natural', 'workshop', 'powerWrite', 'powerRead', 'worldProgram', 'worldCold', 'worldDetails', 'worldDetailsCold'].each { phase ->
-    def target = [storage: 'run/native-storage', natural: 'run/native-worldgen', workshop: 'run/native-workshop', powerWrite: 'run/native-power', powerRead: 'run/native-power', worldProgram: 'run/native-world-program', worldCold: 'run/native-world-program', worldDetails: 'run/native-world-details', worldDetailsCold: 'run/native-world-details']
+['storage', 'write', 'read', 'natural', 'workshop', 'cableShock', 'heldFluidCell', 'powerWrite', 'powerRead', 'worldProgram', 'worldCold', 'worldDetails', 'worldDetailsCold'].each { phase ->
+    def target = [storage: 'run/native-storage', natural: 'run/native-worldgen', workshop: 'run/native-workshop', cableShock: 'run/native-cable-shock', heldFluidCell: 'run/native-held-cell', powerWrite: 'run/native-power', powerRead: 'run/native-power', worldProgram: 'run/native-world-program', worldCold: 'run/native-world-program', worldDetails: 'run/native-world-details', worldDetailsCold: 'run/native-world-details']
     def path = target.getOrDefault(phase, 'run/native-gameplay')
     def alternate = providers.gradleProperty('ic2.native.runRoot').map {
         rootProject.file(it).toPath().resolve(minecraftVersion).resolve(path).toFile()
@@ -104,5 +104,5 @@ simulation-distance=2
 tasks.register('nativeGameplayTest') {
     group = 'verification'
     description = 'Runs the production IC2 supply chain on a dedicated server across a real save and restart.'
-    dependsOn 'runNativeGameplayStorage', 'runNativeGameplayRead', 'runNativeGameplayNatural', 'runNativeGameplayWorkshop', 'runNativeGameplayPowerRead', 'runNativeGameplayWorldCold', 'runNativeGameplayWorldDetailsCold'
+    dependsOn 'runNativeGameplayStorage', 'runNativeGameplayRead', 'runNativeGameplayNatural', 'runNativeGameplayWorkshop', 'runNativeGameplayCableShock', 'runNativeGameplayHeldFluidCell', 'runNativeGameplayPowerRead', 'runNativeGameplayWorldCold', 'runNativeGameplayWorldDetailsCold'
 }

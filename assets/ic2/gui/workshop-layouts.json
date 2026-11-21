@@ -20,7 +20,7 @@
       "inventoryTitle": false,
       "source": "Authored guiorewashingplant.png complete panel and active impeller; Published repair 1.2.4 guidef ore_washing_plant.xml all anchors",
       "slots": {"0": [104,17],"9": [86,62],"10": [104,62],"11": [122,62],"6": [38,17],"14": [38,62],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [8,62]},
-      "meters": [{"value": "energy","rect": [15,38,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [63,23,14,47],"direction": "up"},{"value": "progress","rect": [103,39,18,18],"direction": "right","sprite": ["guiorewashingplant",177,118]}]
+      "meters": [{"value": "energy","rect": [15,38,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [63,23,14,49],"direction": "up"},{"value": "progress","rect": [103,39,18,18],"direction": "right","sprite": ["guiorewashingplant",177,118]}]
     },
     "centrifuge": {
       "atlas": "guithermalcentrifuge",
@@ -174,7 +174,7 @@
       "inventoryTitle": false,
       "source": "Authored IC2 redraw guibottler.png",
       "slots": {"0": [42,33],"1": [42,70],"9": [115,51],"18": [152,25],"19": [152,43],"20": [152,61],"21": [152,79],"26": [8,53]},
-      "meters": [{"value": "energy","rect": [10,35,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [79,36,14,47],"direction": "up"},{"value": "progress","rect": [100,55,15,13],"direction": "right","sprite": ["guibottler",199,0]}]
+      "meters": [{"value": "energy","rect": [10,35,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [81,37,14,49],"direction": "up"},{"value": "progress","rect": [100,55,15,13],"direction": "right","sprite": ["guibottler",199,0]}]
     },
     "fluid_regulator": {
       "atlas": "guifluidregulator",
@@ -183,7 +183,7 @@
       "inventoryTitle": true,
       "source": "Authored IC2 redraw guifluidregulator.png",
       "slots": {"26": [8,57]},
-      "meters": [{"value": "energy","rect": [12,38,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [81,36,13,48],"direction": "up"}],
+      "meters": [{"value": "energy","rect": [12,38,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [81,37,14,49],"direction": "up"}],
       "controls": [{"action": 0,"label": "mode","rect": [152,66,10,11]}],
       "labels": [{"text": "mode","rect": [103,55,64,10]}]
     },
@@ -207,7 +207,7 @@
       "slots": {"0": [99,17],"9": [132,34],"18": [152,8],"19": [152,26],"20": [152,44],"21": [152,62],"26": [8,44]},
       "frames": [0,9,18,19,20,21],
       "draw": [{"atlas": "guimetalformer","rect": [7,43,18,18],"uv": [16,52]},{"atlas": "overlay/pump_arrow","rect": [93,36,36,13],"uv": [0,0],"textureSize": [36,13]},{"atlas": "common","rect": [70,16,20,55],"uv": [70,100]}],
-      "meters": [{"value": "energy","rect": [12,28,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [73,19,14,47],"direction": "up"},{"value": "progress","rect": [36,34,20,13],"direction": "right","sprite": ["common",166,113]}]
+      "meters": [{"value": "energy","rect": [12,28,7,13],"direction": "up","sprite": ["common",116,65]},{"value": "inlet","rect": [73,19,14,49],"direction": "up"},{"value": "progress","rect": [36,34,20,13],"direction": "right","sprite": ["common",166,113]}]
     },
     "electrolyzer": {
       "atlas": "guielectrolyzer",

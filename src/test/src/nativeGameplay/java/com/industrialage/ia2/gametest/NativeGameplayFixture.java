@@ -1,6 +1,7 @@
 package com.industrialage.ia2.gametest;
 
 import com.industrialage.ia2.gameplay.IndustrialMachine;
+import com.industrialage.ia2.shocktest.CableShockChecks;
 import com.industrialage.ia2.worldtest.WorldChecks;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -46,11 +48,15 @@ public final class NativeGameplayFixture {
     private static final BlockPos SIDE_STORAGE = STORAGE.south();
     private static final BlockPos FURNACE = MILL.east(2);
     private static final BlockPos RUBBER = FURNACE.east(2);
+    private static final BlockPos CABLE_TEST_ORIGIN = new BlockPos(23, 96, 23);
+    private static final BlockPos HELD_CELL_ORIGIN = new BlockPos(22, 106, 22);
 
     private final String phase = System.getProperty("ic2.native.phase");
     private final Properties checks = new Properties();
     private final TransportChecks transport = new TransportChecks();
     private final EnergyTierChecks energyTiers = new EnergyTierChecks();
+    private CableShockChecks cableShock;
+    private int cableShockAt;
     private final MeterChecks meter = new MeterChecks();
     private GearChecks gear;
     private final PowerChecks power = new PowerChecks();
@@ -97,7 +103,12 @@ public final class NativeGameplayFixture {
                 complete(server, null);
                 return;
             }
-            if (phase.equals("worldDetails") || phase.equals("worldDetailsCold")) {
+            if (phase.equals("heldFluidCell")) {
+                level.setChunkForced(1, 1, true);
+                level.getChunk(1, 1);
+            } else if (phase.equals("cableShock")) {
+                arrangeCableShock(level);
+            } else if (phase.equals("worldDetails") || phase.equals("worldDetailsCold")) {
                 worldDetails =
                         new com.industrialage.ia2.worldtest.FoodPaintChecks(
                                 NativeGameplayFixture::block,
@@ -168,12 +179,44 @@ public final class NativeGameplayFixture {
             }
             if ("worldProgram".equals(phase) || "worldDetails".equals(phase))
                 server.tickRateManager().setTickRate(200F);
+            else if ("cableShock".equals(phase) || "heldFluidCell".equals(phase))
+                server.tickRateManager().setTickRate(20F);
             else
                 server.tickRateManager()
                         .requestGameToSprint("workshop".equals(phase) ? 8_500 : 1_300);
         } catch (IOException | RuntimeException | AssertionError failure) {
             complete(server, failure);
         }
+    }
+
+    private void arrangeCableShock(ServerLevel level) {
+        level.setChunkForced(1, 1, true);
+        level.getChunk(1, 1);
+        var server = level.getServer();
+        var commands = server.getCommands();
+        var console = server.createCommandSourceStack().withSuppressedOutput();
+        cableShock =
+                new CableShockChecks(
+                        level,
+                        CABLE_TEST_ORIGIN,
+                        new CableShockChecks.Host(
+                                NativeGameplayFixture::block,
+                                NativeGameplayFixture::item,
+                                (pos, eu) ->
+                                        commands.performPrefixedCommand(
+                                                console,
+                                                "data merge block "
+                                                        + pos.getX()
+                                                        + " "
+                                                        + pos.getY()
+                                                        + " "
+                                                        + pos.getZ()
+                                                        + " {machine:{eu:"
+                                                        + eu
+                                                        + ".0d}}"),
+                                pos -> machine(level, pos).energy(),
+                                NativeCableShockActors::ironGolem,
+                                damage -> damage.is(DamageTypes.MAGIC)));
     }
 
     private void initialize(ServerLevel level) {
@@ -352,6 +395,30 @@ public final class NativeGameplayFixture {
                                         server.overworld(),
                                         FakePlayerFactory.getMinecraft(server.overworld()),
                                         ticks);
+                        case "heldFluidCell" -> {
+                            var level = server.overworld();
+                            if (!level.isPositionEntityTicking(HELD_CELL_ORIGIN)) yield false;
+                            NativeHeldCellHost.run(
+                                    level,
+                                    FakePlayerFactory.getMinecraft(level),
+                                    HELD_CELL_ORIGIN,
+                                    this::check);
+                            yield true;
+                        }
+                        case "cableShock" -> {
+                            if (cableShockAt == 0) {
+                                if (!server.overworld()
+                                        .isPositionEntityTicking(CABLE_TEST_ORIGIN)) {
+                                    yield false;
+                                }
+                                cableShock.arrange();
+                                cableShockAt = ticks;
+                            }
+                            if (ticks == cableShockAt + 3) cableShock.connect(this::check);
+                            if (ticks < cableShockAt + 8) yield false;
+                            cableShock.verify(this::check);
+                            yield true;
+                        }
                         case "write" -> writeStage(server.overworld());
                         case "workshop" -> workshop.tick(server.overworld(), this::check);
                         default -> readStage(server.overworld());

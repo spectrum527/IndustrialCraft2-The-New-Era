@@ -37,10 +37,7 @@ final class PowerInventory extends SimpleContainer
             if (!device.fluidMode) return false;
             if (slot == 56) return WorkshopPlatform.canSupplyContainer(stack, true);
             if (slot != 54) return false;
-            var drain =
-                    WorkshopPlatform.containerRecipe(
-                            new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY), stack, false);
-            return drain != null && drain.liquid().id().equals("ic2:coolant");
+            return WorkshopCells.canDrain(stack, ReactorVessel.TANK_CAPACITY, "ic2:coolant");
         }
         int upgrades =
                 device.kind == PowerKind.MAGNETIZER
@@ -81,11 +78,15 @@ final class PowerInventory extends SimpleContainer
                             && (part.equals("fluid_pulling_upgrade")
                                     || part.equals("fluid_ejector_upgrade"));
             case RT_GENERATOR -> slot < 6 && part.equals("rtg_pellet");
-            case GEO_GENERATOR -> slot == 0 && stack.is(Items.LAVA_BUCKET);
+            case GEO_GENERATOR -> acceptsGeothermalFuel(slot, stack);
             case WATER_GENERATOR ->
                     slot == 0 && (stack.is(Items.WATER_BUCKET) || part.equals("water_cell"));
             default -> false;
         };
+    }
+
+    static boolean acceptsGeothermalFuel(int slot, ItemStack stack) {
+        return slot == 0 && WorkshopCells.canDrain(stack, PowerNode.LAVA_CAPACITY, PowerNode.LAVA);
     }
 
     @Override

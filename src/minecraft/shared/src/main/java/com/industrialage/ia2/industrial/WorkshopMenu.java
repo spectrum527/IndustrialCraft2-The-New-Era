@@ -124,6 +124,21 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         if (slot == WorkshopInventory.POWER_ITEM_SLOT) {
             return WorkshopInventory.acceptsPowerItem(kind, item, get(Metric.TIER));
         }
+        if (kind == WorkshopKind.ORE_WASHER) {
+            if (slot == WorkshopInventory.WASHER_WATER_SLOT)
+                return WorkshopInventory.acceptsWasherWater(item);
+            if (slot < kind.inputs(mode())) return WorkshopPlans.storedInput(kind, mode(), item);
+        }
+        if (kind == WorkshopKind.BLAST_FURNACE) {
+            if (slot == WorkshopInventory.AUX_SLOT) return WorkshopInventory.acceptsBlastAir(item);
+            if (slot < kind.inputs(mode())) return WorkshopPlans.storedInput(kind, mode(), item);
+        }
+        if (kind == WorkshopKind.FLUID_BOTTLER && slot < 2) {
+            return WorkshopInventory.acceptsBottlerInput(slot, item);
+        }
+        if ((kind == WorkshopKind.FLUID_HEAT || kind == WorkshopKind.SEMIFLUID) && slot == 0) {
+            return WorkshopInventory.acceptsFluidFuel(kind, item);
+        }
         if (kind == WorkshopKind.ELECTROLYZER
                 && slot >= WorkshopInventory.UPGRADE_START
                 && slot < WorkshopInventory.UPGRADE_END) {
@@ -479,7 +494,10 @@ public final class WorkshopMenu extends AbstractContainerMenu {
             }
             return false;
         }
-        return inputs > 0 && moveItemStackTo(stack, 0, inputs, false);
+        return inputs > 0
+                && (kind != WorkshopKind.ORE_WASHER && kind != WorkshopKind.BLAST_FURNACE
+                        || slots.get(0).mayPlace(stack))
+                && moveItemStackTo(stack, 0, inputs, false);
     }
 
     private enum Metric {

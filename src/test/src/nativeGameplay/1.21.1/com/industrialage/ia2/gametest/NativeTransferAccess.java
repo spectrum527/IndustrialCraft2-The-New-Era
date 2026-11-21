@@ -55,6 +55,15 @@ final class NativeTransferAccess {
                 .getAmount();
     }
 
+    static ItemStack filledCell(ItemStack stack, FluidStack fluid) {
+        var single = stack.copyWithCount(1);
+        var handler = single.getCapability(Capabilities.FluidHandler.ITEM);
+        if (handler == null || handler.fill(fluid, FluidAction.EXECUTE) != fluid.getAmount()) {
+            throw new AssertionError("Could not fill native 1.21.1 cell");
+        }
+        return handler.getContainer().copy();
+    }
+
     static int itemFluidVolume(ItemStack stack) {
         var handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         return handler == null ? 0 : handler.getFluidInTank(0).getAmount();

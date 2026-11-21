@@ -54,7 +54,7 @@ final class PowerPanel {
             g.text(Component.literal(energy + " EU"), 121, 55, INK, true);
         } else if (menu.kind == PowerKind.GEO_GENERATOR) {
             bar(g, layout.texture(), 112, 27, 176, 0, 24, 8, energy, capacity);
-            gauge(g, 73, 25, 8, 44, status, 8000, 0xffd36f26);
+            gauge(g, 73, 23, 14, 49, status, 8000, 0x99d36f26);
         } else if (menu.kind.trader()) {
             if (menu.guest) {
                 g.text(
@@ -101,8 +101,9 @@ final class PowerPanel {
 
     private static void gauge(
             PanelCanvas canvas, int x, int y, int w, int h, int n, int max, int color) {
-        int filled = Math.max(0, Math.min(h, (int) ((long) n * h / max)));
-        if (filled > 0) canvas.fill(x, y + h - filled, x + w, y + h, color);
+        if (n <= 0 || max <= 0) return;
+        int filled = Math.max(1, (int) ((long) Math.min(n, max) * h / max));
+        canvas.fill(x, y + h - filled, x + w, y + h, color);
     }
 
     private static void bar(

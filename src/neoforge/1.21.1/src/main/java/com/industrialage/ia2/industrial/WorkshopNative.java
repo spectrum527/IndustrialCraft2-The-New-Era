@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -245,30 +247,59 @@ final class WorkshopNative {
                         == filling;
     }
 
-    static ContainerResult containerRecipe(
-            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
-        var stack = item.copyWithCount(1);
-        var handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-        if (handler == null) {
+    static ContainerResult fillContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var handler = item.copyWithCount(1).getCapability(Capabilities.FluidHandler.ITEM);
+        var liquid = WorkshopPlatform.fluid(tank.id, tank.amount);
+        if (handler == null || liquid.isEmpty() || !liquid.getComponentsPatch().isEmpty())
             return null;
-        }
-        var liquid =
-                filling
-                        ? WorkshopPlatform.fluid(tank.id, tank.amount)
-                        : handler.drain(
-                                tank.capacity - tank.amount, IFluidHandler.FluidAction.EXECUTE);
-        if (liquid.isEmpty() || !liquid.getComponentsPatch().isEmpty()) {
-            return null;
-        }
-        int amount =
-                filling
-                        ? handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE)
-                        : liquid.getAmount();
+        int amount = handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE);
         return amount > 0
-                ? new ContainerResult(
-                        handler.getContainer(),
-                        new Liquid(WorkshopPlatform.fluidId(liquid), amount))
+                ? new ContainerResult(handler.getContainer(), new Liquid(tank.id, amount))
                 : null;
+    }
+
+    static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var handler = item.copyWithCount(1).getCapability(Capabilities.FluidHandler.ITEM);
+        if (handler == null) return null;
+        var contents =
+                WorkshopCells.wholeContents(
+                        tank,
+                        handler.getTanks(),
+                        slot -> {
+                            var stored = handler.getFluidInTank(slot);
+                            if (stored.isEmpty()) return Liquid.EMPTY;
+                            return stored.getComponentsPatch().isEmpty()
+                                    ? new Liquid(
+                                            WorkshopPlatform.fluidId(stored), stored.getAmount())
+                                    : null;
+                        });
+        if (contents.amount() == 0) return null;
+        var drained =
+                handler.drain(
+                        WorkshopPlatform.fluid(contents.id(), contents.amount()),
+                        IFluidHandler.FluidAction.EXECUTE);
+        return drained.isEmpty()
+                        || !drained.getComponentsPatch().isEmpty()
+                        || drained.getAmount() != contents.amount()
+                        || !WorkshopPlatform.fluidId(drained).equals(contents.id())
+                ? null
+                : new ContainerResult(handler.getContainer(), contents);
+    }
+
+    static void playPickup(WorkshopNode node, Player player, FluidStack fluid) {
+        var sound = fluid.getFluidType().getSound(fluid, SoundActions.BUCKET_FILL);
+        if (sound != null) {
+            node.getLevel()
+                    .playSound(
+                            null,
+                            player.getX(),
+                            player.getY() + 0.5,
+                            player.getZ(),
+                            sound,
+                            SoundSource.BLOCKS,
+                            1,
+                            1);
+        }
     }
 
     static boolean interact(

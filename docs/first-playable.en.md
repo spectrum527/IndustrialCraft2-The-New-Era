@@ -1,4 +1,4 @@
-# IndustrialCraft²: The New Era 1.0.0 player guide
+# IndustrialCraft²: The New Era 1.0.1 player guide
 
 [简体中文](first-playable.md) · **English**
 
@@ -8,10 +8,10 @@ Pick the loader build that matches your Minecraft version, put the same JAR into
 
 | Minecraft | Tested loader | Java | File |
 | --- | --- | ---: | --- |
-| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.0.jar` |
-| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.0.jar` |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.0.jar` |
-| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.0.jar` |
+| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.1.jar` |
+| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.1.jar` |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.1.jar` |
+| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.1.jar` |
 
 Two optional mods fit well alongside IC2. The One Probe displays a machine's stored EU and tank fluid levels when you look at it, which makes wiring and pipe checks faster. Curios adds a back slot where you can wear a battery pack or electric jetpack without giving up your chestplate, and those packs still charge when you stand on a matching-tier charge pad.
 
@@ -37,7 +37,7 @@ Early IC2 parts rely on two hand tools in a crafting grid. Each craft uses 1 dur
 
 The Forge Hammer (5 iron ingots and 2 sticks) hammers metal ingots into plates (1 ingot gives 1 plate) and plates into item casings (1 plate gives 2 casings, such as 1 Tin Plate into 2 Tin Item Casings). The Cutter (3 iron plates and 2 iron ingots) cuts 1 Copper Plate into 2 Copper Cables or 1 Tin Plate into 3 Tin Cables.
 
-Bare live copper and tin cables shock any player or mob inside a 3x3x3 area around the wire. Craft bare cable with Rubber in any grid slot to make Insulated Copper Cable or Insulated Tin Cable. One layer of rubber stops shocks on copper and tin cables, and insulation adds zero extra energy loss.
+Bare cables deal magic damage to nearby players and mobs while a load draws power. Delivering 32 EU in a tick deals 1 point of damage within 1 block. At 128 EU, the wire deals 2 points within 2 blocks. Shocks stop when the receiver fills up and no other load draws power. Craft bare cable with Rubber in any grid slot to make Insulated Copper Cable or Insulated Tin Cable. One layer of rubber stops shocks on copper and tin cables, and insulation adds zero extra energy loss.
 
 If hand-crafting plates and wires gets tedious, craft an Industrial Workbench (1 crafting table, 1 Forge Hammer, 1 Basic Machine Casing, and 1 Cutter). Its top slots hold a Forge Hammer and Cutter, the lower section stores 18 stacks of materials, and the red X button returns items from the 3x3 grid to your inventory.
 
@@ -130,7 +130,7 @@ Coal generators eventually fall behind mid-game demand. As you expand, mix in ot
 - Solar Panel: outputs a steady 1 EU/t under daylight with no fuel upkeep, handy for small passive setups.
 - Water Mill: generates low-level power from water buckets or surrounding water blocks.
 - Wind Mill: produces more power higher up and away from nearby solid blocks. Check a spot with a Wind Meter before building a tall tower.
-- Geothermal Generator: burns lava at a steady 20 EU/t (10,000 EU per bucket), strong once you pump lava from the Nether.
+- Geothermal Generator: accepts lava cells, buckets or piped lava and generates 20 EU/t (10,000 EU per 1,000 mB), strong once you pump lava from the Nether.
 - Semifluid Generator: burns Biogas at 16 EU/t or Creosote from a Coke Kiln at 8 EU/t.
 - Radioisotope Thermoelectric Generator (RTG): uses RTG pellets from spent nuclear fuel reprocessing for fuel-free output around the clock (1, 2, or 4 EU/t for 1, 2, or 3 pellets, and more as you add pellets).
 
@@ -148,7 +148,7 @@ Build a Metal Former as soon as you can spare the materials. Every job costs 2,0
 
 Macerating raw ore doubles your ingots right away. Sending Crushed Ore through an Ore Washing Plant and a Thermal Centrifuge pushes yields higher and recovers secondary metals you cannot mine directly.
 
-An Ore Washing Plant takes 1 Crushed Ore, 1,000 mB of water, and 8,000 EU (16 EU/t for 500 ticks). Each run produces 1 Purified Crushed Ore, 2 tiny piles of the matching dust, and 1 Stone Dust; Crushed Lead gives 3 tiny piles of sulfur dust, and Crushed Uranium gives 2 tiny piles of lead dust. Put water buckets in the upper-right water slot and take empty buckets from the return slot below, or pipe water in. All three output slots need open space, because if even one fills up, the machine halts without spending input or water.
+An Ore Washing Plant takes 1 Crushed Ore, 100 mB of water, and 8,000 EU (16 EU/t for 500 ticks). Each run produces 1 Purified Crushed Ore, 2 tiny piles of the matching dust, and 1 Stone Dust; Crushed Lead gives 3 tiny piles of sulfur dust, and Crushed Uranium gives 2 tiny piles of lead dust. Load water cells or buckets into the upper-left slot and collect the empties below. Eight full cells fill the 8,000 mB tank. One wash leaves 7,900 mB, and the next 1,000 mB cell opens when the level reaches 7,000 mB. The tank also accepts piped water. All three output slots need open space, because if even one fills up, the machine halts without spending input or water.
 
 A Thermal Centrifuge processes Crushed Ore or Purified Crushed Ore into main dust plus secondary tiny dusts. Copper yields tiny tin dust, iron yields tiny gold dust, gold yields tiny silver dust, and uranium splits into Tiny Piles of Uranium 235 alongside Uranium 238. You also use it to reprocess depleted nuclear fuel rods into plutonium and Uranium 238.
 
@@ -311,7 +311,7 @@ This rebuild also adds several survival crafting recipes.
 
 - Tank, UU Assembly Bench, Advanced Ejector Upgrade, and Advanced Pulling Upgrade each have a standalone survival recipe.
 - Bronze Dust, Lapis Dust, Diamond Dust, Obsidian Dust, and Uranium 238 split 1-to-9 into tiny piles on the crafting table.
-- Universal Fluid Cell uses a glass block in the center, while Empty Cell keeps a glass pane in the center, so both containers are craftable side by side.
+- Craft a Universal Fluid Cell with a glass block in the center, or an Empty Cell with a glass pane. Right-click a water or lava source with an empty cell to collect it. Right-click a tank or a machine’s fluid input to transfer the liquid. Right-clicking ordinary ground keeps the liquid in the cell.
 
 See the full list in [Classic and supplemental recipes](../spec/registry/classic-playable-recipes.json).
 
