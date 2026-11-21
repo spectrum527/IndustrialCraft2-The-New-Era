@@ -20,7 +20,7 @@ final class FuelJetpack extends Item {
             ResourceLocation.fromNamespaceAndPath("ic2", "biogas");
 
     FuelJetpack() {
-        super(ForgeContent.itemProperties().stacksTo(1));
+        super(ForgeContent.itemProperties("jetpack").stacksTo(1));
     }
 
     @Override

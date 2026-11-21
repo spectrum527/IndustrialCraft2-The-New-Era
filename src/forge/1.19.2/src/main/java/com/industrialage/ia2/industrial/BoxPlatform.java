@@ -58,7 +58,8 @@ public final class BoxPlatform {
                                                                     : SoundType.METAL),
                                             k));
             BOXES.add(block);
-            ITEMS.register(k.path, () -> new BlockItem(block.get(), ForgeContent.itemProperties()));
+            ITEMS.register(
+                    k.path, () -> new BlockItem(block.get(), ForgeContent.itemProperties(k.path)));
         }
         BoxMenus.install(bus);
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist

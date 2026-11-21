@@ -14,7 +14,7 @@ final class BatteryItem extends ForgeGear.PoweredItem {
     BatteryItem() {
         super(
                 PortableEquipment.RE_BATTERY,
-                ForgeContent.itemProperties()
+                ForgeContent.itemProperties(PortableEquipment.RE_BATTERY.path)
                         .stacksTo(PortableEquipment.RE_BATTERY.emptyStackSize()));
     }
 

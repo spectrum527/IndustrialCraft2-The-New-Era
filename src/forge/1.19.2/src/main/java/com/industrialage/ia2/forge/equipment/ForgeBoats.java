@@ -38,7 +38,9 @@ public final class ForgeBoats {
     private static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, "ic2");
     private static final RegistryObject<Item> DAMAGED =
-            ITEMS.register("broken_rubber_boat", () -> new Item(ForgeContent.itemProperties()));
+            ITEMS.register(
+                    "broken_rubber_boat",
+                    () -> new Item(ForgeContent.itemProperties("broken_rubber_boat")));
     private static final Map<Kind, RegistryObject<EntityType<Craft>>> CRAFT =
             new EnumMap<>(Kind.class);
     private static final Map<Kind, RegistryObject<Item>> LAUNCHERS = new EnumMap<>(Kind.class);
@@ -84,7 +86,7 @@ public final class ForgeBoats {
         private final Kind kind;
 
         BoatItem(Kind kind) {
-            super(ForgeContent.itemProperties().stacksTo(1));
+            super(ForgeContent.itemProperties(kind.path).stacksTo(1));
             this.kind = kind;
         }
 

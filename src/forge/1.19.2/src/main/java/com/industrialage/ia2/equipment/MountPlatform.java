@@ -36,7 +36,9 @@ public final class MountPlatform {
 
     /** Registers the mounting plate, crafting recipe and real damage events. */
     public static void install(DeferredRegister<Item> items, IEventBus modBus, IEventBus gameBus) {
-        items.register("jetpack_attachment_plate", () -> new Item(ForgeContent.itemProperties()));
+        items.register(
+                "jetpack_attachment_plate",
+                () -> new Item(ForgeContent.itemProperties("jetpack_attachment_plate")));
         RECIPES.register(modBus);
         gameBus.addListener(
                 (LivingHurtEvent event) -> {

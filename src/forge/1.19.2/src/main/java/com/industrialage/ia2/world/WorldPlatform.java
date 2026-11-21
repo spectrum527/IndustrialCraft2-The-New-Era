@@ -118,13 +118,12 @@ public final class WorldPlatform {
     static RegistryObject<Block> registerBlock(
             String path, Function<Block.Properties, Block> make, boolean hasItem) {
         var block = BLOCKS.register(path, () -> make.apply(WorldNative.properties(path)));
-        if (hasItem)
-            ITEMS.register(path, () -> new BlockItem(block.get(), ForgeContent.itemProperties()));
+        if (hasItem) registerItem(path, properties -> new BlockItem(block.get(), properties));
         return block;
     }
 
     static void registerItem(String path, Function<Item.Properties, Item> make) {
-        ITEMS.register(path, () -> make.apply(ForgeContent.itemProperties()));
+        ITEMS.register(path, () -> make.apply(ForgeContent.itemProperties(path)));
     }
 
     private static void addCompost() {

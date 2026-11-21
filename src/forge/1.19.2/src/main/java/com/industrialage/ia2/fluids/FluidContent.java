@@ -109,7 +109,7 @@ public final class FluidContent {
                             () ->
                                     new BucketItem(
                                             source,
-                                            new Item.Properties()
+                                            ForgeContent.itemProperties(path + "_bucket")
                                                     .stacksTo(1)
                                                     .craftRemainder(Items.BUCKET)));
         }

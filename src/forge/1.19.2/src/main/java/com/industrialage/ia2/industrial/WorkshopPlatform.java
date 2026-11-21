@@ -79,11 +79,11 @@ public final class WorkshopPlatform {
     private WorkshopPlatform() {}
 
     private static void registerCans() {
-        ITEMS.register("tin_can", () -> new Item(ForgeContent.itemProperties()));
-        ITEMS.register(
+        registerItem("tin_can", Item::new);
+        registerItem(
                 "filled_tin_can",
-                () ->
-                        new Item(ForgeContent.itemProperties()) {
+                properties ->
+                        new Item(properties) {
                             @Override
                             public net.minecraft.world.InteractionResultHolder<
                                             net.minecraft.world.item.ItemStack>
@@ -114,30 +114,19 @@ public final class WorkshopPlatform {
                                                     .requiresCorrectToolForDrops(),
                                             kind));
             MACHINES.add(block);
-            ITEMS.register(
-                    kind.path, () -> new BlockItem(block.get(), ForgeContent.itemProperties()));
+            registerItem(kind.path, properties -> new BlockItem(block.get(), properties));
         }
         for (String blade : new String[] {"iron", "steel", "diamond"}) {
-            ITEMS.register(
-                    blade + "_cutting_blade",
-                    () -> new Item(ForgeContent.itemProperties().stacksTo(1)));
+            registerItem(blade + "_cutting_blade", properties -> new Item(properties.stacksTo(1)));
         }
-        WorkshopCells.FILLED.forEach(
-                (path, liquid) ->
-                        ITEMS.register(
-                                path,
-                                () ->
-                                        CellItem.named(
-                                                () -> fluid(liquid, WorkshopCells.VOLUME),
-                                                () -> stack("ic2:empty_cell", 1))));
         registerCans();
-        ITEMS.register("electrolyzed_water_cell", () -> new Item(ForgeContent.itemProperties()));
-        ITEMS.register("uu_matter", () -> new Item(ForgeContent.itemProperties()));
+        registerItem("electrolyzed_water_cell", Item::new);
+        registerItem("uu_matter", Item::new);
         var scrapBox =
-                ITEMS.register(
+                registerItem(
                         "scrap_box",
-                        () ->
-                                new Item(ForgeContent.itemProperties()) {
+                        properties ->
+                                new Item(properties) {
                                     @Override
                                     public InteractionResultHolder<ItemStack> use(
                                             Level level, Player player, InteractionHand hand) {
@@ -179,13 +168,11 @@ public final class WorkshopPlatform {
                                                     }
                                                 })));
         for (String material : WorkshopKinetic.ROTOR_MATERIALS) {
-            ITEMS.register(
-                    material + "_rotor", () -> new Item(ForgeContent.itemProperties().stacksTo(1)));
-            ITEMS.register(
-                    material + "_rotor_blade", () -> new Item(ForgeContent.itemProperties()));
+            registerItem(material + "_rotor", properties -> new Item(properties.stacksTo(1)));
+            registerItem(material + "_rotor_blade", Item::new);
         }
-        ITEMS.register("steam_turbine", () -> new Item(ForgeContent.itemProperties().stacksTo(1)));
-        ITEMS.register("steam_turbine_blade", () -> new Item(ForgeContent.itemProperties()));
+        registerItem("steam_turbine", properties -> new Item(properties.stacksTo(1)));
+        registerItem("steam_turbine_blade", Item::new);
         var casing =
                 BLOCKS.register(
                         "advanced_machine",
@@ -195,11 +182,9 @@ public final class WorkshopPlatform {
                                                 .strength(3, 10)
                                                 .sound(SoundType.METAL)
                                                 .requiresCorrectToolForDrops()));
-        ITEMS.register(
-                "advanced_machine",
-                () -> new BlockItem(casing.get(), ForgeContent.itemProperties()));
+        registerItem("advanced_machine", properties -> new BlockItem(casing.get(), properties));
         registerFuelParts();
-        ITEMS.register("crystal_memory", () -> new Item(ForgeContent.itemProperties().stacksTo(1)));
+        registerItem("crystal_memory", properties -> new Item(properties.stacksTo(1)));
         for (var kind : WorkshopToolBox.Kind.values()) {
             ITEMS.register(kind.path, () -> new ToolBoxItem(kind));
         }
@@ -207,6 +192,11 @@ public final class WorkshopPlatform {
         ITEMS.register(bus);
         MENUS.register(bus);
         ENTITIES.register(bus);
+    }
+
+    private static RegistryObject<Item> registerItem(
+            String path, Function<Item.Properties, Item> factory) {
+        return ITEMS.register(path, () -> factory.apply(ForgeContent.itemProperties(path)));
     }
 
     static void scrapRewards(ServerLevel level, Consumer<ItemStack> reward) {
@@ -228,7 +218,7 @@ public final class WorkshopPlatform {
                         "iron_shaft",
                         "steel_shaft",
                         "raw_crystal_memory")) {
-            ITEMS.register(path, () -> new Item(ForgeContent.itemProperties()));
+            registerItem(path, Item::new);
         }
     }
 
@@ -284,7 +274,7 @@ public final class WorkshopPlatform {
         private final WorkshopToolBox.Kind kind;
 
         ToolBoxItem(WorkshopToolBox.Kind kind) {
-            super(ForgeContent.itemProperties().stacksTo(1));
+            super(ForgeContent.itemProperties(kind.path).stacksTo(1));
             this.kind = kind;
         }
 

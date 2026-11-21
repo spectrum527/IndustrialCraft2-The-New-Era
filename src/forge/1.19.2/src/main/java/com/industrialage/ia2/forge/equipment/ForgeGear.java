@@ -11,6 +11,7 @@ import com.industrialage.ia2.equipment.MountPlatform;
 import com.industrialage.ia2.equipment.WindMeter;
 import com.industrialage.ia2.forge.content.ForgeContent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -57,14 +59,14 @@ public final class ForgeGear {
                                 new PoweredItem(
                                         entry,
                                         entry.kind == Kind.TOOL
-                                                ? ForgeContent.itemProperties()
+                                                ? ForgeContent.itemProperties(entry.path)
                                                         .durability(
                                                                 entry
                                                                                 == PortableEquipment
                                                                                         .NANO_SABER
                                                                         ? 1_561
                                                                         : 250)
-                                                : ForgeContent.itemProperties()
+                                                : ForgeContent.itemProperties(entry.path)
                                                         .stacksTo(entry.emptyStackSize())));
             }
         }
@@ -104,17 +106,23 @@ public final class ForgeGear {
                 };
         ITEMS.register(
                 "bronze_pickaxe",
-                () -> new PickaxeItem(bronze, 1, -2.8F, ForgeContent.itemProperties()));
+                () ->
+                        new PickaxeItem(
+                                bronze, 1, -2.8F, ForgeContent.itemProperties("bronze_pickaxe")));
         ITEMS.register(
-                "bronze_axe", () -> new AxeItem(bronze, 6, -3.1F, ForgeContent.itemProperties()));
+                "bronze_axe",
+                () -> new AxeItem(bronze, 6, -3.1F, ForgeContent.itemProperties("bronze_axe")));
         ITEMS.register(
                 "bronze_shovel",
-                () -> new ShovelItem(bronze, 1.5F, -3.0F, ForgeContent.itemProperties()));
+                () ->
+                        new ShovelItem(
+                                bronze, 1.5F, -3.0F, ForgeContent.itemProperties("bronze_shovel")));
         ITEMS.register(
-                "bronze_hoe", () -> new HoeItem(bronze, -2, -1.0F, ForgeContent.itemProperties()));
+                "bronze_hoe",
+                () -> new HoeItem(bronze, -2, -1.0F, ForgeContent.itemProperties("bronze_hoe")));
         ITEMS.register(
                 "bronze_sword",
-                () -> new SwordItem(bronze, 3, -2.4F, ForgeContent.itemProperties()));
+                () -> new SwordItem(bronze, 3, -2.4F, ForgeContent.itemProperties("bronze_sword")));
         ITEMS.register("jetpack", FuelJetpack::new);
         ArmorPlatform.install(ITEMS, gameBus);
         MountPlatform.install(ITEMS, modBus, gameBus);
@@ -314,6 +322,18 @@ public final class ForgeGear {
         if (device != null) setStored(stack, device.stored(amount));
     }
 
+    /** Adds the normal item and, for rechargeable equipment, its fully charged counterpart. */
+    public static void addCreativeStacks(Item item, NonNullList<ItemStack> output) {
+        var ordinary = new ItemStack(item);
+        output.add(ordinary);
+        var device = type(ordinary);
+        if (device != null && device.kind != Kind.DISPOSABLE) {
+            var charged = ordinary.copy();
+            restoreEnergy(charged, device.capacity);
+            output.add(charged);
+        }
+    }
+
     private static boolean isPack(ItemStack stack) {
         var device = type(stack);
         return device != null && device.kind == Kind.PACK;
@@ -386,6 +406,11 @@ public final class ForgeGear {
         public PoweredItem(PortableEquipment device, Properties properties) {
             super(properties);
             this.device = device;
+        }
+
+        @Override
+        public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> output) {
+            if (allowedIn(tab)) addCreativeStacks(this, output);
         }
 
         @Override

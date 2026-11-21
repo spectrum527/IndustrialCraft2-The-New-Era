@@ -46,7 +46,18 @@ def generate(repo, out, target, write):
             raise ValueError(f"Choose an artwork path for {name}")
         parent = "minecraft:item/handheld" if entry.get("handheld") else "minecraft:item/generated"
         item_model = {"parent": parent, "textures": {"layer0": checked(sprite)}}
-        if name == "nano_saber":
+        if name in ("quantum_helmet", "quantum_chestplate", "quantum_leggings", "quantum_boots"):
+            charged = "ic2:item/" + name + "_charged"
+            model("item/" + name + "_charged", {"parent": parent, "textures": {
+                "layer0": checked(sprite), "layer1": checked(sprite + "_overlay")}})
+            if modern:
+                write("assets/ic2/items/" + name, {"model": {
+                    "type": "minecraft:condition", "property": "ic2:quantum_charged",
+                    "on_true": {"type": "minecraft:model", "model": charged},
+                    "on_false": {"type": "minecraft:model", "model": "ic2:item/" + name}}})
+            else:
+                item_model["overrides"] = [{"predicate": {"ic2:quantum_charged": 1}, "model": charged}]
+        elif name == "nano_saber":
             active = "ic2:item/nano_saber_active"
             model("item/nano_saber_active", {"parent": parent, "textures": {
                 "layer0": checked("items/tool/electric/nano_saber/active_1")}})

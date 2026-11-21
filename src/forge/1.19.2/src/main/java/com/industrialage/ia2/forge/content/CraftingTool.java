@@ -10,8 +10,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 final class CraftingTool extends Item {
-    CraftingTool(int durability) {
-        super(ForgeContent.itemProperties().durability(durability));
+    CraftingTool(Properties properties) {
+        super(properties);
     }
 
     @Override

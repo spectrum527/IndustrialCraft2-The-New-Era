@@ -54,9 +54,11 @@ public final class TransportPlatform {
                                                     .toArray(Block[]::new))
                                     .build(null));
     private static final RegistryObject<Item> PUMP_LV =
-            ITEMS.register("pump_cover_lv", () -> new Item(ForgeContent.itemProperties()));
+            ITEMS.register(
+                    "pump_cover_lv", () -> new Item(ForgeContent.itemProperties("pump_cover_lv")));
     private static final RegistryObject<Item> PUMP_MV =
-            ITEMS.register("pump_cover_mv", () -> new Item(ForgeContent.itemProperties()));
+            ITEMS.register(
+                    "pump_cover_mv", () -> new Item(ForgeContent.itemProperties("pump_cover_mv")));
 
     private TransportPlatform() {}
 
@@ -334,7 +336,9 @@ public final class TransportPlatform {
         private final boolean wrench;
 
         ServiceTool(boolean wrench) {
-            super(ForgeContent.itemProperties().durability(wrench ? 160 : 240));
+            super(
+                    ForgeContent.itemProperties(wrench ? "wrench" : "crowbar")
+                            .durability(wrench ? 160 : 240));
             this.wrench = wrench;
         }
 

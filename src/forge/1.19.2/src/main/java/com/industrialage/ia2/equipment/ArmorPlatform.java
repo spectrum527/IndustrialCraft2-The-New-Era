@@ -6,6 +6,7 @@ import com.industrialage.ia2.forge.equipment.ForgeGear;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -219,8 +221,16 @@ public final class ArmorPlatform {
         private final Piece piece;
 
         SuitItem(Piece piece) {
-            super(new Material(piece), piece.slot(), ForgeContent.itemProperties().stacksTo(1));
+            super(
+                    new Material(piece),
+                    piece.slot(),
+                    ForgeContent.itemProperties(piece.path()).stacksTo(1));
             this.piece = piece;
+        }
+
+        @Override
+        public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> output) {
+            if (allowedIn(tab)) ForgeGear.addCreativeStacks(this, output);
         }
 
         @Override

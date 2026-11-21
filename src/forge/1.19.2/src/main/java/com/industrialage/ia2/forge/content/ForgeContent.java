@@ -14,7 +14,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -49,15 +48,8 @@ public final class ForgeContent {
             new EnumMap<>(MachineKind.class);
     private static final List<RegistryObject<Block>> CABLES = new ArrayList<>();
 
-    static final CreativeModeTab TAB =
-            new CreativeModeTab("ic2") {
-                @Override
-                public ItemStack makeIcon() {
-                    return new ItemStack(MACHINES.get(MachineKind.MACERATOR).get());
-                }
-            };
-
-    static final RegistryObject<Item> RESIN = item("resin", () -> new Item(itemProperties()));
+    static final RegistryObject<Item> RESIN =
+            item("resin", () -> new Item(itemProperties("resin")));
     static final RegistryObject<Item> BATTERY = item("re_battery", BatteryItem::new);
 
     static final RegistryObject<BlockEntityType<GeneratorDevice>> GENERATOR =
@@ -163,10 +155,10 @@ public final class ForgeContent {
                     "coal_dust",
                     "iron_dust"
                 }) {
-            item(path, () -> new Item(itemProperties()));
+            item(path, () -> new Item(itemProperties(path)));
         }
         for (String path : IndustrialMaterials.ADDITIONAL) {
-            item(path, () -> new Item(itemProperties()));
+            item(path, () -> new Item(itemProperties(path)));
         }
         block("machine", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
         block(
@@ -183,8 +175,8 @@ public final class ForgeContent {
                 () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
         block("rubber_sapling", RubberTree::sapling);
         item("treetap", RubberTree.Tap::new);
-        item("forge_hammer", () -> new CraftingTool(80));
-        item("cutter", () -> new CraftingTool(60));
+        craftingTool("forge_hammer", 80);
+        craftingTool("cutter", 60);
         armor("helmet", EquipmentSlot.HEAD);
         armor("chestplate", EquipmentSlot.CHEST);
         armor("leggings", EquipmentSlot.LEGS);
@@ -237,14 +229,14 @@ public final class ForgeContent {
         return STORAGES.get(kind).get();
     }
 
-    /** Returns the item properties used by the mod's creative-tab inventory. */
-    public static Item.Properties itemProperties() {
-        return new Item.Properties().tab(TAB);
+    /** Assigns the native creative tab for this item so it also appears in global search. */
+    public static Item.Properties itemProperties(String path) {
+        return new Item.Properties().tab(ForgeCreativeTabs.forItem(path));
     }
 
     private static RegistryObject<Block> block(String path, Supplier<? extends Block> factory) {
         RegistryObject<Block> block = BLOCKS.register(path, factory::get);
-        item(path, () -> new BlockItem(block.get(), itemProperties()));
+        item(path, () -> new BlockItem(block.get(), itemProperties(path)));
         return block;
     }
 
@@ -253,7 +245,12 @@ public final class ForgeContent {
     }
 
     private static void armor(String piece, EquipmentSlot slot) {
-        item("bronze_" + piece, () -> new ArmorItem(CraftingTool.BRONZE, slot, itemProperties()));
+        var path = "bronze_" + piece;
+        item(path, () -> new ArmorItem(CraftingTool.BRONZE, slot, itemProperties(path)));
+    }
+
+    private static void craftingTool(String path, int durability) {
+        item(path, () -> new CraftingTool(itemProperties(path).durability(durability)));
     }
 
     static ResourceLocation id(String path) {
