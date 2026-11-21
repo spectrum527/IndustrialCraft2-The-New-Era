@@ -1,5 +1,6 @@
 package com.industrialage.ia2.gametest;
 
+import com.industrialage.ia2.wrenchtest.WrenchHits;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -224,7 +226,18 @@ final class TransportChecks {
     }
 
     private static void rotate(ServerLevel level, BlockPos pos, Direction side) {
-        click(level, pos, side, new ItemStack(NativeGameplayFixture.item("wrench")));
+        var state = level.getBlockState(pos);
+        if (state.hasProperty(BlockStateProperties.FACING)
+                && state.getValue(BlockStateProperties.FACING) == side) return;
+        var player = FakePlayerFactory.getMinecraft(level);
+        var stack = new ItemStack(NativeGameplayFixture.item("wrench"));
+        player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        var hit = WrenchHits.pipeControl(level, pos, player, side);
+        player.setPos(pos.getX() + .5, pos.getY(), pos.getZ() + .5);
+        if (!player.gameMode
+                .useItemOn(player, level, stack, InteractionHand.MAIN_HAND, hit)
+                .consumesAction())
+            throw new AssertionError("No wrench action at " + pos + " toward " + side);
     }
 
     static ItemStack click(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {

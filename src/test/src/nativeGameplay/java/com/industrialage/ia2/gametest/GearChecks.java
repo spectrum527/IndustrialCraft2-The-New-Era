@@ -2,6 +2,7 @@ package com.industrialage.ia2.gametest;
 
 import com.industrialage.ia2.gameplay.IndustrialMachine;
 import com.industrialage.ia2.gameplay.PortableGear;
+import com.industrialage.ia2.wrenchtest.WrenchHits;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -87,7 +88,7 @@ final class GearChecks {
         NativeGameplayFixture.place(level, player, "batbox", box);
         var wrench = new ItemStack(NativeGameplayFixture.item("electric_wrench"));
         PortableGear.restoreEnergy(wrench, 2_000);
-        var side = new BlockHitResult(Vec3.atCenterOf(box), Direction.SOUTH, box, false);
+        var side = WrenchHits.turn(level, box, Direction.SOUTH);
         player.setItemInHand(InteractionHand.MAIN_HAND, wrench);
         var rotated =
                 player.gameMode.useItemOn(player, level, wrench, InteractionHand.MAIN_HAND, side);
@@ -99,20 +100,14 @@ final class GearChecks {
                         && PortableGear.stored(wrench) == 1_900
                         && wrench.getDamageValue() == 0);
         var beforeBreak = PortableGear.stored(wrench);
-        player.setShiftKeyDown(true);
-        try {
-            var opposite = new BlockHitResult(Vec3.atCenterOf(box), Direction.NORTH, box, false);
-            var dismantled =
-                    player.gameMode.useItemOn(
-                            player, level, wrench, InteractionHand.MAIN_HAND, opposite);
-            check.accept(
-                    "electric-wrench-dismantles-and-debits",
-                    dismantled.consumesAction()
-                            && level.getBlockState(box).isAir()
-                            && PortableGear.stored(wrench) == beforeBreak - 1_000);
-        } finally {
-            player.setShiftKeyDown(false);
-        }
+        var center = WrenchHits.center(level, box, Direction.NORTH);
+        var dismantled =
+                player.gameMode.useItemOn(player, level, wrench, InteractionHand.MAIN_HAND, center);
+        check.accept(
+                "electric-wrench-dismantles-and-debits",
+                dismantled.consumesAction()
+                        && level.getBlockState(box).isAir()
+                        && PortableGear.stored(wrench) == beforeBreak - 1_000);
 
         var wind = new ItemStack(NativeGameplayFixture.item("wind_meter"));
         PortableGear.restoreEnergy(wind, 500);

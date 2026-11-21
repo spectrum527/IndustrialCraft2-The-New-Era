@@ -59,7 +59,6 @@ final class EnergyTierChecks {
         NativeGameplayFixture.place(level, player, "batbox", pos, seeded);
         var wrench = new ItemStack(NativeGameplayFixture.item("wrench"));
         player.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() - 2);
-        player.setShiftKeyDown(true);
         player.setItemInHand(InteractionHand.MAIN_HAND, wrench);
         var hit =
                 new BlockHitResult(
@@ -71,7 +70,6 @@ final class EnergyTierChecks {
                                 .consumesAction()
                         && wrench.getDamageValue() == 1
                         && level.getBlockEntity(pos) == null);
-        player.setShiftKeyDown(false);
         var dropped =
                 level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(2)).stream()
                         .filter(entity -> entity.getItem().is(NativeGameplayFixture.item("batbox")))

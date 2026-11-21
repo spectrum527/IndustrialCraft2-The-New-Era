@@ -4,6 +4,7 @@ import com.industrialage.ia2.industrial.PowerNode;
 import com.industrialage.ia2.industrial.WorkshopMenu;
 import com.industrialage.ia2.industrial.WorkshopNode;
 import com.industrialage.ia2.power.EuBuffer;
+import com.industrialage.ia2.wrenchtest.WrenchHits;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
@@ -349,7 +350,7 @@ public final class WindKineticChecks {
         player.setPos(wind.getX() + 2.5, wind.getY(), wind.getZ() + 0.5);
         var stack = new ItemStack(item.apply("wrench"));
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
-        var hit = new BlockHitResult(Vec3.atCenterOf(wind), side, wind, false);
+        var hit = WrenchHits.turn(level, wind, side);
         check.accept(
                 "native-wrench-" + side.getName(),
                 player.gameMode
