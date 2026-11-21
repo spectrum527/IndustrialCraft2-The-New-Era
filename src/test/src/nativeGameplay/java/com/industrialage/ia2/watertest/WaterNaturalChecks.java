@@ -28,7 +28,7 @@ public final class WaterNaturalChecks {
     private static final BlockPos DEEP = new BlockPos(320, 60, -320);
     private static final BlockPos POOL = new BlockPos(93, 74, -23);
     private static final BlockPos FROZEN_RIVER = new BlockPos(192, 59, -1184);
-    private static final BlockPos FROZEN_OCEAN = new BlockPos(192, 59, -1152);
+    private static final BlockPos FROZEN_OCEAN = new BlockPos(208, 59, -1156);
     private final Function<String, Block> block;
     private final Function<String, Item> item;
     private final BiConsumer<String, Boolean> check;
