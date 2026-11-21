@@ -39,6 +39,12 @@ jobs:
       - name: Check survival removal and replacement of all storage boxes
         timeout-minutes: 10
         run: ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayStorage --console=plain
+      - name: Verify fluid consumption and live cable shocks on the dedicated server
+        timeout-minutes: 12
+        run: >-
+          ./gradlew :neoforge:${{ matrix.target }}:runNativeGameplayWorkshop
+          :neoforge:${{ matrix.target }}:runNativeGameplayCableShock
+          --console=plain
       - name: Check The One Probe and Curios individually and together
         timeout-minutes: 18
         run: |
@@ -97,4 +103,6 @@ jobs:
             src/neoforge/${{ matrix.target }}/build/run/modern-server-smoke/jar-*.json
             src/neoforge/${{ matrix.target }}/build/run/modern-server-smoke/logs/latest.log
             src/neoforge/${{ matrix.target }}/build/run/native-storage/storage.properties
+            src/neoforge/${{ matrix.target }}/build/run/native-workshop/workshop.properties
+            src/neoforge/${{ matrix.target }}/build/run/native-cable-shock/cableShock.properties
             src/neoforge/${{ matrix.target }}/build/run/optional-compat-*/compat-checks.txt

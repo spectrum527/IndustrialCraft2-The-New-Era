@@ -2,6 +2,21 @@
 
 0.1.0 的四平台安装包、注册表和实机对照记录见[首版验收](evidence/first-playable-0.1.0/README.md)。
 
+## 裸线放电回归
+
+Gradle 用 Java 21 运行 1.21.1，用 Java 25 运行 26.1.2 和 26.2。三个任务各自安装相应版本生成的 JAR，并从临时世界启动独立专服。
+
+```bash
+./gradlew :neoforge:1.21.1:runNativeGameplayCableShock \
+  :neoforge:26.1.2:runNativeGameplayCableShock \
+  :neoforge:26.2:runNativeGameplayCableShock \
+  -Pic2.native.runRoot=build/qa/bare-cable
+```
+
+断言结果写入 `build/qa/bare-cable/<版本>/run/native-cable-shock/cableShock.properties`。试验放置并接通真实电缆，检查储能箱的实际收发、固定位置铁傀儡的生命值及原生魔法伤害源。场景覆盖无负载、满接收端、无用支路、绝缘和泡沫覆盖、部分接收、多段、多源、各电流档位的碰撞距离、不同线路交叠及防化套装。
+
+## 场景数据与相似度
+
 依据项目规则 §1、QA 容差条款、已批准计划 §8.2（本任务给定表）及 WP-F 约定。工具需求先于正式领域 spec；这里定义交换格式，不定义游戏行为，也不包含采集器或实测期望。
 
 `schema/scenario.schema.json` 使用 JSON Schema 2020-12。`schema_version` 标识格式；`data_version` 标识采集批次/数据修订。场景记录整数坐标 `[x,y,z]`、方块标识、初始状态、随机种子、运行 tick 数；采样记录目标、指标、单位与采样时刻；结果以 `sample_id` 对应采样计划，保留双方原始值。`results:[]` 表示未运行，不构成验收通过。
