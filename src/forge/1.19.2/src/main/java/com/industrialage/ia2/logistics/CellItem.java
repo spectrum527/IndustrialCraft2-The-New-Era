@@ -1,6 +1,7 @@
 package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.forge.content.ForgeContent;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -98,7 +99,8 @@ public final class CellItem extends Item {
             ServerLevel level, BlockPos pos, Direction face, Player player, InteractionHand hand) {
         return level.mayInteract(player, pos)
                 && player.mayUseItemAt(pos, face, player.getItemInHand(hand))
-                && FluidUtil.interactWithFluidHandler(player, hand, level, pos, face);
+                && (WorkshopPlatform.fillNamedHand(level, pos, face, player, hand)
+                        || FluidUtil.interactWithFluidHandler(player, hand, level, pos, face));
     }
 
     @Override
