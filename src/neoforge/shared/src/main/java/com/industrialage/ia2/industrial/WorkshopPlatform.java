@@ -319,13 +319,12 @@ public final class WorkshopPlatform {
         return WorkshopNative.canSupplyContainer(item, filling);
     }
 
-    static ContainerResult containerRecipe(WorkshopNode node, ItemStack input, boolean filling) {
-        return containerRecipe(filling ? node.inlet : node.outlet, input, filling);
+    static ContainerResult fillContainer(WorkshopNode.Tank tank, ItemStack item) {
+        return WorkshopNative.fillContainer(tank, item);
     }
 
-    static ContainerResult containerRecipe(
-            WorkshopNode.Tank tank, ItemStack input, boolean filling) {
-        return WorkshopNative.containerRecipe(tank, input, filling);
+    static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
+        return WorkshopNative.drainWholeContainer(tank, item);
     }
 
     static boolean interactFluid(

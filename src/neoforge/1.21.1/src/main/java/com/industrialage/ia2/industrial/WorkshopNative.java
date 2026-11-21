@@ -245,30 +245,43 @@ final class WorkshopNative {
                         == filling;
     }
 
-    static ContainerResult containerRecipe(
-            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
-        var stack = item.copyWithCount(1);
-        var handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-        if (handler == null) {
+    static ContainerResult fillContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var handler = item.copyWithCount(1).getCapability(Capabilities.FluidHandler.ITEM);
+        var liquid = WorkshopPlatform.fluid(tank.id, tank.amount);
+        if (handler == null || liquid.isEmpty() || !liquid.getComponentsPatch().isEmpty())
             return null;
-        }
-        var liquid =
-                filling
-                        ? WorkshopPlatform.fluid(tank.id, tank.amount)
-                        : handler.drain(
-                                tank.capacity - tank.amount, IFluidHandler.FluidAction.EXECUTE);
-        if (liquid.isEmpty() || !liquid.getComponentsPatch().isEmpty()) {
-            return null;
-        }
-        int amount =
-                filling
-                        ? handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE)
-                        : liquid.getAmount();
+        int amount = handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE);
         return amount > 0
-                ? new ContainerResult(
-                        handler.getContainer(),
-                        new Liquid(WorkshopPlatform.fluidId(liquid), amount))
+                ? new ContainerResult(handler.getContainer(), new Liquid(tank.id, amount))
                 : null;
+    }
+
+    static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var handler = item.copyWithCount(1).getCapability(Capabilities.FluidHandler.ITEM);
+        if (handler == null) return null;
+        var contents =
+                WorkshopCells.wholeContents(
+                        tank,
+                        handler.getTanks(),
+                        slot -> {
+                            var stored = handler.getFluidInTank(slot);
+                            if (stored.isEmpty()) return Liquid.EMPTY;
+                            return stored.getComponentsPatch().isEmpty()
+                                    ? new Liquid(
+                                            WorkshopPlatform.fluidId(stored), stored.getAmount())
+                                    : null;
+                        });
+        if (contents.amount() == 0) return null;
+        var drained =
+                handler.drain(
+                        WorkshopPlatform.fluid(contents.id(), contents.amount()),
+                        IFluidHandler.FluidAction.EXECUTE);
+        return drained.isEmpty()
+                        || !drained.getComponentsPatch().isEmpty()
+                        || drained.getAmount() != contents.amount()
+                        || !WorkshopPlatform.fluidId(drained).equals(contents.id())
+                ? null
+                : new ContainerResult(handler.getContainer(), contents);
     }
 
     static boolean interact(

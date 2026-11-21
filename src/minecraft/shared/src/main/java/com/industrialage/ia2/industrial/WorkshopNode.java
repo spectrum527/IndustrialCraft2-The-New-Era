@@ -82,8 +82,14 @@ public final class WorkshopNode extends WorkshopSaveBase
         lastServerTick = level.getGameTime();
         servicePowerItem();
         WorkshopAutomation.tick(this, level);
-        if (kind == WorkshopKind.PUMP) {
-            serviceContainer(0, WorkshopInventory.OUTPUT_START, true, "");
+        if (kind == WorkshopKind.ORE_WASHER) {
+            refillContainers(
+                    WorkshopInventory.WASHER_WATER_SLOT,
+                    WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT);
+        } else if (kind == WorkshopKind.BLAST_FURNACE) {
+            refillContainers(WorkshopInventory.AUX_SLOT, WorkshopInventory.RETURN_SLOT);
+        } else if (kind == WorkshopKind.PUMP) {
+            transferContainer(0, WorkshopInventory.OUTPUT_START, true);
         }
         if (kind == WorkshopKind.SOLID_HEAT) {
             tickSolidHeat(level);
@@ -110,12 +116,6 @@ public final class WorkshopNode extends WorkshopSaveBase
                                 : packed(job.products());
         if (kind == WorkshopKind.BLAST_FURNACE) {
             heatBlastFurnace(level);
-            if (inlet.amount == 0
-                    || outputs != null
-                            && heat >= BLAST_FURNACE_WORK_HEAT
-                            && inlet.amount < job.airPerTick()) {
-                refillAirCell();
-            }
         }
         boolean preheated =
                 (kind == WorkshopKind.CENTRIFUGE || kind == WorkshopKind.INDUCTION)
@@ -139,16 +139,6 @@ public final class WorkshopNode extends WorkshopSaveBase
             }
             cycleDuration = duration;
             setChanged();
-        }
-        var required = job.requested();
-        if (kind == WorkshopKind.ORE_WASHER
-                && energy >= stats.energyPerTick()
-                && !inlet.has(required.id(), required.amount())) {
-            serviceContainer(
-                    WorkshopInventory.WASHER_WATER_SLOT,
-                    WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT,
-                    false,
-                    required.id());
         }
         boolean operating = canWork(job, stats.energyPerTick());
         if (operating) {
@@ -301,29 +291,6 @@ public final class WorkshopNode extends WorkshopSaveBase
         }
     }
 
-    private void refillAirCell() {
-        var cell = inventory.getItem(WorkshopInventory.AUX_SLOT);
-        if (!WorkshopPlatform.itemId(cell).equals("ic2:air_cell")
-                || inlet.fill("ic2:air", 1000, true) != 1000) {
-            return;
-        }
-        var returned = inventory.getItem(WorkshopInventory.RETURN_SLOT);
-        var emptyCell = WorkshopPlatform.stack("ic2:empty_cell", 1);
-        if (!returned.isEmpty()
-                && (!WorkshopPlatform.sameItem(returned, emptyCell)
-                        || returned.getCount() >= returned.getMaxStackSize())) {
-            return;
-        }
-        inventory.removeItem(WorkshopInventory.AUX_SLOT, 1);
-        inlet.fill("ic2:air", 1000, false);
-        if (returned.isEmpty()) {
-            inventory.setItem(WorkshopInventory.RETURN_SLOT, emptyCell);
-        } else {
-            returned.grow(1);
-            inventory.setItem(WorkshopInventory.RETURN_SLOT, returned);
-        }
-    }
-
     private void heatBlastFurnace(ServerLevel level) {
         var face = WorkshopBlock.direction(getBlockState());
         int old = heat;
@@ -397,14 +364,20 @@ public final class WorkshopNode extends WorkshopSaveBase
         }
     }
 
-    private void serviceContainer(int inputSlot, int returnSlot, boolean filling, String allowed) {
+    void refillContainers(int inputSlot, int returnSlot) {
+        for (int queued = inventory.getItem(inputSlot).getCount(); queued > 0; queued--) {
+            if (!transferContainer(inputSlot, returnSlot, false)) return;
+        }
+    }
+
+    private boolean transferContainer(int inputSlot, int returnSlot, boolean filling) {
         var input = inventory.getItem(inputSlot);
-        if (input.isEmpty()) return;
+        if (input.isEmpty() || !filling && inlet.amount >= inlet.capacity) return false;
         var moved =
                 filling
-                        ? WorkshopPlatform.containerRecipe(inlet, input, true)
-                        : WorkshopCells.drain(inlet, input, allowed);
-        if (moved == null) return;
+                        ? WorkshopPlatform.fillContainer(inlet, input)
+                        : WorkshopPlatform.drainWholeContainer(inlet, input);
+        if (moved == null) return false;
         var remainder = moved.stack();
         var previous = inventory.getItem(returnSlot);
         if (!remainder.isEmpty()
@@ -412,15 +385,15 @@ public final class WorkshopNode extends WorkshopSaveBase
                 && (!WorkshopPlatform.sameItem(previous, remainder)
                         || previous.getCount() + remainder.getCount()
                                 > previous.getMaxStackSize())) {
-            return;
+            return false;
         }
         int amount = moved.liquid().amount();
         String fluid = moved.liquid().id();
         if (filling) {
-            if (!inlet.has(fluid, amount)) return;
+            if (!inlet.has(fluid, amount)) return false;
             inlet.drain(amount, false);
         } else {
-            if (inlet.fill(fluid, amount, true) != amount) return;
+            if (receiveFluid(fluid, amount, true) != amount) return false;
             inlet.fill(fluid, amount, false);
         }
         inventory.removeItem(inputSlot, 1);
@@ -430,6 +403,7 @@ public final class WorkshopNode extends WorkshopSaveBase
             previous.grow(remainder.getCount());
         }
         setChanged();
+        return true;
     }
 
     String modeKey() {
