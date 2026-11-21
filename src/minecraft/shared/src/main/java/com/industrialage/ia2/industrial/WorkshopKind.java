@@ -178,6 +178,10 @@ enum WorkshopKind {
         };
     }
 
+    boolean hasWorldRotor() {
+        return this == WIND_KINETIC || this == WATER_KINETIC;
+    }
+
     boolean generatesPower() {
         return this == STIRLING || this == SEMIFLUID || this == KINETIC;
     }
