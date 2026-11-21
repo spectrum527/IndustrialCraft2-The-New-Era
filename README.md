@@ -4,7 +4,7 @@
 
 ![IndustrialCraft²: The New Era 项目封面](assets/brand/cover.jpg)
 
-从一棵橡胶树、一台燃煤发电机和一段铜线起步，建成能洗矿、炼钢、分离气体和回收蒸汽的工厂。**IndustrialCraft²: The New Era** 是对 IC2 Experimental 玩法的独立社区重建。你可以把物品管、流体管和储电设备接成生产线，也可以培育作物、配置游戏内核反应堆，或用 UU 物质复制已扫描的样板。
+**IndustrialCraft²: The New Era (工业时代2:新纪元）** 是对 IC2 Experimental 玩法的独立社区重建。
 
 ## 下载与安装
 
@@ -17,9 +17,9 @@
 | 26.1.2 | NeoForge 26.1.2.128 | 25 | [NeoForge 26.1.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.0/ic2-neoforge-26.1.2-1.0.0.jar) |
 | 26.2 | NeoForge 26.2.0.95 | 25 | [NeoForge 26.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.0/ic2-neoforge-26.2-1.0.0.jar) |
 
-第一次开荒可以先做木龙头采树脂，再用橡胶给铜线绝缘。让发电机经导线给打粉机供电，接上漏斗或物品管收走产物，第一条生产线就能工作。 [玩家指南与接线示例](docs/first-playable.md)
+游玩的整体思路从第一台机器和火力发电机开始，如需取得橡胶，应该寻找一种特有的名为橡胶树的树木。玩家指南如下，也可去MC百科（链接见下方公开资料鸣谢）获取更多指引。 [玩家指南与接线示例](docs/first-playable.md)
 
-The One Probe 和 Curios 均可按需安装。前者显示机器的实际电量和储罐液量，后者提供背饰栏。把电池背包或电动喷气背包装在背饰位，也能站上对应等级的充电座充电。 [联动与实测](spec/platform/optional-integrations.md)
+The One Probe 和 Curios 均可按需安装。前者显示机器的实际电量和储罐液量，后者提供背饰栏，安装之后能把电池背包或电动喷气背包装在背饰位，也能站上对应等级的充电座为其充电。 [联动与实测](spec/platform/optional-integrations.md)
 
 ## 源码、美术与授权
 
