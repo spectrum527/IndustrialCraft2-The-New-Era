@@ -1,6 +1,5 @@
 package com.industrialage.ia2.logistics;
 
-import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,12 +22,19 @@ import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.BucketPickupHandlerWrapper;
 
 /** Cells collect sources in the world and use native sided fluid ports on machines. */
 public final class CellItem extends Item {
     public CellItem(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public int getMaxStackSize(ItemStack stack) {
+        return TransportPlatform.hasEncodedFluid(stack) ? 1 : super.getMaxStackSize(stack);
     }
 
     @Override
@@ -52,8 +58,7 @@ public final class CellItem extends Item {
             ServerLevel level, BlockPos pos, Direction face, Player player, InteractionHand hand) {
         return level.mayInteract(player, pos)
                 && player.mayUseItemAt(pos, face, player.getItemInHand(hand))
-                && (WorkshopPlatform.fillNamedHand(level, pos, face, player, hand)
-                        || FluidUtil.interactWithFluidHandler(player, hand, level, pos, face));
+                && FluidUtil.interactWithFluidHandler(player, hand, level, pos, face);
     }
 
     @Override
@@ -67,7 +72,7 @@ public final class CellItem extends Item {
         if (!source.mayCollect(level, player, held)) return InteractionResultHolder.fail(held);
 
         var cell = held.copyWithCount(1).getCapability(Capabilities.FluidHandler.ITEM);
-        var volume = new FluidStack(source.fluid(), NeoTransport.CELL_CAPACITY);
+        var volume = new FluidStack(source.fluid(), CellFamily.CAPACITY);
         if (cell == null
                 || cell.fill(volume, IFluidHandler.FluidAction.SIMULATE) != volume.getAmount()) {
             return InteractionResultHolder.pass(held);
@@ -86,17 +91,36 @@ public final class CellItem extends Item {
         var sound = moved.getFluidType().getSound(moved, SoundActions.BUCKET_FILL);
         if (sound != null) level.playSound(null, source.pos(), sound, SoundSource.BLOCKS, 1, 1);
         var result = cell.getContainer();
-        if (TransportPlatform.isPristineCell(held)) {
-            var named = WorkshopPlatform.namedFilledCell(moved);
-            if (!named.isEmpty()) result = named;
-        }
         return InteractionResultHolder.consume(ItemUtils.createFilledResult(held, player, result));
+    }
+
+    static IFluidHandlerItem handler(ItemStack stack) {
+        return new FluidHandlerItemStack(TransportPlatform.CELL_FLUID, stack, CellFamily.CAPACITY) {
+            @Override
+            public FluidStack getFluid() {
+                return TransportPlatform.readCellFluid(container);
+            }
+
+            @Override
+            public boolean canFillFluidType(FluidStack resource) {
+                return TransportPlatform.cellAdmits(container, resource);
+            }
+
+            @Override
+            protected void setFluid(FluidStack fluid) {
+                container = TransportPlatform.withCellContents(container, fluid);
+            }
+
+            @Override
+            protected void setContainerToEmpty() {
+                setFluid(FluidStack.EMPTY);
+            }
+        };
     }
 
     @Override
     public void appendHoverText(
             ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flags) {
-        FluidUtil.getFluidContained(stack)
-                .ifPresent(fluid -> TransportPlatform.appendCellContents(fluid, tooltip::add));
+        TransportPlatform.appendCellContents(TransportPlatform.readCellFluid(stack), tooltip::add);
     }
 }

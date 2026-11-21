@@ -3,8 +3,11 @@ package com.industrialage.ia2.logistics;
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import com.industrialage.ia2.gameplay.IndustrialContent;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,9 +66,7 @@ public final class TransportPlatform {
         return CELL_FLUID.get();
     }
 
-    static final DeferredHolder<Item, Item> CELL = ITEMS.registerItem("empty_cell", CellItem::new);
-    static final DeferredHolder<Item, Item> FLUID_CELL =
-            ITEMS.registerItem("fluid_cell", properties -> new CellItem(properties.stacksTo(1)));
+    private static final Map<String, DeferredHolder<Item, ? extends Item>> CELLS = new HashMap<>();
     private static final DeferredHolder<Item, Item> LV = ITEMS.registerSimpleItem("pump_cover_lv");
     private static final DeferredHolder<Item, Item> MV = ITEMS.registerSimpleItem("pump_cover_mv");
 
@@ -80,6 +81,14 @@ public final class TransportPlatform {
         }
         ITEMS.registerItem("wrench", properties -> new Wrench(properties.durability(120)));
         ITEMS.registerItem("crowbar", properties -> new Item(properties.stacksTo(1)));
+        for (var family : CellFamily.values()) {
+            String shell = family.emptyPath();
+            CELLS.put(shell, ITEMS.registerItem(shell, CellItem::new));
+            family.namedLiquids()
+                    .keySet()
+                    .forEach(path -> CELLS.put(path, ITEMS.registerItem(path, CellItem::new)));
+        }
+        CellRecipes.install(bus);
         TankMenus.install(bus);
         BLOCKS.register(bus);
         ITEMS.register(bus);
@@ -88,10 +97,109 @@ public final class TransportPlatform {
         NeoTransport.registerCapabilities(bus);
     }
 
-    /** Returns whether the universal cell carries a fluid that must not be replaced by a recipe. */
+    /** Whether a cell already contains any liquid, including saved legacy contents. */
     public static boolean cellContainsFluid(ItemStack stack) {
-        var contents = stack.get(CELL_FLUID.get());
-        return stack.is(CELL.get()) && contents != null && !contents.isEmpty();
+        return cellContents(stack).amount() > 0;
+    }
+
+    /** Reads one cell's liquid without changing the stack or requiring an empty destination. */
+    public static CellFamily.Contents cellContents(ItemStack cell) {
+        return measure(cell.getItem() instanceof CellItem ? readCellFluid(cell) : FluidStack.EMPTY);
+    }
+
+    static CellFamily.Contents bucketContents(ItemStack stack) {
+        return measure(NeoTransport.bucketFluid(stack));
+    }
+
+    private static CellFamily.Contents measure(FluidStack fluid) {
+        return new CellFamily.Contents(fluid.isEmpty() ? "" : fluidId(fluid), fluid.getAmount());
+    }
+
+    static ItemStack fillFromBucket(ItemStack cell, ItemStack bucket) {
+        var fluid = NeoTransport.bucketFluid(bucket);
+        return fluid.getAmount() == CellFamily.CAPACITY && cellAdmits(cell, fluid)
+                ? withCellContents(cell.copyWithCount(1), fluid)
+                : ItemStack.EMPTY;
+    }
+
+    static ItemStack previewFilledCell(String id) {
+        var fluid = WorkshopPlatform.fluid(id, CellFamily.CAPACITY);
+        return fluid.isEmpty()
+                ? ItemStack.EMPTY
+                : withCellContents(
+                        new ItemStack(CELLS.get(CellFamily.UNIVERSAL.emptyPath()).get()), fluid);
+    }
+
+    static ItemStack bindCell(ItemStack cell, ItemStack result) {
+        result.applyComponents(emptyCellRemainder(cell).getComponentsPatch());
+        return result;
+    }
+
+    /** Builds the reusable shell from one native fluid cell while retaining its item data. */
+    public static ItemStack emptyCellRemainder(ItemStack cell) {
+        return cell.getItem() instanceof CellItem
+                ? withCellContents(cell.copyWithCount(1), FluidStack.EMPTY)
+                : ItemStack.EMPTY;
+    }
+
+    /** Returns a universal shell for a specialized capsule consumed by its own device. */
+    public static ItemStack emptyUniversalCell(ItemStack capsule) {
+        if (capsule.isEmpty()) return ItemStack.EMPTY;
+        return withCellContents(
+                retype(capsule, CellFamily.UNIVERSAL.emptyPath()), FluidStack.EMPTY);
+    }
+
+    static boolean hasEncodedFluid(ItemStack stack) {
+        var stored = stack.get(CELL_FLUID.get());
+        return stored != null && !stored.isEmpty();
+    }
+
+    static Item[] cells() {
+        return CELLS.values().stream().map(DeferredHolder::get).toArray(Item[]::new);
+    }
+
+    static boolean cellAdmits(ItemStack stack, FluidStack fluid) {
+        var family = CellFamily.of(CellFamily.itemPath(itemId(stack)));
+        return family != null && family.admits(fluidId(fluid));
+    }
+
+    static FluidStack readCellFluid(ItemStack stack) {
+        var stored = stack.get(CELL_FLUID.get());
+        if (stored != null && !stored.isEmpty()) return stored.copy();
+        String path = CellFamily.itemPath(itemId(stack));
+        var family = CellFamily.of(path);
+        var liquid = family == null ? null : family.namedLiquids().get(path);
+        return liquid == null
+                ? FluidStack.EMPTY
+                : WorkshopPlatform.fluid(liquid, CellFamily.CAPACITY);
+    }
+
+    static ItemStack withCellContents(ItemStack stack, FluidStack fluid) {
+        String current = CellFamily.itemPath(itemId(stack));
+        var family = CellFamily.of(current);
+        String liquid = fluidId(fluid);
+        String target = family.resultingPath(liquid, fluid.getAmount());
+        if (!current.equals(target)) {
+            stack = retype(stack, target);
+        }
+        if (!fluid.isEmpty()
+                && (!fluid.getComponentsPatch().isEmpty()
+                        || !liquid.equals(family.namedLiquids().get(target)))) {
+            stack.set(CELL_FLUID.get(), SimpleFluidContent.copyOf(fluid));
+        } else {
+            stack.remove(CELL_FLUID.get());
+        }
+        return stack;
+    }
+
+    private static ItemStack retype(ItemStack stack, String target) {
+        var replacement = new ItemStack(CELLS.get(target).get());
+        replacement.applyComponents(stack.getComponentsPatch());
+        return replacement;
+    }
+
+    private static String fluidId(FluidStack fluid) {
+        return BuiltInRegistries.FLUID.getKey(fluid.getFluid()).toString();
     }
 
     static Block.Properties properties(TransportSpec spec) {
@@ -142,18 +250,6 @@ public final class TransportPlatform {
     static LiquidNetwork.Batch takeFluid(
             ServerLevel level, BlockPos pos, Direction side, FluidKey requested, int amount) {
         return NeoTransport.takeFluid(level, pos, side, requested, amount);
-    }
-
-    /** A classic empty shell with no additional item data. */
-    public static boolean isPristineCell(ItemStack cell) {
-        var contents = cell.get(CELL_FLUID.get());
-        if (contents != null) {
-            if (!contents.isEmpty()) return false;
-            // The transactional handler can keep an explicitly empty fluid component.
-            cell = cell.copy();
-            cell.remove(CELL_FLUID.get());
-        }
-        return sameItem(cell, new ItemStack(CELL.get()));
     }
 
     static void appendCellContents(FluidStack fluid, Consumer<Component> tooltip) {

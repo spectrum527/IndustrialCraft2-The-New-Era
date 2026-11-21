@@ -32,7 +32,6 @@ public final class WorldPlatform {
             List.of(
                     "fertilizer",
                     "hydration_cell",
-                    "weed_ex_cell",
                     "hops",
                     "bobs_yer_uncle_ranks_berry",
                     "coffee_beans",

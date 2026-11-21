@@ -1,6 +1,5 @@
 package com.industrialage.ia2.logistics;
 
-import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,6 +31,11 @@ public final class CellItem extends Item {
     }
 
     @Override
+    public int getMaxStackSize(ItemStack stack) {
+        return TransportPlatform.hasEncodedFluid(stack) ? 1 : super.getMaxStackSize(stack);
+    }
+
+    @Override
     public InteractionResult useOn(UseOnContext context) {
         var player = context.getPlayer();
         if (player == null || !(context.getLevel() instanceof ServerLevel level)) {
@@ -52,9 +56,7 @@ public final class CellItem extends Item {
             ServerLevel level, BlockPos pos, Direction face, Player player, InteractionHand hand) {
         return level.mayInteract(player, pos)
                 && player.mayUseItemAt(pos, face, player.getItemInHand(hand))
-                && (WorkshopPlatform.fillNamedHand(level, pos, face, player, hand)
-                        || FluidUtil.interactWithFluidHandler(
-                                player, hand, level, pos, face, null));
+                && FluidUtil.interactWithFluidHandler(player, hand, level, pos, face, null);
     }
 
     @Override
@@ -73,8 +75,8 @@ public final class CellItem extends Item {
         if (cell == null) return InteractionResult.PASS;
         if (!(level instanceof ServerLevel)) {
             try (var tx = Transaction.openRoot()) {
-                return cell.insert(FluidResource.of(source.fluid()), NeoTransport.CELL_CAPACITY, tx)
-                                == NeoTransport.CELL_CAPACITY
+                return cell.insert(FluidResource.of(source.fluid()), CellFamily.CAPACITY, tx)
+                                == CellFamily.CAPACITY
                         ? InteractionResult.SUCCESS
                         : InteractionResult.PASS;
             }
@@ -83,13 +85,9 @@ public final class CellItem extends Item {
         // The BucketPickup overload inserts a whole source before removing it from the world.
         try (var tx = Transaction.openRoot()) {
             var moved = FluidUtil.tryPickupFluid(cell, player, level, source.pos(), tx);
-            if (moved.getAmount() != NeoTransport.CELL_CAPACITY) return InteractionResult.PASS;
+            if (moved.getAmount() != CellFamily.CAPACITY) return InteractionResult.PASS;
             tx.commit();
             var result = storage.getItem(0);
-            if (TransportPlatform.isPristineCell(held)) {
-                var named = WorkshopPlatform.namedFilledCell(moved);
-                if (!named.isEmpty()) result = named;
-            }
             return InteractionResult.SUCCESS.heldItemTransformedTo(
                     ItemUtils.createFilledResult(held, player, result));
         }
@@ -102,7 +100,7 @@ public final class CellItem extends Item {
             TooltipDisplay display,
             Consumer<Component> tooltip,
             TooltipFlag flags) {
-        var fluid = FluidUtil.getFirstStackContained(stack.copyWithCount(1));
+        var fluid = TransportPlatform.readCellFluid(stack);
         TransportPlatform.appendCellContents(fluid, tooltip);
     }
 }

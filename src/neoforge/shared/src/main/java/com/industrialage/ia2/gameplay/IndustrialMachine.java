@@ -9,6 +9,7 @@ import com.industrialage.ia2.energy.graph.PacketBudget;
 import com.industrialage.ia2.gameplay.MachineKind.SlotRole;
 import com.industrialage.ia2.industrial.WorkshopNode;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
+import com.industrialage.ia2.logistics.CellProcessing;
 import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.machine.BlockEntityBase;
 import com.industrialage.ia2.machine.FuelGenerator;
@@ -269,7 +270,9 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
             return null;
         }
         var output = NativeGameplay.stack(recipe.output(), recipe.outputCount());
-        return output.isEmpty() ? null : new Output(recipe, output);
+        return output.isEmpty()
+                ? null
+                : new Output(recipe, CellProcessing.result(kind.path, input, output));
     }
 
     private int outputSpace(ItemStack incoming) {

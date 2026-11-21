@@ -14,9 +14,13 @@
 | `assets/ic2/lang/zh_cn.json` | new | IC2 项目 | CC BY-SA 4.0 | P2-T7 客户端状态页中文文案 | 2026-11-19 |
 | `assets/ic2/status/client.json` | new | IC2 项目 | CC BY-SA 4.0 | P2-T7 客户端状态资源默认文案 | 2026-11-19 |
 
+## 1.0.4 物品栏图标修订
+
+锻造锤、量子四件的空电图和亮灯层来自本次手工像素稿。两张基础流体单元沿用项目作者先前的 `items/cell/empty_cell.png` 外框，本次手排水、熔岩的像素。画稿记录固定调色板、16×16 网格及亮灯坐标，Pillow 只负责写入透明 PNG 并以整数倍最近邻生成审阅图。署名为 IC2 项目，Codex 协助逐像素绘制。作品按 CC BY-SA 4.0 登记。
+
 ## 基础切片重绘纹理（2026-11-20）
 
-用户回交 `回交纹理.zip` 当前 SHA-256：`2ac848f7874700311f1e887a1717c5d5a83c9a0a3f8d72eb20d0daf36eb87cba`。具体包内源路径和每份成品的 SHA-256 见 [PRODUCTION-TEXTURES.csv](PRODUCTION-TEXTURES.csv)。项目作者于 2026-11-21 确认该重绘作品采用 CC BY-SA 4.0。原作权利方的授权状态另见[授权说明](../docs/01-legal.md)。青铜穿戴层按游戏目标格式另存于项目自有命名空间。
+用户回交 `回交纹理.zip` 当前 SHA-256：`2ac848f7874700311f1e887a1717c5d5a83c9a0a3f8d72eb20d0daf36eb87cba`。成品哈希及来源见 [PRODUCTION-TEXTURES.csv](PRODUCTION-TEXTURES.csv)，后续修订文件依各自条目的作者和版本登记。项目作者于 2026-11-21 确认该重绘作品采用 CC BY-SA 4.0。原作权利方的授权状态另见[授权说明](../docs/01-legal.md)。青铜穿戴层按游戏目标格式另存于项目自有命名空间。
 
 | resource_path | status | author | license | source | date |
 |---|---|---|---|---|---|
@@ -139,7 +143,7 @@
 | `assets/ic2/textures/items/resource/resin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/resin.png` | 2026-11-20 |
 | `assets/ic2/textures/items/tool/bronze_pickaxe.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/bronze_pickaxe.png` | 2026-11-20 |
 | `assets/ic2/textures/items/tool/cutter.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/cutter.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/forge_hammer.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/forge_hammer.png` | 2026-11-20 |
+| `assets/ic2/textures/items/tool/forge_hammer.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
 | `assets/ic2/textures/items/tool/treetap.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/treetap.png` | 2026-11-20 |
 | `assets/ic2/textures/models/armor/bronze_layer_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_1.png` | 2026-11-20 |
 | `assets/ic2/textures/models/armor/bronze_layer_2.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_2.png` | 2026-11-20 |
@@ -1335,14 +1339,14 @@
 | `assets/ic2/textures/items/armor/nano_helmet.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/armor/nano_leggings.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/armor/nightvision_goggles.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_boots.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_boots_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_chestplate.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_chestplate_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_helmet.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_helmet_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_leggings.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
-| `assets/ic2/textures/items/armor/quantum_leggings_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
+| `assets/ic2/textures/items/armor/quantum_boots.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/armor/quantum_boots_overlay.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/armor/quantum_chestplate.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/armor/quantum_chestplate_overlay.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/armor/quantum_helmet.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/armor/quantum_helmet_overlay.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/armor/quantum_leggings.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/armor/quantum_leggings_overlay.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
 | `assets/ic2/textures/items/armor/rubber_boots.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/armor/solar_helmet.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/armor/static_boots.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
@@ -1411,6 +1415,8 @@
 | `assets/ic2/textures/items/bucket/weed_ex.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/cell/air_cell.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/cell/bio_cell.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
+| `assets/ic2/textures/items/cell/basic_lava_cell.png` | new | 项目作者（空壳）、IC2 项目（Codex 协助绘制液面） | CC BY-SA 4.0 | 1.0.4 沿用项目作者的基础空单元外框，手工绘制 16×16 彩色液面 | 2026-11-21 |
+| `assets/ic2/textures/items/cell/basic_water_cell.png` | new | 项目作者（空壳）、IC2 项目（Codex 协助绘制液面） | CC BY-SA 4.0 | 1.0.4 沿用项目作者的基础空单元外框，手工绘制 16×16 彩色液面 | 2026-11-21 |
 | `assets/ic2/textures/items/cell/biogas_cell.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/cell/biomass_cell.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/items/cell/cf_cell.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |

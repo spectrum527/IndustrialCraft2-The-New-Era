@@ -80,7 +80,7 @@ final class PowerInventory extends SimpleContainer
             case RT_GENERATOR -> slot < 6 && part.equals("rtg_pellet");
             case GEO_GENERATOR -> acceptsGeothermalFuel(slot, stack);
             case WATER_GENERATOR ->
-                    slot == 0 && (stack.is(Items.WATER_BUCKET) || part.equals("water_cell"));
+                    slot == 0 && WorkshopCells.measure(stack, "minecraft:water") != null;
             default -> false;
         };
     }

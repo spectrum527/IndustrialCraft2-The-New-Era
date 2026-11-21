@@ -186,7 +186,7 @@ final class FluidCellChecks {
                             && noPowerMenu
                                     .getSlot(14)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && noPower.fluidContents().getFirst().amount() == 1000);
             noPowerMenu.getSlot(6).set(new ItemStack(NativeGameplayFixture.item("lava_cell")));
             check.accept(
@@ -229,7 +229,7 @@ final class FluidCellChecks {
                             && doubleMenu
                                     .getSlot(14)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && doubleMenu.getSlot(14).getItem().getCount() == 8
                             && doubled.fluidContents().getFirst().amount() == 8000);
             doubleMenu.getSlot(0).set(new ItemStack(NativeGameplayFixture.item("crushed_copper")));
@@ -240,14 +240,14 @@ final class FluidCellChecks {
                             && noPowerMenu
                                     .getSlot(14)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && noPower.fluidContents().getFirst().amount() == 2000);
             check.accept(
                     "geothermal-lava-cell-returns-shell-and-generates",
                     geoMenu.getSlot(0).getItem().isEmpty()
                             && geoMenu.getSlot(1)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && geo.fluidContents().getFirst().amount() > 0
                             && geo.bufferedEu().stored() > 0);
             check.accept(
@@ -256,7 +256,7 @@ final class FluidCellChecks {
                             && geoFuelledMenu
                                     .getSlot(1)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && geoFuelled.fluidContents().getFirst().amount() == 8000
                             && geoFuelled.bufferedEu().stored() == 2400);
             check.accept(
@@ -298,7 +298,7 @@ final class FluidCellChecks {
                             && heaterMenu
                                     .getSlot(9)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && heaterMenu.getSlot(9).getItem().getCount() == 3
                             && heater.fluidContents().getFirst().amount() > 2000
                             && heater.fluidContents().getFirst().amount() <= 3000);
@@ -308,7 +308,7 @@ final class FluidCellChecks {
                             && furnaceMenu
                                     .getSlot(13)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && furnaceMenu.getSlot(13).getItem().getCount() == 2
                             && furnace.fluidContents().getFirst().amount() == 2000);
             furnaceMenu.getSlot(0).set(new ItemStack(Items.IRON_INGOT));
@@ -351,7 +351,7 @@ final class FluidCellChecks {
                             && singleMenu
                                     .getSlot(14)
                                     .getItem()
-                                    .is(NativeGameplayFixture.item("empty_cell"))
+                                    .is(NativeGameplayFixture.item("fluid_cell"))
                             && singleMenu.getSlot(14).getItem().getCount() == 1);
             batches = produced;
         }

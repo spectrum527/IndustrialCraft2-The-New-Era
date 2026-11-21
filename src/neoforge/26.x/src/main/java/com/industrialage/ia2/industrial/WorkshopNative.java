@@ -23,7 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -35,7 +34,6 @@ import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -128,20 +126,6 @@ final class WorkshopNative {
                                 var access = new WorkshopFluidPort(node, side);
                                 return access.size() > 0 ? new Port(access) : null;
                             });
-                    WorkshopCells.FILLED.forEach(
-                            (path, liquid) ->
-                                    event.registerItem(
-                                            Capabilities.Fluid.ITEM,
-                                            (stack, access) ->
-                                                    new FilledCellPort(
-                                                            access,
-                                                            ItemResource.of(stack),
-                                                            FluidResource.of(
-                                                                    WorkshopPlatform.fluid(
-                                                                            liquid, 1))),
-                                            BuiltInRegistries.ITEM
-                                                    .getOptional(Identifier.parse("ic2:" + path))
-                                                    .orElseThrow()));
                 });
     }
 
@@ -302,15 +286,6 @@ final class WorkshopNative {
         return new ContainerResult(scratch.getItem(0).copy(), contents);
     }
 
-    static void playPickup(WorkshopNode node, Player player, FluidStack fluid) {
-        FluidUtil.triggerSoundAndGameEvent(
-                FluidResource.of(fluid),
-                node.getLevel(),
-                Vec3.atCenterOf(node.getBlockPos()),
-                player,
-                true);
-    }
-
     static boolean interact(
             WorkshopNode node, Player player, InteractionHand hand, Direction side) {
         var access = new WorkshopFluidPort(node, side);
@@ -321,55 +296,6 @@ final class WorkshopNative {
                 && (!(node.getLevel() instanceof ServerLevel)
                         || FluidUtil.interactWithFluidHandler(
                                 player, hand, node.getBlockPos(), new Port(access)));
-    }
-
-    private record FilledCellPort(ItemAccess access, ItemResource filled, FluidResource liquid)
-            implements ResourceHandler<FluidResource> {
-        @Override
-        public int size() {
-            return 1;
-        }
-
-        @Override
-        public FluidResource getResource(int slot) {
-            return slot == 0 && access.getResource().equals(filled) ? liquid : FluidResource.EMPTY;
-        }
-
-        @Override
-        public long getAmountAsLong(int slot) {
-            return getResource(slot).isEmpty() ? 0 : WorkshopCells.VOLUME;
-        }
-
-        @Override
-        public long getCapacityAsLong(int slot, FluidResource resource) {
-            return slot == 0 ? WorkshopCells.VOLUME : 0;
-        }
-
-        @Override
-        public boolean isValid(int slot, FluidResource resource) {
-            return false;
-        }
-
-        @Override
-        public int insert(
-                int slot, FluidResource resource, int amount, TransactionContext transaction) {
-            return 0;
-        }
-
-        @Override
-        public int extract(
-                int slot, FluidResource resource, int amount, TransactionContext transaction) {
-            if (amount < WorkshopCells.VOLUME
-                    || resource.isEmpty()
-                    || !resource.equals(getResource(slot))) {
-                return 0;
-            }
-            return access.exchange(
-                            ItemResource.of(WorkshopPlatform.stack("ic2:empty_cell", 1)),
-                            1,
-                            transaction)
-                    * WorkshopCells.VOLUME;
-        }
     }
 
     private record Port(WorkshopFluidPort access) implements ResourceHandler<FluidResource> {
