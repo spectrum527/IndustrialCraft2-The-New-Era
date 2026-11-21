@@ -1097,6 +1097,7 @@
 | `assets/ic2/textures/blocks/storage_box/steel_bottom.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
 | `assets/ic2/textures/blocks/storage_box/steel_side.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
 | `assets/ic2/textures/blocks/storage_box/steel_top.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/models/block/coke_kiln_frame.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 1.0.5 手工编写的成形焦炉钢箍几何，使用已登记的钢块材质 | 2026-11-22 |
 | `assets/ic2/textures/blocks/storage_box/wooden_bottom.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
 | `assets/ic2/textures/blocks/storage_box/wooden_side.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
 | `assets/ic2/textures/blocks/storage_box/wooden_top.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
