@@ -1,10 +1,13 @@
 package com.industrialage.ia2.compat;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -18,23 +21,26 @@ public final class CuriosBack {
         return ModList.get().isLoaded("curios") ? Loaded.slots(wearer) : List.of();
     }
 
-    /** Worn armor and held items followed by any functional Curios back-slot stacks. */
+    /** Live stacks a pad can charge, including worn gear, the player's inventory and Curios. */
     public static List<ItemStack> chargeableEquipment(LivingEntity wearer) {
-        var equipment =
-                List.of(
-                        wearer.getItemBySlot(EquipmentSlot.CHEST),
-                        wearer.getItemBySlot(EquipmentSlot.HEAD),
-                        wearer.getItemBySlot(EquipmentSlot.LEGS),
-                        wearer.getItemBySlot(EquipmentSlot.FEET),
-                        wearer.getMainHandItem(),
-                        wearer.getOffhandItem());
-        var accessories = slots(wearer);
-        if (accessories.isEmpty()) return equipment;
-        var all = new ArrayList<>(equipment);
-        for (var accessory : accessories) {
-            if (all.stream().noneMatch(stack -> stack == accessory)) all.add(accessory);
+        var stacks = new ArrayList<ItemStack>();
+        stacks.add(wearer.getItemBySlot(EquipmentSlot.CHEST));
+        stacks.add(wearer.getItemBySlot(EquipmentSlot.HEAD));
+        stacks.add(wearer.getItemBySlot(EquipmentSlot.LEGS));
+        stacks.add(wearer.getItemBySlot(EquipmentSlot.FEET));
+        stacks.add(wearer.getMainHandItem());
+        stacks.add(wearer.getOffhandItem());
+        if (wearer instanceof Player player) {
+            var inventory = player.getInventory();
+            for (int i = 0; i < inventory.getContainerSize(); i++) {
+                stacks.add(inventory.getItem(i));
+            }
         }
-        return all;
+        stacks.addAll(slots(wearer));
+        // The selected hotbar slot and main hand reference the same stack.
+        var seen = Collections.newSetFromMap(new IdentityHashMap<ItemStack, Boolean>());
+        stacks.removeIf(stack -> stack.isEmpty() || !seen.add(stack));
+        return stacks;
     }
 
     /** Picks one matching worn item, giving the regular chest slot priority. */
