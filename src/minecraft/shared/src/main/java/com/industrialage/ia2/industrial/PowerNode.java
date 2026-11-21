@@ -37,6 +37,9 @@ public final class PowerNode extends PowerSaveBase
                 MenuProvider {
     private static final Set<Face> ALL = Set.of(Face.values());
     private static final Ports OUTPUT = new Ports(Set.of(), ALL, false);
+    static final String LAVA = "minecraft:lava";
+    static final int LAVA_CAPACITY = 8_000;
+    private static final int LAVA_PER_TICK = 2;
     final PowerKind kind;
     final PowerInventory inventory;
     final PlayerMachines.LiftContacts liftContacts;
@@ -264,15 +267,9 @@ public final class PowerNode extends PowerSaveBase
                         ? 0
                         : (1 << (pellets - 1)) * PowerSettings.multiplier("radioisotope");
             case GEO_GENERATOR:
-                if (liquid <= 7000
-                        && inventory.getItem(0).is(Items.LAVA_BUCKET)
-                        && storeEmpty(Items.BUCKET.getDefaultInstance())) {
-                    inventory.removeItem(0, 1);
-                    liquid += 1000;
-                    setChanged();
-                }
-                if (energy >= capacity() || liquid < 2) return 0;
-                liquid -= 2;
+                if (liquid == 0 || liquid < LAVA_PER_TICK && energy < capacity()) refillLava();
+                if (energy >= capacity() || liquid < LAVA_PER_TICK) return 0;
+                liquid -= LAVA_PER_TICK;
                 setChanged();
                 return 20 * PowerSettings.multiplier("geothermal");
             case WIND_GENERATOR:
@@ -300,7 +297,7 @@ public final class PowerNode extends PowerSaveBase
                                     : inventory.part(0).equals("water_cell")
                                             ? PowerPlatform.item("empty_cell")
                                             : ItemStack.EMPTY;
-                    if (!empty.isEmpty() && storeEmpty(empty)) {
+                    if (!empty.isEmpty() && storeContainerRemainder(empty)) {
                         inventory.removeItem(0, 1);
                         fuel = 500;
                     }
@@ -356,20 +353,35 @@ public final class PowerNode extends PowerSaveBase
                 * PowerSettings.multiplier("wind");
     }
 
-    private boolean storeEmpty(ItemStack empty) {
+    private void refillLava() {
+        var fuelStack = inventory.getItem(0);
+        if (fuelStack.isEmpty()) return;
+        var intake = new WorkshopNode.Tank(LAVA_CAPACITY);
+        intake.fill(LAVA, liquid, false);
+        var fuel = WorkshopCells.drain(intake, fuelStack, LAVA);
+        if (fuel == null) return;
+        int volume = fuel.liquid().amount();
+        if (fillLava(volume, true) != volume || !storeContainerRemainder(fuel.stack())) return;
+        inventory.removeItem(0, 1);
+        fillLava(volume, false);
+    }
+
+    private boolean storeContainerRemainder(ItemStack remainder) {
+        if (remainder.isEmpty()) return true;
         ItemStack previous = inventory.getItem(1);
         if (!previous.isEmpty()
-                && (!previous.is(empty.getItem())
-                        || previous.getCount() >= previous.getMaxStackSize())) return false;
-        if (previous.isEmpty()) inventory.setItem(1, empty);
-        else previous.grow(1);
+                && (!WorkshopPlatform.sameItem(previous, remainder)
+                        || previous.getCount() + remainder.getCount() > previous.getMaxStackSize()))
+            return false;
+        if (previous.isEmpty()) inventory.setItem(1, remainder);
+        else previous.grow(remainder.getCount());
         return true;
     }
 
     /** Native lava fluid ports use this method for both simulated and committed input. */
     public int fillLava(int offered, boolean simulate) {
         if (kind != PowerKind.GEO_GENERATOR || offered <= 0) return 0;
-        int accepted = Math.min(offered, 8000 - liquid);
+        int accepted = Math.min(offered, LAVA_CAPACITY - liquid);
         if (!simulate && accepted > 0) {
             liquid += accepted;
             setChanged();
@@ -430,7 +442,7 @@ public final class PowerNode extends PowerSaveBase
     /** Live fluid contents of a geothermal inlet or a fluid-mode reactor. */
     public List<FluidContents> fluidContents() {
         if (kind == PowerKind.GEO_GENERATOR) {
-            return List.of(readTank("minecraft:lava", liquid, 8_000));
+            return List.of(readTank(LAVA, liquid, LAVA_CAPACITY));
         }
         var core = coolantTank();
         return core == null
