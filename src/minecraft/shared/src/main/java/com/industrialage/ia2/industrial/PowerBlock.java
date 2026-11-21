@@ -1,7 +1,7 @@
 package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.logistics.CellItem;
-import com.industrialage.ia2.power.WorldEnergy;
+import com.industrialage.ia2.wrench.WrenchTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 /** Native player block, including the output face of each storage block or transformer. */
-public final class PowerBlock extends WorkshopBlockBase implements EntityBlock {
+public final class PowerBlock extends WorkshopBlockBase implements EntityBlock, WrenchTarget {
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     final PowerKind kind;
 
@@ -89,6 +89,20 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock {
     }
 
     @Override
+    public boolean wrenchable(BlockState state) {
+        return !kind.chargeBlock()
+                && kind != PowerKind.REACTOR_VESSEL
+                && kind != PowerKind.REACTOR_REDSTONE_PORT;
+    }
+
+    @Override
+    public boolean wrenchPermits(Level level, BlockPos pos, Player player) {
+        return !kind.trader()
+                || level.getBlockEntity(pos) instanceof PowerNode device
+                        && (device.owner == null || device.owner.equals(player.getUUID()));
+    }
+
+    @Override
     boolean interact(
             Level world, BlockPos pos, Player player, InteractionHand hand, Direction side) {
         if (!(world.getBlockEntity(pos) instanceof PowerNode device)) return false;
@@ -121,19 +135,6 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock {
             player.sendSystemMessage(
                     net.minecraft.network.chat.Component.translatable(
                             "ic2.trade.offer", device.saleSize));
-            return true;
-        }
-        if (PowerPlatform.path(stack).equals("wrench")) {
-            if (player.isShiftKeyDown()) {
-                if (kind.trader() && device.owner != null && !device.owner.equals(player.getUUID()))
-                    return true;
-                if (world.destroyBlock(pos, false))
-                    Block.popResource(world, pos, asItem().getDefaultInstance());
-            } else {
-                world.setBlockAndUpdate(
-                        pos, device.getBlockState().setValue(BlockStateProperties.FACING, side));
-                WorldEnergy.connect(device);
-            }
             return true;
         }
         if (stack.getItem() instanceof CellItem

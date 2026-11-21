@@ -46,6 +46,7 @@ public final class ForgeClient {
     public static void register(
             IEventBus modBus, IEventBus gameBus, EchoProtocol echo, ForgeNetwork network) {
         var client = new ForgeClient(echo);
+        com.industrialage.ia2.wrench.WrenchRenderer.install(gameBus);
         network.clientConnection(() -> client.playConnection);
         modBus.addListener(client::registerKey);
         modBus.addListener(
