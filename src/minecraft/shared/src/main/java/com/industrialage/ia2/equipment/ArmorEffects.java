@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
@@ -36,6 +37,18 @@ public final class ArmorEffects {
     /** Reads the portable EU definition from an electric armor stack. */
     public static PortableEquipment electric(ItemStack stack) {
         return stack.getItem() instanceof Wearable item ? item.piece().electric() : null;
+    }
+
+    static void appendChargeTooltip(ItemStack stack, List<Component> tooltip) {
+        var rating = electric(stack);
+        if (rating != null) {
+            tooltip.add(
+                    Component.translatable(
+                            "item.ic2.armor.charge",
+                            (long) ArmorPlatform.energy(stack),
+                            rating.capacity,
+                            rating.tier));
+        }
     }
 
     private static final EquipmentSlot HEAD = EquipmentSlot.HEAD;
