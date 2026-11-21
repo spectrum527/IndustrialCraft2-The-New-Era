@@ -358,10 +358,10 @@
       "atlas": "guiwaterkineticgenerator",
       "panel": [176,166],
       "inventory": [8,84,142],
-      "inventoryTitle": true,
+      "inventoryTitle": false,
       "source": "Authored IC2 redraw guiwaterkineticgenerator.png",
       "slots": {"0": [80,27]},
-      "labels": [{"text": "kinetic","rect": [17,49,139,10]},{"text": "active","rect": [17,67,139,10]}]
+      "labels": [{"text": "kinetic_available","rect": [17,49,139,10]},{"text": "active","rect": [17,67,139,10]}]
     },
     "classic_electrolyzer": {
       "atlas": "common",

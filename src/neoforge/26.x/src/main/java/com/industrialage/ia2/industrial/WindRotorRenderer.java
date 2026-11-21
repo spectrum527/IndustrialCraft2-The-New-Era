@@ -22,7 +22,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
-/** Queues snapshots of the installed wind rotor for the 26.x render pipeline. */
+/** Queues snapshots of the installed wind or water rotor for the 26.x render pipeline. */
 @EventBusSubscriber(modid = "ic2", value = Dist.CLIENT)
 public final class WindRotorRenderer
         implements BlockEntityRenderer<WorkshopNode, WindRotorRenderer.State> {
@@ -56,6 +56,7 @@ public final class WindRotorRenderer
             Vec3 camera,
             CrumblingOverlay crumbling) {
         BlockEntityRenderer.super.extractRenderState(node, state, partialTick, camera, crumbling);
+        state.kind = node.kind;
         state.material = WindRotorMount.material(node.visualRotorType());
         state.angle = model.angle(node, state.material, partialTick);
         if (state.material != null) {
@@ -75,12 +76,15 @@ public final class WindRotorRenderer
     public void submit(
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         if (state.material == null) return;
-        var parts = model.parts(state.material);
+        var parts = model.parts(state.kind, state.material);
         var layer = layers.get(state.material);
 
         pose.pushPose();
         WindRotorModel.translateToHub(pose, state.face);
-        pose.mulPose(Axis.YP.rotationDegrees(-state.face.toYRot()));
+        pose.mulPose(
+                state.face.getAxis().isVertical()
+                        ? Axis.XP.rotationDegrees(-90 * state.face.getStepY())
+                        : Axis.YP.rotationDegrees(-state.face.toYRot()));
         collector.submitModelPart(
                 parts.shaft(), pose, layer, state.lightCoords, OverlayTexture.NO_OVERLAY, null);
         pose.mulPose(Axis.ZP.rotationDegrees(state.angle));
@@ -98,8 +102,7 @@ public final class WindRotorRenderer
 
     @Override
     public boolean shouldRender(WorkshopNode node, Vec3 camera) {
-        return node.kind == WorkshopKind.WIND_KINETIC
-                && BlockEntityRenderer.super.shouldRender(node, camera);
+        return node.kind.hasWorldRotor() && BlockEntityRenderer.super.shouldRender(node, camera);
     }
 
     @Override
@@ -108,6 +111,7 @@ public final class WindRotorRenderer
     }
 
     static final class State extends BlockEntityRenderState {
+        WorkshopKind kind;
         WindRotorMount.Material material;
         Direction face;
         float angle;

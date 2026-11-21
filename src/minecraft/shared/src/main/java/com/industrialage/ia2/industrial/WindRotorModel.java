@@ -12,23 +12,34 @@ import net.minecraft.core.Direction;
 
 /** Bakes the author's rotor textures onto a stationary shaft and four pitched blades. */
 final class WindRotorModel {
-    private final EnumMap<WindRotorMount.Material, Parts> models =
+    private final EnumMap<WindRotorMount.Material, Parts> wind =
+            new EnumMap<>(WindRotorMount.Material.class);
+    private final EnumMap<WindRotorMount.Material, Parts> water =
             new EnumMap<>(WindRotorMount.Material.class);
     private final WeakHashMap<WorkshopNode, Motion> motions = new WeakHashMap<>();
 
     WindRotorModel() {
         for (var material : WindRotorMount.Material.values()) {
-            models.put(material, bake(material));
+            var windDiameter = WindRotorMount.diameter(WorkshopKind.WIND_KINETIC, material);
+            var waterDiameter = WindRotorMount.diameter(WorkshopKind.WATER_KINETIC, material);
+            var windModel = bake(material, windDiameter);
+            wind.put(material, windModel);
+            water.put(
+                    material,
+                    windDiameter == waterDiameter ? windModel : bake(material, waterDiameter));
         }
     }
 
-    Parts parts(WindRotorMount.Material material) {
-        return models.get(material);
+    Parts parts(WorkshopKind kind, WindRotorMount.Material material) {
+        return (kind == WorkshopKind.WATER_KINETIC ? water : wind).get(material);
     }
 
     static void translateToHub(PoseStack pose, Direction face) {
         double offset = WindRotorMount.OFFSET;
-        pose.translate(0.5 + face.getStepX() * offset, 0.5, 0.5 + face.getStepZ() * offset);
+        pose.translate(
+                0.5 + face.getStepX() * offset,
+                0.5 + face.getStepY() * offset,
+                0.5 + face.getStepZ() * offset);
     }
 
     float angle(WorkshopNode node, WindRotorMount.Material material, float partialTick) {
@@ -44,7 +55,7 @@ final class WindRotorModel {
         return motion.advance(node.getLevel().getGameTime(), partialTick, node.visualRotorSpeed());
     }
 
-    private static Parts bake(WindRotorMount.Material material) {
+    private static Parts bake(WindRotorMount.Material material, int diameter) {
         var mesh = new MeshDefinition();
         var root = mesh.getRoot();
         root.addOrReplaceChild(
@@ -61,7 +72,7 @@ final class WindRotorModel {
                                 .addBox(-2.5F, -2.5F, 2.5F, 5, 5, 2),
                         PartPose.ZERO);
         float width = material.bladeWidth;
-        float radius = material.diameter * 8 - 0.5F;
+        float radius = diameter * 8 - 0.5F;
         float tip = (float) Math.sqrt(radius * radius - width * width * 0.25F);
         for (int blade = 0; blade < 4; blade++) {
             wheel.addOrReplaceChild(

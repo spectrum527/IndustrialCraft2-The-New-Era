@@ -28,8 +28,8 @@ def loadChecks = { File file ->
     file.withReader('UTF-8') { checks.load(it) }
     checks
 }
-['storage', 'write', 'read', 'natural', 'workshop', 'cableShock', 'heldFluidCell', 'windWrite', 'windRead', 'powerWrite', 'powerRead', 'worldProgram', 'worldCold', 'worldDetails', 'worldDetailsCold'].each { phase ->
-    def target = [storage: 'run/native-storage', natural: 'run/native-worldgen', workshop: 'run/native-workshop', cableShock: 'run/native-cable-shock', heldFluidCell: 'run/native-held-cell', windWrite: 'run/native-wind', windRead: 'run/native-wind', powerWrite: 'run/native-power', powerRead: 'run/native-power', worldProgram: 'run/native-world-program', worldCold: 'run/native-world-program', worldDetails: 'run/native-world-details', worldDetailsCold: 'run/native-world-details']
+['storage', 'write', 'read', 'natural', 'workshop', 'cableShock', 'heldFluidCell', 'windWrite', 'windRead', 'waterWrite', 'waterRead', 'waterOcean', 'waterDeep', 'waterPlains', 'waterNaturalRiver', 'waterNaturalOcean', 'waterNaturalDeep', 'waterCanal', 'waterSeabed', 'waterFrozenRiver', 'waterFrozenOcean', 'powerWrite', 'powerRead', 'worldProgram', 'worldCold', 'worldDetails', 'worldDetailsCold'].each { phase ->
+    def target = [storage: 'run/native-storage', natural: 'run/native-worldgen', workshop: 'run/native-workshop', cableShock: 'run/native-cable-shock', heldFluidCell: 'run/native-held-cell', windWrite: 'run/native-wind', windRead: 'run/native-wind', waterWrite: 'run/native-water', waterRead: 'run/native-water', waterOcean: 'run/native-water-ocean', waterDeep: 'run/native-water-deep', waterPlains: 'run/native-water-plains', waterNaturalRiver: 'run/native-water-natural-river', waterNaturalOcean: 'run/native-water-natural-ocean', waterNaturalDeep: 'run/native-water-natural-deep', waterCanal: 'run/native-water-canal', waterSeabed: 'run/native-water-seabed', waterFrozenRiver: 'run/native-water-frozen-river', waterFrozenOcean: 'run/native-water-frozen-ocean', powerWrite: 'run/native-power', powerRead: 'run/native-power', worldProgram: 'run/native-world-program', worldCold: 'run/native-world-program', worldDetails: 'run/native-world-details', worldDetailsCold: 'run/native-world-details']
     def path = target.getOrDefault(phase, 'run/native-gameplay')
     def alternate = providers.gradleProperty('ic2.native.runRoot').map {
         rootProject.file(it).toPath().resolve(minecraftVersion).resolve(path).toFile()
@@ -50,12 +50,13 @@ def loadChecks = { File file ->
         if (phase == 'read') { dependsOn 'runNativeGameplayWrite' }
         if (phase == 'powerRead') { dependsOn 'runNativeGameplayPowerWrite' }
         if (phase == 'windRead') { dependsOn 'runNativeGameplayWindWrite' }
+        if (phase == 'waterRead') { dependsOn 'runNativeGameplayWaterWrite' }
         if (phase == 'worldCold') { dependsOn 'runNativeGameplayWorldProgram' }
         if (phase == 'worldDetailsCold') { dependsOn 'runNativeGameplayWorldDetails' }
         doFirst {
             def dir = directory.get().asFile
             def artifact = productionJar.get().asFile
-            if (!(phase in ['read','powerRead','windRead','worldCold','worldDetailsCold'])) {
+            if (!(phase in ['read','powerRead','windRead','waterRead','worldCold','worldDetailsCold'])) {
                 delete dir
                 dir.mkdirs()
                 copy { from artifact; into new File(dir, 'mods') }
@@ -70,7 +71,13 @@ spawn-protection=0
 view-distance=2
 simulation-distance=2
 '''
-                if (phase != 'natural') {
+                if (phase.startsWith('waterNatural') || phase in ['waterCanal', 'waterSeabed', 'waterFrozenRiver', 'waterFrozenOcean']) {
+                    new File(dir, 'server.properties').append('level-type=minecraft:normal\nlevel-seed=20261121\n')
+                } else if (phase.startsWith('water')) {
+                    def biome = [waterWrite: 'river', waterOcean: 'ocean', waterDeep: 'deep_ocean', waterPlains: 'plains'][phase]
+                    new File(dir, 'server.properties').append('level-type=minecraft:flat\n' +
+                            'generator-settings={"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:stone","height":114},{"block":"minecraft:water","height":12}],"biome":"minecraft:' + biome + '","structure_overrides":[]}\n')
+                } else if (phase != 'natural') {
                     new File(dir, 'server.properties').append('level-type=minecraft:flat\n' +
                             'generator-settings={"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:dirt","height":2},{"block":"minecraft:grass_block","height":1}],"biome":"minecraft:plains","structure_overrides":[]}\n')
                 }
@@ -92,6 +99,9 @@ simulation-distance=2
             if (phase == 'read' && result.pid == loadChecks(new File(dir, 'write.properties')).pid) {
                 throw new GradleException('Native gameplay restart reused its process')
             }
+            if (phase == 'waterRead' && result.pid == loadChecks(new File(dir, 'waterWrite.properties')).pid) {
+                throw new GradleException('Native water restart reused its process')
+            }
             if (phase == 'windRead' && result.pid == loadChecks(new File(dir, 'windWrite.properties')).pid) {
                 throw new GradleException('Native wind restart reused its process')
             }
@@ -108,5 +118,5 @@ simulation-distance=2
 tasks.register('nativeGameplayTest') {
     group = 'verification'
     description = 'Runs the production IC2 supply chain on a dedicated server across a real save and restart.'
-    dependsOn 'runNativeGameplayStorage', 'runNativeGameplayRead', 'runNativeGameplayNatural', 'runNativeGameplayWorkshop', 'runNativeGameplayCableShock', 'runNativeGameplayHeldFluidCell', 'runNativeGameplayWindRead', 'runNativeGameplayPowerRead', 'runNativeGameplayWorldCold', 'runNativeGameplayWorldDetailsCold'
+    dependsOn 'runNativeGameplayStorage', 'runNativeGameplayRead', 'runNativeGameplayNatural', 'runNativeGameplayWorkshop', 'runNativeGameplayCableShock', 'runNativeGameplayHeldFluidCell', 'runNativeGameplayWindRead', 'runNativeGameplayWaterRead', 'runNativeGameplayWaterOcean', 'runNativeGameplayWaterDeep', 'runNativeGameplayWaterPlains', 'runNativeGameplayWaterNaturalRiver', 'runNativeGameplayWaterNaturalOcean', 'runNativeGameplayWaterNaturalDeep', 'runNativeGameplayWaterCanal', 'runNativeGameplayWaterSeabed', 'runNativeGameplayWaterFrozenRiver', 'runNativeGameplayWaterFrozenOcean', 'runNativeGameplayPowerRead', 'runNativeGameplayWorldCold', 'runNativeGameplayWorldDetailsCold'
 }

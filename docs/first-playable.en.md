@@ -1,4 +1,4 @@
-# IndustrialCraft²: The New Era 1.0.2 player guide
+# IndustrialCraft²: The New Era 1.0.3 player guide
 
 [简体中文](first-playable.md) · **English**
 
@@ -8,10 +8,10 @@ Pick the loader build that matches your Minecraft version, put the same JAR into
 
 | Minecraft | Tested loader | Java | File |
 | --- | --- | ---: | --- |
-| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.2.jar` |
-| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.2.jar` |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.2.jar` |
-| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.2.jar` |
+| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.3.jar` |
+| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.3.jar` |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.3.jar` |
+| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.3.jar` |
 
 Two optional mods fit well alongside IC2. The One Probe displays a machine's stored EU and tank fluid levels when you look at it, which makes wiring and pipe checks faster. Curios adds a back slot where you can wear a battery pack or electric jetpack without giving up your chestplate, and those packs still charge when you stand on a matching-tier charge pad.
 
@@ -131,6 +131,7 @@ Coal generators eventually fall behind mid-game demand. As you expand, mix in ot
 - Water Mill: generates low-level power from water buckets or surrounding water blocks.
 - Wind Mill: produces more power higher up and away from nearby solid blocks. Check a spot with a Wind Meter before building a tall tower.
 - Fit a rotor to the Wind Turbine and leave space for its blades. Place the input face of a Kinetic Generator against the side opposite the blades, then connect a load or a storage unit with room for EU. The turbine reports the KU/t available in the current wind. The generator converts every 4 KU it draws into 1 EU.
+- Submerge the entire Water Turbine rotor. An isolated pool supplies 4 KU/t. A water channel connecting the pool to a natural river, ocean, or deep ocean raises output to 150, 300, or 400 KU/t respectively. At the river rate, a Kinetic Generator can deliver 37.5 EU/t. The channel can bend or cross a biome boundary. Its river or ocean end must reach at least 64 connected natural water columns spanning 16 blocks east–west or north–south. Water beneath surface ice counts. Leave a clear radius of 2 blocks for bronze or iron, 3 for steel, and 4 for carbon. Place the Kinetic Generator’s input face against the side opposite the blades and connect it to storage. The wheel can spin without a load. It delivers KU when a generator draws power.
 - Geothermal Generator: accepts lava cells, buckets or piped lava and generates 20 EU/t (10,000 EU per 1,000 mB), strong once you pump lava from the Nether.
 - Semifluid Generator: burns Biogas at 16 EU/t or Creosote from a Coke Kiln at 8 EU/t.
 - Radioisotope Thermoelectric Generator (RTG): uses RTG pellets from spent nuclear fuel reprocessing for fuel-free output around the clock (1, 2, or 4 EU/t for 1, 2, or 3 pellets, and more as you add pellets).
@@ -249,6 +250,8 @@ A standard Miner takes a Mining Drill or Diamond Drill, Mining Pipes, an OD or O
 ### Electric tools, armor, and charging
 
 Mining Drills, Diamond Drills, Iridium Drills, Chainsaws, Electric Wrenches, Mining Lasers (which cycle eight beam modes), Nano Sabers, Electric Jetpacks, NanoSuit armor, and QuantumSuit armor all charge in the charging slots of a matching-tier storage block or by standing on a matching Charge Pad.
+
+Each QuantumSuit piece holds 10,000,000 EU. Put a piece in the upper charging slot of an MFSU, or stand on a powered MFSU Charge Pad to charge worn pieces and gear in your hands, hotbar, or inventory. Hover over a piece to see its charge and tier 4 requirement. The Classic MFSU is tier 3.
 
 Wearing a BatPack, Advanced BatPack, or Energy Pack recharges handheld electric tools automatically as you mine. With Curios installed, battery packs and jetpacks work from the back slot and charge on Charge Pads; if both your chestplate slot and back slot hold compatible gear, the chestplate takes priority.
 

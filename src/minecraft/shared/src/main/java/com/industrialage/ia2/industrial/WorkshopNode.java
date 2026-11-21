@@ -48,10 +48,11 @@ public final class WorkshopNode extends WorkshopSaveBase
     int cycleDuration;
     ItemStack preview = ItemStack.EMPTY;
     int auxiliaryUnits;
-    int visualWindRotor;
-    int visualWindSpeed;
-    long windSampleTick = Long.MIN_VALUE;
-    int windSample;
+    int visualRotorMaterial;
+    int visualRotorRate;
+    WaterConnectivity waterConnectivity;
+    long rotorSampleTick = Long.MIN_VALUE;
+    int rotorSample;
     long handledAt = Long.MIN_VALUE;
     long kineticAt = Long.MIN_VALUE;
     String lastRecipe = "";
@@ -616,26 +617,26 @@ public final class WorkshopNode extends WorkshopSaveBase
 
     /** Stable renderer type: 0 none, 1 wood, 2 bronze, 3 iron, 4 steel, 5 carbon. */
     public int visualRotorType() {
-        if (kind != WorkshopKind.WIND_KINETIC) return 0;
+        if (!kind.hasWorldRotor()) return 0;
         return getLevel() instanceof ServerLevel
                 ? WindRotorMount.type(inventory.getItem(0))
-                : visualWindRotor;
+                : visualRotorMaterial;
     }
 
-    /** Server-sampled available wind KU/t; zero means that the rotor is stopped. */
+    /** Server-sampled available rotor KU/t; zero means that the rotor is stopped. */
     public int visualRotorSpeed() {
-        return kind == WorkshopKind.WIND_KINETIC ? visualWindSpeed : 0;
+        return kind.hasWorldRotor() ? visualRotorRate : 0;
     }
 
-    void acceptWindVisual(int rotor, int speed) {
-        visualWindRotor = rotor >= 1 && rotor <= 5 ? rotor : 0;
-        visualWindSpeed = Math.max(0, speed);
+    void acceptRotorVisual(int rotor, int speed) {
+        visualRotorMaterial = rotor >= 1 && rotor <= 5 ? rotor : 0;
+        visualRotorRate = Math.max(0, speed);
     }
 
-    void publishWindVisual(ServerLevel level, int available) {
+    void publishRotorVisual(ServerLevel level, int available) {
         int rotor = WindRotorMount.type(inventory.getItem(0));
-        if (visualWindSpeed != available || visualWindRotor != rotor) {
-            acceptWindVisual(rotor, available);
+        if (visualRotorRate != available || visualRotorMaterial != rotor) {
+            acceptRotorVisual(rotor, available);
             var state = getBlockState();
             level.sendBlockUpdated(
                     getBlockPos(),
