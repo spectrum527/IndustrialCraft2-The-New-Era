@@ -143,7 +143,7 @@
 | `assets/ic2/textures/items/resource/resin.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/resource/resin.png` | 2026-11-20 |
 | `assets/ic2/textures/items/tool/bronze_pickaxe.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/bronze_pickaxe.png` | 2026-11-20 |
 | `assets/ic2/textures/items/tool/cutter.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/cutter.png` | 2026-11-20 |
-| `assets/ic2/textures/items/tool/forge_hammer.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.4 手工绘制 16×16 像素网格 | 2026-11-21 |
+| `assets/ic2/textures/items/tool/forge_hammer.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 木柄和金属锤头 | 2026-11-22 |
 | `assets/ic2/textures/items/tool/treetap.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/ic2/textures/items/tool/treetap.png` | 2026-11-20 |
 | `assets/ic2/textures/models/armor/bronze_layer_1.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_1.png` | 2026-11-20 |
 | `assets/ic2/textures/models/armor/bronze_layer_2.png` | new | 项目作者（回交重绘） | CC BY-SA 4.0 | 用户回交 ZIP：`assets/minecraft/textures/models/armor/ic2_bronze_layer_2.png` | 2026-11-20 |
@@ -1088,6 +1088,18 @@
 | `assets/ic2/textures/blocks/steam/coke_kiln_hatch.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/steam/refractory_bricks.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/storage_box.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
+| `assets/ic2/textures/blocks/storage_box/bronze_bottom.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/bronze_side.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/bronze_top.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/iron_bottom.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/iron_side.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/iron_top.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/steel_bottom.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/steel_side.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/steel_top.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/wooden_bottom.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/wooden_side.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
+| `assets/ic2/textures/blocks/storage_box/wooden_top.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.5 手工绘制 16×16 储物箱纹理 | 2026-11-22 |
 | `assets/ic2/textures/blocks/storage_box_old.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/transport/pipe_large_old.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/blocks/transport/pipe_medium_old.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
@@ -1706,11 +1718,11 @@
 | `assets/ic2/sounds/item/laser/low_focus.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/item/laser/scatter.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/item/laser/shoot.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
-| `assets/ic2/sounds/item/nanosaber/idle.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
-| `assets/ic2/sounds/item/nanosaber/power_up.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
-| `assets/ic2/sounds/item/nanosaber/swing1.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
-| `assets/ic2/sounds/item/nanosaber/swing2.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
-| `assets/ic2/sounds/item/nanosaber/swing3.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
+| `assets/ic2/sounds/item/nanosaber/idle.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 1.0.5 手工设计的低强度扫频与滤波气流，音源脚本 synthesize_audio.py | 2026-11-22 |
+| `assets/ic2/sounds/item/nanosaber/power_up.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 1.0.5 手工设计的低强度扫频与滤波气流，音源脚本 synthesize_audio.py | 2026-11-22 |
+| `assets/ic2/sounds/item/nanosaber/swing1.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 1.0.5 手工设计的低强度扫频与滤波气流，音源脚本 synthesize_audio.py | 2026-11-22 |
+| `assets/ic2/sounds/item/nanosaber/swing2.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 1.0.5 手工设计的低强度扫频与滤波气流，音源脚本 synthesize_audio.py | 2026-11-22 |
+| `assets/ic2/sounds/item/nanosaber/swing3.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 1.0.5 手工设计的低强度扫频与滤波气流，音源脚本 synthesize_audio.py | 2026-11-22 |
 | `assets/ic2/sounds/item/painter/use.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/item/scanner/use.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
 | `assets/ic2/sounds/item/treetap/electric/use.ogg` | new | IC2 重建项目 | CC BY-SA 4.0 | 独立工业音效合成，音源脚本 synthesize_audio.py | 2026-11-20 |
