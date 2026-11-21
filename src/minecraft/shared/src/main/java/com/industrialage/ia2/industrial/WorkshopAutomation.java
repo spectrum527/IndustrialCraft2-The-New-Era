@@ -70,17 +70,24 @@ final class WorkshopAutomation {
         if (installed.stream().allMatch(ItemStack::isEmpty)) {
             return;
         }
-        int inputs = node.kind.inputs(node.mode);
-        int outputs = node.kind.outputSlots();
+        long tick = level.getGameTime();
+        boolean washer = node.kind == WorkshopKind.ORE_WASHER;
+        int inputs = node.kind.inputs(node.mode) + (washer ? 1 : 0);
+        int outputs = node.kind.outputSlots() + (washer ? 1 : 0);
+        int inputLane = inputs == 0 ? -1 : Math.floorMod(tick, inputs);
+        int outputLane = outputs == 0 ? -1 : Math.floorMod(tick, outputs);
         int feed =
                 node.kind == WorkshopKind.UU_ASSEMBLY
                         ? 1
-                        : inputs == 0 ? -1 : Math.floorMod(level.getGameTime(), inputs);
+                        : washer && inputLane == inputs - 1
+                                ? WorkshopInventory.WASHER_WATER_SLOT
+                                : inputLane;
         int result =
-                outputs == 0
+                outputLane < 0
                         ? -1
-                        : WorkshopInventory.OUTPUT_START
-                                + Math.floorMod(level.getGameTime(), outputs);
+                        : washer && outputLane == outputs - 1
+                                ? WorkshopInventory.WASHER_CONTAINER_RETURN_SLOT
+                                : WorkshopInventory.OUTPUT_START + outputLane;
         MachineAutomation.transfer(
                 level,
                 node.getBlockPos(),

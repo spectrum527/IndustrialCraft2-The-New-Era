@@ -319,22 +319,23 @@ public final class LogisticsGameTests {
         owner.gameMode.useItem(owner, world, held, InteractionHand.MAIN_HAND);
         check(
                 helper,
-                world.getFluidState(source).isSource()
+                world.getFluidState(source).isEmpty()
                         && FluidUtil.getFluidContained(
-                                        owner.getItemInHand(InteractionHand.MAIN_HAND))
-                                .orElse(FluidStack.EMPTY)
-                                .isEmpty(),
-                "Returned the same world source and retained the universal cell item");
+                                                owner.getItemInHand(InteractionHand.MAIN_HAND))
+                                        .orElse(FluidStack.EMPTY)
+                                        .getAmount()
+                                == 1000,
+                "Ordinary hand use retained the filled universal cell and left the world dry");
         world.setBlockAndUpdate(source, Blocks.AIR.defaultBlockState());
         var legacy = stack("water_cell");
         owner.setItemInHand(InteractionHand.MAIN_HAND, legacy);
         owner.gameMode.useItem(owner, world, legacy, InteractionHand.MAIN_HAND);
         check(
                 helper,
-                world.getFluidState(source).isSource()
+                world.getFluidState(source).isEmpty()
                         && owner.getItemInHand(InteractionHand.MAIN_HAND)
-                                .is(stack("empty_cell").getItem()),
-                "A legacy named cell can now place its source and returns the original empty shell");
+                                .is(stack("water_cell").getItem()),
+                "Ordinary hand use retained the named water cell and left the world dry");
         helper.succeed();
     }
 

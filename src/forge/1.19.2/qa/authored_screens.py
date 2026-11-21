@@ -27,7 +27,7 @@ def initial_state(path):
                 '{Slot:0b,id:"minecraft:copper_ingot",Count:2b},'
                 '{Slot:18b,id:"ic2:overclocker_upgrade",Count:1b}]}')
     if path == "ore_washing_plant":
-        return ('{ic2_energy:16000.0d,ic2_input_fluid:{FluidName:"minecraft:water",Amount:1000},'
+        return ('{ic2_energy:16000.0d,'
                 'Items:[{Slot:0b,id:"ic2:crushed_tin",Count:2b},'
                 '{Slot:6b,id:"minecraft:water_bucket",Count:1b}]}')
     if path == "semifluid_generator":

@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
@@ -453,38 +455,78 @@ public final class WorkshopPlatform {
                 .orElse(false);
     }
 
-    static ContainerResult containerRecipe(WorkshopNode node, ItemStack item, boolean filling) {
-        return containerRecipe(filling ? node.inlet : node.outlet, item, filling);
-    }
-
-    static ContainerResult containerRecipe(
-            WorkshopNode.Tank tank, ItemStack item, boolean filling) {
+    static ContainerResult fillContainer(WorkshopNode.Tank tank, ItemStack item) {
         var copy = item.copy();
         copy.setCount(1);
         var handler = FluidUtil.getFluidHandler(copy).orElse(null);
-        if (handler == null) return null;
-        var liquid =
-                filling
-                        ? fluid(tank.id, tank.amount)
-                        : handler.drain(
-                                tank.capacity - tank.amount, IFluidHandler.FluidAction.EXECUTE);
-        if (liquid.isEmpty() || liquid.hasTag()) return null;
-        int amount =
-                filling
-                        ? handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE)
-                        : liquid.getAmount();
+        var liquid = fluid(tank.id, tank.amount);
+        if (handler == null || liquid.isEmpty() || liquid.hasTag()) return null;
+        int amount = handler.fill(liquid, IFluidHandler.FluidAction.EXECUTE);
         return amount > 0
                 ? new ContainerResult(handler.getContainer(), new Liquid(fluidId(liquid), amount))
                 : null;
     }
 
+    static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
+        var copy = item.copy();
+        copy.setCount(1);
+        var handler = FluidUtil.getFluidHandler(copy).orElse(null);
+        if (handler == null) return null;
+        var contents =
+                WorkshopCells.wholeContents(
+                        tank,
+                        handler.getTanks(),
+                        slot -> {
+                            var stored = handler.getFluidInTank(slot);
+                            if (stored.isEmpty()) return Liquid.EMPTY;
+                            return stored.hasTag()
+                                    ? null
+                                    : new Liquid(fluidId(stored), stored.getAmount());
+                        });
+        if (contents.amount() == 0) return null;
+        var drained =
+                handler.drain(
+                        fluid(contents.id(), contents.amount()), IFluidHandler.FluidAction.EXECUTE);
+        return drained.isEmpty()
+                        || drained.hasTag()
+                        || drained.getAmount() != contents.amount()
+                        || !fluidId(drained).equals(contents.id())
+                ? null
+                : new ContainerResult(handler.getContainer(), contents);
+    }
+
     static boolean interactFluid(
             WorkshopNode node, Player player, InteractionHand hand, Direction side) {
+        if (WorkshopCells.fillNamedHand(node, side, player, hand)) return true;
         var access = new WorkshopFluidPort(node, side);
         return access.size() > 0
                 && FluidUtil.getFluidHandler(player.getItemInHand(hand)).isPresent()
                 && (!(node.getLevel() instanceof ServerLevel)
                         || FluidUtil.interactWithFluidHandler(player, hand, new Port(access)));
+    }
+
+    /** Handles the named-cell result when Minecraft dispatches directly to the held item. */
+    public static boolean fillNamedHand(
+            ServerLevel level, BlockPos pos, Direction side, Player player, InteractionHand hand) {
+        return level.getBlockEntity(pos) instanceof WorkshopNode node
+                && WorkshopCells.fillNamedHand(node, side, player, hand);
+    }
+
+    static void playPickup(WorkshopNode node, Player player, Liquid moved) {
+        var fluid = fluid(moved.id(), moved.amount());
+        var sound = fluid.getFluid().getFluidType().getSound(fluid, SoundActions.BUCKET_FILL);
+        if (sound != null) {
+            node.getLevel()
+                    .playSound(
+                            null,
+                            player.getX(),
+                            player.getY() + 0.5,
+                            player.getZ(),
+                            sound,
+                            SoundSource.BLOCKS,
+                            1,
+                            1);
+        }
     }
 
     static boolean canOpen(WorkshopNode node, Player player) {

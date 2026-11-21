@@ -158,7 +158,7 @@ final class WorkshopPlans {
         var tank = new WorkshopNode.Tank(product.amount());
         tank.fill(product.id(), product.amount(), false);
         var filled = WorkshopCells.namedFill(tank, vessel);
-        if (filled == null) filled = WorkshopPlatform.containerRecipe(tank, vessel, true);
+        if (filled == null) filled = WorkshopPlatform.fillContainer(tank, vessel);
         if (filled == null
                 || filled.stack().isEmpty()
                 || filled.liquid().amount() != product.amount()) return null;
@@ -209,7 +209,8 @@ final class WorkshopPlans {
             if (mode == 1 || mode == 3 && slot == 0)
                 return WorkshopPlatform.itemId(item).equals("ic2:empty_cell")
                         || WorkshopPlatform.canSupplyContainer(item, true);
-            if (mode == 2) return WorkshopPlatform.canSupplyContainer(item, false);
+            if (mode == 2)
+                return WorkshopCells.canDrain(item, kind.outputVolume(), ignored -> true);
         }
         int ingredient = kind == WorkshopKind.SOLID_CANNER ? 1 - slot : slot;
         return WorkshopRecipes.forType(kind.recipes(mode)).stream()
@@ -232,18 +233,18 @@ final class WorkshopPlans {
         }
         return switch (node.kind) {
             case INDUCTION -> !WorkshopPlatform.smelt(level, item).isEmpty();
-            case FLUID_BOTTLER, PUMP, RECYCLER, UU_ASSEMBLY -> true;
+            case FLUID_BOTTLER, PUMP, RECYCLER, UU_ASSEMBLY, ORE_WASHER -> true;
             case CANNER, SOLID_CANNER -> true;
             case CLASSIC_CANNER ->
                     WorkshopPlatform.itemId(item).equals("ic2:coalfuel_cell")
                             || WorkshopPlatform.itemId(item).equals("ic2:empty_fuel_can")
-                            || storedInput(node, item);
-            default -> storedInput(node, item);
+                            || storedInput(node.kind, node.mode, item);
+            default -> storedInput(node.kind, node.mode, item);
         };
     }
 
-    private static boolean storedInput(WorkshopNode node, ItemStack item) {
-        return WorkshopRecipes.forType(node.kind.recipes(node.mode)).stream()
+    static boolean storedInput(WorkshopKind kind, int mode, ItemStack item) {
+        return WorkshopRecipes.forType(kind.recipes(mode)).stream()
                 .flatMap(recipe -> recipe.inputs().stream())
                 .anyMatch(input -> matches(item, input));
     }
@@ -285,7 +286,10 @@ final class WorkshopPlans {
         }
         var moved = filling ? WorkshopCells.namedFill(node.inlet, item) : null;
         if (moved == null) {
-            moved = WorkshopPlatform.containerRecipe(node, item, filling);
+            moved =
+                    filling
+                            ? WorkshopPlatform.fillContainer(node.inlet, item)
+                            : WorkshopPlatform.drainWholeContainer(node.outlet, item);
         }
         if (moved == null || moved.stack().isEmpty()) {
             return null;

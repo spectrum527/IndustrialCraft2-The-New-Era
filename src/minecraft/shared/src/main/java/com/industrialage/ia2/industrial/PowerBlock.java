@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.logistics.CellItem;
 import com.industrialage.ia2.power.WorldEnergy;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -135,6 +136,8 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock {
             }
             return true;
         }
+        if (stack.getItem() instanceof CellItem
+                && CellItem.interactWithBlock(server, pos, side, player, hand)) return true;
         if ((kind.lowTier() > 0 || kind.storage()) && player.isShiftKeyDown())
             device.changeMode(server);
         else if (kind == PowerKind.REACTOR_CHAMBER) {

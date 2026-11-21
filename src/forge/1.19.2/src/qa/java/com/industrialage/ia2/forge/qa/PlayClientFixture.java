@@ -327,8 +327,13 @@ final class PlayClientFixture {
             } else {
                 mc.getToasts().clear();
                 var window = mc.getWindow();
-                GLFW.glfwSetCursorPos(
-                        window.getWindow(),
+                long handle = window.getWindow();
+                var cursor = GLFW.glfwSetCursorPosCallback(handle, null);
+                if (cursor == null) throw new IllegalStateException("Game cursor callback missing");
+                GLFW.glfwSetCursorPosCallback(handle, cursor);
+                // Deliver the same movement event even when the test window is in the background.
+                cursor.invoke(
+                        handle,
                         x * window.getScreenWidth() / window.getGuiScaledWidth(),
                         y * window.getScreenHeight() / window.getGuiScaledHeight());
             }
