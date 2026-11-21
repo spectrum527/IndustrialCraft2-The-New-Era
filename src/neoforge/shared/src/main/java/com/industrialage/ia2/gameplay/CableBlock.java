@@ -1,6 +1,7 @@
 package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.content.PowerGrid;
+import com.industrialage.ia2.industrial.CableShock;
 import com.industrialage.ia2.industrial.PowerBlock;
 import com.industrialage.ia2.industrial.WorkshopBlock;
 import com.industrialage.ia2.world.CableColors;
@@ -45,12 +46,14 @@ public class CableBlock extends NativeGameplay.CableBlockBase {
         shapes(6, 10), shapes(5, 11), shapes(4, 12), shapes(3, 13)
     };
     final String path;
+    final boolean exposed;
     private final int size;
     private final double packetLimit;
 
     private CableBlock(Properties properties, String path) {
         super(properties);
         this.path = path;
+        exposed = !(this instanceof Foamed) && CableShock.isBare(path);
         packetLimit = PowerGrid.cableRating(path);
         size = size(path);
         BlockState state = stateDefinition.any();
