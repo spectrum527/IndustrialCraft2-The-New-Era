@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.flag.FeatureFlags;
@@ -35,6 +36,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.network.IContainerFactory;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -330,7 +332,21 @@ public final class WorkshopPlatform {
 
     static boolean interactFluid(
             WorkshopNode node, Player player, InteractionHand hand, Direction side) {
-        return WorkshopNative.interact(node, player, hand, side);
+        return WorkshopCells.fillNamedHand(node, side, player, hand)
+                || WorkshopNative.interact(node, player, hand, side);
+    }
+
+    /** Handles the named-cell result when Minecraft dispatches directly to the held item. */
+    public static boolean fillNamedHand(
+            ServerLevel level, BlockPos pos, Direction side, Player player, InteractionHand hand) {
+        return level.getBlockEntity(pos) instanceof WorkshopNode node
+                && WorkshopCells.fillNamedHand(node, side, player, hand);
+    }
+
+    static void playPickup(ServerLevel level, BlockPos pos, Liquid moved) {
+        var fluid = fluid(moved.id(), moved.amount());
+        var sound = fluid.getFluidType().getSound(fluid, SoundActions.BUCKET_FILL);
+        if (sound != null) level.playSound(null, pos, sound, SoundSource.BLOCKS, 1, 1);
     }
 
     static boolean canOpen(WorkshopNode node, Player player) {

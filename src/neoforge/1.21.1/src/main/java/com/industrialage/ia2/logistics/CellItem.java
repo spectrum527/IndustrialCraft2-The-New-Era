@@ -49,7 +49,8 @@ public final class CellItem extends Item {
             ServerLevel level, BlockPos pos, Direction face, Player player, InteractionHand hand) {
         return level.mayInteract(player, pos)
                 && player.mayUseItemAt(pos, face, player.getItemInHand(hand))
-                && FluidUtil.interactWithFluidHandler(player, hand, level, pos, face);
+                && (WorkshopPlatform.fillNamedHand(level, pos, face, player, hand)
+                        || FluidUtil.interactWithFluidHandler(player, hand, level, pos, face));
     }
 
     @Override
