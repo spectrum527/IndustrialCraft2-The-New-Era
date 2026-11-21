@@ -29,7 +29,6 @@ public final class WorldPlatform {
             List.of(
                     "fertilizer",
                     "hydration_cell",
-                    "weed_ex_cell",
                     "hops",
                     "bobs_yer_uncle_ranks_berry",
                     "coffee_beans",
@@ -78,7 +77,7 @@ public final class WorldPlatform {
                                                                 WorldBlocks.metal(props), kind),
                                                 true))
                         .toList());
-        ITEMS.register("crop_seed_bag", () -> new CropSeed(new Item.Properties()));
+        registerItem("crop_seed_bag", CropSeed::new);
         for (String name : SUPPLIES) registerItem(name, props -> WorldNative.supply(name, props));
         WorldBlocks.install();
         WorldSigns.install(modBus);

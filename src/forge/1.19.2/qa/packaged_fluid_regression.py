@@ -100,15 +100,15 @@ def main():
                     f'execute store result score #air ic2fluid run data get block {furnace} ic2_input_fluid.Amount',
                     f'execute store result score #heat ic2fluid run data get block {heater} ic2_input_fluid.Amount')
         server.require('idle_unpowered_washer_prefills_eight_of_nine', items(queued, 'ic2:water_cell', 1, 6),
-                       items(queued, 'ic2:empty_cell', 8, 14),
+                       items(queued, 'ic2:fluid_cell', 8, 14),
                        f'if data block {queued} {{ic2_input_fluid:{{Amount:8000}}}}',
-                       f'unless data block {no_power} Items[{{Slot:6b}}]', items(no_power, 'ic2:empty_cell', 1, 14),
+                       f'unless data block {no_power} Items[{{Slot:6b}}]', items(no_power, 'ic2:fluid_cell', 1, 14),
                        f'if data block {no_power} {{ic2_input_fluid:{{Amount:1000}}}}')
         server.require('geothermal_wrong_and_blocked_do_not_consume', items(wrong, 'ic2:water_cell', 1),
                        items(blocked, 'ic2:lava_cell', 1), f'if data block {wrong} {{millibuckets:0}}',
                        f'if data block {blocked} {{millibuckets:0}}')
         server.require('saturated_geothermal_7000_fills_but_7001_retains_cell',
-                       f'unless data block {geo7000} Items[{{Slot:0b}}]', items(geo7000, 'ic2:empty_cell', 1, 1),
+                       f'unless data block {geo7000} Items[{{Slot:0b}}]', items(geo7000, 'ic2:fluid_cell', 1, 1),
                        f'if data block {geo7000} {{millibuckets:8000}}', items(geo7001, 'ic2:lava_cell', 1),
                        f'if data block {geo7001} {{millibuckets:7001}}', f'unless data block {geo7001} Items[{{Slot:1b}}]')
         server.require('partial_lava_cell_returns_and_generates', f'unless data block {partial} Items[{{Slot:0b}}]',
@@ -118,15 +118,15 @@ def main():
                        items(semi, 'ic2:fluid_cell', 1, 9), 'if score #semi ic2fluid matches 1001..1999',
                        'if score #semiEU ic2fluid matches 1..')
         server.require('heated_furnace_and_heater_prefill_both_cells', f'unless data block {furnace} Items[{{Slot:4b}}]',
-                       items(furnace, 'ic2:empty_cell', 2, 13), 'if score #air ic2fluid matches 1001..1999',
-                       f'unless data block {heater} Items[{{Slot:0b}}]', items(heater, 'ic2:empty_cell', 2, 9),
+                       items(furnace, 'ic2:fluid_cell', 2, 13), 'if score #air ic2fluid matches 1001..1999',
+                       f'unless data block {heater} Items[{{Slot:0b}}]', items(heater, 'ic2:fluid_cell', 2, 9),
                        'if score #heat ic2fluid matches 1001..1999')
         server.require('unconnected_heater_fills_10000_and_keeps_eleventh',
                        f'if data block {idle_heater} {{ic2_input_fluid:{{Amount:10000}}}}',
-                       items(idle_heater, 'ic2:lava_cell', 1, 0), items(idle_heater, 'ic2:empty_cell', 10, 9))
+                       items(idle_heater, 'ic2:lava_cell', 1, 0), items(idle_heater, 'ic2:fluid_cell', 10, 9))
         server.require('cold_furnace_fills_8000_and_keeps_ninth',
                        f'if data block {idle_furnace} {{ic2_input_fluid:{{Amount:8000}}}}',
-                       items(idle_furnace, 'ic2:air_cell', 1, 4), items(idle_furnace, 'ic2:empty_cell', 8, 13))
+                       items(idle_furnace, 'ic2:air_cell', 1, 4), items(idle_furnace, 'ic2:fluid_cell', 8, 13))
         server.require('saturated_semifluid_fills_to_10000',
                        f'if data block {full_semi} {{ic2_energy:16000.0d,ic2_input_fluid:{{Amount:10000}}}}',
                        f'unless data block {full_semi} Items[{{Slot:0b}}]', items(full_semi, 'ic2:fluid_cell', 1, 9))
@@ -138,18 +138,18 @@ def main():
                        'id:"ic2:fluid_cell",tag:{Fluid:{FluidName:"ic2:biogas",Amount:1000}}}]}',
                        f'unless data block {full_semi} Items[{{Slot:9b}}]')
         server.send(f'data merge block {queued} {{ic2_energy:16000.0d,Items:[{{Slot:0b,id:"ic2:crushed_copper",Count:1b}},'
-                    '{Slot:6b,id:"ic2:water_cell",Count:1b},{Slot:14b,id:"ic2:empty_cell",Count:8b}]}')
+                    '{Slot:6b,id:"ic2:water_cell",Count:1b},{Slot:14b,id:"ic2:fluid_cell",Count:8b}]}')
         server.require('full_washer_starts_work_with_ninth_cell',
-                       items(queued, 'ic2:water_cell', 1, 6), items(queued, 'ic2:empty_cell', 8, 14),
+                       items(queued, 'ic2:water_cell', 1, 6), items(queued, 'ic2:fluid_cell', 8, 14),
                        f'if data block {queued} {{ic2_input_fluid:{{Amount:8000}}}}',
                        f'unless data block {queued} {{ic2_progress:0}}')
         server.send(f'data merge block {queued} {{ic2_progress:499}}')
         server.require('full_washer_one_job_leaves_7900_and_ninth_cell',
                        items(queued, 'ic2:purified_copper', 1, 9), items(queued, 'ic2:water_cell', 1, 6),
-                       items(queued, 'ic2:empty_cell', 8, 14),
+                       items(queued, 'ic2:fluid_cell', 8, 14),
                        f'if data block {queued} {{ic2_input_fluid:{{Amount:7900}}}}')
         server.require('single_cell_starts_real_processing',
-                       items(single, 'ic2:empty_cell', 1, 14),
+                       items(single, 'ic2:fluid_cell', 1, 14),
                        f'if data block {single} {{ic2_input_fluid:{{FluidName:"minecraft:water",Amount:1000}}}}',
                        f'unless data block {single} {{ic2_progress:0}}')
         for completed in range(1, 11):
@@ -159,7 +159,7 @@ def main():
                      if completed < 10 else f'unless data block {single} ic2_input_fluid')
             server.require(f'washer_batch_{completed}_uses_100mb',
                            items(single, 'ic2:purified_copper', completed, 9),
-                           items(single, 'ic2:empty_cell', 1, 14), fluid)
+                           items(single, 'ic2:fluid_cell', 1, 14), fluid)
         time.sleep(1)
         server.require('eleventh_job_waits_without_water', items(single, 'ic2:crushed_copper', 1, 0),
                        f'if data block {single} {{ic2_progress:0}}', f'unless data block {single} ic2_input_fluid')

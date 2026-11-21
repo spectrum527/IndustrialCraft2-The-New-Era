@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -79,12 +78,18 @@ public final class TransportPlatform {
                                                     spec));
                     DEVICES.add(block);
                     ITEMS.register(
-                            path, () -> new BlockItem(block.get(), ForgeContent.itemProperties()));
+                            path,
+                            () -> new BlockItem(block.get(), ForgeContent.itemProperties(path)));
                 });
         ITEMS.register("wrench", () -> new ServiceTool(true));
         ITEMS.register("crowbar", () -> new ServiceTool(false));
-        ITEMS.register("empty_cell", () -> new CellItem(false));
-        ITEMS.register("fluid_cell", () -> new CellItem(true));
+        for (var family : CellFamily.values()) {
+            ITEMS.register(family.emptyPath(), () -> new CellItem(family.emptyPath()));
+            family.namedLiquids()
+                    .keySet()
+                    .forEach(path -> ITEMS.register(path, () -> new CellItem(path)));
+        }
+        CellRecipes.install(modBus);
         TankMenus.install(modBus);
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist
                 == net.minecraftforge.api.distmarker.Dist.CLIENT) TankMenus.clients(modBus);
@@ -181,12 +186,65 @@ public final class TransportPlatform {
                 : new LiquidNetwork.Batch(new FluidKey(result), result.getAmount());
     }
 
-    /** A classic empty shell with no additional item data. */
-    public static boolean isPristineCell(ItemStack cell) {
-        return sameItem(
-                cell,
-                new ItemStack(
-                        ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("ic2:empty_cell"))));
+    /** Whether a cell already contains any liquid, including saved legacy contents. */
+    public static boolean cellContainsFluid(ItemStack cell) {
+        return cellContents(cell).amount() > 0;
+    }
+
+    /** Reads one cell's liquid without changing the stack or requiring an empty destination. */
+    public static CellFamily.Contents cellContents(ItemStack cell) {
+        var liquid =
+                cell.getItem() instanceof CellItem ? CellItem.contents(cell) : FluidStack.EMPTY;
+        return measure(liquid);
+    }
+
+    static CellFamily.Contents bucketContents(ItemStack stack) {
+        return measure(bucketFluid(stack));
+    }
+
+    private static FluidStack bucketFluid(ItemStack stack) {
+        var single = stack.copy();
+        single.setCount(1);
+        return FluidUtil.getFluidContained(single).orElse(FluidStack.EMPTY);
+    }
+
+    private static CellFamily.Contents measure(FluidStack liquid) {
+        return new CellFamily.Contents(
+                liquid.isEmpty() ? "" : CellItem.fluidId(liquid), liquid.getAmount());
+    }
+
+    static ItemStack fillFromBucket(ItemStack cell, ItemStack bucket) {
+        var fluid = bucketFluid(bucket);
+        var single = cell.copy();
+        single.setCount(1);
+        var handler = FluidUtil.getFluidHandler(single).orElse(null);
+        return handler != null
+                        && fluid.getAmount() == CellFamily.CAPACITY
+                        && handler.fill(fluid, IFluidHandler.FluidAction.EXECUTE)
+                                == CellFamily.CAPACITY
+                ? handler.getContainer()
+                : ItemStack.EMPTY;
+    }
+
+    static ItemStack bindCell(ItemStack cell, ItemStack result) {
+        var shell = emptyCellRemainder(cell);
+        if (shell.hasTag()) result.getOrCreateTag().merge(shell.getTag());
+        return result;
+    }
+
+    /** Builds the reusable shell from one native fluid cell while retaining its item data. */
+    public static ItemStack emptyCellRemainder(ItemStack cell) {
+        if (!(cell.getItem() instanceof CellItem)) return ItemStack.EMPTY;
+        var copy = cell.copy();
+        copy.setCount(1);
+        return CellItem.withContents(copy, FluidStack.EMPTY);
+    }
+
+    /** Returns a universal shell for a specialized capsule consumed by its own device. */
+    public static ItemStack emptyUniversalCell(ItemStack capsule) {
+        if (capsule.isEmpty()) return ItemStack.EMPTY;
+        return CellItem.withContents(
+                CellItem.retype(capsule, CellFamily.UNIVERSAL.emptyPath()), FluidStack.EMPTY);
     }
 
     static ItemStack exchangeCursor(TransportNode node, ItemStack carried, Player who) {

@@ -1,6 +1,7 @@
 package com.industrialage.ia2.fluids;
 
 import com.industrialage.ia2.content.IndustrialFluid;
+import com.industrialage.ia2.forge.content.ForgeContent;
 import java.util.function.Consumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;

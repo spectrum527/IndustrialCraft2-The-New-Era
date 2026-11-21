@@ -2,7 +2,6 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
-import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -106,19 +104,6 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock {
             if (rate > 0) {
                 if (server && node.cover(side, rate) && !player.getAbilities().instabuild)
                     item.shrink(1);
-                return true;
-            }
-        }
-        if (spec.kind() != Kind.ITEM_PIPE
-                && server
-                && id.equals("ic2:empty_cell")
-                && node.liquid != null
-                && TransportPlatform.isPristineCell(item)
-                && node.drain(side, node.liquid, 1000, true) == 1000) {
-            var named = WorkshopPlatform.namedFilledCell(node.liquid.stack(1));
-            if (!named.isEmpty()) {
-                node.drain(side, node.liquid, 1000, false);
-                player.setItemInHand(hand, ItemUtils.createFilledResult(item, player, named));
                 return true;
             }
         }

@@ -7,6 +7,8 @@ The output pack is specific to the selected game and loader.
 """
 from world_resources import generate as generate_world
 
+from cell_recipes import cell_recipe, generate_cell_recipes
+
 import argparse
 import csv
 import json
@@ -33,6 +35,8 @@ workspace = tempfile.TemporaryDirectory(prefix=".ic2-pack-", dir=destination.par
 out = Path(workspace.name)
 
 def write(path, value):
+    if path.startswith(("data/ic2/recipes/", "data/ic2/recipe/")):
+        value = cell_recipe(value, newest)
     file = out / (path + '.json')
     file.parent.mkdir(parents=True, exist_ok=True)
     file.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
@@ -372,7 +376,7 @@ if args.logistics:
     R['wrench']=(['B B','BBB',' B '],{'B':'ic2:bronze_ingot'},1)
     R['wrench_down']=([' B ','BBB','B B'],{'B':'ic2:bronze_ingot'},1)
     R['crowbar']=([' DB','DBD','BD '],{'D':'minecraft:red_dye','B':'ic2:bronze_ingot'},1)
-    R['empty_cell']=([' T ','TGT',' T '],{'T':'ic2:tin_casing','G':'minecraft:glass_pane'},1)
+    R['empty_cell']=(['TGT'],{'T':'ic2:tin_casing','G':'minecraft:glass_pane'},4)
     for material in ('bronze','iron','steel'):
         R[material+'_tank']=(['PCP','C C','PCP'],{'P':f'ic2:{material}_plate','C':'ic2:empty_cell'},1)
     shapeless['pump_cover_lv']=(['ic2:bronze_fluid_pipe_medium','minecraft:piston','ic2:insulated_copper_cable'],1)
@@ -556,6 +560,9 @@ for entry in classic["recipes"]:
                   "ingredients": [ingredient(v) for v in entry["ingredients"]]}
     recipe["result"] = result(entry["output"], entry["count"])
     data(recipe_dir + "classic/" + entry["output"], recipe)
+
+if args.logistics:
+    generate_cell_recipes(repo, forge, newest, write)
 
 count = sum(1 for _ in out.rglob("*.json"))
 publish(out, destination)

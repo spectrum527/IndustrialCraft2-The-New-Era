@@ -149,7 +149,7 @@ public final class WorldChecks {
         click(level, player, CROSS, Direction.UP, weedEx);
         verify(
                 "weed-protection-returns-container",
-                player.getMainHandItem().is(items.apply("empty_cell")));
+                player.getMainHandItem().is(items.apply("fluid_cell")));
         placeCrop(level, CROSS.east(), "wheat_crop", 7);
         placeCrop(level, CROSS.west(), "reed_crop", 2);
         for (int i = 0; i < 30 && level.getBlockState(CROSS).is(block("crop_stick")); i++)
@@ -451,7 +451,7 @@ public final class WorldChecks {
                                 .slots
                                 .get(3)
                                 .getItem()
-                                .is(items.apply("empty_cell")));
+                                .is(items.apply("fluid_cell")));
         verify(
                 "miner-drills-ore-and-halts-at-bedrock",
                 level.getBlockState(MINER.below()).is(block("mining_pipe_tip"))

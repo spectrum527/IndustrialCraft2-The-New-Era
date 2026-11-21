@@ -1,4 +1,6 @@
 """Emit resources for registered industrial families using the artist's face and icon inventory."""
+from cell_recipes import expand_liquid_choices
+
 import csv
 import json
 from pathlib import Path
@@ -172,7 +174,7 @@ def _crafting(repo, registered, eligible, forge, modern, write):
     for key, (kind, width, height, result, count, indices) in book["recipes"].items():
         if not result.startswith("ic2:") or result[4:] not in eligible:
             continue
-        options = [book["ingredientSets"][i] for i in indices]
+        options = [expand_liquid_choices(book["ingredientSets"][i]) for i in indices]
         if result == "ic2:fluid_cell":
             # The reference aliases both cell recipes to the same pane. A full glass center
             # leaves both manufacturing routes reachable in the same native recipe book.

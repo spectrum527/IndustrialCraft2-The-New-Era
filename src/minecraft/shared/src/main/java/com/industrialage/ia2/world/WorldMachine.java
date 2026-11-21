@@ -1,6 +1,7 @@
 package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
+import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.platform.CapabilityFacade.Face;
 import com.industrialage.ia2.power.EuBuffer;
 import com.industrialage.ia2.power.WorldEnergy;
@@ -251,7 +252,9 @@ final class WorldMachine extends WorldSaveBase implements WorldPowerPort, EuBuff
         }
         String supply = weed ? "ic2:weed_ex_cell" : "ic2:hydration_cell";
         return replaceContainer(
-                inputSlot, supply, new ItemStack(WorldNative.item("ic2:empty_cell")));
+                inputSlot,
+                supply,
+                TransportPlatform.emptyUniversalCell(inventory.getItem(inputSlot)));
     }
 
     private void drawMatronFluids(ServerLevel level) {

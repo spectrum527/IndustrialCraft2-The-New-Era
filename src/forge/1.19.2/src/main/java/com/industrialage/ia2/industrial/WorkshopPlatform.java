@@ -3,10 +3,10 @@ package com.industrialage.ia2.industrial;
 import com.industrialage.ia2.forge.content.ForgeContent;
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
-import com.industrialage.ia2.logistics.CellItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -18,7 +18,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -40,7 +39,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
@@ -487,36 +485,11 @@ public final class WorkshopPlatform {
 
     static boolean interactFluid(
             WorkshopNode node, Player player, InteractionHand hand, Direction side) {
-        if (WorkshopCells.fillNamedHand(node, side, player, hand)) return true;
         var access = new WorkshopFluidPort(node, side);
         return access.size() > 0
                 && FluidUtil.getFluidHandler(player.getItemInHand(hand)).isPresent()
                 && (!(node.getLevel() instanceof ServerLevel)
                         || FluidUtil.interactWithFluidHandler(player, hand, new Port(access)));
-    }
-
-    /** Handles the named-cell result when Minecraft dispatches directly to the held item. */
-    public static boolean fillNamedHand(
-            ServerLevel level, BlockPos pos, Direction side, Player player, InteractionHand hand) {
-        return level.getBlockEntity(pos) instanceof WorkshopNode node
-                && WorkshopCells.fillNamedHand(node, side, player, hand);
-    }
-
-    static void playPickup(WorkshopNode node, Player player, Liquid moved) {
-        var fluid = fluid(moved.id(), moved.amount());
-        var sound = fluid.getFluid().getFluidType().getSound(fluid, SoundActions.BUCKET_FILL);
-        if (sound != null) {
-            node.getLevel()
-                    .playSound(
-                            null,
-                            player.getX(),
-                            player.getY() + 0.5,
-                            player.getZ(),
-                            sound,
-                            SoundSource.BLOCKS,
-                            1,
-                            1);
-        }
     }
 
     static boolean canOpen(WorkshopNode node, Player player) {
@@ -531,14 +504,6 @@ public final class WorkshopPlatform {
         if (player instanceof ServerPlayer server) {
             NetworkHooks.openScreen(server, node, buffer -> buffer.writeEnum(node.kind));
         }
-    }
-
-    /** Returns the named original cell item for a plain, supported industrial liquid. */
-    public static ItemStack namedFilledCell(FluidStack liquid) {
-        if (liquid.isEmpty() || liquid.hasTag()) {
-            return ItemStack.EMPTY;
-        }
-        return WorkshopCells.namedStack(fluidId(liquid));
     }
 
     static void announceRoute(Player player, Direction face, int priority) {
