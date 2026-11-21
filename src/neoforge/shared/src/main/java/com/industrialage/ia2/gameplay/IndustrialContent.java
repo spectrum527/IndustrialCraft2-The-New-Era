@@ -1,6 +1,7 @@
 package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.config.ActiveConfig;
+import com.industrialage.ia2.content.CreativeCategory;
 import com.industrialage.ia2.content.IndustrialMaterials;
 import com.industrialage.ia2.content.PortableEquipment;
 import com.industrialage.ia2.equipment.ArmorPlatform;
@@ -178,35 +179,34 @@ public final class IndustrialContent {
                 NativeGameplay.CraftingTool::new,
                 () -> new Item.Properties().durability(60));
         NativeGameplay.bronzeGear(modBus, ITEMS);
-        TABS.register(
-                "industrialcraft",
-                () ->
-                        CreativeModeTab.builder()
-                                .title(Component.translatable("itemGroup.ic2"))
-                                .icon(() -> new ItemStack(MACHINE_BLOCKS.getFirst().get()))
-                                .displayItems(
-                                        (parameters, output) -> {
-                                            var entries = new java.util.LinkedHashSet<Item>();
-                                            ITEMS.getEntries()
-                                                    .forEach(holder -> entries.add(holder.get()));
-                                            com.industrialage.ia2.world.WorldPlatform.forEachItem(
-                                                    entries::add);
-                                            var all =
-                                                    net.minecraft.core.registries.BuiltInRegistries
-                                                            .ITEM;
-                                            all.stream()
-                                                    .filter(
-                                                            item ->
-                                                                    all.getKey(item)
-                                                                            .getNamespace()
-                                                                            .equals("ic2"))
-                                                    .sorted(
-                                                            java.util.Comparator.comparing(
-                                                                    all::getKey))
-                                                    .forEach(entries::add);
-                                            entries.forEach(output::accept);
-                                        })
-                                .build());
+        for (var group : CreativeCategory.values()) {
+            TABS.register(
+                    group.registryPath(),
+                    () ->
+                            CreativeModeTab.builder()
+                                    .title(Component.translatable("itemGroup." + group.label()))
+                                    .icon(() -> NativeGameplay.stack("ic2:" + group.icon(), 1))
+                                    .displayItems(
+                                            (parameters, output) -> {
+                                                for (var path : group.entries()) {
+                                                    var stack =
+                                                            NativeGameplay.stack("ic2:" + path, 1);
+                                                    if (stack.isEmpty()) continue;
+                                                    output.accept(stack);
+                                                    var device = PortableGear.type(stack);
+                                                    if (device != null
+                                                            && device.kind
+                                                                    != PortableEquipment.Kind
+                                                                            .DISPOSABLE) {
+                                                        var charged = stack.copy();
+                                                        PortableGear.restoreEnergy(
+                                                                charged, device.capacity);
+                                                        output.accept(charged);
+                                                    }
+                                                }
+                                            })
+                                    .build());
+        }
         BLOCKS.register(modBus);
         ITEMS.register(modBus);
         ENTITIES.register(modBus);
