@@ -4,6 +4,7 @@ import com.industrialage.ia2.celltest.HeldCellChecks;
 import com.industrialage.ia2.celltest.HeldCellChecks.Liquid;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -19,6 +20,7 @@ final class NativeHeldCellHost {
                 NativeGameplayFixture::block,
                 stack -> liquid(FluidUtil.getFluidContained(stack).orElse(FluidStack.EMPTY)),
                 (stack, contents) -> NativeTransferAccess.filledCell(stack, nativeFluid(contents)),
+                (stack, name) -> stack.set(DataComponents.CUSTOM_NAME, name),
                 pos -> tank(level, pos),
                 (pos, contents, simulate) ->
                         NativeTransferAccess.fill(
