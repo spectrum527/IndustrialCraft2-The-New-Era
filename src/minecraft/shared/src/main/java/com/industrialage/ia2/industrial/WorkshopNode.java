@@ -48,6 +48,10 @@ public final class WorkshopNode extends WorkshopSaveBase
     int cycleDuration;
     ItemStack preview = ItemStack.EMPTY;
     int auxiliaryUnits;
+    int visualWindRotor;
+    int visualWindSpeed;
+    long windSampleTick = Long.MIN_VALUE;
+    int windSample;
     long handledAt = Long.MIN_VALUE;
     long kineticAt = Long.MIN_VALUE;
     String lastRecipe = "";
@@ -610,6 +614,37 @@ public final class WorkshopNode extends WorkshopSaveBase
         return Component.translatable("block.ic2." + kind.path);
     }
 
+    /** Stable renderer type: 0 none, 1 wood, 2 bronze, 3 iron, 4 steel, 5 carbon. */
+    public int visualRotorType() {
+        if (kind != WorkshopKind.WIND_KINETIC) return 0;
+        return getLevel() instanceof ServerLevel
+                ? WindRotorMount.type(inventory.getItem(0))
+                : visualWindRotor;
+    }
+
+    /** Server-sampled available wind KU/t; zero means that the rotor is stopped. */
+    public int visualRotorSpeed() {
+        return kind == WorkshopKind.WIND_KINETIC ? visualWindSpeed : 0;
+    }
+
+    void acceptWindVisual(int rotor, int speed) {
+        visualWindRotor = rotor >= 1 && rotor <= 5 ? rotor : 0;
+        visualWindSpeed = Math.max(0, speed);
+    }
+
+    void publishWindVisual(ServerLevel level, int available) {
+        int rotor = WindRotorMount.type(inventory.getItem(0));
+        if (visualWindSpeed != available || visualWindRotor != rotor) {
+            acceptWindVisual(rotor, available);
+            var state = getBlockState();
+            level.sendBlockUpdated(
+                    getBlockPos(),
+                    state,
+                    state,
+                    net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+        }
+    }
+
     /** Rotor rating for a wind kinetic device, zero when empty or negative for another kind. */
     public int windRotor() {
         return kind == WorkshopKind.WIND_KINETIC ? WorkshopKinetic.rotor(this) : -1;
@@ -713,17 +748,20 @@ public final class WorkshopNode extends WorkshopSaveBase
     @Override
     public void onLoad() {
         super.onLoad();
+        WindRotorClearance.attach(this);
         WorldEnergy.connect(this);
     }
 
     @Override
     public void onChunkUnloaded() {
+        WindRotorClearance.detach(this);
         WorldEnergy.disconnect(this);
         super.onChunkUnloaded();
     }
 
     @Override
     public void setRemoved() {
+        WindRotorClearance.detach(this);
         WorldEnergy.disconnect(this);
         super.setRemoved();
     }
