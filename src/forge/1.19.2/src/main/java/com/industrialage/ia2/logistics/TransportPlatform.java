@@ -179,7 +179,8 @@ public final class TransportPlatform {
                 : new LiquidNetwork.Batch(new FluidKey(result), result.getAmount());
     }
 
-    static boolean isPristineCell(ItemStack cell) {
+    /** A classic empty shell with no additional item data. */
+    public static boolean isPristineCell(ItemStack cell) {
         return sameItem(
                 cell,
                 new ItemStack(

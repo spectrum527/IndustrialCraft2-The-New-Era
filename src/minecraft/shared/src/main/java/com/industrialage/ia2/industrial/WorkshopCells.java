@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.logistics.TransportPlatform;
 import java.util.Map;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -49,8 +50,7 @@ final class WorkshopCells {
     }
 
     static WorkshopPlans.ContainerResult namedFill(WorkshopNode.Tank tank, ItemStack stack) {
-        if (tank.amount < VOLUME
-                || !WorkshopPlatform.sameItem(stack, WorkshopPlatform.stack("ic2:empty_cell", 1))) {
+        if (tank.amount < VOLUME || !TransportPlatform.isPristineCell(stack)) {
             return null;
         }
         var filled = namedStack(tank.id);
@@ -84,8 +84,7 @@ final class WorkshopCells {
         if (contents == null
                 || contents.liquid().amount() != VOLUME
                 || !contents.liquid().id().equals(filled.liquid().id())
-                || !WorkshopPlatform.sameItem(
-                        contents.stack(), WorkshopPlatform.stack("ic2:empty_cell", 1))) {
+                || !TransportPlatform.isPristineCell(contents.stack())) {
             return false;
         }
 
