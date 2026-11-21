@@ -35,6 +35,7 @@ public final class HeldFluidCellGameTests {
                         PlayableGameTests::block,
                         cell -> liquid(FluidUtil.getFluidContained(cell).orElse(FluidStack.EMPTY)),
                         HeldFluidCellGameTests::seed,
+                        ItemStack::setHoverName,
                         pos -> liquid(tank(helper, pos).getFluidInTank(0)),
                         (pos, contents, simulate) ->
                                 tank(helper, pos)

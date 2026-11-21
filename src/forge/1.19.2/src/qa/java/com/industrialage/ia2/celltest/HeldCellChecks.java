@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -41,6 +42,7 @@ public final class HeldCellChecks {
             Function<String, Block> block,
             Function<ItemStack, Liquid> cellLiquid,
             BiFunction<ItemStack, Liquid, ItemStack> seedCell,
+            BiConsumer<ItemStack, Component> nameCell,
             Function<BlockPos, Liquid> tankLiquid,
             TankFill tankFill) {}
 
@@ -107,6 +109,110 @@ public final class HeldCellChecks {
                 "partial-cell-absorbs-only-remaining-capacity",
                 fluidItem(held(), "fluid_cell", Fluids.WATER, 1, 1000)
                         && host.tankLiquid().apply(tank).equals(new Liquid(Fluids.WATER, 157)));
+        withdrawFromMachine(tank);
+    }
+
+    private void withdrawFromMachine(BlockPos pos) {
+        player.getInventory().clearContent();
+        var water = new Liquid(Fluids.WATER, 1000);
+        seedMachine(pos, "fluid_bottler", water);
+        useOn(pos, stack("empty_cell", 1));
+        var result = held().copy();
+        check.accept(
+                "bottler-withdrawal-produces-named-water-cell",
+                fluidItem(result, "water_cell", Fluids.WATER, 1, 1000)
+                        && host.tankLiquid().apply(pos).amount() == 0);
+        rejectedWorld("bottler-water-cell-cannot-overwrite-lava-source", result, Fluids.LAVA, 0);
+        useOn(pos, result);
+        check.accept(
+                "bottler-withdrawal-water-can-be-returned",
+                fluidItem(held(), "empty_cell", Fluids.EMPTY, 1, 0)
+                        && host.tankLiquid().apply(pos).equals(water));
+
+        player.setShiftKeyDown(true);
+        try {
+            useOn(pos, stack("empty_cell", 1));
+            check.accept(
+                    "bottler-sneak-withdrawal-produces-named-water-cell",
+                    fluidItem(held(), "water_cell", Fluids.WATER, 1, 1000)
+                            && host.tankLiquid().apply(pos).amount() == 0);
+        } finally {
+            player.setShiftKeyDown(false);
+        }
+
+        var partial = host.seedCell().apply(stack("empty_cell", 1), new Liquid(Fluids.WATER, 250));
+        seedMachine(pos, "fluid_bottler", new Liquid(Fluids.WATER, 750));
+        useOn(pos, partial.copy());
+        check.accept(
+                "bottler-tops-up-classic-cell-as-named-water",
+                fluidItem(held(), "water_cell", Fluids.WATER, 1, 1000)
+                        && host.tankLiquid().apply(pos).amount() == 0);
+        seedMachine(pos, "fluid_bottler", new Liquid(Fluids.WATER, 400));
+        useOn(pos, partial.copy());
+        check.accept(
+                "bottler-partial-fill-keeps-exact-water-payload",
+                fluidItem(held(), "empty_cell", Fluids.WATER, 1, 650)
+                        && host.tankLiquid().apply(pos).amount() == 0);
+
+        var markedCell = partial.copy();
+        var mark = Component.literal("Marked cell");
+        host.nameCell().accept(markedCell, mark);
+        rejectedWorld(
+                "marked-partial-water-cell-preserves-lava-source", markedCell, Fluids.LAVA, 0);
+        seedMachine(pos, "fluid_bottler", new Liquid(Fluids.WATER, 750));
+        useOn(pos, markedCell);
+        check.accept(
+                "bottler-keeps-the-custom-name-of-filled-legacy-cell",
+                fluidItem(held(), "empty_cell", Fluids.WATER, 1, 1000)
+                        && held().getHoverName().equals(mark)
+                        && host.tankLiquid().apply(pos).amount() == 0);
+
+        var coolant = host.block().apply("coolant").defaultBlockState().getFluidState().getType();
+        check.accept("registered-coolant-is-a-fluid", coolant != Fluids.EMPTY);
+        var other = new Liquid(coolant, 1000);
+        seedMachine(pos, "fluid_bottler", other);
+        rejectedTarget("bottler-cannot-mix-coolant-with-water-cell", pos, partial);
+        useOn(pos, stack("empty_cell", 1));
+        check.accept(
+                "bottler-keeps-custom-fluids-without-named-cells",
+                fluidItem(held(), "empty_cell", coolant, 1, 1000)
+                        && host.tankLiquid().apply(pos).amount() == 0);
+
+        seedMachine(pos, "fluid_regulator", water);
+        var empty = stack("empty_cell", 1);
+        useOn(pos, empty.copy());
+        check.accept(
+                "hand-cannot-drain-fluid-regulator-input",
+                ItemStack.matches(held(), empty) && host.tankLiquid().apply(pos).equals(water));
+
+        seedMachine(pos, "fluid_bottler", water);
+        for (int slot = 0; slot < 36; slot++) {
+            player.getInventory().setItem(slot, new ItemStack(Items.COBBLESTONE, 64));
+        }
+        useOn(pos, stack("empty_cell", 3));
+        int drops = 0;
+        for (var drop : world.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(3))) {
+            if (fluidItem(drop.getItem(), "water_cell", Fluids.WATER, 1, 1000)) {
+                drops++;
+                drop.discard();
+            }
+        }
+        int stock = host.tankLiquid().apply(pos).amount();
+        check.accept(
+                "bottler-full-inventory-keeps-water-and-shells",
+                (stock == 1000 && fluidItem(held(), "empty_cell", Fluids.EMPTY, 3, 0) && drops == 0)
+                        || (stock == 0
+                                && fluidItem(held(), "empty_cell", Fluids.EMPTY, 2, 0)
+                                && drops == 1));
+        player.getInventory().clearContent();
+    }
+
+    private void seedMachine(BlockPos pos, String machine, Liquid contents) {
+        prepareTarget(pos, machine);
+        check.accept(
+                "native-machine-stock-" + machine + "-" + contents.amount(),
+                host.tankFill().fill(pos, contents, false) == contents.amount()
+                        && host.tankLiquid().apply(pos).equals(contents));
     }
 
     private void collect(CellKind kind, Fluid fluid, int count, boolean stuffed) {
