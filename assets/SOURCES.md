@@ -1775,6 +1775,7 @@
 | `assets/ic2/textures/models/armor/quantum_layer_2.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/ic2_quantum_layer_2.png`，原样适配本版装备路径 | 2026-11-20 |
 | `assets/ic2/textures/models/armor/quantum_layer_2_overlay.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 回交纹理.zip 内 `assets/minecraft/textures/models/armor/quantum_2_overlay.png`，原样适配本版装备路径 | 2026-11-20 |
 | `assets/ic2/equipment/alloy.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
+| `assets/ic2/models/block/coke_kiln_frame.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 1.0.5 手工编写的成形焦炉钢箍几何，使用已登记的钢块材质 | 2026-11-22 |
 | `assets/ic2/equipment/hazmat.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
 | `assets/ic2/equipment/nano.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
 | `assets/ic2/equipment/night_vision.json` | new | IC2 重建项目 | CC BY-SA 4.0 | 本项目编写的原生装备图层索引 | 2026-11-20 |
