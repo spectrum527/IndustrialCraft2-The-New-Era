@@ -1,5 +1,6 @@
 package com.industrialage.ia2.gameplay;
 
+import com.industrialage.ia2.wrench.WrenchTarget;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +28,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 
 /** A placeable machine that opens its own inventory and ticks on the server. */
-class MachineBlock extends NativeGameplay.MachineBlockBase {
+class MachineBlock extends NativeGameplay.MachineBlockBase implements WrenchTarget {
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     final MachineKind kind;
 
@@ -141,6 +142,15 @@ class MachineBlock extends NativeGameplay.MachineBlockBase {
     @Override
     protected boolean isSignalSource(BlockState state) {
         return kind.storage();
+    }
+
+    @Override
+    public ItemStack wrenchDrop(ServerLevel level, BlockPos pos, BlockState state) {
+        var drop = WrenchTarget.super.wrenchDrop(level, pos, state);
+        if (level.getBlockEntity(pos) instanceof IndustrialMachine machine) {
+            IndustrialContent.retainOnDrop(machine, drop);
+        }
+        return drop;
     }
 
     @Override

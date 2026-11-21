@@ -47,6 +47,7 @@ public final class ClientServices {
             EchoProtocol echo,
             Consumer<Consumer<CustomPacketPayload>> installSender) {
         var services = new ClientServices(echo);
+        com.industrialage.ia2.wrench.WrenchRenderer.install(gameBus);
         installSender.accept(ClientServices::send);
         modBus.addListener(
                 RegisterKeyMappingsEvent.class, event -> event.register(services.binding));

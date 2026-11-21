@@ -11,19 +11,15 @@ import com.industrialage.ia2.platform.ConfigFacade;
 import com.mojang.serialization.Codec;
 import java.util.List;
 import java.util.function.Supplier;
-import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -215,61 +211,6 @@ public final class IndustrialContent {
         TABS.register(modBus);
         NativeGameplay.registerAutomation(modBus, MACHINE);
         EnergyNetwork.install(gameBus, config);
-    }
-
-    /** Rotates a machine toward the selected face, or dismantles it while crouching. */
-    public static InteractionResult wrenchBlock(UseOnContext context) {
-        return wrenchBlock(context, false);
-    }
-
-    static InteractionResult wrenchBlock(UseOnContext context, boolean electric) {
-        var level = context.getLevel();
-        var pos = context.getClickedPos();
-        var state = level.getBlockState(pos);
-        var player = context.getPlayer();
-        if (!(state.getBlock() instanceof MachineBlock block) || player == null) {
-            return InteractionResult.PASS;
-        }
-        if (!player.mayBuild() || !level.mayInteract(player, pos)) {
-            return InteractionResult.FAIL;
-        }
-        Direction from = MachineBlock.facing(state);
-        Direction face = context.getClickedFace();
-        if (electric && player.isShiftKeyDown()) face = face.getOpposite();
-        if (!block.kind.storage() && face.getAxis().isVertical()) face = from.getClockWise();
-        boolean dismantle = electric ? face == from : player.isShiftKeyDown();
-        int cost = dismantle ? 1_000 : PortableEquipment.ELECTRIC_WRENCH.cost;
-        var tool = context.getItemInHand();
-        if (electric && !player.isCreative() && PortableGear.stored(tool) < cost) {
-            return InteractionResult.FAIL;
-        }
-        if (dismantle) {
-            if (level instanceof ServerLevel server) {
-                var drop = new ItemStack(block);
-                if (server.getBlockEntity(pos) instanceof IndustrialMachine machine) {
-                    retainOnDrop(machine, drop);
-                }
-                if (!server.destroyBlock(pos, false, player, Block.UPDATE_LIMIT)) {
-                    return InteractionResult.FAIL;
-                }
-                if (!player.isCreative()) {
-                    Block.popResource(server, pos, drop);
-                    if (electric) PortableGear.spend(tool, cost);
-                }
-            }
-            return InteractionResult.SUCCESS;
-        }
-        if (face == from) {
-            return InteractionResult.PASS;
-        }
-        if (level instanceof ServerLevel server) {
-            if (!server.setBlockAndUpdate(pos, state.setValue(block.directionProperty(), face))) {
-                return InteractionResult.FAIL;
-            }
-            EnergyNetwork.invalidate(server);
-            if (electric && !player.isCreative()) PortableGear.spend(tool, cost);
-        }
-        return InteractionResult.SUCCESS;
     }
 
     static void retainOnDrop(IndustrialMachine machine, ItemStack stack) {
