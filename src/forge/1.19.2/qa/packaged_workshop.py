@@ -68,7 +68,7 @@ def workshop(server):
                    f"unless data block {canner} ic2_input_fluid")
     server.require("pumped_washer_made_three_products", items(washer, "ic2:purified_tin", 1, 9),
                    items(washer, "ic2:small_tin_dust", 2, 10), items(washer, "ic2:stone_dust", 1, 11),
-                   f"unless data block {washer} ic2_input_fluid")
+                   f'if data block {washer} {{ic2_input_fluid:{{FluidName:"minecraft:water",Amount:900}}}}')
     server.require("heated_iron_completed_6000_ticks_to_steel", items(furnace, "ic2:steel_ingot", 1, 9),
                    items(furnace, "ic2:slag", 1, 10), f"unless data block {furnace} ic2_input_fluid",
                    seconds=380)

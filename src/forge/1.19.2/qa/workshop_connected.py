@@ -170,7 +170,7 @@ def metal_lines(server):
                    f'if data block {barrel} Items[{{id:"ic2:small_tin_dust",Count:4b}}]',
                    f'if data block {barrel} Items[{{id:"ic2:stone_dust",Count:2b}}]',
                    "unless data block 8 160 45 ic2_fluid",
-                   "unless data block 8 160 42 ic2_input_fluid",
+                   'if data block 8 160 42 {ic2_input_fluid:{FluidName:"minecraft:water",Amount:1800}}',
                    "unless data block 3 160 42 Items[0]", seconds=130)
     server.state("6 158 32", "14 158 33", "11 160 42", "19 158 29")
 

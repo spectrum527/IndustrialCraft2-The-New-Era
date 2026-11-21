@@ -187,8 +187,11 @@ public final class WorkshopGameTests {
                             "One stone dust");
                     check(
                             helper,
-                            !washer.saveWithoutMetadata().contains("ic2_input_fluid"),
-                            "Job consumed precisely the liter");
+                            washer.saveWithoutMetadata()
+                                            .getCompound("ic2_input_fluid")
+                                            .getInt("Amount")
+                                    == 900,
+                            "Job consumed 100 mB and left 900 mB");
                 });
     }
 
