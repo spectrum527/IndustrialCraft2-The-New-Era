@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -142,6 +143,7 @@ public final class OptionalCompatFixture {
                 report.add("Curios retained 100 EU after unequipping");
             }
             player.stopRiding();
+            chargeQuantumSuit(level, player, report);
             player.discard();
             Files.writeString(
                     Path.of("compat-checks.txt"), "passed\n" + String.join("\n", report) + "\n");
@@ -159,6 +161,51 @@ public final class OptionalCompatFixture {
         } finally {
             server.halt(false);
         }
+    }
+
+    private static void chargeQuantumSuit(
+            ServerLevel level, ServerPlayer player, List<String> report) {
+        var slots =
+                List.of(
+                        EquipmentSlot.HEAD,
+                        EquipmentSlot.CHEST,
+                        EquipmentSlot.LEGS,
+                        EquipmentSlot.FEET);
+        var pieces = List.of("helmet", "chestplate", "leggings", "boots");
+        for (int i = 0; i < slots.size(); i++) {
+            player.setItemSlot(
+                    slots.get(i), new ItemStack(CompatHost.item("quantum_" + pieces.get(i))));
+        }
+        var hand = new ItemStack(CompatHost.item("quantum_helmet"));
+        var offhand = new ItemStack(CompatHost.item("quantum_boots"));
+        var hotbar = new ItemStack(CompatHost.item("quantum_chestplate"));
+        var inventory = new ItemStack(CompatHost.item("quantum_leggings"));
+        player.setItemSlot(EquipmentSlot.MAINHAND, hand);
+        player.setItemSlot(EquipmentSlot.OFFHAND, offhand);
+        player.getInventory().setItem(3, hotbar);
+        player.getInventory().setItem(18, inventory);
+        player.setPos(PAD.getX() + 0.5, PAD.getY() + 1, PAD.getZ() + 0.5);
+        player.setOnGround(true);
+        for (var charger : List.of("mfe_chargepad", "mfsu_chargepad")) {
+            place(level, PAD, charger);
+            var pad = (WorldPowerStorage) level.getBlockEntity(PAD);
+            require(pad.exchangeStoredEnergy(96_007, false), "seed " + charger);
+            CompatHost.tick(level, PAD);
+            int accepted = charger.equals("mfsu_chargepad") ? 12_000 : 0;
+            for (var slot : slots) {
+                require(
+                        ForgeGear.stored(player.getItemBySlot(slot)) == accepted,
+                        charger + " charge in " + slot);
+            }
+            for (var item : List.of(hand, offhand, hotbar, inventory)) {
+                require(ForgeGear.stored(item) == accepted, charger + " inventory stack " + item);
+            }
+            require(
+                    pad.availableStoredEnergy() == 96_007 - 8 * accepted,
+                    charger + " energy conservation");
+        }
+        report.add(
+                "MFE transfers 0 EU. MFSU transfers 12000 EU per quantum stack across eight positions with 7 EU left.");
     }
 
     private static void place(ServerLevel level, BlockPos pos, String path) {

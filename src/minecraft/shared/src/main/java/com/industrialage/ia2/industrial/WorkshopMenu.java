@@ -139,9 +139,11 @@ public final class WorkshopMenu extends AbstractContainerMenu {
         if ((kind == WorkshopKind.FLUID_HEAT || kind == WorkshopKind.SEMIFLUID) && slot == 0) {
             return WorkshopInventory.acceptsFluidFuel(kind, item);
         }
-        if ((kind == WorkshopKind.WIND_KINETIC || kind == WorkshopKind.WATER_KINETIC)
-                && slot == 0) {
+        if (kind == WorkshopKind.WIND_KINETIC && slot == 0) {
             return WorkshopKinetic.ROTOR_RATINGS.containsKey(WorkshopPlatform.itemId(item));
+        }
+        if (kind == WorkshopKind.WATER_KINETIC && slot == 0) {
+            return WorkshopKinetic.validWaterRotor(item);
         }
         if (kind == WorkshopKind.ELECTROLYZER
                 && slot >= WorkshopInventory.UPGRADE_START

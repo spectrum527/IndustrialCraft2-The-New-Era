@@ -24,6 +24,7 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -58,6 +59,9 @@ public final class ArmorPlatform {
                         event.setCanceled(true);
                     }
                 });
+        gameBus.addListener(
+                (ItemTooltipEvent event) ->
+                        ArmorEffects.appendChargeTooltip(event.getItemStack(), event.getToolTip()));
         gameBus.addListener(ArmorPlatform::protect);
         gameBus.addListener(ArmorPlatform::protectiveAttributes);
     }

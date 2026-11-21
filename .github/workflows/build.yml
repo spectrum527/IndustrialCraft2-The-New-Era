@@ -44,6 +44,9 @@ jobs:
           curl --fail --location --retry 3 --output "$installer" https://maven.minecraftforge.net/net/minecraftforge/forge/1.19.2-43.5.0/forge-1.19.2-43.5.0-installer.jar
           printf '%s  %s\n' 4869e60456321e99eb5120ae39171c382c27a05858cdfd4b90ff123e3750e681 "$installer" | sha256sum --check
           java -jar "$installer" --installServer "$server_dir"
+      - name: Check isolated pools and real river and ocean connections in installed Forge
+        timeout-minutes: 18
+        run: ./gradlew :forge:1.19.2:runPackagedWater "-Pic2.compat.forgeServer=$RUNNER_TEMP/ic2-optional-forge" --console=plain
       - name: Check The One Probe and Curios individually and together
         timeout-minutes: 15
         run: |
@@ -61,6 +64,8 @@ jobs:
           path: |
             src/forge/1.19.2/build/libs/*.jar
             src/forge/1.19.2/build/qa-machine/fixtures/*.jar
+            src/forge/1.19.2/build/run/packaged-water/run-*/*/water*.properties
+            src/forge/1.19.2/build/run/packaged-water/run-*/result.json
             src/forge/1.19.2/build/run/optional-compat-*/run-*/compat-checks.txt
             src/test/build/test-results/test/TEST-*.xml
             build/evidence-*/**/result.json

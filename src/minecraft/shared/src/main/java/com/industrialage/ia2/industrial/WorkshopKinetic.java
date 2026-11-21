@@ -2,11 +2,8 @@ package com.industrialage.ia2.industrial;
 
 import java.util.List;
 import java.util.Map;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.biome.Biomes;
 
 final class WorkshopKinetic {
     static final Map<String, Integer> ROTOR_RATINGS = WindRotorMount.ratings();
@@ -22,10 +19,16 @@ final class WorkshopKinetic {
             case WIND_KINETIC -> {
                 int available = wind(node, level, facing);
                 node.auxiliaryUnits = available;
-                node.publishWindVisual(level, available);
+                node.publishRotorVisual(level, available);
                 active = available > 0;
             }
-            case ELECTRIC_KINETIC, MANUAL_KINETIC, WATER_KINETIC ->
+            case WATER_KINETIC -> {
+                int available = water(node, level);
+                node.auxiliaryUnits = available;
+                node.publishRotorVisual(level, available);
+                active = available > 0;
+            }
+            case ELECTRIC_KINETIC, MANUAL_KINETIC ->
                     active = node.kineticAt >= level.getGameTime() - 1;
             case STEAM_TURBINE -> {
                 WorkshopDevices.push(node, node.byproduct, level, facing.getOpposite(), 1000);
@@ -109,41 +112,37 @@ final class WorkshopKinetic {
         return provided;
     }
 
+    static boolean validWaterRotor(net.minecraft.world.item.ItemStack stack) {
+        return WindRotorMount.type(stack) >= 2;
+    }
+
     private static int water(WorkshopNode node, ServerLevel level) {
-        if (rotor(node) == 0) {
+        long tick = level.getGameTime();
+        if (node.rotorSampleTick != tick) {
+            node.rotorSampleTick = tick;
+            node.rotorSample = sampleWater(node, level);
+        }
+        return node.rotorSample;
+    }
+
+    private static int sampleWater(WorkshopNode node, ServerLevel level) {
+        if (!validWaterRotor(node.inventory.getItem(0))
+                || WindRotorClearance.overlaps(node, level)
+                || !RotorSweep.clear(node, level, true)) {
+            node.waterConnectivity = null;
             return 0;
         }
-        var pos = node.getBlockPos();
-        if (level.getFluidState(pos.below()).is(FluidTags.WATER)
-                && level.getFluidState(pos.above()).is(FluidTags.WATER)) {
-            var biome = level.getBiome(pos);
-            if (biome.is(Biomes.DEEP_OCEAN)
-                    || biome.is(Biomes.DEEP_COLD_OCEAN)
-                    || biome.is(Biomes.DEEP_FROZEN_OCEAN)
-                    || biome.is(Biomes.DEEP_LUKEWARM_OCEAN)) {
-                return 400;
-            }
-            if (biome.is(Biomes.OCEAN)
-                    || biome.is(Biomes.COLD_OCEAN)
-                    || biome.is(Biomes.FROZEN_OCEAN)
-                    || biome.is(Biomes.WARM_OCEAN)
-                    || biome.is(Biomes.LUKEWARM_OCEAN)) {
-                return 300;
-            }
-            if (biome.is(Biomes.RIVER) || biome.is(Biomes.FROZEN_RIVER)) {
-                return 37;
-            }
-        }
-        return 0;
+        if (node.waterConnectivity == null) node.waterConnectivity = new WaterConnectivity();
+        return node.waterConnectivity.available(node, level);
     }
 
     static int wind(WorkshopNode node, ServerLevel level, Direction side) {
         long tick = level.getGameTime();
-        if (node.windSampleTick != tick) {
-            node.windSampleTick = tick;
-            node.windSample = sampleWind(node, level, side);
+        if (node.rotorSampleTick != tick) {
+            node.rotorSampleTick = tick;
+            node.rotorSample = sampleWind(node, level, side);
         }
-        return node.windSample;
+        return node.rotorSample;
     }
 
     private static int sampleWind(WorkshopNode node, ServerLevel level, Direction side) {
@@ -153,26 +152,8 @@ final class WorkshopKinetic {
                 || WindRotorClearance.overlaps(node, level)) {
             return 0;
         }
+        if (!RotorSweep.clear(node, level, false)) return 0;
         var center = node.getBlockPos().relative(side.getOpposite());
-        var move = new BlockPos.MutableBlockPos();
-        boolean alongX = side.getAxis() == Direction.Axis.X;
-        int radius = WindRotorMount.diameter(node.inventory.getItem(0)) / 2;
-        for (int vertical = -radius; vertical <= radius; vertical++) {
-            for (int horizontal = -radius; horizontal <= radius; horizontal++) {
-                double dx = Math.max(0, Math.abs(horizontal) - 0.5);
-                double dy = Math.max(0, Math.abs(vertical) - 0.5);
-                double rotorRadius = radius + 0.5;
-                if (dx * dx + dy * dy > rotorRadius * rotorRadius) continue;
-                move.set(
-                        center.getX() + (alongX ? 0 : horizontal),
-                        center.getY() + vertical,
-                        center.getZ() + (alongX ? horizontal : 0));
-                if (!level.hasChunkAt(move)
-                        || !level.getBlockState(move).getCollisionShape(level, move).isEmpty()) {
-                    return 0;
-                }
-            }
-        }
         long sampled = level.getGameTime() / 200L;
         int variation =
                 10
