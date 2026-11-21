@@ -1,4 +1,4 @@
-# IndustrialCraft²: The New Era 1.0.4 player guide
+# IndustrialCraft²: The New Era 1.0.5 player guide
 
 [简体中文](first-playable.md) · **English**
 
@@ -8,16 +8,18 @@ Pick the loader build that matches your Minecraft version, put the same JAR into
 
 | Minecraft | Tested loader | Java | File |
 | --- | --- | ---: | --- |
-| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.4.jar` |
-| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.4.jar` |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.4.jar` |
-| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.4.jar` |
+| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.5.jar` |
+| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.5.jar` |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.5.jar` |
+| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.5.jar` |
 
 Creative mode has eight tabs covering machines, power and wiring, nuclear engineering, tools and armor, materials and components, fluids and containers, transport and storage, and agriculture and building. The vanilla search tab also lists these items.
 
 Two optional mods fit well alongside IC2. The One Probe displays a machine's stored EU and tank fluid levels when you look at it, which makes wiring and pipe checks faster. Curios adds a back slot where you can wear a battery pack or electric jetpack without giving up your chestplate, and those packs still charge when you stand on a matching-tier charge pad.
 
 You can check individual crafting grids in the in-game recipe book or on MC百科. Machine parameters, formulas, and recipes here follow public MC百科 documentation and were checked against running builds for each version. [MC百科 IndustrialCraft² page](https://www.mcmod.cn/class/2.html) · [Macerator recipes](https://www.mcmod.cn/item/241.html)
+
+The vanilla Advancements screen has an IndustrialCraft tab. Resin, raw tin or a Treetap opens the root. There are 28 entries. Placing equipment, landing a powered tool hit and wearing complete armor sets count as actions. Each completed entry awards its XP once.
 
 All machine timers run in server game ticks. On an unlagged server, 20 ticks equal 1 second; server lag stretches real wait times.
 
@@ -38,6 +40,8 @@ When you go mining, gather iron, copper, coal, redstone, and flint along with th
 Early IC2 parts rely on two hand tools in a crafting grid. Each craft uses 1 durability.
 
 The Forge Hammer (5 iron ingots and 2 sticks) hammers metal ingots into plates (1 ingot gives 1 plate) and plates into item casings (1 plate gives 2 casings, such as 1 Tin Plate into 2 Tin Item Casings). The Cutter (3 iron plates and 2 iron ingots) cuts 1 Copper Plate into 2 Copper Cables or 1 Tin Plate into 3 Tin Cables.
+
+Cables can share a block with a water source. A bucket can fill or drain the cable and breaking a wet cable leaves the source behind.
 
 Bare cables deal magic damage to nearby players and mobs while a load draws power. Delivering 32 EU in a tick deals 1 point of damage within 1 block. At 128 EU, the wire deals 2 points within 2 blocks. Shocks stop when the receiver fills up and no other load draws power. Craft bare cable with Rubber in any grid slot to make Insulated Copper Cable or Insulated Tin Cable. One layer of rubber stops shocks on copper and tin cables, and insulation adds zero extra energy loss.
 
@@ -71,7 +75,7 @@ Make a Wrench before you move any machine. Breaking a basic IC2 machine with a p
 
 A Wrench takes 6 Bronze Ingots. Run raw copper and raw tin through your new Macerator, then combine 3 Crushed Copper Ore with 1 Crushed Tin Ore in any crafting grid to make 4 Bronze Dust. Smelt the dust into Bronze Ingots.
 
-The Wrench has two actions. Right-clicking a face of a machine, storage block, transformer, or item pipe turns its front or output face to that side. Sneak-right-clicking dismantles the block intact. A wrenched storage block keeps 80% of its stored EU by default; regular machines drop their inventory separately without keeping energy or progress. Later, an Electric Wrench uses EU and never loses tool durability.
+Aim a Wrench or Electric Wrench at a machine. Click a blue edge to turn its front or output toward that edge. Click the red center to dismantle it. Gaps leave the block in place. A box with no facing shows only the red center. A wrenched storage block keeps 80% of its stored EU by default; regular machines drop their inventory separately without keeping energy or progress. Later, an Electric Wrench uses EU and never loses tool durability.
 
 Once the Macerator and Wrench are ready, add the other three starter LV machines directly behind your BatBox.
 
@@ -202,8 +206,8 @@ Fluid pipes take 6 parts of the matching material: casings for tiny and small pi
 
 Three habits prevent most pipe headaches.
 
-1. Item pipes pull from the inventory behind them and push items out their aimed face. Right-click a face with a Wrench to steer the output.
-2. Fluid pipes need a pump attachment on the face touching a source tank to pull liquid out: Pump Attachment (LV) pumps 32 mB/t (crafted from a Medium Bronze Fluid Pipe, a piston, and an Insulated Copper Cable), and Pump Attachment (MV) pumps 128 mB/t (from a Medium Steel Fluid Pipe, a piston, and an Insulated Gold Cable). Right-click a pipe face with a Wrench to close or reopen that connection, and pry off pump attachments cleanly with a Crowbar.
+1. Item pipes pull from the inventory behind them and push items out their aimed face. Click the blue edge pointing in the desired output direction with a Wrench.
+2. Fluid pipes need a pump attachment on the face touching a source tank to pull liquid out: Pump Attachment (LV) pumps 32 mB/t (crafted from a Medium Bronze Fluid Pipe, a piston, and an Insulated Copper Cable), and Pump Attachment (MV) pumps 128 mB/t (from a Medium Steel Fluid Pipe, a piston, and an Insulated Gold Cable). Click the blue edge for a pipe connection with a Wrench to close or reopen it, and pry off pump attachments cleanly with a Crowbar.
 3. Test pipe direction with a bucket of water or a stack of empty cells before hooking up ore washers, canners, or electrolyzers. Give every byproduct (stone dust, slag, empty cells) a destination so a single full slot cannot stall the line.
 
 ### Tanks, batch crafting, sorting, and portable storage
@@ -212,7 +216,7 @@ Bronze, Iron, Steel, Iridium, and general Tanks store liquids. In a tank's GUI, 
 
 A Batch Crafter saves a recipe template for automated crafting. An Electric Sorting Machine routes items to chosen output sides by filter, while Weighted Item Distributors and Weighted Fluid Distributors send items or fluids by side priority (sneak-right-click a side with an empty hand to adjust its priority).
 
-Wooden, Bronze, Iron, Steel, and Iridium Storage Boxes keep all their contents when broken and carried. The Iridium Storage Box displays all 126 slots on an 18-by-7 grid. Page buttons on sorters, distributors, and storage boxes switch views inside the same container without losing items.
+Wooden, Iron, Bronze and Steel Storage Boxes have distinct lids, sides and bases. All five Storage Boxes, including Iridium, keep all their contents when broken and carried. The Iridium Storage Box displays all 126 slots on an 18-by-7 grid. Page buttons on sorters, distributors, and storage boxes switch views inside the same container without losing items.
 
 ## Coke Kiln, heat networks, and closed-loop steam power
 
@@ -223,7 +227,7 @@ To produce slower-burning Coke and liquid Creosote, build a 3x3x3 hollow multibl
 1. Build a 3x3x3 cube of Refractory Bricks with the single center block left empty (air).
 2. Replace the front center brick with the Coke Kiln controller, the top center brick with a Coke Kiln Hatch facing up, and the bottom center brick with a Coke Kiln Grate facing down.
 
-Feed coal or logs into the Coke Kiln or through the top hatch. Coal converts into Coke plus 500 mB of Creosote; logs convert into charcoal plus 250 mB of Creosote. The bottom grate pushes Creosote downward into pipes or tanks, ready for a Semifluid Generator or Liquid Fuel Firebox.
+Steel bands appear around the three-block-wide front when the shell is complete. Use the front controller to insert fuel, collect the solid product and read the Creosote gauge. Right-click it with an empty bucket when the grate holds at least 1,000 mB. A hopper can feed the top hatch. The hatch and bottom grate are automation ports. Coal converts into Coke plus 500 mB of Creosote; logs convert into charcoal plus 250 mB of Creosote. The bottom grate pushes Creosote downward into pipes or tanks, ready for a Semifluid Generator or Liquid Fuel Firebox.
 
 ### Closed-loop steam turbine plant
 
@@ -254,6 +258,8 @@ A standard Miner takes a Mining Drill or Diamond Drill, Mining Pipes, an OD or O
 ### Electric tools, armor, and charging
 
 Mining Drills, Diamond Drills, Iridium Drills, Chainsaws, Electric Wrenches, Mining Lasers (which cycle eight beam modes), Nano Sabers, Electric Jetpacks, NanoSuit armor, and QuantumSuit armor all charge in the charging slots of a matching-tier storage block or by standing on a matching Charge Pad.
+
+At full attack cooldown the powered Chainsaw and the Mining, Diamond and Iridium Drills deal 10, 6, 7 and 8 damage respectively. Each damaging hit costs 100, 50, 80 or 800 EU. The Mining Laser shows the selected mode by name and its EU per shot when you cycle it. The Nano Saber has a short activation and impact sound.
 
 Each QuantumSuit piece holds 10,000,000 EU. Put a piece in the upper charging slot of an MFSU, or stand on a powered MFSU Charge Pad to charge worn pieces and gear in your hands, hotbar, or inventory. Hover over a piece to see its charge and tier 4 requirement. The Classic MFSU is tier 3.
 
