@@ -7,6 +7,7 @@ import static com.industrialage.ia2.forge.qa.PlayableGameTests.player;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.stack;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.useOn;
 
+import com.industrialage.ia2.wrenchtest.WrenchHits;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
@@ -47,6 +48,10 @@ public final class LogisticsGameTests {
         var pos = helper.absolutePos(new BlockPos(1, 2, 1));
         var player = player(helper, pos);
         place(helper, player, pos, stack("steel_item_pipe_small"));
+        var level = helper.getLevel();
+        level.setBlockAndUpdate(
+                pos,
+                level.getBlockState(pos).setValue(BlockStateProperties.FACING, Direction.NORTH));
         interact(helper, player, pos, Direction.EAST, stack("wrench"));
 
         var entity = machine(helper, pos);
@@ -358,7 +363,16 @@ public final class LogisticsGameTests {
         player.setItemInHand(InteractionHand.MAIN_HAND, stack);
         check(
                 helper,
-                useOn(helper, player, pos, side, stack).consumesAction(),
+                (stack.is(stack("wrench").getItem())
+                                ? player.gameMode.useItemOn(
+                                        player,
+                                        helper.getLevel(),
+                                        stack,
+                                        InteractionHand.MAIN_HAND,
+                                        WrenchHits.pipeControl(
+                                                helper.getLevel(), pos, player, side))
+                                : useOn(helper, player, pos, side, stack))
+                        .consumesAction(),
                 "Native right-click accepted " + stack.getItem());
     }
 

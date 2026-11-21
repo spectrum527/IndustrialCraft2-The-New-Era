@@ -2,6 +2,7 @@ package com.industrialage.ia2.forge.qa;
 
 import com.industrialage.ia2.industrial.BoxBlock;
 import com.industrialage.ia2.industrial.BoxNode;
+import com.industrialage.ia2.wrenchtest.WrenchHits;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -89,11 +90,9 @@ final class StorageMatrix {
                     node.menu(2, outsider.getInventory(), 0) == null
                             && level.getBlockState(pos).getDestroyProgress(outsider, level, pos)
                                     == 0);
-            outsider.setShiftKeyDown(true);
             var tool = PlayableGameTests.stack("wrench");
             outsider.setItemInHand(InteractionHand.MAIN_HAND, tool);
             use(level, outsider, pos, tool);
-            outsider.setShiftKeyDown(false);
             check.accept(key + "outsider-wrench-denied", level.getBlockEntity(pos) == node);
             check.accept(
                     key + "no-automation-access",
@@ -119,9 +118,7 @@ final class StorageMatrix {
                     level.getBlockState(pos).getDestroyProgress(owner, level, pos) > wrongSpeed);
         } else owner.setItemInHand(InteractionHand.MAIN_HAND, held);
         if (method.equals("wrench")) {
-            owner.setShiftKeyDown(true);
             use(level, owner, pos, held);
-            owner.setShiftKeyDown(false);
             check.accept(key + "removed", level.getBlockState(pos).isAir());
         } else check.accept(key + "removed", owner.gameMode.destroyBlock(pos));
         var drops = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(2));
@@ -201,7 +198,7 @@ final class StorageMatrix {
     }
 
     private static void use(ServerLevel level, ServerPlayer player, BlockPos pos, ItemStack held) {
-        var hit = new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false);
+        var hit = WrenchHits.center(level, pos, Direction.UP);
         player.gameMode.useItemOn(player, level, held, InteractionHand.MAIN_HAND, hit);
     }
 }

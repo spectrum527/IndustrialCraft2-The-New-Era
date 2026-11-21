@@ -355,26 +355,15 @@ final class PlayClientFixture {
                 storageMining = true;
                 mc.gameMode.startDestroyBlock(STORAGE_POS, Direction.NORTH);
             }
-            case "storage-wrench" -> {
-                var connection = mc.getConnection();
-                mc.player.setShiftKeyDown(true);
-                connection.send(
-                        new net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket(
-                                mc.player,
-                                net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket
-                                        .Action.PRESS_SHIFT_KEY));
-                mc.gameMode.useItemOn(
-                        mc.player,
-                        InteractionHand.MAIN_HAND,
-                        new BlockHitResult(
-                                Vec3.atCenterOf(STORAGE_POS), Direction.NORTH, STORAGE_POS, false));
-                connection.send(
-                        new net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket(
-                                mc.player,
-                                net.minecraft.network.protocol.game.ServerboundPlayerCommandPacket
-                                        .Action.RELEASE_SHIFT_KEY));
-                mc.player.setShiftKeyDown(false);
-            }
+            case "storage-wrench" ->
+                    mc.gameMode.useItemOn(
+                            mc.player,
+                            InteractionHand.MAIN_HAND,
+                            new BlockHitResult(
+                                    Vec3.atCenterOf(STORAGE_POS).add(0, 0, -.5),
+                                    Direction.NORTH,
+                                    STORAGE_POS,
+                                    false));
             case "storage-place" ->
                     mc.gameMode.useItemOn(
                             mc.player,

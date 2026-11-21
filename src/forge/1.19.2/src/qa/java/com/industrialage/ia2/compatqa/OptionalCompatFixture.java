@@ -150,6 +150,7 @@ public final class OptionalCompatFixture {
             dischargeBatteries(level, player, report);
             verifyCreativeCatalog(report);
             chargeQuantumSuit(level, player, report);
+            WorkshopToolChecks.run(level, player, report);
             player.discard();
             Files.writeString(
                     Path.of("compat-checks.txt"), "passed\n" + String.join("\n", report) + "\n");
