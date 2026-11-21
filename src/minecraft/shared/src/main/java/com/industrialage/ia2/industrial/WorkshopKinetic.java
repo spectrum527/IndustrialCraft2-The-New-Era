@@ -9,21 +9,8 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.biome.Biomes;
 
 final class WorkshopKinetic {
-    static final Map<String, Integer> ROTOR_RATINGS =
-            Map.of(
-                    "ic2:wooden_rotor",
-                    70,
-                    "ic2:iron_rotor",
-                    100,
-                    "ic2:bronze_rotor",
-                    100,
-                    "ic2:steel_rotor",
-                    120,
-                    "ic2:carbon_rotor",
-                    150);
-
-    static final List<String> ROTOR_MATERIALS =
-            List.of("wooden", "iron", "bronze", "steel", "carbon");
+    static final Map<String, Integer> ROTOR_RATINGS = WindRotorMount.ratings();
+    static final List<String> ROTOR_MATERIALS = WindRotorMount.names();
 
     private WorkshopKinetic() {}
 
@@ -32,7 +19,13 @@ final class WorkshopKinetic {
         boolean active;
         switch (node.kind) {
             case KINETIC -> active = convert(node, level, facing);
-            case ELECTRIC_KINETIC, MANUAL_KINETIC, WIND_KINETIC, WATER_KINETIC ->
+            case WIND_KINETIC -> {
+                int available = wind(node, level, facing);
+                node.auxiliaryUnits = available;
+                node.publishWindVisual(level, available);
+                active = available > 0;
+            }
+            case ELECTRIC_KINETIC, MANUAL_KINETIC, WATER_KINETIC ->
                     active = node.kineticAt >= level.getGameTime() - 1;
             case STEAM_TURBINE -> {
                 WorkshopDevices.push(node, node.byproduct, level, facing.getOpposite(), 1000);
@@ -57,9 +50,11 @@ final class WorkshopKinetic {
         if (room <= 0
                 || !level.hasChunkAt(pos)
                 || !(level.getBlockEntity(pos) instanceof WorkshopNode input)) {
+            node.auxiliaryUnits = 0;
             return false;
         }
         int obtained = draw(input, level, facing.getOpposite(), room);
+        node.auxiliaryUnits = obtained;
         if (obtained <= 0) {
             return false;
         }
@@ -143,20 +138,37 @@ final class WorkshopKinetic {
     }
 
     static int wind(WorkshopNode node, ServerLevel level, Direction side) {
+        long tick = level.getGameTime();
+        if (node.windSampleTick != tick) {
+            node.windSampleTick = tick;
+            node.windSample = sampleWind(node, level, side);
+        }
+        return node.windSample;
+    }
+
+    private static int sampleWind(WorkshopNode node, ServerLevel level, Direction side) {
         int quality = rotor(node);
-        if (quality == 0 || !side.getAxis().isHorizontal()) {
+        if (quality == 0
+                || !side.getAxis().isHorizontal()
+                || WindRotorClearance.overlaps(node, level)) {
             return 0;
         }
         var center = node.getBlockPos().relative(side.getOpposite());
         var move = new BlockPos.MutableBlockPos();
         boolean alongX = side.getAxis() == Direction.Axis.X;
-        for (int vertical = -2; vertical <= 2; vertical++) {
-            for (int horizontal = -2; horizontal <= 2; horizontal++) {
+        int radius = WindRotorMount.diameter(node.inventory.getItem(0)) / 2;
+        for (int vertical = -radius; vertical <= radius; vertical++) {
+            for (int horizontal = -radius; horizontal <= radius; horizontal++) {
+                double dx = Math.max(0, Math.abs(horizontal) - 0.5);
+                double dy = Math.max(0, Math.abs(vertical) - 0.5);
+                double rotorRadius = radius + 0.5;
+                if (dx * dx + dy * dy > rotorRadius * rotorRadius) continue;
                 move.set(
                         center.getX() + (alongX ? 0 : horizontal),
                         center.getY() + vertical,
                         center.getZ() + (alongX ? horizontal : 0));
-                if (!level.hasChunkAt(move) || !level.getBlockState(move).isAir()) {
+                if (!level.hasChunkAt(move)
+                        || !level.getBlockState(move).getCollisionShape(level, move).isEmpty()) {
                     return 0;
                 }
             }
