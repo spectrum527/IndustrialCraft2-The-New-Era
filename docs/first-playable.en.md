@@ -1,4 +1,4 @@
-# IndustrialCraft²: The New Era 1.0.3 player guide
+# IndustrialCraft²: The New Era 1.0.4 player guide
 
 [简体中文](first-playable.md) · **English**
 
@@ -8,10 +8,12 @@ Pick the loader build that matches your Minecraft version, put the same JAR into
 
 | Minecraft | Tested loader | Java | File |
 | --- | --- | ---: | --- |
-| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.3.jar` |
-| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.3.jar` |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.3.jar` |
-| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.3.jar` |
+| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.4.jar` |
+| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.4.jar` |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.4.jar` |
+| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.4.jar` |
+
+Creative mode has eight tabs covering machines, power and wiring, nuclear engineering, tools and armor, materials and components, fluids and containers, transport and storage, and agriculture and building. The vanilla search tab also lists these items.
 
 Two optional mods fit well alongside IC2. The One Probe displays a machine's stored EU and tank fluid levels when you look at it, which makes wiring and pipe checks faster. Curios adds a back slot where you can wear a battery pack or electric jetpack without giving up your chestplate, and those packs still charge when you stand on a matching-tier charge pad.
 
@@ -23,7 +25,7 @@ All machine timers run in server game ticks. On an unlagged server, 20 ticks equ
 
 ### Finding rubber trees and early ores
 
-Start by looking through forests and swamps for rubber trees. They grow slightly narrower than oaks and often have a short spire of leaves on top. Look for orange resin spots along the trunk.
+Start by looking for rubber trees in newly generated forests, jungles and plains, including their biome variants. They grow slightly narrower than oaks and often have a short spire of leaves on top. Look for orange resin spots along the trunk.
 
 Craft a Treetap from 5 wooden planks in a faucet shape, then right-click the orange resin spots to collect Sticky Resin. Leave a few rubber trees standing near your base so you can tap them again later, and replant saplings in a small grove. You will go through a lot of rubber.
 
@@ -75,7 +77,7 @@ Once the Macerator and Wrench are ready, add the other three starter LV machines
 
 - Extractor (4 Treetaps, 1 Basic Machine Casing, 1 Electronic Circuit; 2 EU/t, 300 ticks): turns 1 Sticky Resin into 3 Rubber, and converts Rubber Wood or Rubber Tree Saplings into 1 Rubber each. Build this early so rubber stops slowing you down.
 - Electric Furnace (1 Electronic Circuit, 2 redstone, 1 Iron Furnace; 3 EU/t, 100 ticks, 300 EU total): smelts an item in 5 seconds (twice as fast as a vanilla furnace) on electricity, with no coal needed.
-- Compressor (6 stone, 1 Basic Machine Casing, 1 Electronic Circuit; 2 EU/t, 300 ticks): turns Empty Cells into Compressed Air Cells for steelmaking, compresses 9 tiny piles of dust into 1 full dust, and presses carbon mesh, alloys, and energy crystals.
+- Compressor (6 stone, 1 Basic Machine Casing, 1 Electronic Circuit; 2 EU/t, 300 ticks): turns empty Universal Fluid Cells into Compressed Air Cells for steelmaking, compresses 9 tiny piles of dust into 1 full dust, and presses carbon mesh, alloys, and energy crystals.
 
 ## Understanding EU: voltage tiers, cables, and explosions
 
@@ -93,6 +95,8 @@ Storage blocks come in four voltage tiers. Every tier outputs only through its d
 | MFSU | Tier 4 (EV) | 2,048 | 40,000,000 | UU production, nuclear grid, QuantumSuit |
 
 Storage block GUIs include a charge slot, a discharge slot, and four armor slots for charging and discharging gear of matching tier. Electric machines also have a lightning-bolt discharge slot that takes batteries or single pieces of redstone (800 EU each) when you want to run a machine without wiring it up. The Semifluid Generator can charge items in its slot as well.
+
+A Single-Use Battery holds **1,200 EU**. Stack batteries in the discharge slot. Machines with at least 1,200 EU of capacity use one when they have room for all of its energy. The basic Electric Furnace holds only 600 EU, so any free space lets it use one battery and discard the excess. Full machines keep the whole stack.
 
 Storage blocks have seven redstone modes (0 through 6), cycled from the GUI button or by sneak-right-clicking with an empty hand. You can emit a redstone signal when nearly full to shut off a generator and save coal, or block power output whenever a redstone signal is active to wire up a master switch. A redstone comparator reads fill level from 0 to 15.
 
@@ -161,7 +165,7 @@ Watch the Thermal Centrifuge's preheat requirement. Each material needs a minimu
 Steel pipes, advanced tools, and several late-game machines require Steel Ingots from a Blast Furnace.
 
 1. Aim a heat source at it: place a Solid Fuel Firebox (burns coal for +20 net heat per tick) or an Electric Heater right next to the Blast Furnace, and use a Wrench so the heat source's orange output face presses directly against the Blast Furnace's heat-receiving face. Misaligned heat faces are the most common reason a Blast Furnace stays cold.
-2. Supply compressed air: compress Empty Cells into Compressed Air Cells and load them into the Blast Furnace. Its internal air tank holds 8,000 mB and automatically ejects empty cells into the return slot. Each steel ingot uses 6,000 mB of air (6 cells).
+2. Supply compressed air: compress empty Universal Fluid Cells into Compressed Air Cells and load them into the Blast Furnace. Its internal air tank holds 8,000 mB and automatically ejects empty cells into the return slot. Each steel ingot uses 6,000 mB of air (6 cells).
 3. Feed iron: iron ingots, iron dust, crushed iron, purified iron, or iron ore all work.
 
 From cold, the Blast Furnace heats up to 50,000 heat before counting progress, then works for 6,000 ticks (5 minutes) per ingot to produce 1 Steel Ingot and 1 Slag. Keep both output slots from filling up; if either slot blocks output, progress resets. Do not throw away Slag, because centrifuging 1 Slag gives 1 Tiny Pile of Gold Dust and 5 Coal Dust.
@@ -253,6 +257,8 @@ Mining Drills, Diamond Drills, Iridium Drills, Chainsaws, Electric Wrenches, Min
 
 Each QuantumSuit piece holds 10,000,000 EU. Put a piece in the upper charging slot of an MFSU, or stand on a powered MFSU Charge Pad to charge worn pieces and gear in your hands, hotbar, or inventory. Hover over a piece to see its charge and tier 4 requirement. The Classic MFSU is tier 3.
 
+A complete matching NanoSuit or QuantumSuit spends charge from all four pieces to absorb incoming damage. With all four empty, the NanoSuit has 0 armor. The QuantumSuit helmet, chestplate, leggings and boots retain 2, 4, 2 and 2 armor points. A fully worn, powered QuantumSuit brightens dark places and underwater views, and multiplies mining speed by 1.4. Both abilities work independently of potions.
+
 Wearing a BatPack, Advanced BatPack, or Energy Pack recharges handheld electric tools automatically as you mine. With Curios installed, battery packs and jetpacks work from the back slot and charge on Charge Pads; if both your chestplate slot and back slot hold compatible gear, the chestplate takes priority.
 
 ### Teleporters and trading machines
@@ -315,7 +321,8 @@ This rebuild also adds several survival crafting recipes.
 
 - Tank, UU Assembly Bench, Advanced Ejector Upgrade, and Advanced Pulling Upgrade each have a standalone survival recipe.
 - Bronze Dust, Lapis Dust, Diamond Dust, Obsidian Dust, and Uranium 238 split 1-to-9 into tiny piles on the crafting table.
-- Craft a Universal Fluid Cell with a glass block in the center, or an Empty Cell with a glass pane. Right-click a water or lava source with an empty cell to collect it. Right-click a tank or a machine’s fluid input to transfer the liquid. Right-clicking ordinary ground keeps the liquid in the cell.
+- Place a Tin Item Casing, Glass Pane and Tin Item Casing in a horizontal row to craft **four Basic Fluid Cells**. Each holds 1,000 mB of water or lava. A pump or canner produces a Basic Water Cell or Basic Lava Cell, just like collecting a source by hand.
+- Surround a Glass Block with four Tin Item Casings in the cardinal directions to craft **one Universal Fluid Cell**. Use it for water, lava, industrial fluids, compressed air and the Classic fuel cells. Draining or dismantling a cell returns its matching casing. A full cell transfers fluid to a tank or machine inlet. Clicking ordinary ground retains the fluid.
 
 See the full list in [Classic and supplemental recipes](../spec/registry/classic-playable-recipes.json).
 
