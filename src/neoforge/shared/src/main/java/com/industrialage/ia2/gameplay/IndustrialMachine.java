@@ -333,7 +333,8 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         var discharge = item(SlotRole.DISCHARGE);
         int tier = itemTier();
         boolean changed =
-                receive(PortableGear.discharge(discharge, capacity() - energy(), tier)) > 0;
+                receive(PortableGear.discharge(discharge, capacity() - energy(), capacity(), tier))
+                        > 0;
         if (processor != null && discharge.is(Items.REDSTONE) && capacity() - energy() >= 800) {
             receive(800);
             discharge.shrink(1);

@@ -128,6 +128,18 @@ public enum PortableEquipment {
                 : 0;
     }
 
+    /** Energy retained when a machine with the given capacity consumes one single-use battery. */
+    public double disposableCharge(double room, double bufferCapacity, int machineTier) {
+        if (kind != Kind.DISPOSABLE
+                || machineTier < tier
+                || !Double.isFinite(room)
+                || !Double.isFinite(bufferCapacity)
+                || room <= 0
+                || bufferCapacity <= 0) return 0;
+        if (bufferCapacity >= capacity && room < capacity) return 0;
+        return Math.min(capacity, Math.min(room, bufferCapacity));
+    }
+
     /** Amount a compatible machine can receive from this item during one discharge. */
     public double dischargeAmount(double requested, double stored, int machineTier) {
         return canProvide() && machineTier >= tier && Double.isFinite(requested) && requested > 0

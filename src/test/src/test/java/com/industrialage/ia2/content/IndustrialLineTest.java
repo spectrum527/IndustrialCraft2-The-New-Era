@@ -14,6 +14,21 @@ import org.junit.jupiter.api.Test;
 /** Gameplay accounting from the repaired release observations and the approved M09 correction. */
 class IndustrialLineTest {
     @Test
+    void disposableBatteriesOnlyWasteEnergyInBuffersSmallerThanOneBattery() {
+        var cell = PortableEquipment.SINGLE_USE_BATTERY;
+        assertEquals(0, cell.disposableCharge(0, 600, 1));
+        assertEquals(1, cell.disposableCharge(1, 600, 1));
+        assertEquals(600, cell.disposableCharge(600, 600, 1));
+        assertEquals(0, cell.disposableCharge(1_199, 1_200, 1));
+        assertEquals(1_200, cell.disposableCharge(1_200, 1_200, 1));
+        assertEquals(0, cell.disposableCharge(1_199.99, 40_000, 1));
+        assertEquals(1_200, cell.disposableCharge(2_400, 40_000, 4));
+        assertEquals(0, cell.disposableCharge(1_200, 40_000, 0));
+        assertEquals(0, cell.disposableCharge(Double.NaN, 40_000, 1));
+        assertEquals(0, PortableEquipment.RE_BATTERY.disposableCharge(1_200, 40_000, 1));
+    }
+
+    @Test
     void twoCoalFinishOnTicks300And600WithOneChargePerTick() {
         var mill = new ProcessingMachine("macerator");
         var coal = ProcessingMachine.recipe("macerator", "minecraft:coal");
