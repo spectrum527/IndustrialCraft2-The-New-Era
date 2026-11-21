@@ -6,6 +6,7 @@ repair recipe book, Classic crafting layouts and loot data are versioned inputs.
 The output pack is specific to the selected game and loader.
 """
 from world_resources import generate as generate_world
+from gameplay_advancements import generate as generate_advancements
 
 from cell_recipes import cell_recipe, generate_cell_recipes
 
@@ -547,6 +548,7 @@ if not forge:
         write("assets/minecraft/atlases/items", {"sources":[items]})
 
 generate_world(repo, out, args.target, write)
+generate_advancements(repo, args.target, write)
 generate_families(repo, out, args.target, write)
 
 # The original Classic game profile has distinct machine IDs that coexist with Experimental.

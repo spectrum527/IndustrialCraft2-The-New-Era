@@ -20,6 +20,16 @@ def junit = tasks.named('test', Test) {
     def jarFile = project(':forge:1.19.2').tasks.named('jar', Jar).flatMap { it.archiveFile }
     systemProperty 'ia2.jars', jarFile.get().asFile.absolutePath
 }
+def advancementResources = tasks.register('verifyAdvancementResources', Exec) {
+    group = 'verification'
+    description = 'Checks shipped progression criteria, rewards, and bilingual text against the gameplay contract.'
+    dependsOn ':forge:1.19.2:reobfJar'
+    doFirst {
+        def jar = project(':forge:1.19.2').tasks.named('jar').get().archiveFile.get().asFile
+        commandLine 'python3', rootProject.file('src/test/verify_gameplay_advancements.py'), "1.19.2=${jar.absolutePath}"
+    }
+}
+junit.configure { dependsOn advancementResources }
 tasks.register('requireJUnitExecution') {
     doLast {
         def testTask = junit.get()
