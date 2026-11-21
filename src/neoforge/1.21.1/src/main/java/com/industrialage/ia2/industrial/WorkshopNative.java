@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -282,6 +284,22 @@ final class WorkshopNative {
                         || !WorkshopPlatform.fluidId(drained).equals(contents.id())
                 ? null
                 : new ContainerResult(handler.getContainer(), contents);
+    }
+
+    static void playPickup(WorkshopNode node, Player player, FluidStack fluid) {
+        var sound = fluid.getFluidType().getSound(fluid, SoundActions.BUCKET_FILL);
+        if (sound != null) {
+            node.getLevel()
+                    .playSound(
+                            null,
+                            player.getX(),
+                            player.getY() + 0.5,
+                            player.getZ(),
+                            sound,
+                            SoundSource.BLOCKS,
+                            1,
+                            1);
+        }
     }
 
     static boolean interact(

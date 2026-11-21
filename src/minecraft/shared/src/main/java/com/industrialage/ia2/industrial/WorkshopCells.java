@@ -92,7 +92,7 @@ final class WorkshopCells {
         if (port.extract(moved.id(), moved.amount(), true) != moved.amount()) return false;
         port.extract(moved.id(), moved.amount(), false);
         player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, named));
-        WorkshopPlatform.playPickup(level, pos, moved);
+        WorkshopPlatform.playPickup(node, player, moved);
         return true;
     }
 

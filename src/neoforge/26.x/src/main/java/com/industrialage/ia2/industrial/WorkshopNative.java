@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -299,6 +300,15 @@ final class WorkshopNative {
             transaction.commit();
         }
         return new ContainerResult(scratch.getItem(0).copy(), contents);
+    }
+
+    static void playPickup(WorkshopNode node, Player player, FluidStack fluid) {
+        FluidUtil.triggerSoundAndGameEvent(
+                FluidResource.of(fluid),
+                node.getLevel(),
+                Vec3.atCenterOf(node.getBlockPos()),
+                player,
+                true);
     }
 
     static boolean interact(
