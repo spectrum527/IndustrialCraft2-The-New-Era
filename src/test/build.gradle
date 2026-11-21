@@ -35,6 +35,19 @@ def junit = tasks.named('test', Test) {
     systemProperty 'ic2.modVersion', rootProject.version.toString()
     systemProperty 'ic2.notice', rootProject.file('NOTICE.md').absolutePath
 }
+def advancementResources = tasks.register('verifyAdvancementResources', Exec) {
+    group = 'verification'
+    description = 'Checks shipped progression criteria, rewards, and bilingual text against the gameplay contract.'
+    dependsOn targets.collect { ":neoforge:$it:verifyDevelopmentJar" }
+    doFirst {
+        commandLine 'python3', rootProject.file('src/test/verify_gameplay_advancements.py'),
+                *targets.collect { target ->
+                    def jar = platformProjects[target].tasks.named('jar').get().archiveFile.get().asFile
+                    "${target}=${jar.absolutePath}"
+                }
+    }
+}
+junit.configure { dependsOn advancementResources }
 tasks.register('requireJUnitExecution') {
     doLast {
         def testTask = junit.get()

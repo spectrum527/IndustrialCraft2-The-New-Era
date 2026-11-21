@@ -9,6 +9,7 @@ from cell_recipes import cell_recipe, generate_cell_recipes
 from industrial_families import generate as generate_families
 
 from world_resources import generate as generate_world
+from gameplay_advancements import generate as generate_advancements
 
 import argparse
 import csv
@@ -545,6 +546,7 @@ if not forge:
         write("assets/minecraft/atlases/items", {"sources":[items]})
 
 generate_world(repo, out, args.target, write)
+generate_advancements(repo, args.target, write)
 generate_families(repo, out, args.target, write)
 
 # The original Classic game profile has distinct machine IDs that coexist with Experimental.
