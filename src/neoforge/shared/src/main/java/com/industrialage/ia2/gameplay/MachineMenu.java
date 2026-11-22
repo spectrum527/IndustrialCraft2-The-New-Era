@@ -2,6 +2,7 @@ package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.gameplay.MachineKind.SlotRole;
+import com.industrialage.ia2.gui.DeviceAccessMenu;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,14 +11,13 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 /** Inventory and display data synchronized by Minecraft's normal container protocol. */
-public final class MachineMenu extends AbstractContainerMenu {
+public final class MachineMenu extends DeviceAccessMenu {
     private static final int DATA_COUNT = 9;
     private final MachineKind kind;
     private final MachineLayout layout;
@@ -47,7 +47,11 @@ public final class MachineMenu extends AbstractContainerMenu {
             MachineKind kind,
             Container container,
             ContainerData machineData) {
-        super(IndustrialContent.MACHINE_MENU.get(), id);
+        super(
+                IndustrialContent.MACHINE_MENU.get(),
+                id,
+                player,
+                container instanceof IndustrialMachine machine ? machine : null);
         this.kind = kind;
         this.layout = MachineLayout.byPath(kind.path);
         this.container = container;
@@ -103,6 +107,7 @@ public final class MachineMenu extends AbstractContainerMenu {
             addSlot(new Slot(player, col, 8 + 18 * col, layout.hotbarTop() + 1));
         }
         addDataSlots(machineData);
+        addAccessData();
     }
 
     /** Number of slots held by the machine itself. */
@@ -172,7 +177,7 @@ public final class MachineMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player player, int id) {
+    protected boolean clickDeviceButton(Player player, int id) {
         if (id == 0
                 && layout.storage()
                 && stillValid(player)

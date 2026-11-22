@@ -1,20 +1,20 @@
 package com.industrialage.ia2.logistics;
 
+import com.industrialage.ia2.gui.DeviceAccessMenu;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 /** Synchronizes the tank's native fluid, including amounts larger than a 16-bit menu field. */
-final class TankMenu extends AbstractContainerMenu {
+final class TankMenu extends DeviceAccessMenu {
     private final TransportNode node;
     private final SimpleContainerData data = new SimpleContainerData(5);
     final int upgradeCount;
 
     TankMenu(int id, Inventory player, TransportNode node, boolean industrial) {
-        super(industrial ? TankMenus.UTILITY.get() : TankMenus.TYPE.get(), id);
+        super(industrial ? TankMenus.UTILITY.get() : TankMenus.TYPE.get(), id, player, node);
         this.node = node;
         upgradeCount = industrial ? 4 : 0;
         var upgrades =
@@ -33,6 +33,7 @@ final class TankMenu extends AbstractContainerMenu {
             addSlot(new Slot(player, 9 + i, 8 + 18 * (i % 9), 84 + 18 * (i / 9)));
         for (int i = 0; i < 9; i++) addSlot(new Slot(player, i, 8 + 18 * i, 142));
         addDataSlots(data);
+        addAccessData();
         syncTank();
     }
 
@@ -83,7 +84,7 @@ final class TankMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player player, int button) {
+    protected boolean clickDeviceButton(Player player, int button) {
         if (button != 0 || node == null || !stillValid(player) || getCarried().isEmpty())
             return false;
         var carried = getCarried();
