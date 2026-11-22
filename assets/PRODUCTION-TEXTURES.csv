@@ -1657,3 +1657,7 @@ assets/ic2/textures/models/armor/quantum_layer_1.png,d9408cc288928f7c390114469bf
 assets/ic2/textures/models/armor/quantum_layer_1_overlay.png,ea6c02a302f6ed480813672425c8f18708c1aa9eb6fdd8c38598b4a2889f2f5e,assets/minecraft/textures/models/armor/quantum_1_overlay.png
 assets/ic2/textures/models/armor/quantum_layer_2.png,be3de05fdce098800cfd0738034f2dfae22c40165eeb981161c2d6c322478e5d,assets/minecraft/textures/models/armor/ic2_quantum_layer_2.png
 assets/ic2/textures/models/armor/quantum_layer_2_overlay.png,638f91db419210e94dee0e2a3c3d8a54ca4d964f2c84b0d5431ed5611126b86e,assets/minecraft/textures/models/armor/quantum_2_overlay.png
+assets/ic2/textures/items/cover/pipe_extraction_nozzle.png,134963c0ae8332508901c6596cd4293ee98c721c35210061b5e3d63d8714b197,1.0.6 手工绘制 16×16 抽吸嘴图标
+assets/ic2/textures/items/cover/pipe_injection_nozzle.png,aed3be48db43e1f1c7cbc40a720114e79970525f87035df1376b539aaf3bf93a,1.0.6 手工绘制 16×16 注入嘴图标
+assets/ic2/textures/blocks/transport/bronze/nozzle.png,16b75f1be745ccc7b4c30ebf7ca4f18e783f99a41ec1d1e9b82fee2ead500762,1.0.6 手工绘制青铜管嘴 UV，参照项目作者青铜管配色
+assets/ic2/textures/blocks/transport/steel/nozzle.png,f87bf2a414db843a1ee829b13b293fc75d0c00b13b9f590c26171da2e374cf19,1.0.6 手工绘制钢管嘴 UV，参照项目作者钢管配色
