@@ -1,6 +1,7 @@
 package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.ProcessingSlots;
 import com.industrialage.ia2.compat.CuriosBack;
 import com.industrialage.ia2.content.PowerGrid;
 import com.industrialage.ia2.content.ProcessingMachine;
@@ -30,7 +31,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +42,7 @@ import net.minecraft.world.phys.AABB;
 /** Server-owned machine inventory, ticking logic, and EU port. */
 public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         implements com.industrialage.ia2.access.MachineAccessTarget,
-                WorldlyContainer,
+                ProcessingSlots,
                 MenuProvider,
                 WorldPowerPort,
                 WorldPowerStorage,
@@ -59,6 +59,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
     private double stored;
     private int fuelRemaining;
     private int fuelCapacity;
+    private ItemStack completedFuel = ItemStack.EMPTY;
     private int furnaceProgress;
     private String furnaceRecipe = "";
     private int redstoneMode;
@@ -125,11 +126,20 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                 processor == null ? furnaceRecipe : processor.recipeKey(),
                 redstoneMode,
                 processor == null ? 0 : processor.duration(),
-                fuelCapacity());
+                fuelCapacity(),
+                isFuelProduct(item(SlotRole.FUEL)) ? completedFuel : ItemStack.EMPTY);
     }
 
     @Override
     protected void restoreState(MachineSave snapshot) {
+        completedFuel = snapshot.completedFuel();
+        if (completedFuel.isEmpty()) {
+            var fuel = item(SlotRole.FUEL);
+            if (kind == MachineKind.IRON_FURNACE && fuel.is(Items.BUCKET)
+                    || NativeGameplay.itemId(fuel).equals("ic2:empty_fuel_can")) {
+                completedFuel = fuel.copy();
+            }
+        }
         if (generator != null) {
             generator.restore(
                     new FuelGenerator.Snapshot(
@@ -319,6 +329,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
     }
 
     private void consumeFuel() {
+        completedFuel = ItemStack.EMPTY;
         int slot = kind.slots.indexOf(SlotRole.FUEL);
         ItemStack fuel = items.get(slot);
         ItemStack remainder = WorkshopPlatform.classicFuelRemainder(fuel);
@@ -328,6 +339,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         fuel.shrink(1);
         if (fuel.isEmpty()) {
             items.set(slot, remainder);
+            completedFuel = remainder.copy();
         } else if (!remainder.isEmpty()) {
             Containers.dropItemStack(
                     getLevel(),
@@ -575,7 +587,9 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         return IntStream.of(
                         kind.slots.indexOf(inputFirst ? SlotRole.INPUT : SlotRole.OUTPUT),
                         kind.slots.indexOf(inputFirst ? SlotRole.OUTPUT : SlotRole.INPUT),
-                        kind.slots.indexOf(SlotRole.FUEL))
+                        kind.slots.indexOf(SlotRole.FUEL),
+                        kind.slots.indexOf(SlotRole.CHARGE),
+                        kind.slots.indexOf(SlotRole.DISCHARGE))
                 .filter(slot -> slot >= 0)
                 .toArray();
     }
@@ -587,18 +601,41 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
-        if (!MachineAccess.allowsInput(this, side)) return false;
-        var role = kind.slots.get(slot);
-        return (role == SlotRole.INPUT || role == SlotRole.FUEL) && canPlaceItem(slot, stack);
+        if (stack.isEmpty() || !MachineAccess.allowsInput(this, side) || !canPlaceItem(slot, stack))
+            return false;
+        return switch (kind.slots.get(slot)) {
+            case INPUT, FUEL -> true;
+            case CHARGE -> !PortableGear.chargeComplete(stack, itemTier());
+            case DISCHARGE ->
+                    PortableGear.canSupplyCharge(stack, itemTier())
+                            || processor != null && stack.is(Items.REDSTONE);
+            case OUTPUT, UPGRADE -> false;
+        };
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-        if (!MachineAccess.allowsOutput(this, side)) return false;
+        if (stack.isEmpty() || !MachineAccess.allowsOutput(this, side)) return false;
         return switch (kind.slots.get(slot)) {
             case OUTPUT -> true;
-            case INPUT, FUEL -> !canPlaceItem(slot, stack);
-            case CHARGE, DISCHARGE, UPGRADE -> false;
+            case FUEL -> isFuelProduct(stack);
+            case CHARGE -> PortableGear.chargeComplete(stack, itemTier());
+            default -> false;
+        };
+    }
+
+    private boolean isFuelProduct(ItemStack stack) {
+        return !completedFuel.isEmpty()
+                && !stack.isEmpty()
+                && stack.getCount() <= completedFuel.getCount()
+                && ItemStack.isSameItemSameComponents(stack, completedFuel);
+    }
+
+    @Override
+    public int automationLimit(int slot, ItemStack stack) {
+        return switch (kind.slots.get(slot)) {
+            case CHARGE, DISCHARGE -> PortableGear.powerSlotLimit(stack);
+            default -> stack.getMaxStackSize();
         };
     }
 

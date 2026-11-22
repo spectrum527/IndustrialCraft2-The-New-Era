@@ -2,6 +2,7 @@ package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.access.MachinePorts;
+import com.industrialage.ia2.access.ProcessingItemPort;
 import com.industrialage.ia2.platform.NeoForgeVersion;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,6 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.fluid.ItemAccessFluidHandler;
-import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 
 /** Minecraft 26.x gameplay calls that differ from 1.21.1. */
 /** Native gameplay operations for this Minecraft generation. */
@@ -172,9 +172,7 @@ public final class NativeGameplay {
                                                 ? MachinePorts.item(
                                                         machine,
                                                         side,
-                                                        new WorldlyContainerWrapper(
-                                                                machine,
-                                                                side == null ? Direction.UP : side))
+                                                        new ProcessingItemPort(machine, side))
                                                 : null));
     }
 

@@ -89,6 +89,8 @@ abstract class WorkshopSaveBase extends BlockEntity {
         output.putDouble("ic2_energy", node.energy);
         output.putInt("ic2_heat", node.heat);
         output.putInt("ic2_heat_fuel", node.heatFuelTicks);
+        if (node.inventory.isFuelProduct(node.inventory.getItem(0)))
+            output.store("ic2_fuel_return", ItemStack.OPTIONAL_CODEC, node.completedFuel);
         output.putBoolean("ic2_coal_ash", node.solidProducesAsh);
         output.putInt("ic2_progress", node.progress);
         output.putInt("ic2_work_duration", node.cycleDuration);
@@ -120,6 +122,12 @@ abstract class WorkshopSaveBase extends BlockEntity {
         node.energy = Double.isFinite(stored) ? Math.max(0, stored) : 0;
         node.heat = Math.max(0, input.getIntOr("ic2_heat", 0));
         node.heatFuelTicks = Math.max(0, input.getIntOr("ic2_heat_fuel", 0));
+        node.completedFuel =
+                input.read("ic2_fuel_return", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
+        if (node.completedFuel.isEmpty()
+                && node.kind == WorkshopKind.SOLID_HEAT
+                && node.inventory.getItem(0).is(net.minecraft.world.item.Items.BUCKET))
+            node.completedFuel = node.inventory.getItem(0).copy();
         node.solidProducesAsh = input.getBooleanOr("ic2_coal_ash", false);
         node.progress = Math.max(0, input.getIntOr("ic2_progress", 0));
         node.mode = Math.floorMod(input.getIntOr("ic2_mode", 0), node.kind.modes());

@@ -1,19 +1,20 @@
 package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.ProcessingItemPort;
+import com.industrialage.ia2.access.ProcessingSlots;
 import java.util.stream.IntStream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-final class WorkshopInventory extends SimpleContainer implements WorldlyContainer {
+final class WorkshopInventory extends SimpleContainer implements ProcessingSlots {
     static final int SIZE = 27;
     static final int AUX_SLOT = 4;
     static final int WASHER_WATER_SLOT = 6;
@@ -190,8 +191,18 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                     case BLAST_FURNACE -> IntStream.of(0, AUX_SLOT);
                     case ORE_WASHER -> IntStream.of(0, WASHER_WATER_SLOT);
                     case UU_ASSEMBLY -> IntStream.of(1);
-                    default -> IntStream.range(0, node.kind.inputs(node.mode));
+                    case ELECTRIC_HEAT,
+                            ELECTRIC_KINETIC,
+                            WIND_KINETIC,
+                            WATER_KINETIC,
+                            STEAM_TURBINE,
+                            RADIOISOTOPE_HEAT ->
+                            IntStream.empty();
+                    default -> IntStream.range(0, node.kind.inputs(0));
                 };
+        if (node.kind.chargesItem() || node.kind.dischargesItem()) {
+            input = IntStream.concat(input, IntStream.of(POWER_ITEM_SLOT));
+        }
         var output = IntStream.range(OUTPUT_START, OUTPUT_START + node.kind.outputSlots());
         if (node.kind == WorkshopKind.BLAST_FURNACE) {
             output = IntStream.concat(output, IntStream.of(RETURN_SLOT));
@@ -204,21 +215,67 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
                 .toArray();
     }
 
+    private boolean isMaterialInput(int slot) {
+        return switch (node.kind) {
+            case BLAST_FURNACE -> slot == 0 || slot == AUX_SLOT;
+            case ORE_WASHER -> slot == 0 || slot == WASHER_WATER_SLOT;
+            case UU_ASSEMBLY -> slot == 1;
+            case ELECTRIC_HEAT,
+                    ELECTRIC_KINETIC,
+                    WIND_KINETIC,
+                    WATER_KINETIC,
+                    STEAM_TURBINE,
+                    RADIOISOTOPE_HEAT ->
+                    false;
+            default -> slot >= 0 && slot < inputCount();
+        };
+    }
+
+    boolean acceptsAutomationMaterial(ServerLevel level, int slot, ItemStack item) {
+        return !item.isEmpty()
+                && isMaterialInput(slot)
+                && !acceptsPowerItem(node.kind, item, node.energyTier())
+                && WorkshopPlans.validAutomationInput(node, level, slot, item);
+    }
+
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction direction) {
-        if (!MachineAccess.allowsInput(node, direction)) return false;
-        return (slot < node.kind.inputs(node.mode)
-                        || node.kind == WorkshopKind.BLAST_FURNACE && slot == AUX_SLOT
-                        || node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_WATER_SLOT)
-                && canPlaceItem(slot, stack);
+        if (stack.isEmpty() || !MachineAccess.allowsInput(node, direction)) return false;
+        if (slot == POWER_ITEM_SLOT) {
+            int tier = node.energyTier();
+            return node.kind.chargesItem()
+                    ? acceptsPowerItem(node.kind, stack, tier)
+                            && !ProcessingItemPort.chargeComplete(stack, tier)
+                    : node.kind.dischargesItem() && ProcessingItemPort.canSupplyCharge(stack, tier);
+        }
+        return node.getLevel() instanceof ServerLevel level
+                && acceptsAutomationMaterial(level, slot, stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
-        if (!MachineAccess.allowsOutput(node, direction)) return false;
+        if (stack.isEmpty() || !MachineAccess.allowsOutput(node, direction)) return false;
         return (slot >= OUTPUT_START && slot < OUTPUT_START + node.kind.outputSlots())
                 || (node.kind == WorkshopKind.BLAST_FURNACE && slot == RETURN_SLOT)
-                || (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_CONTAINER_RETURN_SLOT);
+                || (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_CONTAINER_RETURN_SLOT)
+                || (slot == POWER_ITEM_SLOT
+                        && node.kind.chargesItem()
+                        && ProcessingItemPort.chargeComplete(stack, node.energyTier()))
+                || (slot == 0 && node.kind == WorkshopKind.SOLID_HEAT && isFuelProduct(stack));
+    }
+
+    boolean isFuelProduct(ItemStack stack) {
+        return !node.completedFuel.isEmpty()
+                && !stack.isEmpty()
+                && stack.getCount() <= node.completedFuel.getCount()
+                && WorkshopPlatform.sameItem(stack, node.completedFuel);
+    }
+
+    @Override
+    public int automationLimit(int slot, ItemStack stack) {
+        return slot == POWER_ITEM_SLOT
+                ? PowerPlatform.powerSlotLimit(stack)
+                : stack.getMaxStackSize();
     }
 
     @Override
