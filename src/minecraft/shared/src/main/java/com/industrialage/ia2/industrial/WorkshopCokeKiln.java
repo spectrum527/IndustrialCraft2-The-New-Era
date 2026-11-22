@@ -1,11 +1,14 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 final class WorkshopCokeKiln {
     static final String BRICKS = "refractory_bricks";
@@ -31,8 +34,39 @@ final class WorkshopCokeKiln {
                         .setValue(
                                 WorkshopBlock.ACTIVE,
                                 kiln != null && run(node, kiln.hatch(), kiln.grate()));
-        if (current != next) level.setBlockAndUpdate(node.getBlockPos(), next);
+        if (current != next) {
+            level.setBlockAndUpdate(node.getBlockPos(), next);
+            if (current.getValue(WorkshopBlock.FORMED) != next.getValue(WorkshopBlock.FORMED))
+                MachineAccess.refresh(node);
+        }
         return true;
+    }
+
+    static WorkshopNode controllerForPort(WorkshopNode port, ServerLevel level) {
+        var middle =
+                port.kind == WorkshopKind.COKE_HATCH
+                        ? port.getBlockPos().below()
+                        : port.getBlockPos().above();
+        for (Direction face : Direction.Plane.HORIZONTAL) {
+            var pos = middle.relative(face);
+            if (level.hasChunkAt(pos)
+                    && level.getBlockEntity(pos) instanceof WorkshopNode candidate
+                    && candidate.kind == WorkshopKind.COKE_KILN
+                    && candidate.getBlockState().getValue(WorkshopBlock.FORMED)
+                    && center(candidate).equals(middle)) return candidate;
+        }
+        return null;
+    }
+
+    static void visitPorts(
+            WorkshopNode controller, ServerLevel level, Consumer<BlockEntity> visitor) {
+        var middle = center(controller);
+        for (Direction side : new Direction[] {Direction.UP, Direction.DOWN}) {
+            var pos = middle.relative(side);
+            if (level.hasChunkAt(pos)
+                    && level.getBlockEntity(pos) instanceof WorkshopNode port
+                    && port.kind.kilnPort()) visitor.accept(port);
+        }
     }
 
     static boolean takeCreosote(

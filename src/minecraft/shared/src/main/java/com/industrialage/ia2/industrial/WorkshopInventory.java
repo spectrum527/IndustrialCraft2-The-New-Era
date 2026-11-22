@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
 import java.util.stream.IntStream;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -205,6 +206,7 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction direction) {
+        if (!MachineAccess.allowsInput(node, direction)) return false;
         return (slot < node.kind.inputs(node.mode)
                         || node.kind == WorkshopKind.BLAST_FURNACE && slot == AUX_SLOT
                         || node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_WATER_SLOT)
@@ -213,6 +215,7 @@ final class WorkshopInventory extends SimpleContainer implements WorldlyContaine
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {
+        if (!MachineAccess.allowsOutput(node, direction)) return false;
         return (slot >= OUTPUT_START && slot < OUTPUT_START + node.kind.outputSlots())
                 || (node.kind == WorkshopKind.BLAST_FURNACE && slot == RETURN_SLOT)
                 || (node.kind == WorkshopKind.ORE_WASHER && slot == WASHER_CONTAINER_RETURN_SLOT);

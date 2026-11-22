@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.content.ProcessingUpgrades;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import net.minecraft.core.Direction;
@@ -106,7 +107,7 @@ final class WorkshopDevices {
             return false;
         }
         var input = node.getBlockPos().relative(facing);
-        if (!level.hasChunkAt(input)) {
+        if (!MachineAccess.allowsInput(node, facing) || !level.hasChunkAt(input)) {
             return false;
         }
         var state = level.getBlockState(input);
@@ -210,7 +211,7 @@ final class WorkshopDevices {
             ServerLevel level,
             Direction direction,
             int maximum) {
-        if (tank.amount == 0) {
+        if (tank.amount == 0 || !MachineAccess.allowsOutput(node, direction)) {
             return 0;
         }
         var pos = node.getBlockPos().relative(direction);

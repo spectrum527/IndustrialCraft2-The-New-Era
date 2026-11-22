@@ -1,5 +1,6 @@
 package com.industrialage.ia2.gameplay;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.compat.CuriosBack;
 import com.industrialage.ia2.content.PowerGrid;
 import com.industrialage.ia2.content.ProcessingMachine;
@@ -40,7 +41,12 @@ import net.minecraft.world.phys.AABB;
 
 /** Server-owned machine inventory, ticking logic, and EU port. */
 public final class IndustrialMachine extends NativeGameplay.InventoryEntity
-        implements WorldlyContainer, MenuProvider, WorldPowerPort, WorldPowerStorage, EuBuffer {
+        implements com.industrialage.ia2.access.MachineAccessTarget,
+                WorldlyContainer,
+                MenuProvider,
+                WorldPowerPort,
+                WorldPowerStorage,
+                EuBuffer {
     private static final int IRON_FURNACE_DURATION = 160;
     private final MachineKind kind;
     private final NonNullList<ItemStack> items;
@@ -581,12 +587,14 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+        if (!MachineAccess.allowsInput(this, side)) return false;
         var role = kind.slots.get(slot);
         return (role == SlotRole.INPUT || role == SlotRole.FUEL) && canPlaceItem(slot, stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        if (!MachineAccess.allowsOutput(this, side)) return false;
         return switch (kind.slots.get(slot)) {
             case OUTPUT -> true;
             case INPUT, FUEL -> !canPlaceItem(slot, stack);
