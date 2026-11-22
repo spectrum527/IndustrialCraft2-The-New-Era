@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
 import java.util.stream.IntStream;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -92,12 +93,17 @@ final class ReactorHatch implements WorldlyContainer {
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction face) {
-        return canPlaceItem(slot, stack);
+        var grid = grid();
+        return grid != null
+                && MachineAccess.allowsInput(hatch, face)
+                && grid.canPlaceItemThroughFace(slot, stack, face);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face) {
         var grid = grid();
-        return grid != null && grid.canTakeItemThroughFace(slot, stack, face);
+        return grid != null
+                && MachineAccess.allowsOutput(hatch, face)
+                && grid.canTakeItemThroughFace(slot, stack, face);
     }
 }

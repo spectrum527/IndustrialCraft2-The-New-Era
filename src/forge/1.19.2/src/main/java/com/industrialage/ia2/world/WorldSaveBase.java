@@ -30,18 +30,22 @@ abstract class WorldSaveBase extends BlockEntity {
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (!isRemoved() && this instanceof WorldMachine node) {
             if (cap == ForgeCapabilities.ITEM_HANDLER)
-                return automation
-                        .item(
-                                side,
-                                () ->
-                                        new SidedInvWrapper(
-                                                node.inventory, side == null ? Direction.UP : side))
-                        .cast();
+                return automation.item(side, () -> itemPort(node.inventory, side)).cast();
             if (cap == ForgeCapabilities.FLUID_HANDLER
                     && node.kind == WorldMachineBlock.Kind.CROPMATRON)
                 return automation.fluid(side, () -> new WorldFluidAccess.Port(node)).cast();
         }
         return super.getCapability(cap, side);
+    }
+
+    private static SidedInvWrapper itemPort(WorldInventory inventory, Direction side) {
+        Direction face = side == null ? Direction.UP : side;
+        return new SidedInvWrapper(inventory, face) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack item) {
+                return inventory.canPlaceItemThroughFace(slot, item, face);
+            }
+        };
     }
 
     /** Refreshes listeners for item and fluid automation on this device. */

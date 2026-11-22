@@ -366,7 +366,7 @@ final class WorldMachine extends WorldSaveBase
         return kind.packet <= 32 ? 10_000 : 60_000;
     }
 
-    private int itemTier() {
+    int itemTier() {
         return kind.packet <= 32 ? 1 : kind.packet <= 128 ? 2 : 3;
     }
 
