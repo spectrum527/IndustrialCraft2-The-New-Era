@@ -1,5 +1,6 @@
 package com.industrialage.ia2.gametest;
 
+import com.industrialage.ia2.logisticstest.PipeNozzleChecks;
 import com.industrialage.ia2.wrenchtest.WrenchHits;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
@@ -30,6 +31,46 @@ final class TransportChecks {
     private static final BlockPos FLUID_PIPE = new BlockPos(25, 98, 26);
     private static final BlockPos SUPPLY = FLUID_PIPE.west();
     private static final BlockPos TANK = FLUID_PIPE.south();
+    private final PipeNozzleChecks nozzles =
+            new PipeNozzleChecks(
+                    new BlockPos(3, 132, 3),
+                    NativeGameplayFixture::block,
+                    id -> new ItemStack(NativeGameplayFixture.item(id)),
+                    new PipeNozzleChecks.Automation() {
+                        @Override
+                        public ItemStack itemCargo(ServerLevel level, BlockPos pos) {
+                            return NativeTransferAccess.cargo(level, pos, Direction.SOUTH);
+                        }
+
+                        @Override
+                        public int seedWater(ServerLevel level, BlockPos pos, int amount) {
+                            return NativeTransferAccess.fill(
+                                    level, pos, Direction.NORTH, water(amount), false);
+                        }
+
+                        @Override
+                        public boolean reverseRejected(
+                                ServerLevel level, BlockPos pos, boolean fluid, ItemStack sample) {
+                            if (fluid) {
+                                return NativeTransferAccess.fill(
+                                                        level,
+                                                        pos,
+                                                        Direction.SOUTH,
+                                                        water(1),
+                                                        false)
+                                                == 0
+                                        && NativeTransferAccess.drain(
+                                                        level, pos, Direction.NORTH, 1, false)
+                                                == 0;
+                            }
+                            return NativeTransferAccess.insert(
+                                                    level, pos, Direction.SOUTH, sample, false)
+                                            == 0
+                                    && NativeTransferAccess.extract(
+                                                    level, pos, Direction.NORTH, 1, false)
+                                            == 0;
+                        }
+                    });
     private boolean openedOutlet;
     private boolean releasedBackpressure;
     private boolean finishedFluid;
@@ -37,6 +78,9 @@ final class TransportChecks {
 
     void writeStart(ServerLevel level, BiConsumer<String, Boolean> check) {
         var player = FakePlayerFactory.getMinecraft(level);
+        level.setChunkForced(0, 0, true);
+        level.getChunk(0, 0);
+        nozzles.place(level, player, check);
         NativeGameplayFixture.place(level, player, "steel_item_pipe_small", ITEM_PIPE);
         rotate(level, ITEM_PIPE, Direction.EAST);
         NativeGameplayFixture.place(level, player, "bronze_fluid_pipe_medium", FLUID_PIPE);
@@ -101,7 +145,13 @@ final class TransportChecks {
                         == 0);
     }
 
+    boolean writeTick(ServerLevel level, BiConsumer<String, Boolean> check) {
+        return nozzles.waitForBackpressure(level, check);
+    }
+
     void readStart(ServerLevel level, BiConsumer<String, Boolean> check) {
+        level.getChunk(0, 0);
+        nozzles.letDeliver(level, FakePlayerFactory.getMinecraft(level), "cold", check);
         var sample = NativeTransferAccess.cargo(level, ITEM_PIPE, Direction.WEST);
         check.accept(
                 "cold-pipe-item-components",
@@ -148,7 +198,7 @@ final class TransportChecks {
         if (!finishedFluid) {
             tickFluid(level, check);
         }
-        return finishedItems && finishedFluid;
+        return nozzles.delivered(level, check) && finishedItems && finishedFluid;
     }
 
     String diagnostic(ServerLevel level) {

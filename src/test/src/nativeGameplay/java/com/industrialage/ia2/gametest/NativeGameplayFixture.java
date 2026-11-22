@@ -492,11 +492,13 @@ public final class NativeGameplayFixture {
         boolean tiersDone = generator.fuelRemaining() > 0 && energyTiers.tick(level, this::check);
         boolean gearDone = generator.fuelRemaining() > 0 && gear.tick(level, this::check);
         boolean meterDone = meter.tick(this::check);
+        boolean nozzlesDone = transport.writeTick(level, this::check);
         if (mill.progress() < 50
                 || mill.getItem(0).getCount() < 2
                 || !tiersDone
                 || !gearDone
-                || !meterDone) {
+                || !meterDone
+                || !nozzlesDone) {
             return false;
         }
         var storage = machine(level, STORAGE);
