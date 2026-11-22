@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachinePortCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -50,26 +51,25 @@ abstract class BoxHost extends BlockEntity {
         node.owner = tag.hasUUID("owner") ? tag.getUUID("owner") : null;
     }
 
-    private LazyOptional<InvWrapper> inventory =
-            LazyOptional.of(() -> new InvWrapper(((BoxNode) this).items));
+    private final MachinePortCache automation = new MachinePortCache(this);
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (!isRemoved()
                 && cap == ForgeCapabilities.ITEM_HANDLER
-                && ((BoxNode) this).kind.automatable()) return inventory.cast();
+                && ((BoxNode) this).kind.automatable())
+            return automation.item(side, () -> new InvWrapper(((BoxNode) this).items)).cast();
         return super.getCapability(cap, side);
+    }
+
+    /** Refreshes listeners for item and fluid automation on this device. */
+    public void invalidateMachinePorts() {
+        automation.invalidate();
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        inventory.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        inventory = LazyOptional.of(() -> new InvWrapper(((BoxNode) this).items));
+        invalidateMachinePorts();
     }
 }

@@ -12,22 +12,28 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * A placed industrial processor. Native items and fluids commit together when one job completes.
  */
 public final class WorkshopNode extends WorkshopSaveBase
-        implements WorldPowerPort, EuBuffer, MenuProvider {
+        implements com.industrialage.ia2.access.MachineAccessTarget,
+                WorldPowerPort,
+                EuBuffer,
+                MenuProvider {
     private static final int BLAST_FURNACE_WORK_HEAT = 50_000;
     private static final int BLAST_FURNACE_HEAT_CAPACITY = 100_000;
     private static final Set<Face> SIDES = Set.copyOf(EnumSet.allOf(Face.class));
@@ -656,6 +662,23 @@ public final class WorkshopNode extends WorkshopSaveBase
         return kind == WorkshopKind.WIND_KINETIC
                 ? WorkshopKinetic.wind(this, level, WorkshopBlock.direction(getBlockState()))
                 : 0;
+    }
+
+    @Override
+    public BlockEntity accessController() {
+        return kind.kilnPort() && getLevel() instanceof ServerLevel level
+                ? WorkshopCokeKiln.controllerForPort(this, level)
+                : null;
+    }
+
+    @Override
+    public void visitAccessPorts(ServerLevel level, Consumer<BlockEntity> visitor) {
+        if (kind == WorkshopKind.COKE_KILN) WorkshopCokeKiln.visitPorts(this, level, visitor);
+    }
+
+    @Override
+    public boolean exchangeHeldFluid(Player player, InteractionHand hand, Direction side) {
+        return !kind.kilnPort() && WorkshopPlatform.interactFluid(this, player, hand, side);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.industrialage.ia2.industrial;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.industrialage.ia2.access.MachinePortCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -15,13 +14,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 abstract class WorkshopSaveBase extends BlockEntity {
-    private final Map<Direction, LazyOptional<IItemHandler>> inventories = new HashMap<>();
-    private final Map<Direction, LazyOptional<IFluidHandler>> fluidPorts = new HashMap<>();
+    private final MachinePortCache automation = new MachinePortCache(this);
 
     WorkshopSaveBase(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -140,39 +136,31 @@ abstract class WorkshopSaveBase extends BlockEntity {
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if (!isRemoved()) {
             var node = (WorkshopNode) this;
-            if (capability == ForgeCapabilities.ITEM_HANDLER) {
-                return inventories
-                        .computeIfAbsent(
-                                side,
-                                face ->
-                                        LazyOptional.of(
-                                                () -> new SidedInvWrapper(node.inventory, face)))
+            if (cap == ForgeCapabilities.ITEM_HANDLER)
+                return automation
+                        .item(side, () -> new SidedInvWrapper(node.inventory, side))
                         .cast();
-            }
-            if (capability == ForgeCapabilities.FLUID_HANDLER
+            if (cap == ForgeCapabilities.FLUID_HANDLER
                     && (node.inlet.capacity > 0 || node.outlet.capacity > 0)) {
-                var port = new WorkshopFluidPort(node, side);
-                if (port.size() > 0) {
-                    return fluidPorts
-                            .computeIfAbsent(
-                                    side,
-                                    face -> LazyOptional.of(() -> new WorkshopPlatform.Port(port)))
-                            .cast();
-                }
+                var access = new WorkshopFluidPort(node, side);
+                if (access.size() > 0)
+                    return automation.fluid(side, () -> new WorkshopPlatform.Port(access)).cast();
             }
         }
-        return super.getCapability(capability, side);
+        return super.getCapability(cap, side);
+    }
+
+    /** Refreshes listeners for item and fluid automation on this device. */
+    public void invalidateMachinePorts() {
+        automation.invalidate();
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        inventories.values().forEach(LazyOptional::invalidate);
-        inventories.clear();
-        fluidPorts.values().forEach(LazyOptional::invalidate);
-        fluidPorts.clear();
+        invalidateMachinePorts();
     }
 }

@@ -1,5 +1,7 @@
 package com.industrialage.ia2.forge.content;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import com.industrialage.ia2.forge.content.MachineKind.Slot;
 import com.industrialage.ia2.forge.equipment.ForgeGear;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
@@ -135,12 +137,14 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
 
     @Override
     public boolean canPlaceItemThroughFace(int index, ItemStack stack, Direction face) {
+        if (!MachineAccess.allowsInput(owner, face)) return false;
         var role = kind.slots.get(index);
         return (role == Slot.INPUT || role == Slot.FUEL) && canPlaceItem(index, stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction face) {
+        if (!MachineAccess.allowsOutput(owner, face)) return false;
         return switch (kind.slots.get(index)) {
             case OUTPUT -> true;
             case INPUT, FUEL -> !canPlaceItem(index, stack);
@@ -170,7 +174,9 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
     }
 
     LazyOptional<IItemHandler> handler(Direction face) {
-        return face == null ? unsided : handlers.get(face);
+        return MachineAccess.connects(owner, face)
+                ? (face == null ? unsided : handlers.get(face))
+                : LazyOptional.empty();
     }
 
     void invalidate() {
@@ -179,9 +185,14 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
     }
 
     void revive() {
-        unsided = LazyOptional.of(() -> new SidedInvWrapper(this, null));
+        unsided =
+                LazyOptional.of(
+                        () -> MachinePorts.item(owner, null, new SidedInvWrapper(this, null)));
         for (Direction side : Direction.values()) {
-            handlers.put(side, LazyOptional.of(() -> new SidedInvWrapper(this, side)));
+            handlers.put(
+                    side,
+                    LazyOptional.of(
+                            () -> MachinePorts.item(owner, side, new SidedInvWrapper(this, side))));
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.content.ProcessingUpgrades;
 import com.industrialage.ia2.world.MachineAutomation;
 import java.util.List;
@@ -137,6 +138,7 @@ final class WorkshopAutomation {
             WorkshopNode node, ServerLevel level, ItemStack upgrade, boolean eject) {
         int rate = Math.min(1000, 100 * ProcessingUpgrades.transferLimit(upgrade.getCount()));
         for (var side : MachineAutomation.faces(upgrade)) {
+            if (!MachineAccess.allowsUpgrade(node, side, eject, true)) continue;
             if (eject) {
                 var tank = node.accessibleOutput(side);
                 if (tank != null) {

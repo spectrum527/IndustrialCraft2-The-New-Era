@@ -7,13 +7,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
-interface ForgeDevice extends MenuProvider, EuBuffer {
+interface ForgeDevice
+        extends MenuProvider, EuBuffer, com.industrialage.ia2.access.MachineAccessTarget {
     @Override
     default EuBuffer.Reading bufferedEu() {
         return new EuBuffer.Reading(energy(), capacity());
     }
 
     MachineInventory inventory();
+
+    @Override
+    default void invalidateMachinePorts() {
+        inventory().invalidate();
+        inventory().revive();
+    }
 
     default double energy() {
         return 0;
