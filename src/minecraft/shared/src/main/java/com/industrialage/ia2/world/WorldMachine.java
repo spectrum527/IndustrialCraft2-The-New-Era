@@ -1,5 +1,6 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
 import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.platform.CapabilityFacade.Face;
@@ -14,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +25,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-final class WorldMachine extends WorldSaveBase implements WorldPowerPort, EuBuffer, MenuProvider {
+final class WorldMachine extends WorldSaveBase
+        implements com.industrialage.ia2.access.MachineAccessTarget,
+                WorldPowerPort,
+                EuBuffer,
+                MenuProvider {
     private static final Ports INPUT = new Ports(Set.of(Face.values()), Set.of(), false);
     final WorldMachineBlock.Kind kind;
     final WorldInventory inventory;
@@ -98,6 +104,12 @@ final class WorldMachine extends WorldSaveBase implements WorldPowerPort, EuBuff
                     default -> "block.ic2." + kind.path;
                 };
         return Component.translatable(name);
+    }
+
+    @Override
+    public boolean exchangeHeldFluid(Player player, InteractionHand hand, Direction side) {
+        return kind == WorldMachineBlock.Kind.CROPMATRON
+                && WorldFluidAccess.handFluid(this, player, hand);
     }
 
     @Override
@@ -266,6 +278,7 @@ final class WorldMachine extends WorldSaveBase implements WorldPowerPort, EuBuff
                             * com.industrialage.ia2.content.ProcessingUpgrades.transferLimit(
                                     upgrade.getCount());
             for (Direction face : MachineAutomation.faces(upgrade)) {
+                if (!MachineAccess.allowsUpgrade(this, face, false, true)) continue;
                 var source = worldPosition.relative(face);
                 if (worldPosition.equals(source)) continue;
                 fill(

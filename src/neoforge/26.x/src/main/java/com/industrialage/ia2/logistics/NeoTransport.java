@@ -1,9 +1,13 @@
 package com.industrialage.ia2.logistics;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -56,10 +60,14 @@ final class NeoTransport {
                     event.registerBlockEntity(
                             Capabilities.Fluid.BLOCK,
                             TransportPlatform.type(),
-                            (node, side) ->
-                                    node.spec.kind() != Kind.ITEM_PIPE
-                                            ? new FluidPort(node, side)
-                                            : null);
+                            (node, side) -> {
+                                if (node.spec.kind() == Kind.ITEM_PIPE) return null;
+                                var port = new FluidPort(node, side);
+                                if (!node.exposesMachineAccess()) return port;
+                                return MachineAccess.connects(node, side)
+                                        ? MachinePorts.fluid(node, side, port)
+                                        : null;
+                            });
                     event.registerItem(
                             Capabilities.Fluid.ITEM,
                             (stack, access) -> new CellAccess(access),
@@ -69,6 +77,17 @@ final class NeoTransport {
 
     static FluidStack bucketFluid(ItemStack stack) {
         return FluidUtil.getFirstStackContained(stack.copyWithCount(1));
+    }
+
+    static ItemStack nozzleItem(TransportNode.Nozzle nozzle) {
+        return BuiltInRegistries.ITEM
+                .getOptional(Identifier.fromNamespaceAndPath("ic2", nozzle.path()))
+                .map(ItemStack::new)
+                .orElse(ItemStack.EMPTY);
+    }
+
+    static boolean hasItemPort(ServerLevel level, BlockPos pos, Direction side) {
+        return level.getCapability(Capabilities.Item.BLOCK, pos, side) != null;
     }
 
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
@@ -181,7 +200,7 @@ final class NeoTransport {
         }
         if (node.getLevel() instanceof ServerLevel) {
             FluidUtil.interactWithFluidHandler(
-                    player, hand, node.getBlockPos(), new FluidPort(node, side));
+                    player, hand, node.getBlockPos(), new FluidPort(node, side, true));
         }
         return true;
     }
@@ -214,7 +233,7 @@ final class NeoTransport {
             return slot == 0
                     && TransportPlatform.available(node)
                     && !resource.isEmpty()
-                    && side != node.getBlockState().getValue(TransportBlock.OUT);
+                    && node.permitsInbound(side);
         }
 
         @Override
@@ -248,8 +267,12 @@ final class NeoTransport {
         }
     }
 
-    private record FluidPort(TransportNode node, Direction side)
+    private record FluidPort(TransportNode node, Direction side, boolean manual)
             implements ResourceHandler<FluidResource> {
+        FluidPort(TransportNode node, Direction side) {
+            this(node, side, false);
+        }
+
         @Override
         public int size() {
             return 1;
@@ -276,7 +299,7 @@ final class NeoTransport {
         public boolean isValid(int slot, FluidResource resource) {
             return slot == 0
                     && TransportPlatform.available(node)
-                    && node.open(side)
+                    && (manual ? node.open(side) : node.permitsInbound(side))
                     && !resource.isEmpty();
         }
 
@@ -298,7 +321,9 @@ final class NeoTransport {
         @Override
         public int extract(
                 int slot, FluidResource resource, int amount, TransactionContext transaction) {
-            if (resource.isEmpty() || !resource.equals(getResource(slot))) {
+            if (resource.isEmpty()
+                    || !resource.equals(getResource(slot))
+                    || (!manual && !node.permitsOutbound(side))) {
                 return 0;
             }
             var key = new FluidKey(resource.toStack(1));

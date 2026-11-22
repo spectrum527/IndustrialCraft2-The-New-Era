@@ -21,9 +21,10 @@ abstract class TransportBlockBase extends Block {
     }
 
     abstract boolean interact(
-            Level level, BlockPos pos, Player player, InteractionHand hand, Direction side);
+            Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit);
 
-    abstract BlockState connect(BlockState state, Direction side, BlockState neighbor);
+    abstract BlockState connect(
+            BlockState state, Direction side, BlockState neighbor, LevelReader level, BlockPos pos);
 
     @Override
     protected InteractionResult useItemOn(
@@ -34,7 +35,7 @@ abstract class TransportBlockBase extends Block {
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-        return interact(level, pos, player, hand, hit.getDirection())
+        return interact(level, pos, player, hand, hit)
                 ? InteractionResult.SUCCESS
                 : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
@@ -49,6 +50,6 @@ abstract class TransportBlockBase extends Block {
             BlockPos neighborPos,
             BlockState neighbor,
             RandomSource random) {
-        return connect(state, side, neighbor);
+        return connect(state, side, neighbor, level, pos);
     }
 }

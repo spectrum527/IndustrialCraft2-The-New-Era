@@ -40,7 +40,11 @@ public interface WrenchTarget {
     default boolean wrenchTurn(ServerLevel level, BlockPos pos, BlockState state, Direction side) {
         var next = state.setValue(directionProperty(state), side);
         if (next == state || !level.setBlockAndUpdate(pos, next)) return false;
-        if (level.getBlockEntity(pos) != null) WorldEnergy.connect(level.getBlockEntity(pos));
+        var node = level.getBlockEntity(pos);
+        if (node != null) {
+            WorldEnergy.connect(node);
+            com.industrialage.ia2.access.MachineAccess.refresh(node);
+        }
         return true;
     }
 

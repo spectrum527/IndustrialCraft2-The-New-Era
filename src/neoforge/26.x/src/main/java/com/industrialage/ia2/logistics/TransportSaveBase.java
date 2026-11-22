@@ -1,6 +1,11 @@
 package com.industrialage.ia2.logistics;
 
+import com.industrialage.ia2.content.TransportSpec.Kind;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -37,6 +42,35 @@ abstract class TransportSaveBase extends BlockEntity {
     }
 
     @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ((TransportNode) this).spec.kind() == Kind.TANK
+                ? null
+                : ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        var tag = new CompoundTag();
+        var node = (TransportNode) this;
+        tag.putInt("nozzle_extraction", node.extractionNozzles);
+        tag.putInt("nozzle_injection", node.injectionNozzles);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        ((TransportNode) this)
+                .restoreNozzles(
+                        input.getIntOr("nozzle_extraction", 0),
+                        input.getIntOr("nozzle_injection", 0));
+    }
+
+    @Override
+    public void onDataPacket(Connection connection, ValueInput input) {
+        handleUpdateTag(input);
+    }
+
+    @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         var node = (TransportNode) this;
@@ -47,6 +81,10 @@ abstract class TransportSaveBase extends BlockEntity {
         output.putInt("closed", node.closed);
         output.putInt("lv", node.lv);
         output.putInt("mv", node.mv);
+        if (node.hasNozzles()) {
+            output.putInt("nozzle_extraction", node.extractionNozzles);
+            output.putInt("nozzle_injection", node.injectionNozzles);
+        }
     }
 
     @Override
@@ -64,6 +102,8 @@ abstract class TransportSaveBase extends BlockEntity {
                 input.getIntOr("closed", 0),
                 input.getIntOr("lv", 0),
                 input.getIntOr("mv", 0));
+        tank.restoreNozzles(
+                input.getIntOr("nozzle_extraction", 0), input.getIntOr("nozzle_injection", 0));
     }
 
     @Override

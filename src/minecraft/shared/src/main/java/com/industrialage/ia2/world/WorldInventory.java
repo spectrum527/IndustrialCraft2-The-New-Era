@@ -1,5 +1,6 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.access.MachineAccess;
 import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.world.SimpleContainer;
@@ -41,6 +42,7 @@ final class WorldInventory extends SimpleContainer implements WorldlyContainer {
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+        if (!MachineAccess.allowsInput(owner, side)) return false;
         return switch (owner.kind) {
             case BATCH_CRAFTER ->
                     slot < 9
@@ -59,6 +61,7 @@ final class WorldInventory extends SimpleContainer implements WorldlyContainer {
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        if (!MachineAccess.allowsOutput(owner, side)) return false;
         return output(slot);
     }
 

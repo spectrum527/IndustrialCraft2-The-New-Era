@@ -131,7 +131,8 @@ public enum CreativeCategory {
             broken_rubber_boat bronze_fluid_pipe_large bronze_fluid_pipe_medium bronze_fluid_pipe_small
             bronze_fluid_pipe_tiny bronze_item_pipe_large bronze_item_pipe_medium bronze_item_pipe_small
             bronze_item_pipe_tiny carbon_boat chunk_loader containment_box electric_boat
-            fluid_distributor fluid_regulator mining_pipe pump_cover_lv pump_cover_mv rubber_boat
+            fluid_distributor fluid_regulator mining_pipe pipe_extraction_nozzle pipe_injection_nozzle
+            pump_cover_lv pump_cover_mv rubber_boat
             sorting_machine steel_fluid_pipe_large steel_fluid_pipe_medium steel_fluid_pipe_small
             steel_fluid_pipe_tiny steel_item_pipe_large steel_item_pipe_medium steel_item_pipe_small
             steel_item_pipe_tiny teleporter tool_box trade_o_mat weighted_fluid_distributor

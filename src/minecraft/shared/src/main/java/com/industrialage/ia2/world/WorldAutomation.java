@@ -1,5 +1,6 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.access.MachineAccess;
 import java.util.ArrayList;
 import java.util.Comparator;
 import net.minecraft.core.Direction;
@@ -68,7 +69,8 @@ final class WorldAutomation {
     }
 
     private static boolean buffer(WorldMachine node, ServerLevel server) {
-        if (!node.inventory.has(EJECTOR_SLOT, "ic2:ejector_upgrade")) return false;
+        if (!node.inventory.has(EJECTOR_SLOT, "ic2:ejector_upgrade")
+                || !MachineAccess.allowsUpgrade(node, front(node), true, false)) return false;
         return push(node, server, firstInput(node, 26), front(node), 16) > 0;
     }
 
@@ -123,6 +125,7 @@ final class WorldAutomation {
     }
 
     private static boolean pull(WorldMachine node, ServerLevel server, Direction side) {
+        if (!MachineAccess.allowsUpgrade(node, side, false, false)) return false;
         for (int slot = 0; slot < ROUTER_INPUT; slot++) {
             if (!node.inventory.getItem(slot).isEmpty()) continue;
             var from = node.getBlockPos().relative(side);
@@ -140,6 +143,7 @@ final class WorldAutomation {
         if (index < 0 || limit <= 0) return 0;
         var from = node.inventory.getItem(index);
         if (from.isEmpty()) return 0;
+        if (!MachineAccess.allowsOutput(node, side)) return 0;
         var to = node.getBlockPos().relative(side);
         if (!server.hasChunkAt(to)) return 0;
         var transfer = from.copy();

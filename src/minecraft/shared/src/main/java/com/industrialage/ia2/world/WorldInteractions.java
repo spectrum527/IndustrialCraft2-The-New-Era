@@ -96,6 +96,8 @@ final class WorldInteractions {
         if (hand == InteractionHand.MAIN_HAND && state.getBlock() instanceof WorldMachineBlock) {
             if (WrenchUse.hand(player) != null) return false;
             if (server && level.getBlockEntity(pos) instanceof WorldMachine machine) {
+                if (player.mayUseItemAt(pos, face, stack)
+                        && machine.exchangeHeldFluid(player, hand, face)) return true;
                 machine.interact(player, face);
             }
             return true;

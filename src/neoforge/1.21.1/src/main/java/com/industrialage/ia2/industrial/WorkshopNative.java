@@ -1,5 +1,7 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import net.minecraft.core.BlockPos;
@@ -117,13 +119,21 @@ final class WorkshopNative {
                     event.registerBlockEntity(
                             Capabilities.ItemHandler.BLOCK,
                             WorkshopPlatform.type(),
-                            (node, side) -> new SidedInvWrapper(node.inventory, side));
+                            (node, side) ->
+                                    MachineAccess.connects(node, side)
+                                            ? MachinePorts.item(
+                                                    node,
+                                                    side,
+                                                    new SidedInvWrapper(node.inventory, side))
+                                            : null);
                     event.registerBlockEntity(
                             Capabilities.FluidHandler.BLOCK,
                             WorkshopPlatform.type(),
                             (node, side) -> {
                                 var access = new WorkshopFluidPort(node, side);
-                                return access.size() > 0 ? new Port(access) : null;
+                                return access.size() > 0 && MachineAccess.connects(node, side)
+                                        ? MachinePorts.fluid(node, side, new Port(access))
+                                        : null;
                             });
                 });
     }

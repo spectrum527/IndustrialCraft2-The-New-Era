@@ -1,5 +1,7 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -22,8 +24,12 @@ final class BoxNative {
                                 BoxPlatform.type(),
                                 (node, side) ->
                                         node.kind.automatable()
-                                                ? new net.neoforged.neoforge.items.wrapper
-                                                        .InvWrapper(node.items)
+                                                        && MachineAccess.connects(node, side)
+                                                ? MachinePorts.item(
+                                                        node,
+                                                        side,
+                                                        new net.neoforged.neoforge.items.wrapper
+                                                                .InvWrapper(node.items))
                                                 : null));
     }
 }

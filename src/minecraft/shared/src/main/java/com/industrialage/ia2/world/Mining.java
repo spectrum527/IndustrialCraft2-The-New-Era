@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -146,35 +145,16 @@ final class Mining {
 
     private static void eject(WorldMachine machine, ServerLevel level) {
         for (Direction side : Direction.values()) {
-            if (!(level.getBlockEntity(machine.getBlockPos().relative(side))
-                    instanceof Container target)) continue;
-            for (int from = 4; from < 8; from++) {
-                var stack = machine.inventory.getItem(from);
-                if (stack.isEmpty()) continue;
-                for (int to = 0; to < target.getContainerSize() && !stack.isEmpty(); to++) {
-                    if (!target.canPlaceItem(to, stack)) continue;
-                    var present = target.getItem(to);
-                    if (present.isEmpty()) {
-                        target.setItem(
-                                to,
-                                stack.split(Math.min(target.getMaxStackSize(), stack.getCount())));
-                    } else if (WorldNative.sameStack(stack, present)) {
-                        int moved =
-                                Math.min(
-                                        stack.getCount(),
-                                        Math.min(
-                                                        target.getMaxStackSize(),
-                                                        present.getMaxStackSize())
-                                                - present.getCount());
-                        if (moved > 0) {
-                            present.grow(moved);
-                            stack.shrink(moved);
-                        }
-                    }
-                }
+            var pos = machine.getBlockPos().relative(side);
+            if (!level.hasChunkAt(pos)
+                    || !com.industrialage.ia2.access.MachineAccess.allowsOutput(machine, side))
+                continue;
+            for (int slot = 4; slot < 8; slot++) {
+                var offered = machine.inventory.getItem(slot);
+                if (offered.isEmpty()) continue;
+                int moved = WorldItemAccess.push(level, pos, side.getOpposite(), offered);
+                if (moved > 0) machine.inventory.removeItem(slot, moved);
             }
-            target.setChanged();
-            machine.inventory.setChanged();
         }
     }
 

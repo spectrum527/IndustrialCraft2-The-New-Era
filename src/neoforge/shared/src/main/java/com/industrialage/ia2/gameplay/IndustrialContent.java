@@ -7,6 +7,7 @@ import com.industrialage.ia2.content.PortableEquipment;
 import com.industrialage.ia2.equipment.ArmorPlatform;
 import com.industrialage.ia2.equipment.MeterPlatform;
 import com.industrialage.ia2.equipment.MountPlatform;
+import com.industrialage.ia2.logistics.TransportNode.Nozzle;
 import com.industrialage.ia2.platform.ConfigFacade;
 import com.mojang.serialization.Codec;
 import java.util.List;
@@ -152,6 +153,9 @@ public final class IndustrialContent {
                         "bronze_dust",
                         "bronze_ingot")) {
             ITEMS.registerSimpleItem(path);
+        }
+        for (var nozzle : List.of(Nozzle.EXTRACTION, Nozzle.INJECTION)) {
+            ITEMS.registerSimpleItem(nozzle.path());
         }
         IndustrialMaterials.ADDITIONAL.forEach(ITEMS::registerSimpleItem);
         PortableGear.install(ITEMS, gameBus);

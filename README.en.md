@@ -8,16 +8,18 @@
 
 ## Download and install
 
-**The current stable release is 1.0.5.** Pick the JAR for your Minecraft version and put it in the instance’s `mods/` directory. In multiplayer, install the same JAR on the client and the dedicated server. The original mod, the previous repair project and this rebuild all use the `ic2` ID. Give each its own instance. [Release notes](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/tag/v1.0.5) · [SHA-256 checksums](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/SHA256SUMS.txt) · [1.0.5 source review](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/SELF-REVIEW-1.0.5.md)
+**The current stable release is 1.0.6.** Pick the JAR for your Minecraft version and put it in the instance’s `mods/` directory. In multiplayer, install the same JAR on the client and the dedicated server. The original mod, the previous repair project and this rebuild all use the `ic2` ID. Give each its own instance. [Release notes](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/tag/v1.0.6) · [SHA-256 checksums](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/SHA256SUMS.txt) · [1.0.6 source review](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/SELF-REVIEW-1.0.6.md)
 
 | Minecraft | Mod loader | Java | Download |
 | --- | --- | ---: | --- |
-| 1.19.2 | Forge 43.5.0 | 17 | [Forge 1.19.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-forge-1.19.2-1.0.5.jar) |
-| 1.21.1 | NeoForge 21.1.265 | 21 | [NeoForge 1.21.1 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-neoforge-1.21.1-1.0.5.jar) |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | [NeoForge 26.1.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-neoforge-26.1.2-1.0.5.jar) |
-| 26.2 | NeoForge 26.2.0.95 | 25 | [NeoForge 26.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-neoforge-26.2-1.0.5.jar) |
+| 1.19.2 | Forge 43.5.0 | 17 | [Forge 1.19.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-forge-1.19.2-1.0.6.jar) |
+| 1.21.1 | NeoForge 21.1.265 | 21 | [NeoForge 1.21.1 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-neoforge-1.21.1-1.0.6.jar) |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | [NeoForge 26.1.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-neoforge-26.1.2-1.0.6.jar) |
+| 26.2 | NeoForge 26.2.0.95 | 25 | [NeoForge 26.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-neoforge-26.2-1.0.6.jar) |
 
 Gameplay starts with your first machine and a coal-fired generator. To get rubber, look for rubber trees, a distinct tree added by the mod. See the player guide linked here, or check MC百科 (linked in the credits below) for more guidance. [Player guide and wiring examples](docs/first-playable.en.md)
+
+Fit an extraction or injection nozzle to any item or fluid pipe. Use the button beside a machine GUI to configure automation on each face. [Pipe nozzles and machine access](spec/logistics/nozzles-and-side-access.md)
 
 The One Probe and Curios are optional. The One Probe shows the energy held in a machine and the contents of its tanks. Curios adds a back slot so you can wear a battery pack or electric jetpack on your back and charge it by standing on a charge pad of the matching tier. [Integration behavior and tests](spec/platform/optional-integrations.md)
 
@@ -33,7 +35,7 @@ The project credits **MC百科 (mcmod.cn)** as the public reference for machine 
 
 The maintainers are committed to keeping the project **open source and non-profit**. Official builds are free to download. Pull requests are welcome. If you would like to maintain a port, contribute artwork, write documentation or help test the mod, you can apply to collaborate. When reporting a bug, include your Minecraft and loader versions, the steps to reproduce it and what happened. [Report an issue](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/issues/new/choose) · [Open a pull request](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/compare) · [Apply to collaborate](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/issues/new?template=co-creation.yml)
 
-The three NeoForge targets build from `main`. Forge 1.19.2 lives on the separate `1.19.2` branch. Run the matching command from the root of that branch. On Windows, use `gradlew.bat`. [NeoForge release source](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.5) · [Forge release source](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.5-forge-1.19.2)
+The three NeoForge targets build from `main`. Forge 1.19.2 lives on the separate `1.19.2` branch. Run the matching command from the root of that branch. On Windows, use `gradlew.bat`. [NeoForge release source](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.6) · [Forge release source](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.6-forge-1.19.2)
 
 ```sh
 # main — build the three NeoForge JARs

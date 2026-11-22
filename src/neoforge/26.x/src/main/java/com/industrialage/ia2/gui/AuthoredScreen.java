@@ -1,15 +1,13 @@
 package com.industrialage.ia2.gui;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 /** Native draggable inventory with IC2's authored background and synchronized menu data. */
-public abstract class AuthoredScreen<M extends AbstractContainerMenu>
-        extends AbstractContainerScreen<M> {
+public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends DeviceScreen<M> {
     private PanelViewport viewport = new PanelViewport(0, 0, 1);
 
     protected AuthoredScreen(M menu, Inventory inventory, Component title, int width, int height) {
@@ -19,7 +17,7 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu>
     @Override
     protected void init() {
         super.init();
-        viewport = PanelViewport.fit(width, height, imageWidth, imageHeight);
+        viewport = fitNativePanel();
         leftPos = viewport.left();
         topPos = viewport.top();
     }
@@ -45,14 +43,14 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu>
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent button, boolean twice) {
+    protected boolean panelMouseClicked(MouseButtonEvent button, boolean twice) {
         var local = unscale(button);
         int action =
                 actionAt(
                         (int) Math.floor(local.x() - leftPos),
                         (int) Math.floor(local.y() - topPos),
                         local.button());
-        if (action < 0) return super.mouseClicked(local, twice);
+        if (action < 0) return super.panelMouseClicked(local, twice);
         if (minecraft != null && minecraft.gameMode != null)
             minecraft.gameMode.handleInventoryButtonClick(menu.containerId, action);
         return true;
@@ -68,18 +66,20 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu>
     }
 
     @Override
-    public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
-        return super.mouseDragged(unscale(event), dx / viewport.scale(), dy / viewport.scale());
+    protected boolean panelMouseDragged(MouseButtonEvent event, double dx, double dy) {
+        return super.panelMouseDragged(
+                unscale(event), dx / viewport.scale(), dy / viewport.scale());
     }
 
     @Override
-    public boolean mouseReleased(MouseButtonEvent event) {
-        return super.mouseReleased(unscale(event));
+    protected boolean panelMouseReleased(MouseButtonEvent event) {
+        return super.panelMouseReleased(unscale(event));
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double dx, double dy) {
-        return super.mouseScrolled(viewport.unscaleX(mouseX), viewport.unscaleY(mouseY), dx, dy);
+    protected boolean panelMouseScrolled(double mouseX, double mouseY, double dx, double dy) {
+        return super.panelMouseScrolled(
+                viewport.unscaleX(mouseX), viewport.unscaleY(mouseY), dx, dy);
     }
 
     /** Paint background, inlaid controls and text before native item stacks are rendered. */
@@ -95,9 +95,9 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu>
     protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {}
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor g, int x, int y, float tick) {
+    protected void renderPanel(GuiGraphicsExtractor g, int x, int y, float tick) {
         if (viewport.scale() == 1) {
-            super.extractRenderState(g, x, y, tick);
+            super.renderPanel(g, x, y, tick);
             return;
         }
         var pose = g.pose();
@@ -105,7 +105,7 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu>
         try {
             pose.translate(viewport.translateX(), viewport.translateY());
             pose.scale(viewport.scale());
-            super.extractRenderState(
+            super.renderPanel(
                     g,
                     (int) Math.floor(viewport.unscaleX(x)),
                     (int) Math.floor(viewport.unscaleY(y)),

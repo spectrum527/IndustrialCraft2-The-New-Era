@@ -56,7 +56,12 @@ public final class CellItem extends Item {
             ServerLevel level, BlockPos pos, Direction face, Player player, InteractionHand hand) {
         return level.mayInteract(player, pos)
                 && player.mayUseItemAt(pos, face, player.getItemInHand(hand))
-                && FluidUtil.interactWithFluidHandler(player, hand, level, pos, face, null);
+                && ((level.getBlockEntity(pos)
+                                        instanceof
+                                        com.industrialage.ia2.access.MachineAccessTarget target
+                                && target.exchangeHeldFluid(player, hand, face))
+                        || FluidUtil.interactWithFluidHandler(
+                                player, hand, level, pos, face, null));
     }
 
     @Override

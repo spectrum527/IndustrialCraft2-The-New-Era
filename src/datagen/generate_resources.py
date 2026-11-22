@@ -260,6 +260,8 @@ if args.logistics:
     }.items(): item_sprite(name, 'items/' + texture)
     for name in ('wrench','crowbar'):
         item_sprite(name, 'items/tool/' + name, True)
+    for name in ('pipe_extraction_nozzle', 'pipe_injection_nozzle'):
+        item_sprite(name, 'items/cover/' + name)
     for tier in ('lv','mv'):
         name = 'pump_cover_' + tier
         item_model(name, {'parent':'minecraft:item/generated', 'textures': {
@@ -381,6 +383,9 @@ if args.logistics:
     R['empty_cell']=(['TGT'],{'T':'ic2:tin_casing','G':'minecraft:glass_pane'},4)
     for material in ('bronze','iron','steel'):
         R[material+'_tank']=(['PCP','C C','PCP'],{'P':f'ic2:{material}_plate','C':'ic2:empty_cell'},1)
+    for mode, actuator in (('extraction', 'piston'), ('injection', 'dropper')):
+        shapeless['pipe_' + mode + '_nozzle'] = (
+            ['ic2:bronze_casing', 'ic2:bronze_casing', 'ic2:bronze_fluid_pipe_tiny', 'minecraft:' + actuator], 1)
     shapeless['pump_cover_lv']=(['ic2:bronze_fluid_pipe_medium','minecraft:piston','ic2:insulated_copper_cable'],1)
     shapeless['pump_cover_mv']=(['ic2:steel_fluid_pipe_medium','minecraft:piston','ic2:insulated_gold_cable'],1)
 recipe_dir = 'recipes/' if forge else 'recipe/'

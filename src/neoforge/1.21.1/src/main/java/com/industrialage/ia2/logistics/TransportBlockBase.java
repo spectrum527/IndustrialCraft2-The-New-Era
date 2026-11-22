@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -20,9 +21,10 @@ abstract class TransportBlockBase extends Block {
     }
 
     abstract boolean interact(
-            Level level, BlockPos pos, Player player, InteractionHand hand, Direction side);
+            Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit);
 
-    abstract BlockState connect(BlockState state, Direction side, BlockState neighbor);
+    abstract BlockState connect(
+            BlockState state, Direction side, BlockState neighbor, LevelReader level, BlockPos pos);
 
     @Override
     protected ItemInteractionResult useItemOn(
@@ -33,7 +35,7 @@ abstract class TransportBlockBase extends Block {
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-        return interact(level, pos, player, hand, hit.getDirection())
+        return interact(level, pos, player, hand, hit)
                 ? ItemInteractionResult.SUCCESS
                 : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
@@ -46,7 +48,7 @@ abstract class TransportBlockBase extends Block {
             LevelAccessor level,
             BlockPos pos,
             BlockPos neighborPos) {
-        return connect(state, side, neighbor);
+        return connect(state, side, neighbor, level, pos);
     }
 
     @Override

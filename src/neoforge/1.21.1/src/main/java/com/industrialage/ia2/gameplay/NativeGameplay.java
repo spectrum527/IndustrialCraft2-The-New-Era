@@ -1,5 +1,7 @@
 package com.industrialage.ia2.gameplay;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import com.industrialage.ia2.platform.NeoForgeVersion;
 import java.util.List;
 import java.util.Map;
@@ -156,8 +158,14 @@ public final class NativeGameplay {
                                 Capabilities.ItemHandler.BLOCK,
                                 type.get(),
                                 (machine, side) ->
-                                        new SidedInvWrapper(
-                                                machine, side == null ? Direction.UP : side)));
+                                        MachineAccess.connects(machine, side)
+                                                ? MachinePorts.item(
+                                                        machine,
+                                                        side,
+                                                        new SidedInvWrapper(
+                                                                machine,
+                                                                side == null ? Direction.UP : side))
+                                                : null));
     }
 
     static Block rubberLeaves(Block.Properties properties) {

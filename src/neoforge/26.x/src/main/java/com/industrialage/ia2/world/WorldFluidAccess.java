@@ -1,8 +1,12 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -20,6 +24,11 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 final class WorldFluidAccess {
     private WorldFluidAccess() {}
 
+    static boolean handFluid(WorldMachine node, Player player, InteractionHand hand) {
+        return net.neoforged.neoforge.transfer.fluid.FluidUtil.interactWithFluidHandler(
+                player, hand, node.getBlockPos(), new Port(node));
+    }
+
     static void install(IEventBus bus) {
         bus.addListener(
                 RegisterCapabilitiesEvent.class,
@@ -28,14 +37,21 @@ final class WorldFluidAccess {
                             Capabilities.Item.BLOCK,
                             WorldPlatform.machineType(),
                             (machine, side) ->
-                                    new WorldlyContainerWrapper(
-                                            machine.inventory, side == null ? Direction.UP : side));
+                                    MachineAccess.connects(machine, side)
+                                            ? MachinePorts.item(
+                                                    machine,
+                                                    side,
+                                                    new WorldlyContainerWrapper(
+                                                            machine.inventory,
+                                                            side == null ? Direction.UP : side))
+                                            : null);
                     event.registerBlockEntity(
                             Capabilities.Fluid.BLOCK,
                             WorldPlatform.machineType(),
                             (machine, side) ->
                                     machine.kind == WorldMachineBlock.Kind.CROPMATRON
-                                            ? new Port(machine)
+                                                    && MachineAccess.connects(machine, side)
+                                            ? MachinePorts.fluid(machine, side, new Port(machine))
                                             : null);
                 });
     }

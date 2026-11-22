@@ -9,6 +9,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -55,6 +57,10 @@ public final class PowerPlatform {
                                     .build());
 
     private PowerPlatform() {}
+
+    static boolean handFluid(PowerNode node, Player player, InteractionHand hand) {
+        return PowerNative.handFluid(node, player, hand);
+    }
 
     /** Installs the physical blocks and item types for this game version. */
     public static void install(IEventBus bus, ConfigFacade config) {

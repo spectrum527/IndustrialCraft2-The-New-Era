@@ -221,6 +221,14 @@ public final class TransportPlatform {
         return new ItemStack(rate == 128 ? MV.get() : LV.get());
     }
 
+    static ItemStack nozzleItem(TransportNode.Nozzle nozzle) {
+        return NeoTransport.nozzleItem(nozzle);
+    }
+
+    static boolean hasItemPort(ServerLevel level, BlockPos pos, Direction side) {
+        return NeoTransport.hasItemPort(level, pos, side);
+    }
+
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
         return NeoTransport.offerItem(level, pos, side, stack);
     }
@@ -271,7 +279,7 @@ public final class TransportPlatform {
         if (!available(node)
                 || node.cargo.isEmpty()
                 || requested <= 0
-                || side != null && side != node.getBlockState().getValue(TransportBlock.OUT)) {
+                || !node.permitsOutbound(side)) {
             return ItemStack.EMPTY;
         }
         int amount = Math.min(node.cargo.getCount(), requested);

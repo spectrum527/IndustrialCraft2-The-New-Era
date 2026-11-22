@@ -9,7 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
 /** Persistent inventory shared by viewers and serialized by the native block entity. */
-public final class BoxNode extends BoxHost {
+public final class BoxNode extends BoxHost
+        implements com.industrialage.ia2.access.MachineAccessTarget {
     final BoxKind kind;
     final SimpleContainer items;
     UUID owner;

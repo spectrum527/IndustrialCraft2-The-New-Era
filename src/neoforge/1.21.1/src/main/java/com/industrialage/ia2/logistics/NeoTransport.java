@@ -1,9 +1,13 @@
 package com.industrialage.ia2.logistics;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -52,10 +56,14 @@ final class NeoTransport {
                     event.registerBlockEntity(
                             Capabilities.FluidHandler.BLOCK,
                             TransportPlatform.type(),
-                            (node, side) ->
-                                    node.spec.kind() != Kind.ITEM_PIPE
-                                            ? new FluidPort(node, side)
-                                            : null);
+                            (node, side) -> {
+                                if (node.spec.kind() == Kind.ITEM_PIPE) return null;
+                                var port = new FluidPort(node, side);
+                                if (!node.exposesMachineAccess()) return port;
+                                return MachineAccess.connects(node, side)
+                                        ? MachinePorts.fluid(node, side, port)
+                                        : null;
+                            });
                     event.registerItem(
                             Capabilities.FluidHandler.ITEM,
                             (stack, access) -> CellItem.handler(stack),
@@ -65,6 +73,17 @@ final class NeoTransport {
 
     static FluidStack bucketFluid(ItemStack stack) {
         return FluidUtil.getFluidContained(stack.copyWithCount(1)).orElse(FluidStack.EMPTY);
+    }
+
+    static ItemStack nozzleItem(TransportNode.Nozzle nozzle) {
+        return BuiltInRegistries.ITEM
+                .getOptional(ResourceLocation.fromNamespaceAndPath("ic2", nozzle.path()))
+                .map(ItemStack::new)
+                .orElse(ItemStack.EMPTY);
+    }
+
+    static boolean hasItemPort(ServerLevel level, BlockPos pos, Direction side) {
+        return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, side) != null;
     }
 
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
@@ -142,7 +161,7 @@ final class NeoTransport {
             return false;
         }
         if (node.getLevel() instanceof ServerLevel) {
-            FluidUtil.interactWithFluidHandler(player, hand, new FluidPort(node, side));
+            FluidUtil.interactWithFluidHandler(player, hand, new FluidPort(node, side, true));
         }
         return true;
     }
@@ -183,13 +202,16 @@ final class NeoTransport {
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return slot == 0
-                    && TransportPlatform.available(node)
-                    && side != node.getBlockState().getValue(TransportBlock.OUT);
+            return slot == 0 && TransportPlatform.available(node) && node.permitsInbound(side);
         }
     }
 
-    private record FluidPort(TransportNode node, Direction side) implements IFluidHandler {
+    private record FluidPort(TransportNode node, Direction side, boolean manual)
+            implements IFluidHandler {
+        FluidPort(TransportNode node, Direction side) {
+            this(node, side, false);
+        }
+
         @Override
         public int getTanks() {
             return 1;
@@ -211,7 +233,7 @@ final class NeoTransport {
         public boolean isFluidValid(int tank, FluidStack stack) {
             return tank == 0
                     && TransportPlatform.available(node)
-                    && node.open(side)
+                    && (manual ? node.open(side) : node.permitsInbound(side))
                     && !stack.isEmpty();
         }
 
@@ -235,7 +257,9 @@ final class NeoTransport {
         }
 
         private FluidStack drain(FluidKey key, int amount, FluidAction action) {
-            if (key == null || !TransportPlatform.available(node)) {
+            if (key == null
+                    || !TransportPlatform.available(node)
+                    || (!manual && !node.permitsOutbound(side))) {
                 return FluidStack.EMPTY;
             }
             int moved = node.drain(side, key, amount, action.simulate());

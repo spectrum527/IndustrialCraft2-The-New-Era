@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.reactor.ElectricReactor;
 import java.util.stream.IntStream;
 import net.minecraft.core.Direction;
@@ -96,6 +97,7 @@ final class PowerInventory extends SimpleContainer
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction face) {
+        if (!MachineAccess.allowsInput(device, face)) return false;
         if (slot == device.kind.chargeSlot() || device.kind.storage()) return false;
         return device.kind.trader()
                 ? slot == 2 && canPlaceItem(slot, stack)
@@ -104,6 +106,7 @@ final class PowerInventory extends SimpleContainer
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face) {
+        if (!MachineAccess.allowsOutput(device, face)) return false;
         if (slot == device.kind.chargeSlot() || device.kind.storage()) return false;
         if (device.kind.trader()) return slot == 3 && device.kind == PowerKind.TRADE_O_MAT;
         return device.kind == PowerKind.NUCLEAR_REACTOR
