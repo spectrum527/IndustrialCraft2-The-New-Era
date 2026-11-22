@@ -8,9 +8,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 abstract class TransportBlockBase extends Block {
@@ -19,9 +19,10 @@ abstract class TransportBlockBase extends Block {
     }
 
     abstract boolean interact(
-            Level level, BlockPos pos, Player player, InteractionHand hand, Direction face);
+            Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit);
 
-    abstract BlockState connect(BlockState state, Direction side, BlockState neighbor);
+    abstract BlockState connect(
+            BlockState state, Direction side, BlockState neighbor, LevelReader level, BlockPos pos);
 
     @Override
     public InteractionResult use(
@@ -36,27 +37,9 @@ abstract class TransportBlockBase extends Block {
                 || !player.mayUseItemAt(pos, side, player.getItemInHand(hand))) {
             return InteractionResult.PASS;
         }
-        var entity = level.getBlockEntity(pos);
-        int valves = entity instanceof TransportNode node ? node.closed : 0;
-        if (!interact(level, pos, player, hand, side)) {
-            return InteractionResult.PASS;
-        }
-        if (!level.isClientSide && entity instanceof TransportNode node && valves != node.closed) {
-            var current = level.getBlockState(pos);
-            var neighborPos = pos.relative(side);
-            var updated =
-                    updateShape(
-                            current,
-                            side,
-                            level.getBlockState(neighborPos),
-                            level,
-                            pos,
-                            neighborPos);
-            if (updated != current) {
-                level.setBlockAndUpdate(pos, updated);
-            }
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return interact(level, pos, player, hand, hit)
+                ? InteractionResult.sidedSuccess(level.isClientSide)
+                : InteractionResult.PASS;
     }
 
     @Override
@@ -67,18 +50,7 @@ abstract class TransportBlockBase extends Block {
             LevelAccessor level,
             BlockPos pos,
             BlockPos neighborPos) {
-        var shape = connect(state, side, neighbor);
-        if (getStateDefinition().getProperty(side.getName()) instanceof BooleanProperty arm
-                && (closed(level, pos, side) || closed(level, neighborPos, side.getOpposite()))) {
-            return shape.setValue(arm, false);
-        }
-        return shape;
-    }
-
-    private static boolean closed(LevelAccessor level, BlockPos pos, Direction side) {
-        return level.hasChunkAt(pos)
-                && level.getBlockEntity(pos) instanceof TransportNode node
-                && !node.open(side);
+        return connect(state, side, neighbor, level, pos);
     }
 
     @Override

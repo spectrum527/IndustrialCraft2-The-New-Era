@@ -1,11 +1,16 @@
 package com.industrialage.ia2.logistics;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,6 +32,33 @@ abstract class TransportSaveBase extends BlockEntity {
     }
 
     @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ((TransportNode) this).spec.kind() == Kind.TANK
+                ? null
+                : ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        var tag = new CompoundTag();
+        var node = (TransportNode) this;
+        tag.putInt("nozzle_extraction", node.extractionNozzles);
+        tag.putInt("nozzle_injection", node.injectionNozzles);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        ((TransportNode) this)
+                .restoreNozzles(tag.getInt("nozzle_extraction"), tag.getInt("nozzle_injection"));
+    }
+
+    @Override
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet) {
+        if (packet.getTag() != null) handleUpdateTag(packet.getTag());
+    }
+
+    @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         if (!(this instanceof TransportNode node)) {
@@ -44,6 +76,10 @@ abstract class TransportSaveBase extends BlockEntity {
         tag.putInt("ic2_closed", node.closed);
         tag.putInt("ic2_pump_lv", node.lv);
         tag.putInt("ic2_pump_mv", node.mv);
+        if (node.hasNozzles()) {
+            tag.putInt("nozzle_extraction", node.extractionNozzles);
+            tag.putInt("nozzle_injection", node.injectionNozzles);
+        }
     }
 
     @Override
@@ -72,6 +108,7 @@ abstract class TransportSaveBase extends BlockEntity {
         node.closed = tag.getInt("ic2_closed") & SIDE_MASK;
         node.lv = tag.getInt("ic2_pump_lv") & SIDE_MASK;
         node.mv = tag.getInt("ic2_pump_mv") & SIDE_MASK & ~node.lv;
+        node.restoreNozzles(tag.getInt("nozzle_extraction"), tag.getInt("nozzle_injection"));
     }
 
     @Override
@@ -89,12 +126,22 @@ abstract class TransportSaveBase extends BlockEntity {
             }
             if (capability == ForgeCapabilities.FLUID_HANDLER
                     && node.spec.kind() != Kind.ITEM_PIPE) {
+                if (node.exposesMachineAccess() && !MachineAccess.connects(node, side)) {
+                    return LazyOptional.empty();
+                }
                 return fluidPorts
                         .computeIfAbsent(
                                 side,
                                 face ->
                                         LazyOptional.of(
-                                                () -> new TransportPlatform.FluidPort(node, face)))
+                                                () -> {
+                                                    var port =
+                                                            new TransportPlatform.FluidPort(
+                                                                    node, face);
+                                                    return node.exposesMachineAccess()
+                                                            ? MachinePorts.fluid(node, face, port)
+                                                            : port;
+                                                }))
                         .cast();
             }
         }
@@ -105,8 +152,14 @@ abstract class TransportSaveBase extends BlockEntity {
     public void invalidateCaps() {
         super.invalidateCaps();
         itemPorts.values().forEach(LazyOptional::invalidate);
-        fluidPorts.values().forEach(LazyOptional::invalidate);
         itemPorts.clear();
+        invalidateMachinePorts();
+    }
+
+    /** Notifies existing fluid-port handles when a tank's automation settings change. */
+    public void invalidateMachinePorts() {
+        var ports = List.copyOf(fluidPorts.values());
         fluidPorts.clear();
+        ports.forEach(LazyOptional::invalidate);
     }
 }

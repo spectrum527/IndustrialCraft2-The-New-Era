@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -111,6 +112,16 @@ public final class TransportPlatform {
 
     static ItemStack coverItem(int rate) {
         return new ItemStack((rate == 32 ? PUMP_LV : PUMP_MV).get());
+    }
+
+    static ItemStack nozzleItem(TransportNode.Nozzle nozzle) {
+        var id = ResourceLocation.fromNamespaceAndPath("ic2", nozzle.path());
+        var item = ForgeRegistries.ITEMS.getValue(id);
+        return item == null ? ItemStack.EMPTY : new ItemStack(item);
+    }
+
+    static boolean hasItemPort(ServerLevel level, BlockPos pos, Direction side) {
+        return itemHandler(level, pos, side).isPresent();
     }
 
     private static Optional<IItemHandler> itemHandler(Level world, BlockPos pos, Direction side) {
@@ -261,7 +272,7 @@ public final class TransportPlatform {
                 && FluidUtil.getFluidHandler(player.getItemInHand(hand)).isPresent()
                 && (!(node.getLevel() instanceof ServerLevel)
                         || FluidUtil.interactWithFluidHandler(
-                                player, hand, new FluidPort(node, side)));
+                                player, hand, new FluidPort(node, side, true)));
     }
 
     private static IFluidHandler.FluidAction action(boolean simulate) {
@@ -300,11 +311,7 @@ public final class TransportPlatform {
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (slot != 0
-                    || amount <= 0
-                    || node.cargo.isEmpty()
-                    || (side != null
-                            && side != node.getBlockState().getValue(TransportBlock.OUT))) {
+            if (slot != 0 || amount <= 0 || node.cargo.isEmpty() || !node.permitsOutbound(side)) {
                 return ItemStack.EMPTY;
             }
             var output = node.cargo.copy();
@@ -326,13 +333,15 @@ public final class TransportPlatform {
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return slot == 0
-                    && !stack.isEmpty()
-                    && side != node.getBlockState().getValue(TransportBlock.OUT);
+            return slot == 0 && !stack.isEmpty() && node.permitsInbound(side);
         }
     }
 
-    record FluidPort(TransportNode node, Direction side) implements IFluidHandler {
+    record FluidPort(TransportNode node, Direction side, boolean manual) implements IFluidHandler {
+        FluidPort(TransportNode node, Direction side) {
+            this(node, side, false);
+        }
+
         @Override
         public int getTanks() {
             return 1;
@@ -352,19 +361,19 @@ public final class TransportPlatform {
 
         @Override
         public boolean isFluidValid(int tank, FluidStack fluid) {
-            return tank == 0 && !fluid.isEmpty();
+            return tank == 0 && !fluid.isEmpty() && (manual || node.permitsInbound(side));
         }
 
         @Override
         public int fill(FluidStack offered, FluidAction action) {
-            return offered.isEmpty()
+            return !isFluidValid(0, offered)
                     ? 0
                     : node.fill(side, new FluidKey(offered), offered.getAmount(), simulate(action));
         }
 
         @Override
         public FluidStack drain(FluidStack requested, FluidAction action) {
-            if (requested.isEmpty()) {
+            if (requested.isEmpty() || (!manual && !node.permitsOutbound(side))) {
                 return FluidStack.EMPTY;
             }
             var key = new FluidKey(requested);
@@ -374,7 +383,7 @@ public final class TransportPlatform {
         @Override
         public FluidStack drain(int requested, FluidAction action) {
             var key = node.liquid;
-            return key == null
+            return key == null || (!manual && !node.permitsOutbound(side))
                     ? FluidStack.EMPTY
                     : drained(key, node.drain(side, key, requested, simulate(action)));
         }

@@ -1,19 +1,44 @@
 package com.industrialage.ia2.logistics;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** Physical contents, pump covers and side valves belonging to one placed transport block. */
+/** Physical contents, nozzles, pump covers and side valves belonging to one transport block. */
 public final class TransportNode extends TransportSaveBase
-        implements net.minecraft.world.MenuProvider {
+        implements com.industrialage.ia2.access.MachineAccessTarget,
+                net.minecraft.world.MenuProvider {
     static final Direction[] SIDES = Direction.values();
+    private static final int SIDE_MASK = (1 << SIDES.length) - 1;
+
+    /** A directional attachment viewed from the pipe. */
+    public enum Nozzle {
+        NONE(""),
+        EXTRACTION("pipe_extraction_nozzle"),
+        INJECTION("pipe_injection_nozzle");
+
+        private final String path;
+
+        Nozzle(String path) {
+            this.path = path;
+        }
+
+        /** Item registry path, or the empty string for an unmodified face. */
+        public String path() {
+            return path;
+        }
+    }
+
     final TransportSpec spec;
     ItemStack cargo = ItemStack.EMPTY;
     final net.minecraft.world.SimpleContainer upgrades;
@@ -22,6 +47,9 @@ public final class TransportNode extends TransportSaveBase
     int closed;
     int lv;
     int mv;
+    int extractionNozzles;
+    int injectionNozzles;
+    private boolean pendingConnections = true;
     long lastFluidTick = Long.MIN_VALUE;
     long receivedItemAt = Long.MIN_VALUE;
 
@@ -40,8 +68,19 @@ public final class TransportNode extends TransportSaveBase
     }
 
     @Override
+    public boolean exposesMachineAccess() {
+        return spec.kind() == Kind.TANK;
+    }
+
+    @Override
     public net.minecraft.network.chat.Component getDisplayName() {
         return getBlockState().getBlock().getName();
+    }
+
+    @Override
+    public boolean exchangeHeldFluid(Player player, InteractionHand hand, Direction side) {
+        return spec.kind() != Kind.ITEM_PIPE
+                && TransportPlatform.containerInteraction(this, side, player, hand);
     }
 
     @Override
@@ -71,6 +110,10 @@ public final class TransportNode extends TransportSaveBase
             if (world.getGameTime() % 8 == 0 && !upgrades.isEmpty()) runUpgrades(world);
             return;
         }
+        if (pendingConnections) {
+            pendingConnections = false;
+            TransportBlock.refreshConnections(world, worldPosition);
+        }
         if (spec.kind() == Kind.ITEM_PIPE) {
             tickItems(world);
         } else if (spec.kind() == Kind.FLUID_PIPE && lastFluidTick != world.getGameTime()) {
@@ -80,38 +123,170 @@ public final class TransportNode extends TransportSaveBase
 
     private void tickItems(ServerLevel world) {
         Direction output = getBlockState().getValue(TransportBlock.OUT);
-        BlockPos target = worldPosition.relative(output);
-        if (!cargo.isEmpty() && receivedItemAt != world.getGameTime() && world.hasChunkAt(target)) {
-            int sent;
-            if (world.getBlockEntity(target) instanceof TransportNode next) {
-                sent = next.insertItem(output.getOpposite(), cargo, false, world.getGameTime());
-            } else {
-                sent = TransportPlatform.offerItem(world, target, output.getOpposite(), cargo);
-            }
-            if (sent > 0) {
-                cargo.shrink(sent);
-                if (cargo.isEmpty()) cargo = ItemStack.EMPTY;
-                setChanged();
+        long time = world.getGameTime();
+        if (!cargo.isEmpty() && receivedItemAt != time) {
+            for (int i = 0; i < SIDES.length && !cargo.isEmpty(); i++) {
+                var side = SIDES[Math.floorMod(time + i, SIDES.length)];
+                var mode = nozzle(side);
+                if (mode == Nozzle.INJECTION || (mode == Nozzle.NONE && side == output)) {
+                    sendItems(world, side, time);
+                }
             }
         }
-        BlockPos source = worldPosition.relative(output.getOpposite());
-        if (cargo.isEmpty()
-                && world.hasChunkAt(source)
-                && !(world.getBlockEntity(source) instanceof TransportNode)) {
-            ItemStack extracted =
-                    TransportPlatform.takeItem(world, source, output, spec.capacity());
-            if (!extracted.isEmpty()) {
-                cargo = extracted;
-                receivedItemAt = world.getGameTime();
-                setChanged();
+        for (int i = 0; i < SIDES.length && cargo.isEmpty(); i++) {
+            var side = SIDES[Math.floorMod(time + i, SIDES.length)];
+            var mode = nozzle(side);
+            if (mode != Nozzle.EXTRACTION && (mode != Nozzle.NONE || side != output.getOpposite()))
+                continue;
+            var pos = worldPosition.relative(side);
+            if (!world.hasChunkAt(pos)) continue;
+            var source = world.getBlockEntity(pos);
+            var face = side.getOpposite();
+            if (!isPipe(source) && machineOutput(source, face)) {
+                var extracted = TransportPlatform.takeItem(world, pos, face, spec.rate());
+                if (!extracted.isEmpty()) {
+                    cargo = extracted;
+                    receivedItemAt = time;
+                    setChanged();
+                }
             }
         }
+    }
+
+    private void sendItems(ServerLevel world, Direction side, long time) {
+        var pos = worldPosition.relative(side);
+        if (!world.hasChunkAt(pos)) return;
+        var target = world.getBlockEntity(pos);
+        var face = side.getOpposite();
+        int sent;
+        if (target instanceof TransportNode next) {
+            if (!linksTo(side, next)) return;
+            sent = next.insertItem(face, cargo, false, time);
+        } else {
+            if (!machineInput(target, face)) return;
+            sent = TransportPlatform.offerItem(world, pos, face, cargo);
+        }
+        if (sent > 0) {
+            cargo.shrink(sent);
+            if (cargo.isEmpty()) cargo = ItemStack.EMPTY;
+            setChanged();
+        }
+    }
+
+    static boolean isPipe(BlockEntity entity) {
+        return entity instanceof TransportNode node && node.spec.kind() != Kind.TANK;
+    }
+
+    static boolean machineInput(BlockEntity machine, Direction face) {
+        return machine == null || MachineAccess.allowsInput(machine, face);
+    }
+
+    static boolean machineOutput(BlockEntity machine, Direction face) {
+        return machine == null || MachineAccess.allowsOutput(machine, face);
+    }
+
+    boolean linksTo(Direction side, TransportNode other) {
+        return spec.kind() == other.spec.kind()
+                && exposesPipeFace(side)
+                && other.exposesPipeFace(side.getOpposite());
+    }
+
+    boolean exposesPipeFace(Direction side) {
+        return open(side) && nozzle(side) == Nozzle.NONE && pump(side) == 0;
+    }
+
+    /** Returns the configured attachment on a world face. */
+    public Nozzle nozzle(Direction side) {
+        if (side == null) return Nozzle.NONE;
+        int mask = faceMask(side);
+        if ((extractionNozzles & mask) != 0) return Nozzle.EXTRACTION;
+        return (injectionNozzles & mask) != 0 ? Nozzle.INJECTION : Nozzle.NONE;
+    }
+
+    /** Whether this pipe has any attached nozzles. */
+    public boolean hasNozzles() {
+        return (extractionNozzles | injectionNozzles) != 0;
+    }
+
+    /** Whether automation may put the transported medium into this world face of the pipe. */
+    public boolean permitsInbound(Direction side) {
+        if (side == null) return true;
+        if (!open(side)) return false;
+        return switch (nozzle(side)) {
+            case EXTRACTION -> true;
+            case INJECTION -> false;
+            case NONE -> acceptsDefaultInput(getBlockState(), side);
+        };
+    }
+
+    /** Whether automation may remove the transported medium from this world face of the pipe. */
+    public boolean permitsOutbound(Direction side) {
+        if (side == null) return true;
+        if (!open(side) || pump(side) > 0) return false;
+        return switch (nozzle(side)) {
+            case EXTRACTION -> false;
+            case INJECTION -> true;
+            case NONE -> acceptsDefaultOutput(getBlockState(), side);
+        };
+    }
+
+    /** Whether the fitting forbids an adjacent machine upgrade in its reverse direction. */
+    public boolean blocksUpgrade(Direction pipeFace, boolean ejectFromMachine, boolean fluid) {
+        if (spec.kind() != (fluid ? Kind.FLUID_PIPE : Kind.ITEM_PIPE)) return false;
+        return switch (nozzle(pipeFace)) {
+            case EXTRACTION -> !ejectFromMachine;
+            case INJECTION -> ejectFromMachine;
+            case NONE -> false;
+        };
+    }
+
+    static boolean acceptsDefaultInput(BlockState state, Direction side) {
+        return !state.hasProperty(TransportBlock.OUT) || side != state.getValue(TransportBlock.OUT);
+    }
+
+    static boolean acceptsDefaultOutput(BlockState state, Direction side) {
+        return !state.hasProperty(TransportBlock.OUT) || side == state.getValue(TransportBlock.OUT);
+    }
+
+    boolean installNozzle(Direction face, Nozzle mode) {
+        if (spec.kind() == Kind.TANK
+                || !open(face)
+                || pump(face) != 0
+                || nozzle(face) != Nozzle.NONE) return false;
+        if (mode == Nozzle.EXTRACTION) extractionNozzles |= faceMask(face);
+        else if (mode == Nozzle.INJECTION) injectionNozzles |= faceMask(face);
+        else return false;
+        setChanged();
+        return true;
+    }
+
+    Nozzle removeNozzle(Direction face) {
+        var mode = nozzle(face);
+        if (mode != Nozzle.NONE) {
+            int keep = ~faceMask(face);
+            extractionNozzles &= keep;
+            injectionNozzles &= keep;
+            setChanged();
+        }
+        return mode;
+    }
+
+    void restoreNozzles(int extraction, int injection) {
+        if (spec.kind() == Kind.TANK) return;
+        int free = SIDE_MASK & ~(lv | mv);
+        extractionNozzles = extraction & free;
+        injectionNozzles = injection & free & ~extractionNozzles;
+        pendingConnections = true;
+    }
+
+    private static int faceMask(Direction side) {
+        return 1 << side.ordinal();
     }
 
     int insertItem(Direction side, ItemStack incoming, boolean simulate, long time) {
         if (spec.kind() != Kind.ITEM_PIPE
                 || incoming.isEmpty()
-                || side == getBlockState().getValue(TransportBlock.OUT)
+                || !permitsInbound(side)
                 || (!cargo.isEmpty() && !TransportPlatform.sameItem(cargo, incoming))) return 0;
         int space = Math.min(spec.capacity(), incoming.getMaxStackSize()) - cargo.getCount();
         int accepted = Math.min(incoming.getCount(), Math.max(0, space));
@@ -171,7 +346,10 @@ public final class TransportNode extends TransportSaveBase
     }
 
     boolean cover(Direction face, int rate) {
-        if (spec.kind() != Kind.FLUID_PIPE || pump(face) != 0 || !open(face)) return false;
+        if (spec.kind() != Kind.FLUID_PIPE
+                || pump(face) != 0
+                || nozzle(face) != Nozzle.NONE
+                || !open(face)) return false;
         int mask = 1 << face.ordinal();
         if (rate == 32) lv |= mask;
         else if (rate == 128) mv |= mask;
@@ -217,7 +395,8 @@ public final class TransportNode extends TransportSaveBase
             for (var side : com.industrialage.ia2.world.MachineAutomation.faces(upgrade)) {
                 var neighbor = worldPosition.relative(side);
                 if (remaining == 0) break;
-                if (!level.hasChunkAt(neighbor)) continue;
+                if (!level.hasChunkAt(neighbor)
+                        || !MachineAccess.allowsUpgrade(this, side, eject, true)) continue;
                 if (eject && liquid != null) {
                     int moved =
                             TransportPlatform.offerFluid(
@@ -254,6 +433,9 @@ public final class TransportNode extends TransportSaveBase
             int rate = uncover(side);
             if (rate > 0)
                 Block.popResource(level, worldPosition, TransportPlatform.coverItem(rate));
+            var nozzle = removeNozzle(side);
+            if (nozzle != Nozzle.NONE)
+                Block.popResource(level, worldPosition, TransportPlatform.nozzleItem(nozzle));
         }
     }
 }
