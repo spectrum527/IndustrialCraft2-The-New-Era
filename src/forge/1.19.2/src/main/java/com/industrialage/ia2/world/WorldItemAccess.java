@@ -18,7 +18,7 @@ final class WorldItemAccess {
                         : entity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).orElse(null);
         if (handler == null) return 0;
         return stack.getCount()
-                - ItemHandlerHelper.insertItemStacked(handler, stack, false).getCount();
+                - ItemHandlerHelper.insertItemStacked(handler, stack.copy(), false).getCount();
     }
 
     static ItemStack pull(ServerLevel level, BlockPos pos, Direction side, int max) {
