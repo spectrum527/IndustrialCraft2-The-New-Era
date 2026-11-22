@@ -14,9 +14,15 @@ final class PowerItemPort extends SidedInvWrapper {
     }
 
     @Override
+    public boolean isItemValid(int slot, ItemStack item) {
+        return inv.canPlaceItemThroughFace(slot, item, side);
+    }
+
+    @Override
     public ItemStack insertItem(int slot, ItemStack item, boolean simulate) {
         if (item.isEmpty()) return ItemStack.EMPTY;
-        int room = Math.max(0, node.automationLimit(item) - getStackInSlot(slot).getCount());
+        if (!isItemValid(slot, item)) return item;
+        int room = Math.max(0, node.automationLimit(slot, item) - getStackInSlot(slot).getCount());
         if (room == 0) return item;
         if (item.getCount() <= room) return super.insertItem(slot, item, simulate);
         var offer = item.copy();

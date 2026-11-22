@@ -71,10 +71,10 @@ public final class PowerNode extends PowerSaveBase
         return kind == PowerKind.NUCLEAR_REACTOR && fluidMode;
     }
 
-    int automationLimit(net.minecraft.world.item.ItemStack stack) {
-        if (kind == PowerKind.REACTOR_ACCESS_HATCH || kind == PowerKind.NUCLEAR_REACTOR)
+    int automationLimit(int slot, ItemStack stack) {
+        if (kind == PowerKind.REACTOR_ACCESS_HATCH)
             return PowerPlatform.path(stack).equals("heatpack") ? 64 : 1;
-        return inventory.getMaxStackSize();
+        return inventory.automationLimit(slot, stack);
     }
 
     net.minecraft.world.WorldlyContainer automationInventory() {
@@ -193,14 +193,7 @@ public final class PowerNode extends PowerSaveBase
                 serviceContainer(56, true);
             }
         } else if (kind.playerMachine()) {
-            int dischargeSlot =
-                    kind == PowerKind.MAGNETIZER
-                            ? 1
-                            : kind == PowerKind.ENERGY_O_MAT
-                                    ? 4
-                                    : kind == PowerKind.RCI_RSH || kind == PowerKind.RCI_LZH
-                                            ? 9
-                                            : -1;
+            int dischargeSlot = inventory.dischargeSlot();
             if (dischargeSlot >= 0) {
                 double room =
                         kind == PowerKind.ENERGY_O_MAT ? Math.min(credit, capacity()) : capacity();
@@ -230,7 +223,7 @@ public final class PowerNode extends PowerSaveBase
                         slot,
                         -1,
                         upgrades,
-                        item -> inventory.canPlaceItem(slot, item));
+                        item -> inventory.acceptsAutomation(slot, item));
             }
             active = PlayerMachines.tick(this, level);
         } else if (kind != PowerKind.REACTOR_CHAMBER && !kind.storage()) {

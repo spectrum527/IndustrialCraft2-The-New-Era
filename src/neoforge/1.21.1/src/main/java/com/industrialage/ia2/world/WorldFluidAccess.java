@@ -38,9 +38,7 @@ final class WorldFluidAccess {
                                             ? MachinePorts.item(
                                                     machine,
                                                     side,
-                                                    new SidedInvWrapper(
-                                                            machine.inventory,
-                                                            side == null ? Direction.UP : side))
+                                                    itemPort(machine.inventory, side))
                                             : null);
                     event.registerBlockEntity(
                             Capabilities.FluidHandler.BLOCK,
@@ -51,6 +49,16 @@ final class WorldFluidAccess {
                                             ? MachinePorts.fluid(machine, side, new Port(machine))
                                             : null);
                 });
+    }
+
+    private static SidedInvWrapper itemPort(WorldInventory inventory, Direction side) {
+        Direction face = side == null ? Direction.UP : side;
+        return new SidedInvWrapper(inventory, face) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack item) {
+                return inventory.canPlaceItemThroughFace(slot, item, face);
+            }
+        };
     }
 
     static boolean refillFoam(
