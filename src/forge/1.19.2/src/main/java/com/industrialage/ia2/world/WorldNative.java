@@ -215,6 +215,10 @@ final class WorldNative {
         return com.industrialage.ia2.forge.equipment.ForgeGear.stored(stack);
     }
 
+    static boolean canDischarge(ItemStack stack, int tier) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.canDischarge(stack, tier);
+    }
+
     static double discharge(ItemStack stack, double room, double capacity, int tier) {
         return com.industrialage.ia2.forge.equipment.ForgeGear.discharge(
                 stack, room, capacity, tier);

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -41,6 +43,11 @@ public final class PowerPlatform {
                                     .build(null));
 
     private PowerPlatform() {}
+
+    static boolean handFluid(PowerNode node, Player player, InteractionHand hand) {
+        return net.minecraftforge.fluids.FluidUtil.interactWithFluidHandler(
+                player, hand, new LavaInlet(node));
+    }
 
     /** Installs the physical blocks and item types for this game version. */
     public static void install(IEventBus bus, ConfigFacade config) {
@@ -91,6 +98,14 @@ public final class PowerPlatform {
     static double discharge(ItemStack stack, double room, double capacity, int tier) {
         return com.industrialage.ia2.forge.equipment.ForgeGear.discharge(
                 stack, room, capacity, tier);
+    }
+
+    static double storedEnergy(ItemStack stack) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.stored(stack);
+    }
+
+    static double equipmentCapacity(ItemStack stack) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.capacity(stack);
     }
 
     static int powerSlotLimit(ItemStack stack) {

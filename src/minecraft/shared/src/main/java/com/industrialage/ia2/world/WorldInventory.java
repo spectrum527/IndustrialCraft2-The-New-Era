@@ -1,5 +1,6 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.access.MachineAccess;
 import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.world.SimpleContainer;
@@ -41,25 +42,33 @@ final class WorldInventory extends SimpleContainer implements WorldlyContainer {
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+        if (slot < 0
+                || slot >= getContainerSize()
+                || stack.isEmpty()
+                || !MachineAccess.allowsInput(owner, side)) return false;
+        if (owner.kind.packet > 0 && slot == owner.kind.batterySlot())
+            return WorldNative.canDischarge(stack, owner.itemTier())
+                    && WorldNative.stored(stack) > 0;
         return switch (owner.kind) {
-            case BATCH_CRAFTER ->
-                    slot < 9
-                                    && !getItem(slot + 18).isEmpty()
-                                    && getItem(slot + 18).is(stack.getItem())
-                            || slot == 17 && canPlaceItem(slot, stack);
+            case BATCH_CRAFTER -> slot < 9 && getItem(slot + 18).is(stack.getItem());
             case ITEM_BUFFER -> slot < 26;
-            case ADVANCED_MINER -> slot != 9 && canPlaceItem(slot, stack);
-            case CROPMATRON -> slot < 9 && canPlaceItem(slot, stack);
-            case SORTING_MACHINE -> slot < 18 || slot == 24 && canPlaceItem(slot, stack);
-            case WEIGHTED_DISTRIBUTOR ->
-                    slot < 18 && (side == null || side == WorldAutomation.front(owner));
-            default -> canPlaceItem(slot, stack);
+            case SORTING_MACHINE -> slot < 18;
+            case WEIGHTED_DISTRIBUTOR -> slot < 18 && side == WorldAutomation.front(owner);
+            case MINER -> slot == 2 && canPlaceItem(slot, stack);
+            case CLASSIC_CROPMATRON, CROPMATRON -> slot < 3 && canPlaceItem(slot, stack);
+            default -> false;
         };
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-        return output(slot);
+        return slot >= 0
+                && slot < getContainerSize()
+                && !stack.isEmpty()
+                && MachineAccess.allowsOutput(owner, side)
+                && (owner.kind == WorldMachineBlock.Kind.ITEM_BUFFER
+                        ? slot < 26 && side == WorldAutomation.front(owner)
+                        : output(slot));
     }
 
     @Override

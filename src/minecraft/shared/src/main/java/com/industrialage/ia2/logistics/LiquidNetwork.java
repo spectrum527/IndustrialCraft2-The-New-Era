@@ -1,6 +1,5 @@
 package com.industrialage.ia2.logistics;
 
-import com.industrialage.ia2.content.TransportSpec.Kind;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,32 +31,42 @@ final class LiquidNetwork {
         long tick = world.getGameTime();
         nodes.add(first);
         first.lastFluidTick = tick;
-        for (int i = 0; i < nodes.size(); i++) {
-            TransportNode node = nodes.get(i);
+        for (int nodeIndex = 0; nodeIndex < nodes.size(); nodeIndex++) {
+            TransportNode node = nodes.get(nodeIndex);
             var links = new ArrayList<Link>();
             var ends = new ArrayList<End>();
-            for (Direction side : TransportNode.SIDES) {
+            int extractionBudget = node.spec.rate();
+            for (int i = 0; i < TransportNode.SIDES.length; i++) {
+                int index =
+                        node.hasNozzles() ? Math.floorMod(tick + i, TransportNode.SIDES.length) : i;
+                Direction side = TransportNode.SIDES[index];
                 if (!node.open(side)) continue;
                 var pos = node.getBlockPos().relative(side);
                 if (!world.hasChunkAt(pos)) continue;
                 var face = side.getOpposite();
                 var other = world.getBlockEntity(pos);
-                if (other instanceof TransportNode next && next.spec.kind() == Kind.FLUID_PIPE) {
-                    if (!next.open(face)) continue;
+                if (TransportNode.isPipe(other)) {
+                    var next = (TransportNode) other;
+                    if (!node.linksTo(side, next)) continue;
                     if (next.lastFluidTick != tick) {
                         nodes.add(next);
                         next.lastFluidTick = tick;
                     }
-                    if (node.pump(side) == 0 && next.pump(face) == 0)
-                        links.add(new Link(next, side));
+                    links.add(new Link(next, side));
                     continue;
                 }
-                var tank =
-                        other instanceof TransportNode n && n.spec.kind() == Kind.TANK ? n : null;
-                if (tank == null && !TransportPlatform.hasFluidPort(world, pos, face)) continue;
-                int rate = node.pump(side);
-                if (rate == 0) ends.add(new End(pos, face, tank));
-                else pump(world, node, pos, face, tank, rate);
+                var tank = other instanceof TransportNode n ? n : null;
+                int legacyRate = node.pump(side);
+                var nozzle = node.nozzle(side);
+                if (legacyRate > 0 || nozzle == TransportNode.Nozzle.EXTRACTION) {
+                    if (!TransportNode.machineOutput(other, face)) continue;
+                    int rate = legacyRate > 0 ? legacyRate : extractionBudget;
+                    int drawn = pump(world, node, pos, face, tank, rate);
+                    if (legacyRate == 0) extractionBudget -= drawn;
+                } else if (TransportNode.machineInput(other, face)
+                        && (tank != null || TransportPlatform.hasFluidPort(world, pos, face))) {
+                    ends.add(new End(pos, face, tank));
+                }
             }
             if (node.liquid != null) kinds.add(node.liquid);
             ports.put(node, new Ports(links, ends));
@@ -65,7 +74,7 @@ final class LiquidNetwork {
         for (FluidKey key : kinds) route(world, nodes, ports, key, tick);
     }
 
-    private static void pump(
+    private static int pump(
             ServerLevel world,
             TransportNode node,
             BlockPos pos,
@@ -73,17 +82,15 @@ final class LiquidNetwork {
             TransportNode tank,
             int rate) {
         int room = Math.min(rate, node.spec.capacity() - node.amount);
-        if (room <= 0) return;
+        if (room <= 0) return 0;
         if (tank != null) {
             FluidKey key = tank.liquid;
-            if (key == null) return;
+            if (key == null) return 0;
             int amount = node.fill(null, key, room, true);
-            int taken = tank.drain(face, key, amount, false);
-            node.fill(null, key, taken, false);
-        } else {
-            var liquid = TransportPlatform.takeFluid(world, pos, face, node.liquid, room);
-            if (liquid != null) node.fill(null, liquid.key(), liquid.amount(), false);
+            return node.fill(null, key, tank.drain(face, key, amount, false), false);
         }
+        var liquid = TransportPlatform.takeFluid(world, pos, face, node.liquid, room);
+        return liquid == null ? 0 : node.fill(null, liquid.key(), liquid.amount(), false);
     }
 
     record Batch(FluidKey key, int amount) {}

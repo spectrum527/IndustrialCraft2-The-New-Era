@@ -470,6 +470,10 @@ public final class WorldChecks {
                 BlockPos.betweenClosedStream(
                                 TERRAFORMER.offset(-3, -1, -3), TERRAFORMER.offset(3, -1, 3))
                         .anyMatch(pos -> level.getBlockState(pos).is(Blocks.MYCELIUM)));
+        var blueprint = device(level, player, TERRAFORMER).slots.get(0).getItem();
+        verify(
+                "terraformer-retains-its-blueprint-after-working",
+                blueprint.is(stack("mushroom_tfbp").getItem()) && blueprint.getCount() == 1);
     }
 
     private void prepareProcessors(ServerLevel level, ServerPlayer player) {
@@ -484,9 +488,14 @@ public final class WorldChecks {
                         && !menu.slots.get(3).mayPlace(stack("fluid_pulling_upgrade")));
         for (Direction side : Direction.values()) {
             verify(
-                    "processor-only-io-automates-" + side.getName(),
+                    "processor-exposes-input-output-and-battery-" + side.getName(),
                     java.util.Arrays.stream(inventory.getSlotsForFace(side))
-                            .allMatch(slot -> slot == 0 || slot == outputSlot));
+                                    .boxed()
+                                    .collect(java.util.stream.Collectors.toSet())
+                                    .equals(java.util.Set.of(0, outputSlot, dischargeSlot))
+                            && !inventory.canTakeItemThroughFace(0, new ItemStack(Items.COAL), side)
+                            && !inventory.canTakeItemThroughFace(
+                                    dischargeSlot, new ItemStack(Items.REDSTONE), side));
         }
         menu.slots.get(0).set(new ItemStack(Items.COAL, 2));
         menu.slots.get(dischargeSlot).set(new ItemStack(Items.REDSTONE));

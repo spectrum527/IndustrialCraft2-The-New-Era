@@ -1,8 +1,10 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.access.MachinePortCache;
 import java.util.function.BiConsumer;
 import java.util.function.ToDoubleFunction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
@@ -11,6 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 /** Maps persistent world-device state to the native save API. */
 abstract class WorldSaveBase extends BlockEntity {
@@ -18,45 +24,39 @@ abstract class WorldSaveBase extends BlockEntity {
         super(type, pos, state);
     }
 
-    private final net.minecraftforge.common.util.LazyOptional<WorldFluidAccess.Port> inlet =
-            net.minecraftforge.common.util.LazyOptional.of(
-                    () -> new WorldFluidAccess.Port((WorldMachine) this));
-    private final java.util.Map<
-                    net.minecraft.core.Direction,
-                    net.minecraftforge.common.util.LazyOptional<
-                            net.minecraftforge.items.wrapper.SidedInvWrapper>>
-            sides = new java.util.EnumMap<>(net.minecraft.core.Direction.class);
+    private final MachinePortCache automation = new MachinePortCache(this);
 
     @Override
-    public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(
-            net.minecraftforge.common.capabilities.Capability<T> capability,
-            net.minecraft.core.Direction side) {
-        if (!isRemoved() && this instanceof WorldMachine machine) {
-            if (capability == net.minecraftforge.common.capabilities.ForgeCapabilities.FLUID_HANDLER
-                    && machine.kind == WorldMachineBlock.Kind.CROPMATRON) return inlet.cast();
-            if (capability
-                    == net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER) {
-                var face = side == null ? net.minecraft.core.Direction.UP : side;
-                return sides.computeIfAbsent(
-                                face,
-                                direction ->
-                                        net.minecraftforge.common.util.LazyOptional.of(
-                                                () ->
-                                                        new net.minecraftforge.items.wrapper
-                                                                .SidedInvWrapper(
-                                                                machine.inventory, direction)))
-                        .cast();
-            }
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+        if (!isRemoved() && this instanceof WorldMachine node) {
+            if (cap == ForgeCapabilities.ITEM_HANDLER)
+                return automation.item(side, () -> itemPort(node.inventory, side)).cast();
+            if (cap == ForgeCapabilities.FLUID_HANDLER
+                    && node.kind == WorldMachineBlock.Kind.CROPMATRON)
+                return automation.fluid(side, () -> new WorldFluidAccess.Port(node)).cast();
         }
-        return super.getCapability(capability, side);
+        return super.getCapability(cap, side);
+    }
+
+    private static SidedInvWrapper itemPort(WorldInventory inventory, Direction side) {
+        Direction face = side == null ? Direction.UP : side;
+        return new SidedInvWrapper(inventory, face) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack item) {
+                return inventory.canPlaceItemThroughFace(slot, item, face);
+            }
+        };
+    }
+
+    /** Refreshes listeners for item and fluid automation on this device. */
+    public void invalidateMachinePorts() {
+        automation.invalidate();
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        inlet.invalidate();
-        sides.values().forEach(net.minecraftforge.common.util.LazyOptional::invalidate);
-        sides.clear();
+        invalidateMachinePorts();
     }
 
     abstract void writeFields(BiConsumer<String, Double> state);

@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.energy.graph.EnergyGraph.Ports;
 import com.industrialage.ia2.energy.graph.PacketBudget;
 import com.industrialage.ia2.logistics.FluidContents;
@@ -12,17 +13,20 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.Set;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -30,7 +34,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
  * Real-world EU source, accumulator, transformer or reactor connected to its level's energy graph.
  */
 public final class PowerNode extends PowerSaveBase
-        implements WorldPowerPort,
+        implements com.industrialage.ia2.access.MachineAccessTarget,
+                WorldPowerPort,
                 EuBuffer,
                 com.industrialage.ia2.power.WorldPowerStorage,
                 MenuProvider {
@@ -66,10 +71,10 @@ public final class PowerNode extends PowerSaveBase
         return kind == PowerKind.NUCLEAR_REACTOR && fluidMode;
     }
 
-    int automationLimit(net.minecraft.world.item.ItemStack stack) {
-        if (kind == PowerKind.REACTOR_ACCESS_HATCH || kind == PowerKind.NUCLEAR_REACTOR)
+    int automationLimit(int slot, ItemStack stack) {
+        if (kind == PowerKind.REACTOR_ACCESS_HATCH)
             return PowerPlatform.path(stack).equals("heatpack") ? 64 : 1;
-        return inventory.getMaxStackSize();
+        return inventory.automationLimit(slot, stack);
     }
 
     net.minecraft.world.WorldlyContainer automationInventory() {
@@ -150,7 +155,9 @@ public final class PowerNode extends PowerSaveBase
                 if (count < chambers) ejectHidden(level, count);
                 chambers = count;
                 int shell = chambers == 6 ? ReactorVessel.inspect(level, worldPosition) : -1;
+                boolean wasFluid = fluidMode;
                 fluidMode = shell >= 0;
+                if (fluidMode != wasFluid) MachineAccess.refresh(this);
                 if (fluidMode) {
                     powered |= shell > 0;
                     refillCoolant();
@@ -186,14 +193,7 @@ public final class PowerNode extends PowerSaveBase
                 serviceContainer(56, true);
             }
         } else if (kind.playerMachine()) {
-            int dischargeSlot =
-                    kind == PowerKind.MAGNETIZER
-                            ? 1
-                            : kind == PowerKind.ENERGY_O_MAT
-                                    ? 4
-                                    : kind == PowerKind.RCI_RSH || kind == PowerKind.RCI_LZH
-                                            ? 9
-                                            : -1;
+            int dischargeSlot = inventory.dischargeSlot();
             if (dischargeSlot >= 0) {
                 double room =
                         kind == PowerKind.ENERGY_O_MAT ? Math.min(credit, capacity()) : capacity();
@@ -223,7 +223,7 @@ public final class PowerNode extends PowerSaveBase
                         slot,
                         -1,
                         upgrades,
-                        item -> inventory.canPlaceItem(slot, item));
+                        item -> inventory.acceptsAutomation(slot, item));
             }
             active = PlayerMachines.tick(this, level);
         } else if (kind != PowerKind.REACTOR_CHAMBER && !kind.storage()) {
@@ -575,6 +575,7 @@ public final class PowerNode extends PowerSaveBase
                                 * com.industrialage.ia2.content.ProcessingUpgrades.transferLimit(
                                         upgrade.getCount()));
         for (var side : com.industrialage.ia2.world.MachineAutomation.faces(upgrade)) {
+            if (!MachineAccess.allowsUpgrade(this, side, extract, true)) continue;
             var target = worldPosition.relative(side);
             if (!level.hasChunkAt(target) || level.getBlockEntity(target) instanceof PowerNode)
                 continue;
@@ -730,6 +731,36 @@ public final class PowerNode extends PowerSaveBase
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.ic2." + kind.path);
+    }
+
+    @Override
+    public BlockEntity accessController() {
+        if (!(getLevel() instanceof ServerLevel level)) return null;
+        return switch (kind) {
+            case REACTOR_ACCESS_HATCH, REACTOR_FLUID_PORT -> ReactorVessel.core(this, level);
+            case REACTOR_CHAMBER -> controller(level);
+            default -> null;
+        };
+    }
+
+    @Override
+    public void visitAccessPorts(ServerLevel level, Consumer<BlockEntity> visitor) {
+        if (kind != PowerKind.NUCLEAR_REACTOR) return;
+        for (var pos :
+                BlockPos.betweenClosed(
+                        worldPosition.offset(-2, -2, -2), worldPosition.offset(2, 2, 2))) {
+            if (level.hasChunkAt(pos)
+                    && level.getBlockEntity(pos) instanceof PowerNode port
+                    && (port.kind == PowerKind.REACTOR_ACCESS_HATCH
+                            || port.kind == PowerKind.REACTOR_FLUID_PORT
+                            || port.kind == PowerKind.REACTOR_CHAMBER)) visitor.accept(port);
+        }
+    }
+
+    @Override
+    public boolean exchangeHeldFluid(Player player, InteractionHand hand, Direction side) {
+        return (kind == PowerKind.GEO_GENERATOR || kind == PowerKind.REACTOR_FLUID_PORT)
+                && PowerPlatform.handFluid(this, player, hand);
     }
 
     @Override

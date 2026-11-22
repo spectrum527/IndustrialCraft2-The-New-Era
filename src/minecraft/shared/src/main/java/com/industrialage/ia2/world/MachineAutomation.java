@@ -1,5 +1,6 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.content.ProcessingUpgrades;
 import java.util.List;
 import java.util.function.Predicate;
@@ -50,6 +51,8 @@ public final class MachineAutomation {
             int outputSlot,
             List<ItemStack> installed,
             Predicate<ItemStack> validInput) {
+        var machine = level.getBlockEntity(position);
+        if (machine == null) return false;
         boolean changed = false;
         for (var stack : installed) {
             var type = WorldNative.itemId(stack);
@@ -63,6 +66,7 @@ public final class MachineAutomation {
             var settings = settings(stack);
             int limit = ProcessingUpgrades.transferLimit(stack.getCount());
             for (var face : settings.faces()) {
+                if (!MachineAccess.allowsUpgrade(machine, face, eject, false)) continue;
                 var neighbor = position.relative(face);
                 if (!level.hasChunkAt(neighbor)) continue;
                 if (eject) {

@@ -1,10 +1,15 @@
 package com.industrialage.ia2.forge.content;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.access.MachinePorts;
+import com.industrialage.ia2.access.ProcessingItemPort;
+import com.industrialage.ia2.access.ProcessingSlots;
 import com.industrialage.ia2.forge.content.MachineKind.Slot;
 import com.industrialage.ia2.forge.equipment.ForgeGear;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
 import com.industrialage.ia2.world.MachineAutomation;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 import net.minecraft.core.Direction;
@@ -12,7 +17,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -21,29 +25,29 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-final class MachineInventory extends SimpleContainer implements WorldlyContainer {
+final class MachineInventory extends SimpleContainer implements ProcessingSlots {
     final MachineKind kind;
     private final BlockEntity owner;
     private final int[] visible;
     private final int[] bottom;
     private final Map<Direction, LazyOptional<IItemHandler>> handlers =
             new EnumMap<>(Direction.class);
-    private LazyOptional<IItemHandler> unsided;
+    private LazyOptional<IItemHandler> unsided = LazyOptional.empty();
+    private ItemStack completedFuel = ItemStack.EMPTY;
 
     MachineInventory(MachineKind kind, BlockEntity owner) {
         super(kind.slots.size());
         this.kind = kind;
         this.owner = owner;
         visible =
-                kind.slots.stream()
-                        .filter(
-                                slot ->
-                                        slot != Slot.CHARGE
-                                                && slot != Slot.DISCHARGE
-                                                && slot != Slot.UPGRADE)
-                        .mapToInt(kind.slots::indexOf)
+                IntStream.of(
+                                index(Slot.INPUT),
+                                index(Slot.FUEL),
+                                index(Slot.OUTPUT),
+                                index(Slot.CHARGE),
+                                index(Slot.DISCHARGE))
+                        .filter(slot -> slot >= 0)
                         .toArray();
         int output = index(Slot.OUTPUT);
         bottom =
@@ -69,6 +73,7 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
     }
 
     void consumeFuel() {
+        completedFuel = ItemStack.EMPTY;
         ItemStack fuel = stack(Slot.FUEL);
         ItemStack remainder = WorkshopPlatform.classicFuelRemainder(fuel);
         if (remainder.isEmpty()) {
@@ -80,6 +85,7 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
         }
         if (stack(Slot.FUEL).isEmpty()) {
             set(Slot.FUEL, remainder);
+            completedFuel = remainder.copy();
         } else if (owner != null && owner.getLevel() != null) {
             net.minecraft.world.level.block.Block.popResource(
                     owner.getLevel(), owner.getBlockPos(), remainder);
@@ -99,6 +105,18 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
         for (int index = 0; index < items.size(); index++) {
             setItem(index, items.get(index));
         }
+        completedFuel = ItemStack.of(tag.getCompound("ic2_fuel_return"));
+        if (completedFuel.isEmpty() && index(Slot.FUEL) >= 0) {
+            var fuel = stack(Slot.FUEL);
+            if ((kind == MachineKind.IRON_FURNACE && fuel.is(Items.BUCKET))
+                    || "ic2:empty_fuel_can"
+                            .equals(
+                                    String.valueOf(
+                                            net.minecraftforge.registries.ForgeRegistries.ITEMS
+                                                    .getKey(fuel.getItem())))) {
+                completedFuel = fuel.copy();
+            }
+        }
     }
 
     void save(CompoundTag tag) {
@@ -107,6 +125,9 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
             items.set(index, getItem(index));
         }
         ContainerHelper.saveAllItems(tag, items);
+        if (index(Slot.FUEL) >= 0 && isFuelProduct(stack(Slot.FUEL))) {
+            tag.put("ic2_fuel_return", completedFuel.save(new CompoundTag()));
+        }
     }
 
     @Override
@@ -135,16 +156,45 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
 
     @Override
     public boolean canPlaceItemThroughFace(int index, ItemStack stack, Direction face) {
-        var role = kind.slots.get(index);
-        return (role == Slot.INPUT || role == Slot.FUEL) && canPlaceItem(index, stack);
+        if (stack.isEmpty()
+                || !MachineAccess.allowsInput(owner, face)
+                || !canPlaceItem(index, stack)) return false;
+        return switch (kind.slots.get(index)) {
+            case INPUT, FUEL -> true;
+            case CHARGE -> !ForgeGear.chargeComplete(stack, kind.itemTier());
+            case DISCHARGE ->
+                    owner instanceof ProcessingDevice device
+                            ? ForgeGear.canSupplyCharge(stack, device.itemTier())
+                                    || device.electric() && stack.is(Items.REDSTONE)
+                            : ForgeGear.canSupplyCharge(stack, kind.itemTier());
+            case OUTPUT, UPGRADE -> false;
+        };
     }
 
     @Override
     public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction face) {
+        if (stack.isEmpty() || !MachineAccess.allowsOutput(owner, face)) return false;
         return switch (kind.slots.get(index)) {
             case OUTPUT -> true;
-            case INPUT, FUEL -> !canPlaceItem(index, stack);
+            case FUEL -> isFuelProduct(stack);
+            case CHARGE -> ForgeGear.chargeComplete(stack, kind.itemTier());
             default -> false;
+        };
+    }
+
+    private boolean isFuelProduct(ItemStack stack) {
+        return !completedFuel.isEmpty()
+                && !stack.isEmpty()
+                && stack.getCount() <= completedFuel.getCount()
+                && ItemStack.isSameItemSameTags(stack, completedFuel)
+                && stack.areCapsCompatible(completedFuel);
+    }
+
+    @Override
+    public int automationLimit(int slot, ItemStack stack) {
+        return switch (kind.slots.get(slot)) {
+            case CHARGE, DISCHARGE -> ForgeGear.powerSlotLimit(stack);
+            default -> stack.getMaxStackSize();
         };
     }
 
@@ -170,18 +220,40 @@ final class MachineInventory extends SimpleContainer implements WorldlyContainer
     }
 
     LazyOptional<IItemHandler> handler(Direction face) {
-        return face == null ? unsided : handlers.get(face);
+        return MachineAccess.connects(owner, face)
+                ? (face == null ? unsided : handlers.getOrDefault(face, LazyOptional.empty()))
+                : LazyOptional.empty();
     }
 
     void invalidate() {
-        unsided.invalidate();
-        handlers.values().forEach(LazyOptional::invalidate);
+        replacePorts(false);
+    }
+
+    void refresh() {
+        replacePorts(true);
+    }
+
+    private void replacePorts(boolean reopen) {
+        var previousUnsided = unsided;
+        var previousSided = List.copyOf(handlers.values());
+        unsided = LazyOptional.empty();
+        handlers.clear();
+        if (reopen) revive();
+        previousUnsided.invalidate();
+        previousSided.forEach(LazyOptional::invalidate);
     }
 
     void revive() {
-        unsided = LazyOptional.of(() -> new SidedInvWrapper(this, null));
+        unsided =
+                LazyOptional.of(
+                        () -> MachinePorts.item(owner, null, new ProcessingItemPort(this, null)));
         for (Direction side : Direction.values()) {
-            handlers.put(side, LazyOptional.of(() -> new SidedInvWrapper(this, side)));
+            handlers.put(
+                    side,
+                    LazyOptional.of(
+                            () ->
+                                    MachinePorts.item(
+                                            owner, side, new ProcessingItemPort(this, side))));
         }
     }
 }

@@ -114,9 +114,15 @@ public final class WaterKineticChecks {
                 if (++stageTicks < 20) break;
                 var menu = menu(level, water);
                 check.accept(
-                        "automation-inserts-bronze",
+                        "automation-rejects-bronze-rotor",
+                        menu.getSlot(0).getItem().isEmpty()
+                                && hopper(level).getItem(0).is(item.apply("bronze_rotor")));
+                menu.setCarried(hopper(level).removeItem(0, 1));
+                menu.clicked(0, 0, ClickType.PICKUP, player);
+                check.accept(
+                        "normal-pickup-installs-bronze",
                         menu.getSlot(0).getItem().is(item.apply("bronze_rotor"))
-                                && hopper(level).getItem(0).isEmpty());
+                                && menu.getCarried().isEmpty());
                 level.setBlockAndUpdate(water.above(), Blocks.WATER.defaultBlockState());
                 menu.clicked(0, 0, ClickType.PICKUP, player);
                 check.accept(

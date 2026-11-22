@@ -2,6 +2,7 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec;
 import com.industrialage.ia2.content.TransportSpec.Kind;
+import com.industrialage.ia2.logistics.TransportNode.Nozzle;
 import com.industrialage.ia2.wrench.WrenchTarget;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -75,36 +78,116 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
 
     @Override
     boolean interact(
-            Level world, BlockPos pos, Player player, InteractionHand hand, Direction side) {
+            Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!(world.getBlockEntity(pos) instanceof TransportNode node)) return false;
         ItemStack item = player.getItemInHand(hand);
         String id = TransportPlatform.itemId(item);
         boolean server = world instanceof ServerLevel;
-        if (spec.kind() == Kind.FLUID_PIPE) {
-            if (id.equals("ic2:crowbar")) {
-                if (server) {
-                    int rate = node.uncover(side);
-                    if (rate > 0) Block.popResource(world, pos, TransportPlatform.coverItem(rate));
-                }
-                return true;
-            }
-            int rate =
-                    switch (id) {
-                        case "ic2:pump_cover_lv" -> 32;
-                        case "ic2:pump_cover_mv" -> 128;
-                        default -> 0;
-                    };
-            if (rate > 0) {
-                if (server && node.cover(side, rate) && !player.getAbilities().instabuild)
-                    item.shrink(1);
-                return true;
-            }
-        }
+        var side = hit.getDirection();
+        if (spec.kind() != Kind.TANK
+                && serviceAttachment(world, pos, node, player, item, attachmentFace(node, hit), id))
+            return true;
         if (spec.kind() != Kind.ITEM_PIPE
                 && TransportPlatform.containerInteraction(node, side, player, hand)) return true;
         if (spec.kind() != Kind.TANK) return false;
         if (server) player.openMenu(node);
         return true;
+    }
+
+    private Direction attachmentFace(TransportNode node, BlockHitResult hit) {
+        var pos = hit.getBlockPos();
+        var offset = hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+        double rim = (6 - spec.size()) / 16.0 - 0.00001;
+        for (var face : TransportNode.SIDES) {
+            if (!connected(node.getBlockState(), face)) continue;
+            double point = offset.get(face.getAxis());
+            if ((face.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1 - point : point)
+                    < rim) return face;
+        }
+        return hit.getDirection();
+    }
+
+    private boolean serviceAttachment(
+            Level world,
+            BlockPos pos,
+            TransportNode node,
+            Player player,
+            ItemStack item,
+            Direction side,
+            String id) {
+        Nozzle mode =
+                switch (id) {
+                    case "ic2:pipe_extraction_nozzle" -> Nozzle.EXTRACTION;
+                    case "ic2:pipe_injection_nozzle" -> Nozzle.INJECTION;
+                    default -> Nozzle.NONE;
+                };
+        int pumpRate =
+                spec.kind() == Kind.FLUID_PIPE
+                        ? switch (id) {
+                            case "ic2:pump_cover_lv" -> 32;
+                            case "ic2:pump_cover_mv" -> 128;
+                            default -> 0;
+                        }
+                        : 0;
+        boolean crowbar = id.equals("ic2:crowbar");
+        if (mode == Nozzle.NONE && pumpRate == 0 && !crowbar) return false;
+        if (!player.mayBuild()
+                || !world.mayInteract(player, pos)
+                || !player.mayUseItemAt(pos, side, item)) return false;
+        if (!(world instanceof ServerLevel level)) return true;
+        if (crowbar) {
+            var removed = node.removeNozzle(side);
+            if (removed != Nozzle.NONE) {
+                Block.popResource(level, pos, TransportPlatform.nozzleItem(removed));
+                configurationChanged(level, pos, true);
+            } else {
+                int rate = node.uncover(side);
+                if (rate != 0) {
+                    Block.popResource(level, pos, TransportPlatform.coverItem(rate));
+                    configurationChanged(level, pos, false);
+                }
+            }
+        } else if (pumpRate > 0 ? node.cover(side, pumpRate) : node.installNozzle(side, mode)) {
+            if (!player.getAbilities().instabuild) item.shrink(1);
+            configurationChanged(level, pos, mode != Nozzle.NONE);
+        }
+        return true;
+    }
+
+    private static void configurationChanged(
+            ServerLevel level, BlockPos pos, boolean updateNozzles) {
+        refreshConnections(level, pos);
+        if (updateNozzles) {
+            var state = level.getBlockState(pos);
+            level.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);
+        }
+    }
+
+    /** Re-evaluates arms touching a changed device or pipe without loading another chunk. */
+    public static void refreshConnections(ServerLevel level, BlockPos pos) {
+        if (!level.hasChunkAt(pos)) return;
+        var original = level.getBlockState(pos);
+        var current = original;
+        for (var face : TransportNode.SIDES) {
+            var adjacent = pos.relative(face);
+            if (!level.hasChunkAt(adjacent)) continue;
+            var neighbor = level.getBlockState(adjacent);
+            if (original.getBlock() instanceof Pipe pipe)
+                current = pipe.connect(current, face, neighbor, level, pos);
+            if (neighbor.getBlock() instanceof Pipe pipe) {
+                var connected =
+                        pipe.connect(neighbor, face.getOpposite(), original, level, adjacent);
+                if (connected != neighbor)
+                    level.setBlock(adjacent, connected, Block.UPDATE_CLIENTS);
+            }
+        }
+        if (current != original) level.setBlock(pos, current, Block.UPDATE_CLIENTS);
+    }
+
+    /** The authoritative arm state shared by the native collision shape and the nozzle renderer. */
+    public static boolean connected(BlockState state, Direction side) {
+        var arm = SIDES.get(side);
+        return state.hasProperty(arm) && state.getValue(arm);
     }
 
     @Override
@@ -119,35 +202,23 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
 
     @Override
     public boolean wrenchTurn(ServerLevel level, BlockPos pos, BlockState state, Direction side) {
-        if (spec.kind() == Kind.ITEM_PIPE)
-            return WrenchTarget.super.wrenchTurn(level, pos, state, side);
-        if (!(level.getBlockEntity(pos) instanceof TransportNode node) || !node.toggle(side))
+        if (spec.kind() == Kind.ITEM_PIPE) {
+            if (!WrenchTarget.super.wrenchTurn(level, pos, state, side)) return false;
+        } else if (!(level.getBlockEntity(pos) instanceof TransportNode node)
+                || !node.toggle(side)) {
             return false;
-        var adjacent = pos.relative(side);
-        if (level.hasChunkAt(adjacent)) {
-            var neighbor = level.getBlockState(adjacent);
-            var other = level.getBlockEntity(adjacent);
-            boolean open =
-                    node.open(side)
-                            && (!(other instanceof TransportNode transport)
-                                    || transport.open(side.getOpposite()));
-            var current =
-                    open ? connect(state, side, neighbor) : state.setValue(SIDES.get(side), false);
-            level.setBlock(pos, current, Block.UPDATE_CLIENTS);
-            if (neighbor.getBlock() instanceof Pipe pipe) {
-                var opposite = side.getOpposite();
-                var next =
-                        open
-                                ? pipe.connect(neighbor, opposite, state)
-                                : neighbor.setValue(SIDES.get(opposite), false);
-                level.setBlock(adjacent, next, Block.UPDATE_CLIENTS);
-            }
         }
+        refreshConnections(level, pos);
         return true;
     }
 
     @Override
-    BlockState connect(BlockState state, Direction side, BlockState neighbor) {
+    BlockState connect(
+            BlockState state,
+            Direction side,
+            BlockState neighbor,
+            LevelReader world,
+            BlockPos pos) {
         return state;
     }
 
@@ -169,24 +240,59 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
         }
 
         @Override
-        BlockState connect(BlockState state, Direction side, BlockState neighbor) {
+        BlockState connect(
+                BlockState state,
+                Direction side,
+                BlockState neighbor,
+                LevelReader world,
+                BlockPos pos) {
+            if (!(world instanceof ServerLevel level)) return state;
+            var adjacent = pos.relative(side);
+            var arm = SIDES.get(side);
+            if (!level.hasChunkAt(adjacent)) return state.setValue(arm, false);
+            var node =
+                    level.getBlockEntity(pos) instanceof TransportNode transport ? transport : null;
+            var target = level.getBlockEntity(adjacent);
+            var face = side.getOpposite();
+            if (neighbor.getBlock() instanceof Pipe pipe) {
+                boolean linked =
+                        spec.kind() == pipe.spec.kind()
+                                && (node == null || node.exposesPipeFace(side))
+                                && (!(target instanceof TransportNode next)
+                                        || next.exposesPipeFace(face));
+                return state.setValue(arm, linked);
+            }
+            boolean intake =
+                    node == null
+                            ? TransportNode.acceptsDefaultInput(state, side)
+                            : node.permitsInbound(side);
+            boolean outlet =
+                    node == null
+                            ? TransportNode.acceptsDefaultOutput(state, side)
+                            : node.permitsOutbound(side);
+            boolean allowed =
+                    (intake && TransportNode.machineOutput(target, face))
+                            || (outlet && TransportNode.machineInput(target, face));
             boolean connected =
-                    neighbor.getBlock() instanceof TransportBlock b
-                            ? (b.spec.kind() == Kind.ITEM_PIPE) == (spec.kind() == Kind.ITEM_PIPE)
-                            : neighbor.hasBlockEntity();
-            return state.setValue(SIDES.get(side), connected);
+                    allowed
+                            && (spec.kind() == Kind.ITEM_PIPE
+                                    ? TransportPlatform.hasItemPort(level, adjacent, face)
+                                    : TransportPlatform.hasFluidPort(level, adjacent, face));
+            return state.setValue(arm, connected);
         }
 
         @Override
         public BlockState getStateForPlacement(BlockPlaceContext context) {
             BlockState state = defaultBlockState();
+            if (state.hasProperty(OUT))
+                state = state.setValue(OUT, context.getNearestLookingDirection());
+            var level = context.getLevel();
+            var pos = context.getClickedPos();
             for (Direction side : TransportNode.SIDES) {
-                state =
-                        connect(
-                                state,
-                                side,
-                                context.getLevel()
-                                        .getBlockState(context.getClickedPos().relative(side)));
+                var adjacent = pos.relative(side);
+                if (level.hasChunkAt(adjacent)) {
+                    state = connect(state, side, level.getBlockState(adjacent), level, pos);
+                }
             }
             return state;
         }
@@ -253,12 +359,6 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
                 StateDefinition.Builder<Block, BlockState> builder) {
             super.createBlockStateDefinition(builder);
             builder.add(OUT);
-        }
-
-        @Override
-        public BlockState getStateForPlacement(BlockPlaceContext context) {
-            return super.getStateForPlacement(context)
-                    .setValue(OUT, context.getNearestLookingDirection());
         }
     }
 }

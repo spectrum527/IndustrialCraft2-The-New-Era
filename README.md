@@ -8,16 +8,18 @@
 
 ## 下载与安装
 
-**当前正式版为 1.0.5。** 按 Minecraft 版本选择下表中的一个 JAR，放入对应实例的 `mods/`。联机时客户端和专服安装同一份文件。原作、旧修复版与本项目共用 `ic2` 标识，请分别使用独立实例。 [发行说明](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/tag/v1.0.5) · [SHA-256 校验](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/SHA256SUMS.txt) · [本版源码审查](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/SELF-REVIEW-1.0.5.md)
+**当前正式版为 1.0.6。** 按 Minecraft 版本选择下表中的一个 JAR，放入对应实例的 `mods/`。联机时客户端和专服安装同一份文件。原作、旧修复版与本项目共用 `ic2` 标识，请分别使用独立实例。 [发行说明](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/tag/v1.0.6) · [SHA-256 校验](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/SHA256SUMS.txt) · [本版源码审查](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/SELF-REVIEW-1.0.6.md)
 
 | Minecraft | 加载器 | Java | 下载 |
 | --- | --- | ---: | --- |
-| 1.19.2 | Forge 43.5.0 | 17 | [Forge 1.19.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-forge-1.19.2-1.0.5.jar) |
-| 1.21.1 | NeoForge 21.1.265 | 21 | [NeoForge 1.21.1 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-neoforge-1.21.1-1.0.5.jar) |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | [NeoForge 26.1.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-neoforge-26.1.2-1.0.5.jar) |
-| 26.2 | NeoForge 26.2.0.95 | 25 | [NeoForge 26.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.5/ic2-neoforge-26.2-1.0.5.jar) |
+| 1.19.2 | Forge 43.5.0 | 17 | [Forge 1.19.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-forge-1.19.2-1.0.6.jar) |
+| 1.21.1 | NeoForge 21.1.265 | 21 | [NeoForge 1.21.1 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-neoforge-1.21.1-1.0.6.jar) |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | [NeoForge 26.1.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-neoforge-26.1.2-1.0.6.jar) |
+| 26.2 | NeoForge 26.2.0.95 | 25 | [NeoForge 26.2 JAR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/releases/download/v1.0.6/ic2-neoforge-26.2-1.0.6.jar) |
 
 第一次开荒可以先做木龙头采树脂，再用橡胶给铜线绝缘。让发电机经导线给打粉机供电，接上漏斗或物品管收走产物，第一条生产线就能工作。 [玩家指南与接线示例](docs/first-playable.md)
+
+物品管和流体管都能安装抽吸嘴、注入嘴。打开机器界面，可从面板外侧的齿轮按钮分别设置六面的自动化权限。漏斗和管道可以给机器供料、装入合适的电池，并从产物格或已加工完成的工作格收货。 [管嘴合成与面权限](spec/logistics/nozzles-and-side-access.md)
 
 The One Probe 和 Curios 均可按需安装。前者显示机器的实际电量和储罐液量，后者提供背饰栏。把电池背包或电动喷气背包装在背饰位，也能站上对应等级的充电座充电。 [联动与实测](spec/platform/optional-integrations.md)
 
@@ -33,7 +35,7 @@ The One Probe 和 Curios 均可按需安装。前者显示机器的实际电量�
 
 维护团队承诺项目保持**开源、非营利**，官方构建免费下载。欢迎提交 PR，也欢迎就移植、美术、文档或测试申请共创。报告问题时请附上 Minecraft 和加载器版本、复现步骤及实际结果。 [提交问题](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/issues/new/choose) · [提交 PR](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/compare) · [申请共创](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/issues/new?template=co-creation.yml)
 
-NeoForge 三版从 `main` 构建，Forge 1.19.2 使用独立的 `1.19.2` 分支。下列命令在对应分支的仓库根目录运行。Windows 使用 `gradlew.bat`。 [NeoForge 发行源码](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.5) · [Forge 发行源码](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.5-forge-1.19.2)
+NeoForge 三版从 `main` 构建，Forge 1.19.2 使用独立的 `1.19.2` 分支。下列命令在对应分支的仓库根目录运行。Windows 使用 `gradlew.bat`。 [NeoForge 发行源码](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.6) · [Forge 发行源码](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/tree/v1.0.6-forge-1.19.2)
 
 ```sh
 # main，构建 NeoForge 三版

@@ -137,7 +137,8 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock, 
                             "ic2.trade.offer", device.saleSize));
             return true;
         }
-        if (stack.getItem() instanceof CellItem
+        if ((stack.getItem() instanceof CellItem
+                        || stack.getItem() instanceof net.minecraft.world.item.BucketItem)
                 && CellItem.interactWithBlock(server, pos, side, player, hand)) return true;
         if ((kind.lowTier() > 0 || kind.storage()) && player.isShiftKeyDown())
             device.changeMode(server);

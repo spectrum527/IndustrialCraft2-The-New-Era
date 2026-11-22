@@ -1327,6 +1327,7 @@
 | `assets/ic2/textures/gui/guiweightedfluiddistributor.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/guiweighteditemdistributor.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/guiwindkineticgenerator.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
+| `assets/ic2/textures/gui/icons/side_access_gear.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制 16×16 六面权限齿轮图标 | 2026-11-22 |
 | `assets/ic2/textures/gui/infobutton.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/overlay/blast_furnace.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/overlay/canner_arrow.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
@@ -1779,3 +1780,14 @@
 | --- | --- | --- | --- | --- | --- |
 | `assets/brand/icon.jpg` | new | 项目作者 | 仅供本项目标识使用 | 用户提供的图标原图，SHA-256 `1339c4e395cc5a62207c869df3eb6b197e630dc9b97da2b63e099f8ad0668d44` | 2026-11-21 |
 | `assets/brand/cover.jpg` | new | 项目作者 | 仅供本项目标识使用 | 用户提供的封面原图，SHA-256 `3629f33b96d0caff04a18e1721af7d2a9d4a63fdbef7d444980a96bb4c2d3059` | 2026-11-21 |
+
+## 1.0.6 管道抽吸嘴与注入嘴
+
+图标与世界模型纹理为独立手工像素稿。青铜与钢沿用作者管体的材料配色，管嘴环、流向标记与像素布局均为本次绘制。
+
+| resource_path | status | author | license | source | date |
+|---|---|---|---|---|---|
+| `assets/ic2/textures/items/cover/pipe_extraction_nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制 16×16 抽吸嘴图标 | 2026-11-22 |
+| `assets/ic2/textures/items/cover/pipe_injection_nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制 16×16 注入嘴图标 | 2026-11-22 |
+| `assets/ic2/textures/blocks/transport/bronze/nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制青铜管嘴 UV，参照项目作者青铜管配色 | 2026-11-22 |
+| `assets/ic2/textures/blocks/transport/steel/nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制钢管嘴 UV，参照项目作者钢管配色 | 2026-11-22 |

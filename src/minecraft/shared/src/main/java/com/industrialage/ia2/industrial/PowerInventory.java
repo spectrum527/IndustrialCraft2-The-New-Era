@@ -1,6 +1,10 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.content.PortableEquipment;
+import com.industrialage.ia2.equipment.JetpackMount;
 import com.industrialage.ia2.reactor.ElectricReactor;
+import java.util.Set;
 import java.util.stream.IntStream;
 import net.minecraft.core.Direction;
 import net.minecraft.world.SimpleContainer;
@@ -14,6 +18,26 @@ import net.minecraft.world.item.Items;
  */
 final class PowerInventory extends SimpleContainer
         implements WorldlyContainer, ElectricReactor.Grid {
+    private static final Set<String> REACTOR_FEED =
+            Set.of(
+                    "uranium_fuel_rod",
+                    "dual_uranium_fuel_rod",
+                    "quad_uranium_fuel_rod",
+                    "mox_fuel_rod",
+                    "dual_mox_fuel_rod",
+                    "quad_mox_fuel_rod",
+                    "depleted_isotope_fuel_rod",
+                    "lithium_fuel_rod");
+    private static final Set<String> REACTOR_PRODUCTS =
+            Set.of(
+                    "depleted_uranium_fuel_rod",
+                    "depleted_dual_uranium_fuel_rod",
+                    "depleted_quad_uranium_fuel_rod",
+                    "depleted_mox_fuel_rod",
+                    "depleted_dual_mox_fuel_rod",
+                    "depleted_quad_mox_fuel_rod",
+                    "re_enriched_uranium");
+
     final PowerNode device;
 
     PowerInventory(PowerNode node) {
@@ -96,19 +120,79 @@ final class PowerInventory extends SimpleContainer
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction face) {
-        if (slot == device.kind.chargeSlot() || device.kind.storage()) return false;
-        return device.kind.trader()
-                ? slot == 2 && canPlaceItem(slot, stack)
-                : canPlaceItem(slot, stack);
+        return MachineAccess.allowsInput(device, face) && acceptsAutomation(slot, stack);
+    }
+
+    boolean acceptsAutomation(int slot, ItemStack stack) {
+        if (slot < 0 || slot >= getContainerSize() || stack.isEmpty() || !canPlaceItem(slot, stack))
+            return false;
+        if (slot == device.kind.chargeSlot()) return needsCharge(stack);
+        if (slot == dischargeSlot()) return PowerPlatform.storedEnergy(stack) > 0;
+        return switch (device.kind) {
+            case GEO_GENERATOR, WATER_GENERATOR, NUKE -> true;
+            case NUCLEAR_REACTOR ->
+                    slot >= 54
+                            || REACTOR_FEED.contains(PowerPlatform.path(stack))
+                                    && !reactorProduct(stack);
+            case RCI_RSH, RCI_LZH -> slot < 9;
+            case TRADE_O_MAT, ENERGY_O_MAT ->
+                    slot == 2 && WorkshopPlatform.sameItem(getItem(0), stack);
+            default -> false;
+        };
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face) {
-        if (slot == device.kind.chargeSlot() || device.kind.storage()) return false;
-        if (device.kind.trader()) return slot == 3 && device.kind == PowerKind.TRADE_O_MAT;
-        return device.kind == PowerKind.NUCLEAR_REACTOR
-                ? (slot == 55 || slot == 57 || slot < 54 && part(slot).startsWith("depleted_"))
-                : slot == 1 || stack.is(Items.BUCKET);
+        if (slot < 0
+                || slot >= getContainerSize()
+                || stack.isEmpty()
+                || !MachineAccess.allowsOutput(device, face)) return false;
+        if (slot == device.kind.chargeSlot()) return chargeComplete(stack);
+        return switch (device.kind) {
+            case GEO_GENERATOR, WATER_GENERATOR -> slot == 1;
+            case TRADE_O_MAT -> slot == 3;
+            case NUCLEAR_REACTOR ->
+                    device.fluidMode && (slot == 55 || slot == 57)
+                            || ElectricReactor.exposed(slot, device.chambers)
+                                    && reactorProduct(stack);
+            default -> false;
+        };
+    }
+
+    private static boolean reactorProduct(ItemStack stack) {
+        String part = PowerPlatform.path(stack);
+        return REACTOR_PRODUCTS.contains(part)
+                || part.equals("lithium_fuel_rod") && PowerPlatform.use(stack) >= 9_999;
+    }
+
+    int automationLimit(int slot, ItemStack stack) {
+        if (slot == device.kind.chargeSlot() || slot == dischargeSlot())
+            return PowerPlatform.powerSlotLimit(stack);
+        return limit(slot, stack);
+    }
+
+    int dischargeSlot() {
+        return switch (device.kind) {
+            case CLASSIC_MFE, CLASSIC_MFSU, MAGNETIZER -> 1;
+            case RCI_RSH, RCI_LZH -> 9;
+            case ENERGY_O_MAT -> 4;
+            default -> -1;
+        };
+    }
+
+    private boolean needsCharge(ItemStack stack) {
+        var sample = stack.copy();
+        sample.setCount(1);
+        return PowerPlatform.charge(sample, 1, device.kind.itemTier()) > 0;
+    }
+
+    private boolean chargeComplete(ItemStack stack) {
+        if (stack.getCount() != 1 || !PowerPlatform.acceptsCharge(stack, device.kind.itemTier()))
+            return false;
+        return PowerPlatform.storedEnergy(stack) >= PowerPlatform.equipmentCapacity(stack)
+                && (!JetpackMount.installed(stack)
+                        || JetpackMount.energy(stack)
+                                >= PortableEquipment.ELECTRIC_JETPACK.capacity);
     }
 
     @Override

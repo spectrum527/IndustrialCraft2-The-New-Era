@@ -2,19 +2,20 @@ package com.industrialage.ia2.forge.content;
 
 import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.forge.content.MachineKind.Slot;
+import com.industrialage.ia2.gui.DeviceAccessMenu;
 import java.util.Locale;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /** A server-authoritative machine inventory with synchronized progress and energy. */
-public final class MachineMenu extends AbstractContainerMenu {
+public final class MachineMenu extends DeviceAccessMenu {
     private static final int ENERGY_LOW = 0;
     private static final int ENERGY_HIGH = 1;
     private static final int CAPACITY_LOW = 2;
@@ -36,7 +37,8 @@ public final class MachineMenu extends AbstractContainerMenu {
                 player,
                 machine.inventory(),
                 live(machine),
-                machine instanceof StorageDevice device ? device : null);
+                machine instanceof StorageDevice device ? device : null,
+                machine instanceof BlockEntity node ? node : null);
     }
 
     private MachineMenu(
@@ -44,8 +46,9 @@ public final class MachineMenu extends AbstractContainerMenu {
             Inventory player,
             MachineInventory inventory,
             ContainerData data,
-            StorageDevice storage) {
-        super(ForgeContent.MACHINE_MENU.get(), id);
+            StorageDevice storage,
+            BlockEntity machine) {
+        super(ForgeContent.MACHINE_MENU.get(), id, player, machine);
         this.inventory = inventory;
         this.layout = MachineLayout.byPath(inventory.kind.path);
         this.data = data;
@@ -102,6 +105,7 @@ public final class MachineMenu extends AbstractContainerMenu {
                             player, column, 8 + 18 * column, layout.hotbarTop() + 1));
         }
         addDataSlots(data);
+        addAccessData();
     }
 
     static MachineMenu fromNetwork(int id, Inventory player, FriendlyByteBuf buffer) {
@@ -110,6 +114,7 @@ public final class MachineMenu extends AbstractContainerMenu {
                 player,
                 new MachineInventory(buffer.readEnum(MachineKind.class), null),
                 new SimpleContainerData(DATA_SIZE),
+                null,
                 null);
     }
 
@@ -212,7 +217,7 @@ public final class MachineMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player player, int button) {
+    protected boolean clickDeviceButton(Player player, int button) {
         if (storage == null || button != 0 || !stillValid(player)) {
             return false;
         }

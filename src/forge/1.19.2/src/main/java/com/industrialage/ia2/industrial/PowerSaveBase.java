@@ -1,7 +1,6 @@
 package com.industrialage.ia2.industrial;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.industrialage.ia2.access.MachinePortCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -78,42 +77,34 @@ abstract class PowerSaveBase extends BlockEntity {
                 Math.max(0, tag.getInt("hull_heat")), Math.max(0, tag.getDouble("output")));
     }
 
-    private LazyOptional<LavaInlet> inlet = LazyOptional.of(() -> new LavaInlet((PowerNode) this));
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        inlet = LazyOptional.of(() -> new LavaInlet((PowerNode) this));
-    }
-
-    private final Map<Direction, LazyOptional<?>> sided = new HashMap<>();
+    private final MachinePortCache automation = new MachinePortCache(this);
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (cap == ForgeCapabilities.FLUID_HANDLER
-                && !isRemoved()
-                && (((PowerNode) this).kind == PowerKind.GEO_GENERATOR
-                        || ((PowerNode) this).kind == PowerKind.REACTOR_FLUID_PORT))
-            return inlet.cast();
-        if (cap == ForgeCapabilities.ITEM_HANDLER && !isRemoved()) {
-            return sided.computeIfAbsent(
-                            side,
-                            d ->
-                                    LazyOptional.of(
-                                            () ->
-                                                    new PowerItemPort(
-                                                            (PowerNode) this,
-                                                            d == null ? Direction.UP : d)))
-                    .cast();
+        if (!isRemoved()) {
+            var node = (PowerNode) this;
+            if (cap == ForgeCapabilities.ITEM_HANDLER)
+                return automation
+                        .item(
+                                side,
+                                () -> new PowerItemPort(node, side == null ? Direction.UP : side))
+                        .cast();
+            if (cap == ForgeCapabilities.FLUID_HANDLER
+                    && (node.kind == PowerKind.GEO_GENERATOR
+                            || node.kind == PowerKind.REACTOR_FLUID_PORT))
+                return automation.fluid(side, () -> new LavaInlet(node)).cast();
         }
         return super.getCapability(cap, side);
+    }
+
+    /** Refreshes listeners for item and fluid automation on this device. */
+    public void invalidateMachinePorts() {
+        automation.invalidate();
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        inlet.invalidate();
-        sided.values().forEach(LazyOptional::invalidate);
-        sided.clear();
+        invalidateMachinePorts();
     }
 }

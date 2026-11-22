@@ -41,6 +41,7 @@ final class PlatformWorldFixture {
     private static final BlockPos REMOVED = new BlockPos(24, 90, 24);
     private static final BlockPos SURVIVOR = new BlockPos(28, 90, 24);
     private final String phase;
+    private com.industrialage.ia2.logisticstest.PipeNozzleChecks nozzles;
     private final List<String> assertions = new ArrayList<>();
     private final RegistryFacade.Handle<Block> block;
     private final RegistryFacade.Handle<BlockItem> item;
@@ -108,7 +109,22 @@ final class PlatformWorldFixture {
         var server = tick.getServer();
         var world = server.overworld();
         try {
-            if (!generator.step(phase, world, this::check)) return;
+            if (nozzles == null) {
+                world.setChunkForced(0, 0, true);
+                world.getChunk(0, 0);
+                nozzles = NozzleGameTests.matrix(new BlockPos(3, 132, 3));
+                var player = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(world);
+                if ("write".equals(phase)) {
+                    nozzles.place(world, player, this::check);
+                    return;
+                }
+                nozzles.letDeliver(world, player, "cold", this::check);
+            }
+            boolean transportReady =
+                    "write".equals(phase)
+                            ? nozzles.waitForBackpressure(world, this::check)
+                            : nozzles.delivered(world, this::check);
+            if (!transportReady || !generator.step(phase, world, this::check)) return;
             ran = true;
             var id = new ResourceLocation(ID.value());
             check(

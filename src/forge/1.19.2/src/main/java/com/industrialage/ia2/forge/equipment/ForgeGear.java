@@ -285,6 +285,23 @@ public final class ForgeGear {
         return device != null && device.canProvide() && device.tier <= tier;
     }
 
+    /** Whether this stack can deliver energy to an automation-fed discharge slot now. */
+    public static boolean canSupplyCharge(ItemStack stack, int tier) {
+        return canDischarge(stack, tier)
+                && (type(stack).kind == Kind.DISPOSABLE || stored(stack) > 0);
+    }
+
+    /** Whether every chargeable energy reservoir of this item has reached its capacity. */
+    public static boolean chargeComplete(ItemStack stack, int tier) {
+        var device = type(stack);
+        boolean main = device != null && device.tier <= tier && device.kind != Kind.DISPOSABLE;
+        var pack = PortableEquipment.ELECTRIC_JETPACK;
+        boolean mount = tier >= pack.tier && JetpackMount.installed(stack);
+        return (main || mount)
+                && (!main || stored(stack) >= device.capacity)
+                && (!mount || JetpackMount.energy(stack) >= pack.capacity);
+    }
+
     /** Charges the equipment at its transfer rate and returns the accepted EU. */
     public static double charge(ItemStack stack, double offered, int tier) {
         var device = type(stack);

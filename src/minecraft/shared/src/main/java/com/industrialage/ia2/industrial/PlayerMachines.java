@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.power.WorldPowerStorage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,8 +88,14 @@ final class PlayerMachines {
                 BlockPos p = machine.getBlockPos().relative(dir);
                 if (!level.hasChunkAt(p)) continue;
                 var be = level.getBlockEntity(p);
+                if (!MachineAccess.allowsOutput(machine, dir)
+                        || !MachineAccess.allowsInput(be, dir.getOpposite())
+                        || !vendingEnergy
+                                && (!MachineAccess.allowsInput(machine, dir)
+                                        || !MachineAccess.allowsOutput(be, dir.getOpposite())))
+                    continue;
                 Container stock =
-                        be instanceof BoxNode b && b.kind.portable()
+                        be instanceof BoxNode b && b.kind.portable() && b.kind.automatable()
                                 ? b.items
                                 : be instanceof Container c ? c : null;
                 if (stock == null) continue;
