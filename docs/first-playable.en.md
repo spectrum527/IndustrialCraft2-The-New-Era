@@ -1,4 +1,4 @@
-# IndustrialCraft²: The New Era 1.0.5 player guide
+# IndustrialCraft²: The New Era 1.0.6 player guide
 
 [简体中文](first-playable.md) · **English**
 
@@ -8,10 +8,10 @@ Pick the loader build that matches your Minecraft version, put the same JAR into
 
 | Minecraft | Tested loader | Java | File |
 | --- | --- | ---: | --- |
-| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.5.jar` |
-| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.5.jar` |
-| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.5.jar` |
-| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.5.jar` |
+| 1.19.2 | Forge 43.5.0 | 17 | `ic2-forge-1.19.2-1.0.6.jar` |
+| 1.21.1 | NeoForge 21.1.265 | 21 | `ic2-neoforge-1.21.1-1.0.6.jar` |
+| 26.1.2 | NeoForge 26.1.2.128 | 25 | `ic2-neoforge-26.1.2-1.0.6.jar` |
+| 26.2 | NeoForge 26.2.0.95 | 25 | `ic2-neoforge-26.2-1.0.6.jar` |
 
 Creative mode has eight tabs covering machines, power and wiring, nuclear engineering, tools and armor, materials and components, fluids and containers, transport and storage, and agriculture and building. The vanilla search tab also lists these items.
 
@@ -190,6 +190,12 @@ Basic electric machines have four upgrade slots along the right edge of their GU
 - Ejector, Pulling, Fluid Ejector, and Fluid Pulling Upgrades: automatically push outputs to or pull inputs from adjacent inventories and tanks. Right-click a block face while holding an upgrade to lock it to that direction, stack multiples in one slot to move more items per tick, or upgrade to the Advanced Ejector and Advanced Pulling Upgrades for item filtering.
 
 ## Logistics, pipes, sorting, and storage
+
+Open a machine and click the side access button outside the original panel. Each of the six faces shows both its machine-relative name and its world direction. Set the product side to output only and the ingredient side to input only. Blocking a side disconnects item and fluid pipes. Power cables, manual inventory use, and fluid transfer with a held bucket or cell follow their original rules. Existing machines start with full access on every side.
+
+Craft two bronze item casings, one tiny bronze fluid pipe and a piston in any order in a 2×2 crafting grid for a Pipe Extraction Nozzle. Use a dropper in place of the piston for a Pipe Injection Nozzle. Fit one to the pipe face touching the machine and remove it with a crowbar. Both fittings adapt to all four diameters of bronze and steel item and fluid pipes. Extraction draws from the machine’s accessible output. Injection delivers to its accessible input. A nozzle and a pump cover occupy the same mounting point.
+
+An extraction nozzle prevents a pulling upgrade from pulling the same resource back through that face. An injection nozzle prevents an ejector upgrade from pushing it back. Other faces operate independently. Item pipes move up to 1, 4, 16 or 64 items/t. Bronze fluid pipes move 20, 40, 120 or 240 mB/t and steel pipes move 40, 80, 240 or 480 mB/t. Multiple fittings on one segment share its throughput.
 
 ### Bronze and steel pipes
 
