@@ -18,8 +18,7 @@ interface ForgeDevice
 
     @Override
     default void invalidateMachinePorts() {
-        inventory().invalidate();
-        inventory().revive();
+        inventory().refresh();
     }
 
     default double energy() {

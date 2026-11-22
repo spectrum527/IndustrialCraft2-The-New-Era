@@ -96,9 +96,7 @@ final class WorkshopAutomation {
                 feed,
                 result,
                 installed,
-                incoming ->
-                        feed >= 0
-                                && WorkshopPlans.validAutomationInput(node, level, feed, incoming));
+                incoming -> node.inventory.acceptsAutomationMaterial(level, feed, incoming));
 
         for (var upgrade : installed) {
             String path = WorkshopPlatform.itemId(upgrade);

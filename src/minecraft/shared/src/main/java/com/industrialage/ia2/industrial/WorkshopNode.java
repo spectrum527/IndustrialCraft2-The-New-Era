@@ -46,6 +46,7 @@ public final class WorkshopNode extends WorkshopSaveBase
     int heat;
     int heatFuelTicks;
     boolean solidProducesAsh;
+    ItemStack completedFuel = ItemStack.EMPTY;
     int progress;
     int mode;
     int cycles;
@@ -576,12 +577,14 @@ public final class WorkshopNode extends WorkshopSaveBase
             var fuel = inventory.getItem(0);
             int burn = WorkshopPlatform.solidFuelTime(level, fuel) / 4;
             if (burn > 0) {
+                completedFuel = ItemStack.EMPTY;
                 solidProducesAsh = WorkshopPlatform.itemId(fuel).equals("minecraft:coal");
                 var consumed = inventory.removeItem(0, 1);
                 var remainder = WorkshopPlatform.fuelRemainder(consumed);
                 if (!remainder.isEmpty()) {
                     if (inventory.getItem(0).isEmpty()) {
                         inventory.setItem(0, remainder);
+                        completedFuel = remainder.copy();
                     } else {
                         net.minecraft.world.level.block.Block.popResource(
                                 level, getBlockPos(), remainder);

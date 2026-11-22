@@ -212,7 +212,10 @@ final class WorkshopPlans {
         }
         int ingredient = kind == WorkshopKind.SOLID_CANNER ? 1 - slot : slot;
         return WorkshopRecipes.forType(kind.recipes(mode)).stream()
-                .anyMatch(recipe -> matches(item, recipe.inputs().get(ingredient)));
+                .anyMatch(
+                        recipe ->
+                                ingredient < recipe.inputs().size()
+                                        && matches(item, recipe.inputs().get(ingredient)));
     }
 
     private static boolean matches(ItemStack item, Stack expected) {
@@ -231,12 +234,32 @@ final class WorkshopPlans {
         }
         return switch (node.kind) {
             case INDUCTION -> !WorkshopPlatform.smelt(level, item).isEmpty();
-            case FLUID_BOTTLER, PUMP, RECYCLER, UU_ASSEMBLY, ORE_WASHER -> true;
-            case CANNER, SOLID_CANNER -> true;
-            case CLASSIC_CANNER ->
-                    WorkshopPlatform.itemId(item).equals("ic2:coalfuel_cell")
-                            || WorkshopPlatform.itemId(item).equals("ic2:empty_fuel_can")
-                            || storedInput(node.kind, node.mode, item);
+            case PUMP,
+                            FLUID_BOTTLER,
+                            RECYCLER,
+                            UU_ASSEMBLY,
+                            ORE_WASHER,
+                            CANNER,
+                            SOLID_CANNER,
+                            SOLID_HEAT,
+                            FLUID_HEAT,
+                            SEMIFLUID,
+                            RADIOISOTOPE_HEAT,
+                            CLASSIC_ELECTROLYZER,
+                            MASS_FABRICATOR,
+                            CLASSIC_MASS,
+                            MATTER_GENERATOR,
+                            UU_SCANNER,
+                            COKE_KILN,
+                            COKE_HATCH ->
+                    true;
+            case BLAST_FURNACE ->
+                    slot == WorkshopInventory.AUX_SLOT || storedInput(node.kind, node.mode, item);
+            case CLASSIC_CANNER -> {
+                String id = WorkshopPlatform.itemId(item);
+                yield (slot == 0 ? id.equals("ic2:coalfuel_cell") : id.equals("ic2:empty_fuel_can"))
+                        || acceptsCanningInput(node.kind, node.mode, slot, item);
+            }
             default -> storedInput(node.kind, node.mode, item);
         };
     }

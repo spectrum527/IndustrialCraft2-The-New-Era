@@ -1,6 +1,7 @@
 package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.access.MachinePortCache;
+import com.industrialage.ia2.access.ProcessingItemPort;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 abstract class WorkshopSaveBase extends BlockEntity {
     private final MachinePortCache automation = new MachinePortCache(this);
@@ -78,6 +78,8 @@ abstract class WorkshopSaveBase extends BlockEntity {
         tag.putDouble("ic2_energy", node.energy);
         tag.putInt("ic2_heat", node.heat);
         tag.putInt("ic2_heat_fuel", node.heatFuelTicks);
+        if (node.inventory.isFuelProduct(node.inventory.getItem(0)))
+            tag.put("ic2_fuel_return", node.completedFuel.save(new CompoundTag()));
         tag.putBoolean("ic2_coal_ash", node.solidProducesAsh);
         tag.putInt("ic2_progress", node.progress);
         tag.putInt("ic2_work_duration", node.cycleDuration);
@@ -115,6 +117,11 @@ abstract class WorkshopSaveBase extends BlockEntity {
         node.energy = Double.isFinite(stored) ? Math.max(0, stored) : 0;
         node.heat = Math.max(0, tag.getInt("ic2_heat"));
         node.heatFuelTicks = Math.max(0, tag.getInt("ic2_heat_fuel"));
+        node.completedFuel = ItemStack.of(tag.getCompound("ic2_fuel_return"));
+        if (node.completedFuel.isEmpty()
+                && node.kind == WorkshopKind.SOLID_HEAT
+                && node.inventory.getItem(0).is(net.minecraft.world.item.Items.BUCKET))
+            node.completedFuel = node.inventory.getItem(0).copy();
         node.solidProducesAsh = tag.getBoolean("ic2_coal_ash");
         node.progress = Math.max(0, tag.getInt("ic2_progress"));
         node.mode = Math.floorMod(tag.getInt("ic2_mode"), node.kind.modes());
@@ -141,7 +148,7 @@ abstract class WorkshopSaveBase extends BlockEntity {
             var node = (WorkshopNode) this;
             if (cap == ForgeCapabilities.ITEM_HANDLER)
                 return automation
-                        .item(side, () -> new SidedInvWrapper(node.inventory, side))
+                        .item(side, () -> new ProcessingItemPort(node.inventory, side))
                         .cast();
             if (cap == ForgeCapabilities.FLUID_HANDLER
                     && (node.inlet.capacity > 0 || node.outlet.capacity > 0)) {

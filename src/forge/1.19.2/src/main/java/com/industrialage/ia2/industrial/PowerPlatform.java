@@ -100,6 +100,14 @@ public final class PowerPlatform {
                 stack, room, capacity, tier);
     }
 
+    static double storedEnergy(ItemStack stack) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.stored(stack);
+    }
+
+    static double equipmentCapacity(ItemStack stack) {
+        return com.industrialage.ia2.forge.equipment.ForgeGear.capacity(stack);
+    }
+
     static int powerSlotLimit(ItemStack stack) {
         return com.industrialage.ia2.forge.equipment.ForgeGear.powerSlotLimit(stack);
     }
