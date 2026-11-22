@@ -1,16 +1,16 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.gui.DeviceScreen;
 import com.industrialage.ia2.gui.PanelGraphics;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Draws the device's returned industrial artwork around its real server inventory. */
-public final class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> {
+public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
     private final List<Button> controls = new ArrayList<>();
 
     /** Creates the screen for the machine menu sent by the server. */
@@ -97,9 +97,9 @@ public final class WorkshopScreen extends AbstractContainerScreen<WorkshopMenu> 
     }
 
     @Override
-    public void render(PoseStack graphics, int mouseX, int mouseY, float tick) {
+    protected void renderPanel(PoseStack graphics, int mouseX, int mouseY, float tick) {
         renderBackground(graphics);
-        super.render(graphics, mouseX, mouseY, tick);
+        super.renderPanel(graphics, mouseX, mouseY, tick);
         renderTooltip(graphics, mouseX, mouseY);
     }
 }

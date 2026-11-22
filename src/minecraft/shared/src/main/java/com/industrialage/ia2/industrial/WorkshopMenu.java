@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.gui.DeviceAccessMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -7,7 +8,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * Workshop slots and synchronized quantities, using separate halves for values that exceed a short.
  */
-public final class WorkshopMenu extends AbstractContainerMenu {
+public final class WorkshopMenu extends DeviceAccessMenu {
     private static final int MACHINE_SLOTS = WorkshopInventory.SIZE;
     private static final int DATA_SIZE = Metric.values().length * 2;
 
@@ -49,7 +49,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
             Container inventory,
             WorkshopNode machine,
             ContainerData data) {
-        super(WorkshopPlatform.menuType(), id);
+        super(WorkshopPlatform.menuType(), id, player, machine);
         this.kind = kind;
         this.layout = WorkshopLayout.of(kind);
         this.inventory = inventory;
@@ -116,6 +116,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
             addPlayerSlot(player, column, playerX + 18 * column, hotbarY);
         }
         addDataSlots(data);
+        addAccessData();
     }
 
     private void addPlayerSlot(Inventory inventory, int index, int x, int y) {
@@ -429,7 +430,7 @@ public final class WorkshopMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player player, int action) {
+    protected boolean clickDeviceButton(Player player, int action) {
         if (machine == null
                 || !stillValid(player)
                 || layout.controls.stream().noneMatch(control -> control.action() == action)) {

@@ -3,15 +3,15 @@ package com.industrialage.ia2.forge.client;
 import com.industrialage.ia2.client.MachineArtwork;
 import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.forge.content.MachineMenu;
+import com.industrialage.ia2.gui.DeviceScreen;
 import com.industrialage.ia2.gui.PanelButton;
 import com.industrialage.ia2.gui.PanelGraphics;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Native interaction and authored machine art for Minecraft 1.19.2. */
-final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
+final class MachineScreen extends DeviceScreen<MachineMenu> {
     private PanelButton redstone;
 
     MachineScreen(MachineMenu menu, Inventory inventory, Component title) {
@@ -49,9 +49,9 @@ final class MachineScreen extends AbstractContainerScreen<MachineMenu> {
     }
 
     @Override
-    public void render(PoseStack graphics, int mouseX, int mouseY, float tick) {
+    protected void renderPanel(PoseStack graphics, int mouseX, int mouseY, float tick) {
         renderBackground(graphics);
-        super.render(graphics, mouseX, mouseY, tick);
+        super.renderPanel(graphics, mouseX, mouseY, tick);
         renderTooltip(graphics, mouseX, mouseY);
         if (redstone != null && redstone.isHoveredOrFocused()) {
             renderTooltip(graphics, redstoneMode(), mouseX, mouseY);

@@ -1,16 +1,16 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.gui.DeviceAccessMenu;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 /** Synchronizes live measurements and protects each input, output and owner-editable shop slot. */
-final class PowerMenu extends AbstractContainerMenu {
+final class PowerMenu extends DeviceAccessMenu {
     final PowerKind kind;
     final PowerLayout layout;
     final boolean guest;
@@ -34,7 +34,7 @@ final class PowerMenu extends AbstractContainerMenu {
     }
 
     PowerMenu(String key, int id, Inventory player, PowerKind kind, PowerInventory inventory) {
-        super(PowerMenus.type(key), id);
+        super(PowerMenus.type(key), id, player, inventory == null ? null : inventory.device);
         this.kind = kind;
         layout = PowerLayout.get(key);
         guest = key.endsWith("_guest");
@@ -107,6 +107,7 @@ final class PowerMenu extends AbstractContainerMenu {
             addSlot(new Slot(player, 9 + i, inv[0] + 18 * (i % 9), inv[1] + 18 * (i / 9)));
         for (int i = 0; i < 9; i++) addSlot(new Slot(player, i, inv[0] + 18 * i, inv[2]));
         addDataSlots(data);
+        addAccessData();
         measure();
     }
 
@@ -129,7 +130,7 @@ final class PowerMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player who, int action) {
+    protected boolean clickDeviceButton(Player who, int action) {
         if (live == null || !stillValid(who)) return false;
         var device = live.device;
         if (!(device.getLevel() instanceof net.minecraft.server.level.ServerLevel level))

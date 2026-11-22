@@ -1,17 +1,17 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.gui.DeviceAccessMenu;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 /** Server-authoritative machine contents and synchronized panel controls. */
-final class WorldMenu extends AbstractContainerMenu {
+final class WorldMenu extends DeviceAccessMenu {
     final WorldMachineBlock.Kind kind;
     final WorldLayout layout;
     final SimpleContainerData data = new SimpleContainerData(8);
@@ -29,7 +29,7 @@ final class WorldMenu extends AbstractContainerMenu {
             Inventory player,
             WorldMachineBlock.Kind kind,
             WorldInventory inventory) {
-        super(type, id);
+        super(type, id, player, inventory == null ? null : inventory.owner());
         this.kind = kind;
         live = inventory;
         layout = WorldLayout.of(kind);
@@ -66,6 +66,7 @@ final class WorldMenu extends AbstractContainerMenu {
         for (int col = 0; col < 9; col++)
             addSlot(new Slot(player, col, 8 + col * 18, layout.hotbarY));
         addDataSlots(data);
+        addAccessData();
         measure();
     }
 
@@ -97,7 +98,7 @@ final class WorldMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player player, int id) {
+    protected boolean clickDeviceButton(Player player, int id) {
         if (!stillValid(player)) return false;
         // Forge 1.19.2 reads container button IDs from a signed byte on the wire.
         if (kind == WorldMachineBlock.Kind.CHUNK_LOADER && id >= Byte.MIN_VALUE && id < 0) {

@@ -1,5 +1,6 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.gui.DeviceAccessMenu;
 import com.industrialage.ia2.world.WorldCrafting;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,12 +9,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 /** The drawn storage grid and the server share the same persistent inventory indices. */
-final class BoxMenu extends AbstractContainerMenu {
+final class BoxMenu extends DeviceAccessMenu {
     final BoxKind kind;
     final BoxNode node;
     final Container inventory;
@@ -22,7 +22,7 @@ final class BoxMenu extends AbstractContainerMenu {
     private final SimpleContainer results = new SimpleContainer(3);
 
     BoxMenu(int id, Inventory player, BoxKind kind, BoxNode node, int start) {
-        super(BoxMenus.type(kind), id);
+        super(BoxMenus.type(kind), id, player, node);
         this.kind = kind;
         this.node = node;
         inventory = node == null ? new SimpleContainer(kind.slots) : node.items;
@@ -98,6 +98,7 @@ final class BoxMenu extends AbstractContainerMenu {
         for (int i = 0; i < 9; i++)
             addSlot(new Slot(player, i, inventoryX + 18 * i, inventoryY + 58));
         refresh();
+        addAccessData();
     }
 
     private static boolean sameResult(ItemStack a, ItemStack b) {
@@ -197,7 +198,7 @@ final class BoxMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player who, int action) {
+    protected boolean clickDeviceButton(Player who, int action) {
         if (kind != BoxKind.INDUSTRIAL_WORKBENCH || action != 0 || node == null || !stillValid(who))
             return false;
         for (int i = 0; i < 9; i++) {
