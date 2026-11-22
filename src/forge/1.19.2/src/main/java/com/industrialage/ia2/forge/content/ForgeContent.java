@@ -2,6 +2,7 @@ package com.industrialage.ia2.forge.content;
 
 import com.industrialage.ia2.content.IndustrialMaterials;
 import com.industrialage.ia2.forge.client.ForgeClient;
+import com.industrialage.ia2.logistics.TransportNode.Nozzle;
 import com.industrialage.ia2.platform.ConfigFacade;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -155,6 +156,10 @@ public final class ForgeContent {
                     "coal_dust",
                     "iron_dust"
                 }) {
+            item(path, () -> new Item(itemProperties(path)));
+        }
+        for (var nozzle : List.of(Nozzle.EXTRACTION, Nozzle.INJECTION)) {
+            String path = nozzle.path();
             item(path, () -> new Item(itemProperties(path)));
         }
         for (String path : IndustrialMaterials.ADDITIONAL) {
