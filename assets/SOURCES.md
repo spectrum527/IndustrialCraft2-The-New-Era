@@ -1326,6 +1326,7 @@
 | `assets/ic2/textures/gui/guiweightedfluiddistributor.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/guiweighteditemdistributor.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/guiwindkineticgenerator.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
+| `assets/ic2/textures/gui/icons/side_access_gear.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制 16×16 六面权限齿轮图标 | 2026-11-22 |
 | `assets/ic2/textures/gui/infobutton.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/overlay/blast_furnace.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |
 | `assets/ic2/textures/gui/overlay/canner_arrow.png` | new | 用户提供的 IC2 重绘项目 | CC BY-SA 4.0（项目登记） | 用户回交纹理.zip，同名 PNG | 2026-11-20 |

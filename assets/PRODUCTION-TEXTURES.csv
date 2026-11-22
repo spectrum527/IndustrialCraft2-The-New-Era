@@ -1661,3 +1661,4 @@ assets/ic2/textures/items/cover/pipe_extraction_nozzle.png,134963c0ae8332508901c
 assets/ic2/textures/items/cover/pipe_injection_nozzle.png,aed3be48db43e1f1c7cbc40a720114e79970525f87035df1376b539aaf3bf93a,1.0.6 手工绘制 16×16 注入嘴图标
 assets/ic2/textures/blocks/transport/bronze/nozzle.png,16b75f1be745ccc7b4c30ebf7ca4f18e783f99a41ec1d1e9b82fee2ead500762,1.0.6 手工绘制青铜管嘴 UV，参照项目作者青铜管配色
 assets/ic2/textures/blocks/transport/steel/nozzle.png,f87bf2a414db843a1ee829b13b293fc75d0c00b13b9f590c26171da2e374cf19,1.0.6 手工绘制钢管嘴 UV，参照项目作者钢管配色
+assets/ic2/textures/gui/icons/side_access_gear.png,c740f0cb09fd476bea76fc00c04e26011498431c238f117d87432956c9af157c,1.0.6 手工绘制 16×16 六面权限齿轮图标

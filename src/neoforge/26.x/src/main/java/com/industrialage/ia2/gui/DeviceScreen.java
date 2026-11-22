@@ -63,12 +63,17 @@ public abstract class DeviceScreen<M extends AbstractContainerMenu>
         if (access == null) return;
         moveAccess();
         graphics.nextStratum();
-        access.draw(PanelGraphics.at(graphics, font, 0, 0));
+        var entry = access.entry();
+        boolean entryHovered = !modal && entry.isMouseOver(x, y);
+        boolean entryFocused = !modal && getFocused() == entry;
+        access.draw(PanelGraphics.at(graphics, font, 0, 0), entryHovered, entryFocused);
         for (var button : access.buttons()) {
             button.extractRenderState(graphics, x, y, tick);
         }
-        if (!modal && access.entry().isMouseOver(x, y)) {
-            graphics.setTooltipForNextFrame(font, AccessPanel.title(), x, y);
+        if (entryHovered || entryFocused) {
+            int tooltipX = entryHovered ? x : entry.getX() + entry.getWidth() / 2;
+            int tooltipY = entryHovered ? y : entry.getY() + entry.getHeight();
+            graphics.setTooltipForNextFrame(font, entry.getMessage(), tooltipX, tooltipY);
         }
     }
 

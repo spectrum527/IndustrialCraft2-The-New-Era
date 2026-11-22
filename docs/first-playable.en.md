@@ -191,7 +191,7 @@ Basic electric machines have four upgrade slots along the right edge of their GU
 
 ## Logistics, pipes, sorting, and storage
 
-Open a machine and click the side access button outside the original panel. Each of the six faces shows both its machine-relative name and its world direction. Set the product side to output only and the ingredient side to input only. Blocking a side disconnects item and fluid pipes. Power cables, manual inventory use, and fluid transfer with a held bucket or cell follow their original rules. Existing machines start with full access on every side.
+Open a machine and click the gear icon outside the panel to open Side access. Each of the six faces shows both its machine-relative name and its world direction. Set the product side to output only and the ingredient side to input only. Blocking a side disconnects item and fluid pipes. Power cables, manual inventory use, and fluid transfer with a held bucket or cell follow their original rules. Existing machines start with full access on every side.
 
 Hoppers, pipes and machine upgrades route ingredients to matching input slots and charged batteries to compatible power slots. A hopper under a Macerator collects Coal Dust while the coal, supply battery and upgrades stay in the machine. A battery that has finished charging and a spent reactor fuel rod can both be collected directly from their working slots.
 

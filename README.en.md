@@ -19,7 +19,7 @@
 
 Gameplay starts with your first machine and a coal-fired generator. To get rubber, look for rubber trees, a distinct tree added by the mod. See the player guide linked here, or check MC百科 (linked in the credits below) for more guidance. [Player guide and wiring examples](docs/first-playable.en.md)
 
-Fit an extraction or injection nozzle to any item or fluid pipe. Use the button beside a machine GUI to configure automation on each face. Hoppers and pipes can supply ingredients and compatible batteries, then collect finished items from output or working slots. [Pipe nozzles and machine access](spec/logistics/nozzles-and-side-access.md)
+Fit an extraction or injection nozzle to any item or fluid pipe. Use the gear button beside a machine GUI to configure automation on each face. Hoppers and pipes can supply ingredients and compatible batteries, then collect finished items from output or working slots. [Pipe nozzles and machine access](spec/logistics/nozzles-and-side-access.md)
 
 The One Probe and Curios are optional. The One Probe shows the energy held in a machine and the contents of its tanks. Curios adds a back slot so you can wear a battery pack or electric jetpack on your back and charge it by standing on a charge pad of the matching tier. [Integration behavior and tests](spec/platform/optional-integrations.md)
 
