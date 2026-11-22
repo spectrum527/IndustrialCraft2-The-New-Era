@@ -19,7 +19,7 @@ Start with a rubber tree, a coal-fired generator and a length of copper cable. B
 
 For a first survival build, collect resin with a treetap and insulate your copper cable with rubber. Connect a generator to a macerator, feed it ore, and collect the output with a hopper or item pipe. [Player guide and wiring examples](https://github.com/spectrum527/IndustrialCraft2-The-New-Era/blob/v1.0.6/docs/first-playable.en.md)
 
-Fit an extraction or injection nozzle to any item or fluid pipe. Use the button beside a machine GUI to configure automation on each face. Hoppers and pipes can supply ingredients and compatible batteries, then collect finished items from output or working slots. [Pipe nozzles and machine access](spec/logistics/nozzles-and-side-access.md)
+Fit an extraction or injection nozzle to any item or fluid pipe. Use the gear button beside a machine GUI to configure automation on each face. Hoppers and pipes can supply ingredients and compatible batteries, then collect finished items from output or working slots. [Pipe nozzles and machine access](spec/logistics/nozzles-and-side-access.md)
 
 The One Probe and Curios are optional. The One Probe shows the energy held in a machine and the contents of its tanks. With Curios installed, a battery pack or electric jetpack worn in the back slot can charge directly from a pad of the appropriate tier. [Integration behavior and tests](spec/platform/optional-integrations.md)
 

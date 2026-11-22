@@ -1202,7 +1202,7 @@
   "advancements.ic2.industry.tools.diamond_drill.description": "Obtain a Diamond Drill.",
   "advancements.ic2.industry.tools.iridium_drill.title": "Iridium Tipped",
   "advancements.ic2.industry.tools.iridium_drill.description": "Obtain an Iridium Drill.",
-  "gui.ic2.access.button": "I/O",
+  "gui.ic2.access.button": "Side access",
   "gui.ic2.access.title": "Automation Access",
   "gui.ic2.access.automation": "Items and fluids · relative to the machine",
   "gui.ic2.access.readonly": "Settings are read-only",

@@ -13,6 +13,8 @@ import org.lwjgl.glfw.GLFW;
 final class AccessPanel {
     static final int ENTRY_WIDTH = 26;
     static final int ENTRY_GUTTER = ENTRY_WIDTH + 8;
+    private static final int ENTRY_HEIGHT = 20;
+    private static final int GEAR_SIZE = 16;
     private static final int ROW_HEIGHT = 22;
     private static final int FIRST_ROW = 38;
     private static final int TEXT = 0xff263340;
@@ -30,6 +32,8 @@ final class AccessPanel {
     private int rows;
     private int screenWidth;
     private int screenHeight;
+    private int entryLeft;
+    private int entryTop;
     private int left;
     private int top;
     private int width;
@@ -39,7 +43,9 @@ final class AccessPanel {
     AccessPanel(DeviceAccessMenu menu, IntConsumer publish) {
         this.menu = menu;
         this.publish = publish;
-        entry = DeviceScreen.accessWidget(0, 0, ENTRY_WIDTH, 20, message("button"), this::open);
+        entry =
+                new PanelButton(
+                        0, 0, ENTRY_WIDTH, ENTRY_HEIGHT, message("button"), button -> open());
     }
 
     private static Component message(String path) {
@@ -59,11 +65,14 @@ final class AccessPanel {
     }
 
     void move(int screenWidth, int screenHeight, int panelRight, int panelTop, int panelHeight) {
-        DeviceScreen.moveAccessWidget(
-                entry,
-                panelRight + 4,
+        entryLeft = panelRight + 4;
+        entryTop =
                 Math.max(
-                        2, Math.min(screenHeight - 22, panelTop + Math.min(26, panelHeight - 20))));
+                        2,
+                        Math.min(
+                                screenHeight - 22,
+                                panelTop + Math.min(26, panelHeight - ENTRY_HEIGHT)));
+        DeviceScreen.moveAccessWidget(entry, entryLeft, entryTop);
         if (this.screenWidth != screenWidth || this.screenHeight != screenHeight) {
             this.screenWidth = screenWidth;
             this.screenHeight = screenHeight;
@@ -168,8 +177,11 @@ final class AccessPanel {
         return null;
     }
 
-    void draw(PanelCanvas canvas) {
-        if (!open) return;
+    void draw(PanelCanvas canvas, boolean entryHovered, boolean entryFocused) {
+        if (!open) {
+            drawGear(canvas, entryHovered, entryFocused);
+            return;
+        }
         canvas.fill(0, 0, screenWidth, screenHeight, 0x800a111b);
         canvas.frame(left, top, width, height);
         canvas.fittedText(title(), left + width / 2, top + 8, width - 18, TEXT);
@@ -208,6 +220,25 @@ final class AccessPanel {
                     TEXT,
                     true);
         }
+    }
+
+    private void drawGear(PanelCanvas canvas, boolean hovered, boolean focused) {
+        int right = entryLeft + ENTRY_WIDTH;
+        int bottom = entryTop + ENTRY_HEIGHT;
+        int border = focused ? 0xfff3d888 : hovered ? 0xffeef4f4 : 0xff9ca9ad;
+        canvas.fill(entryLeft, entryTop, right, bottom, 0xff27313a);
+        canvas.fill(entryLeft + 1, entryTop + 1, right - 1, bottom - 1, border);
+        canvas.fill(entryLeft + 2, entryTop + 2, right - 2, bottom - 2, 0xff46565d);
+        canvas.blit(
+                "icons/side_access_gear",
+                entryLeft + (ENTRY_WIDTH - GEAR_SIZE) / 2,
+                entryTop + (ENTRY_HEIGHT - GEAR_SIZE) / 2,
+                0,
+                0,
+                GEAR_SIZE,
+                GEAR_SIZE,
+                GEAR_SIZE,
+                GEAR_SIZE);
     }
 
     boolean key(int key, boolean reverse, java.util.function.Consumer<Button> activate) {
