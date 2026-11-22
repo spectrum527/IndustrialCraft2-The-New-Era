@@ -102,6 +102,14 @@ public final class PowerPlatform {
         return com.industrialage.ia2.gameplay.PortableGear.discharge(stack, room, capacity, tier);
     }
 
+    static double storedEnergy(ItemStack stack) {
+        return com.industrialage.ia2.gameplay.PortableGear.stored(stack);
+    }
+
+    static double equipmentCapacity(ItemStack stack) {
+        return com.industrialage.ia2.gameplay.PortableGear.capacity(stack);
+    }
+
     static int powerSlotLimit(ItemStack stack) {
         return com.industrialage.ia2.gameplay.PortableGear.powerSlotLimit(stack);
     }

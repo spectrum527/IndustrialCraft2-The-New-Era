@@ -40,6 +40,8 @@
 | A32 | 1.0.4 单元与电池适配器专项复核（2026-11-21） | 负责人按五份冻结文件的 SHA-256 签核。Forge BatteryItem、CellItem、CellPickup 的原始分数分别为 26.0606%、31.2709%、26.4317%，NeoForge 1.21.1 和 26.x CellItem 为 33.7278%、29.4479%。Forge CellRecipes 的 20.2991% 和全部 import 窗口按 A28 记录。逐文件指纹、三参照数据和复核依据见[1.0.4 专项记录](parity/evidence/originality/cell-families-1.0.4.md)。 |
 | A33 | 1.0.5 工坊与进度适配专项复核（2026-11-22） | 维护者按三份冻结文件的 SHA-256 签核并公开原始分数。Forge MachineBlock 为 26.5809%，共用 BoxBlock 为 30.7229%，共用 IndustrialProgress 为 34.6154%。均无连续八行相同。三个指纹、全文件分数、剔除表头与仅执行体的对照结果见[1.0.5 源码复核](parity/evidence/originality/workshop-1.0.5.md)。 |
 | A34 | 1.0.6 管嘴与设备分面权限专项复核（2026-11-22） | 维护者按清单签核 15 个确切 SHA-256，并要求公开所有数据。全文件原始分数为 25.5319%–33.0784%。NeoForge 1.21.1 的 CellItem 有 4 个原有 import 窗口。共享接口 MachineAccessTarget 的 5 个默认方法共 19 个执行词元，仅执行体分数为 100%。逐项指纹、原始分数和上下文见[1.0.6 源码复核](parity/evidence/originality/pipe-access-1.0.6.md)。 |
+| A35 | 1.0.6 机器物品槽的自动化规则（2026-11-22） | 维护者要求按设备实际用途分槽。物品管、管嘴、原版漏斗及原生接口只向兼容电池位或真正原料位存入物品，只能取出产物。专用充电工作位中已充满的电池、同格已转化的耗尽燃料棒等可识别成品可取出。普通加工机供电电池、原料、未识别的旧存货、模板和升级留给玩家手动处理。分面权限仍与槽位规则同时生效。详见[机器自动化槽位](spec/logistics/nozzles-and-side-access.md#automation-slots)。 |
+| A36 | 1.0.6 机器槽位接口专项复核（2026-11-22） | 维护者按确切文件指纹签核共享接口 `src/minecraft/shared/src/main/java/com/industrialage/ia2/access/ProcessingSlots.java`（SHA-256 `8543682d11b7c84aa4bcb814c1eef80b21f136fdae7f0d4ca690ab4028c318e1`），并要求公开完整分数。原始 5-gram 为 67.7419%，只去 import 后为 57.6923%，去包声明及 import 后为 44.4444%。该接口只声明一个抽象方法，可执行词元为 0，仅执行体为 0.0000%，连续八行命中为 0。A34 的 15 个既有指纹继续分别登记。[两阶段复核](parity/evidence/originality/pipe-access-1.0.6.md) |
 
 ## B. 烂尾内容处置（原清单 #21–#40，后续修复项顺延）
 

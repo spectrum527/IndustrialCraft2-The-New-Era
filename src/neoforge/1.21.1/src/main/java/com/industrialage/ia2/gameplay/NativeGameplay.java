@@ -2,6 +2,7 @@ package com.industrialage.ia2.gameplay;
 
 import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.access.MachinePorts;
+import com.industrialage.ia2.access.ProcessingItemPort;
 import com.industrialage.ia2.platform.NeoForgeVersion;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -162,9 +162,7 @@ public final class NativeGameplay {
                                                 ? MachinePorts.item(
                                                         machine,
                                                         side,
-                                                        new SidedInvWrapper(
-                                                                machine,
-                                                                side == null ? Direction.UP : side))
+                                                        new ProcessingItemPort(machine, side))
                                                 : null));
     }
 

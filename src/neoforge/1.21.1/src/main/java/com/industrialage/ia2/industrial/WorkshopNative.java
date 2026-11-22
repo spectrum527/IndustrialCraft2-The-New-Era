@@ -2,6 +2,7 @@ package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.access.MachinePorts;
+import com.industrialage.ia2.access.ProcessingItemPort;
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import net.minecraft.core.BlockPos;
@@ -31,7 +32,6 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -124,7 +124,7 @@ final class WorkshopNative {
                                             ? MachinePorts.item(
                                                     node,
                                                     side,
-                                                    new SidedInvWrapper(node.inventory, side))
+                                                    new ProcessingItemPort(node.inventory, side))
                                             : null);
                     event.registerBlockEntity(
                             Capabilities.FluidHandler.BLOCK,

@@ -16,6 +16,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -41,9 +42,7 @@ final class WorldFluidAccess {
                                             ? MachinePorts.item(
                                                     machine,
                                                     side,
-                                                    new WorldlyContainerWrapper(
-                                                            machine.inventory,
-                                                            side == null ? Direction.UP : side))
+                                                    itemPort(machine.inventory, side))
                                             : null);
                     event.registerBlockEntity(
                             Capabilities.Fluid.BLOCK,
@@ -54,6 +53,17 @@ final class WorldFluidAccess {
                                             ? MachinePorts.fluid(machine, side, new Port(machine))
                                             : null);
                 });
+    }
+
+    private static WorldlyContainerWrapper itemPort(WorldInventory inventory, Direction side) {
+        Direction face = side == null ? Direction.UP : side;
+        return new WorldlyContainerWrapper(inventory, face) {
+            @Override
+            public boolean isValid(int slot, ItemResource item) {
+                return !item.isEmpty()
+                        && inventory.canPlaceItemThroughFace(slot, item.toStack(1), face);
+            }
+        };
     }
 
     static boolean refillFoam(

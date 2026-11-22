@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 
 class BuildContractTest {
@@ -73,6 +74,11 @@ class BuildContractTest {
                                 locale.contains(
                                         "\"itemGroup.ic2\": \"IndustrialCraft²: The New Era\""),
                                 platform.target() + ": " + language);
+                        String accessName = language.equals("zh_cn") ? "六面权限" : "Side access";
+                        assertTrue(
+                                locale.contains(
+                                        "\"gui.ic2.access.button\": \"" + accessName + "\""),
+                                language);
                     }
                 }
                 var notice = jar.getJarEntry("NOTICE.md");
@@ -82,6 +88,26 @@ class BuildContractTest {
                             Files.readAllBytes(Path.of(requiredProperty("ic2.notice"))),
                             stream.readAllBytes(),
                             platform.target());
+                }
+            }
+        }
+    }
+
+    @Test
+    void sideAccessGearHasATransparentOutlineAndCenter() throws IOException {
+        for (var platform : platformJars()) {
+            try (var jar = new JarFile(platform.path().toFile())) {
+                var entry = jar.getJarEntry("assets/ic2/textures/gui/icons/side_access_gear.png");
+                assertNotNull(entry);
+                try (var stream = jar.getInputStream(entry)) {
+                    var icon = ImageIO.read(stream);
+                    assertNotNull(icon);
+                    assertEquals(16, icon.getWidth());
+                    assertEquals(16, icon.getHeight());
+                    assertTrue(icon.getColorModel().hasAlpha());
+                    assertEquals(0, icon.getRGB(0, 0) >>> 24, "transparent margin");
+                    assertEquals(0, icon.getRGB(8, 8) >>> 24, "open center");
+                    assertTrue((icon.getRGB(8, 2) >>> 24) > 0, "visible upper tooth");
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.access.MachinePorts;
+import com.industrialage.ia2.access.ProcessingItemPort;
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import net.minecraft.core.BlockPos;
@@ -37,7 +38,6 @@ import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
-import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
@@ -125,8 +125,7 @@ final class WorkshopNative {
                                             ? MachinePorts.item(
                                                     node,
                                                     side,
-                                                    new WorldlyContainerWrapper(
-                                                            node.inventory, side))
+                                                    new ProcessingItemPort(node.inventory, side))
                                             : null);
                     event.registerBlockEntity(
                             Capabilities.Fluid.BLOCK,
@@ -260,13 +259,13 @@ final class WorkshopNative {
         var access = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(scratch), 0);
         var handler = access.getCapability(Capabilities.Fluid.ITEM);
         if (handler == null) return null;
-        int accepted;
-        try (var transaction = Transaction.openRoot()) {
-            accepted = handler.insert(FluidResource.of(current), current.getAmount(), transaction);
+        // A capability may ask for this probe while its own transaction is already open.
+        try (var transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
+            int accepted =
+                    handler.insert(FluidResource.of(current), current.getAmount(), transaction);
             if (accepted <= 0) return null;
-            transaction.commit();
+            return new ContainerResult(scratch.getItem(0).copy(), new Liquid(tank.id, accepted));
         }
-        return new ContainerResult(scratch.getItem(0).copy(), new Liquid(tank.id, accepted));
     }
 
     static ContainerResult drainWholeContainer(WorkshopNode.Tank tank, ItemStack item) {
@@ -289,12 +288,11 @@ final class WorkshopNative {
                         });
         if (contents.amount() == 0) return null;
         var expected = FluidResource.of(WorkshopPlatform.fluid(contents.id(), contents.amount()));
-        try (var transaction = Transaction.openRoot()) {
+        try (var transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
             if (handler.extract(expected, contents.amount(), transaction) != contents.amount())
                 return null;
-            transaction.commit();
+            return new ContainerResult(scratch.getItem(0).copy(), contents);
         }
-        return new ContainerResult(scratch.getItem(0).copy(), contents);
     }
 
     static boolean interact(

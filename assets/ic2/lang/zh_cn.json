@@ -1202,7 +1202,7 @@
   "advancements.ic2.industry.tools.diamond_drill.description": "取得钻石钻头。",
   "advancements.ic2.industry.tools.iridium_drill.title": "给钻头镶铱",
   "advancements.ic2.industry.tools.iridium_drill.description": "取得铱钻头。",
-  "gui.ic2.access.button": "六面",
+  "gui.ic2.access.button": "六面权限",
   "gui.ic2.access.title": "六面权限",
   "gui.ic2.access.automation": "物品和流体自动化 · 相对设备正面",
   "gui.ic2.access.readonly": "仅可查看设置",

@@ -1,6 +1,7 @@
 package com.industrialage.ia2.gametest;
 
 import com.industrialage.ia2.logisticstest.PipeNozzleChecks;
+import com.industrialage.ia2.slottest.SlotRulesChecks;
 import com.industrialage.ia2.wrenchtest.WrenchHits;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
@@ -71,6 +72,13 @@ final class TransportChecks {
                                             == 0;
                         }
                     });
+    private final SlotRulesChecks slotRules =
+            new SlotRulesChecks(
+                    new BlockPos(3, 151, 3),
+                    NativeGameplayFixture::block,
+                    id -> new ItemStack(NativeGameplayFixture.item(id)),
+                    new SlotRulesHost(),
+                    1);
     private boolean openedOutlet;
     private boolean releasedBackpressure;
     private boolean finishedFluid;
@@ -81,6 +89,7 @@ final class TransportChecks {
         level.setChunkForced(0, 0, true);
         level.getChunk(0, 0);
         nozzles.place(level, player, check);
+        slotRules.place(level, player, check);
         NativeGameplayFixture.place(level, player, "steel_item_pipe_small", ITEM_PIPE);
         rotate(level, ITEM_PIPE, Direction.EAST);
         NativeGameplayFixture.place(level, player, "bronze_fluid_pipe_medium", FLUID_PIPE);
@@ -146,7 +155,7 @@ final class TransportChecks {
     }
 
     boolean writeTick(ServerLevel level, BiConsumer<String, Boolean> check) {
-        return nozzles.waitForBackpressure(level, check);
+        return nozzles.waitForBackpressure(level, check) && slotRules.tick(level, check);
     }
 
     void readStart(ServerLevel level, BiConsumer<String, Boolean> check) {
