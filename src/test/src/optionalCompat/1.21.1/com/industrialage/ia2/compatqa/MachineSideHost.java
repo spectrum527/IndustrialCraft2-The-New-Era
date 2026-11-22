@@ -23,18 +23,24 @@ final class MachineSideHost {
     }
 
     static MachineSideChecks.Transfer item(ServerLevel level, BlockPos pos, Direction face) {
+        return item(level, pos, face, new ItemStack(Items.COBBLESTONE));
+    }
+
+    static MachineSideChecks.Transfer item(
+            ServerLevel level, BlockPos pos, Direction face, ItemStack pattern) {
         var port = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, face);
         if (port == null) return null;
         return new MachineSideChecks.Transfer() {
             public int insert(int amount, boolean simulate) {
+                var offered = pattern.copy();
+                offered.setCount(amount);
                 return amount
-                        - ItemHandlerHelper.insertItemStacked(
-                                        port, new ItemStack(Items.COBBLESTONE, amount), simulate)
-                                .getCount();
+                        - ItemHandlerHelper.insertItemStacked(port, offered, simulate).getCount();
             }
 
             public int extract(int amount, boolean simulate) {
                 for (int slot = 0; slot < port.getSlots(); slot++) {
+                    if (!port.getStackInSlot(slot).is(pattern.getItem())) continue;
                     var stack = port.extractItem(slot, amount, simulate);
                     if (!stack.isEmpty()) return stack.getCount();
                 }

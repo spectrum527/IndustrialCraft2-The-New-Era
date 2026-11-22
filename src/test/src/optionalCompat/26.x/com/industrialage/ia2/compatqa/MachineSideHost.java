@@ -25,9 +25,13 @@ final class MachineSideHost {
     }
 
     static MachineSideChecks.Transfer item(ServerLevel level, BlockPos pos, Direction face) {
+        return item(level, pos, face, new ItemStack(Items.COBBLESTONE));
+    }
+
+    static MachineSideChecks.Transfer item(
+            ServerLevel level, BlockPos pos, Direction face, ItemStack pattern) {
         return view(
-                level.getCapability(Capabilities.Item.BLOCK, pos, face),
-                ItemResource.of(new ItemStack(Items.COBBLESTONE)));
+                level.getCapability(Capabilities.Item.BLOCK, pos, face), ItemResource.of(pattern));
     }
 
     static MachineSideChecks.Transfer fluid(ServerLevel level, BlockPos pos, Direction face) {
