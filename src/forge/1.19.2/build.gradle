@@ -59,7 +59,12 @@ minecraft {
         }
     }
 }
-dependencies { minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}" }
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+}
+tasks.named('test', Test) { useJUnitPlatform() }
 apply from: rootProject.file('gradle/optional-mods.gradle')
 
 tasks.named('processQaResources') {

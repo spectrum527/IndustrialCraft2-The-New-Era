@@ -193,4 +193,118 @@ class BuildContractTest {
                 entries.isEmpty(), "No compiled JUnit classes were available for isolation checks");
         return entries;
     }
+
+    @Test
+    void packagedForgeJarContainsCutoutPipesBiogasTagsAndCompatPlugins() throws Exception {
+        for (String path : System.getProperty("ia2.jars").split(File.pathSeparator)) {
+            try (var jar = new JarFile(path)) {
+                for (String cls :
+                        Set.of(
+                                "com/industrialage/ia2/logistics/ItemPipeRouter.class",
+                                "com/industrialage/ia2/compat/ProbeNbt.class",
+                                "com/industrialage/ia2/compat/Ic2ProbeData.class",
+                                "com/industrialage/ia2/compat/Ic2RecipeCatalog.class",
+                                "com/industrialage/ia2/compat/Ic2JadePlugin.class",
+                                "com/industrialage/ia2/compat/Ic2WthitCommonPlugin.class",
+                                "com/industrialage/ia2/compat/Ic2WthitClientPlugin.class",
+                                "com/industrialage/ia2/compat/Ic2JeiPlugin.class",
+                                "com/industrialage/ia2/compat/Ic2EmiPlugin.class")) {
+                    assertNotNull(jar.getJarEntry(cls), "Missing class in JAR: " + cls);
+                }
+
+                var wthit = jar.getJarEntry("wthit_plugins.json");
+                assertNotNull(wthit, "Missing wthit_plugins.json");
+                try (var stream = jar.getInputStream(wthit)) {
+                    var text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                    assertTrue(text.contains("Ic2WthitCommonPlugin"));
+                    assertTrue(text.contains("Ic2WthitClientPlugin"));
+                }
+
+                for (String material : new String[] {"bronze", "steel"}) {
+                    for (String tex :
+                            new String[] {
+                                "fluid_pipe_arm.png",
+                                "fluid_pipe_core.png",
+                                "fluid_pipe_end.png",
+                                "item_pipe_arm.png",
+                                "item_pipe_core.png",
+                                "item_pipe_end.png",
+                                "item_pipe_outlet.png"
+                            }) {
+                        String entryPath =
+                                "assets/ic2/textures/blocks/transport/" + material + "/" + tex;
+                        var entry = jar.getJarEntry(entryPath);
+                        assertNotNull(entry, "Missing pipe texture: " + entryPath);
+                        try (var stream = jar.getInputStream(entry)) {
+                            var img = ImageIO.read(stream);
+                            assertNotNull(img, entryPath);
+                            assertTrue(
+                                    img.getColorModel().hasAlpha(),
+                                    "Pipe texture must support cutout alpha: " + entryPath);
+                        }
+                    }
+                }
+
+                var armModel =
+                        jar.getJarEntry(
+                                "assets/ic2/models/block/transport/bronze_item_small_north.json");
+                assertNotNull(armModel);
+                try (var stream = jar.getInputStream(armModel)) {
+                    var json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                    assertTrue(json.contains("\"render_type\": \"minecraft:cutout\""));
+                    assertFalse(
+                            json.contains("\"south\""),
+                            "North pipe arm must cull its inner south face");
+                }
+
+                var coreModel =
+                        jar.getJarEntry(
+                                "assets/ic2/models/block/transport/bronze_item_small_core_north.json");
+                assertNotNull(coreModel);
+                try (var stream = jar.getInputStream(coreModel)) {
+                    var json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                    assertTrue(json.contains("\"render_type\": \"minecraft:cutout\""));
+                }
+
+                assertNotNull(jar.getJarEntry("assets/ic2/models/item/biogas_cell.json"));
+                assertNotNull(jar.getJarEntry("assets/ic2/textures/items/cell/biogas_cell.png"));
+                assertNotNull(jar.getJarEntry("data/ic2/recipes/cells/fill_biogas.json"));
+                assertNotNull(jar.getJarEntry("data/ic2/recipes/cells/recover_biogas_cell.json"));
+                assertEquals(null, jar.getJarEntry("assets/ic2/models/item/copper_ingot.json"));
+                assertEquals(null, jar.getJarEntry("data/ic2/recipes/classic/copper_ingot.json"));
+
+                for (String lang : new String[] {"en_us", "zh_cn"}) {
+                    var entry = jar.getJarEntry("assets/ic2/lang/" + lang + ".json");
+                    assertNotNull(entry);
+                    try (var stream = jar.getInputStream(entry)) {
+                        var text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                        assertTrue(text.contains("\"item.ic2.biogas_cell\""), lang);
+                        assertFalse(text.contains("\"item.ic2.copper_ingot\""), lang);
+                        assertTrue(text.contains("\"tooltip.ic2.rotor.durability\""), lang);
+                        assertTrue(text.contains("\"jei.ic2.category.macerator\""), lang);
+                        assertTrue(text.contains("\"emi.category.ic2.macerator\""), lang);
+                        assertTrue(text.contains("\"config.jade.plugin_ic2.device\""), lang);
+                        assertTrue(text.contains("\"config.waila.plugin_ic2\""), lang);
+                    }
+                }
+
+                for (String tag :
+                        Set.of(
+                                "data/forge/tags/items/ingots/tin.json",
+                                "data/forge/tags/items/dusts/copper.json",
+                                "data/forge/tags/items/plates/bronze.json",
+                                "data/forge/tags/items/raw_ores/tin.json",
+                                "data/forge/tags/items/raw_materials/tin.json",
+                                "data/forge/tags/blocks/ores/tin.json",
+                                "data/forge/tags/blocks/storage_blocks/steel.json",
+                                "data/forge/tags/blocks/blocks/steel.json",
+                                "data/forge/tags/fluids/steam.json",
+                                "data/forge/tags/fluids/biogas.json",
+                                "data/c/tags/fluids/steam.json",
+                                "data/c/tags/fluids/biogas.json")) {
+                    assertNotNull(jar.getJarEntry(tag), "Missing common tag in JAR: " + tag);
+                }
+            }
+        }
+    }
 }

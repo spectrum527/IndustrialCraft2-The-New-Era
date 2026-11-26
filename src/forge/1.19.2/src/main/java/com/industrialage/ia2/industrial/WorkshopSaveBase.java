@@ -85,6 +85,7 @@ abstract class WorkshopSaveBase extends BlockEntity {
         tag.putInt("ic2_work_duration", node.cycleDuration);
         tag.putInt("ic2_mode", node.mode);
         tag.putInt("ic2_cycle_count", node.cycles);
+        tag.putInt("ic2_rotor_wear_ticks", node.rotorWearTicks);
         tag.putInt("ic2_fractional_matter", node.fractionalMatter);
         tag.putInt("ic2_amplifier", node.amplifier);
         tag.putString("ic2_recipe", node.lastRecipe);
@@ -126,6 +127,7 @@ abstract class WorkshopSaveBase extends BlockEntity {
         node.progress = Math.max(0, tag.getInt("ic2_progress"));
         node.mode = Math.floorMod(tag.getInt("ic2_mode"), node.kind.modes());
         node.cycles = Math.max(0, tag.getInt("ic2_cycle_count"));
+        node.rotorWearTicks = Math.floorMod(Math.max(0, tag.getInt("ic2_rotor_wear_ticks")), 20);
         node.amplifier = Math.max(0, tag.getInt("ic2_amplifier"));
         node.fractionalMatter = Math.max(0, tag.getInt("ic2_fractional_matter"));
         node.cycleDuration = Math.max(0, tag.getInt("ic2_work_duration"));

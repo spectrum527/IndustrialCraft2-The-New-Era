@@ -349,6 +349,121 @@ public final class LogisticsGameTests {
         helper.succeed();
     }
 
+    /**
+     * Verifies multi-segment BFS item pipe routing, extraction nozzle OUT flip, and sink isolation.
+     */
+    @GameTest(template = "smoke", timeoutTicks = 40)
+    public static void itemPipeBfsRoutingAndExtractionNozzleFlip(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var origin = helper.absolutePos(new BlockPos(1, 2, 1));
+        var player = player(helper, origin);
+        var sourcePos = origin;
+        var pipe1 = origin.east();
+        var pipe2 = origin.east(2);
+        var pipe3 = origin.east(3);
+        var destPos = origin.east(4);
+        var isolatedPos = pipe2.north();
+
+        level.setBlockAndUpdate(sourcePos, Blocks.CHEST.defaultBlockState());
+        level.setBlockAndUpdate(destPos, Blocks.CHEST.defaultBlockState());
+        level.setBlockAndUpdate(isolatedPos, Blocks.CHEST.defaultBlockState());
+        var pipeBlock =
+                ForgeRegistries.BLOCKS.getValue(
+                        ResourceLocation.fromNamespaceAndPath("ic2", "bronze_item_pipe_small"));
+        level.setBlockAndUpdate(
+                pipe1,
+                pipeBlock
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.FACING, Direction.WEST));
+        level.setBlockAndUpdate(
+                pipe2,
+                pipeBlock
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.FACING, Direction.SOUTH));
+        level.setBlockAndUpdate(
+                pipe3,
+                pipeBlock
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.FACING, Direction.EAST));
+
+        interact(helper, player, pipe1, Direction.WEST, stack("pipe_extraction_nozzle"));
+        check(
+                helper,
+                level.getBlockState(pipe1).getValue(BlockStateProperties.FACING) == Direction.EAST,
+                "Installing an extraction nozzle onto OUT auto-flipped OUT toward the linked pipe");
+
+        var sourceChest =
+                (net.minecraft.world.level.block.entity.ChestBlockEntity)
+                        level.getBlockEntity(sourcePos);
+        sourceChest.setItem(0, new ItemStack(Items.IRON_INGOT, 8));
+
+        helper.onEachTick(
+                () -> {
+                    var destChest =
+                            (net.minecraft.world.level.block.entity.ChestBlockEntity)
+                                    level.getBlockEntity(destPos);
+                    var sideChest =
+                            (net.minecraft.world.level.block.entity.ChestBlockEntity)
+                                    level.getBlockEntity(isolatedPos);
+                    if (!sideChest.getItem(0).isEmpty()) {
+                        helper.fail("Non-OUT adjacent chest received leaked items");
+                    }
+                    if (destChest.getItem(0).getCount() == 8 && sourceChest.getItem(0).isEmpty()) {
+                        helper.succeed();
+                    }
+                });
+    }
+
+    /**
+     * Verifies native rotor durability, biogas_cell, copper_ingot removal, and c:/forge: tag
+     * matching.
+     */
+    @GameTest(template = "smoke", timeoutTicks = 20)
+    public static void rotorDurabilityBiogasCopperAndDynamicTags(GameTestHelper helper) {
+        check(helper, stack("wooden_rotor").getMaxDamage() == 10_800, "wooden_rotor durability");
+        check(helper, stack("bronze_rotor").getMaxDamage() == 86_400, "bronze_rotor durability");
+        check(helper, stack("iron_rotor").getMaxDamage() == 86_400, "iron_rotor durability");
+        check(helper, stack("steel_rotor").getMaxDamage() == 172_800, "steel_rotor durability");
+        check(helper, stack("carbon_rotor").getMaxDamage() == 604_800, "carbon_rotor durability");
+        check(helper, stack("steam_turbine").getMaxDamage() == 0, "steam_turbine has no wear");
+
+        check(
+                helper,
+                ForgeRegistries.ITEMS.containsKey(
+                        ResourceLocation.fromNamespaceAndPath("ic2", "biogas_cell")),
+                "ic2:biogas_cell is registered");
+        check(
+                helper,
+                !ForgeRegistries.ITEMS.containsKey(
+                        ResourceLocation.fromNamespaceAndPath("ic2", "copper_ingot")),
+                "ic2:copper_ingot is removed");
+
+        var tin = stack("tin_ingot");
+        var rawTin = stack("raw_tin");
+        var steelBlock = stack("steel_block");
+        check(
+                helper,
+                com.industrialage.ia2.industrial.WorkshopPlatform.tagged(tin, "forge:ingots/tin")
+                        && com.industrialage.ia2.industrial.WorkshopPlatform.tagged(
+                                tin, "c:ingots/tin"),
+                "tin_ingot matches both forge: and c: ingot tags");
+        check(
+                helper,
+                com.industrialage.ia2.industrial.WorkshopPlatform.tagged(
+                                rawTin, "forge:raw_materials/tin")
+                        && com.industrialage.ia2.industrial.WorkshopPlatform.tagged(
+                                rawTin, "c:raw_ores/tin"),
+                "raw_tin matches both raw_materials and raw_ores aliases");
+        check(
+                helper,
+                com.industrialage.ia2.industrial.WorkshopPlatform.tagged(
+                                steelBlock, "forge:storage_blocks/steel")
+                        && com.industrialage.ia2.industrial.WorkshopPlatform.tagged(
+                                steelBlock, "c:blocks/steel"),
+                "steel_block matches both storage_blocks and blocks aliases");
+        helper.succeed();
+    }
+
     private static int water(IFluidHandler port) {
         var stack = port.getFluidInTank(0);
         return stack.getFluid() == Fluids.WATER ? stack.getAmount() : 0;

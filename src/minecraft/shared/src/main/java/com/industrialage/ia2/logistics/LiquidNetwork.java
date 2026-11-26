@@ -72,6 +72,7 @@ final class LiquidNetwork {
             ports.put(node, new Ports(links, ends));
         }
         for (FluidKey key : kinds) route(world, nodes, ports, key, tick);
+        for (var node : nodes) node.syncFluidVisualIfNeeded();
     }
 
     private static int pump(
@@ -87,10 +88,14 @@ final class LiquidNetwork {
             FluidKey key = tank.liquid;
             if (key == null) return 0;
             int amount = node.fill(null, key, room, true);
-            return node.fill(null, key, tank.drain(face, key, amount, false), false);
+            int drawn = node.fill(null, key, tank.drain(face, key, amount, false), false);
+            if (drawn > 0) node.noteFluidFlow(face);
+            return drawn;
         }
         var liquid = TransportPlatform.takeFluid(world, pos, face, node.liquid, room);
-        return liquid == null ? 0 : node.fill(null, liquid.key(), liquid.amount(), false);
+        int drawn = liquid == null ? 0 : node.fill(null, liquid.key(), liquid.amount(), false);
+        if (drawn > 0) node.noteFluidFlow(face);
+        return drawn;
     }
 
     record Batch(FluidKey key, int amount) {}
@@ -142,7 +147,9 @@ final class LiquidNetwork {
             if (ownDistance == 0) {
                 for (int i = 0; i < edges.ends.size() && budget > 0; i++) {
                     int index = Math.floorMod(tick + i, edges.ends.size());
-                    int sent = deliver(world, edges.ends.get(index), key, budget, false);
+                    var end = edges.ends.get(index);
+                    int sent = deliver(world, end, key, budget, false);
+                    if (sent > 0) pipe.noteFluidFlow(end.side.getOpposite());
                     budget -= sent;
                     pipe.debit(sent);
                 }
@@ -168,6 +175,10 @@ final class LiquidNetwork {
                     continue;
                 }
                 int sent = link.pipe.fill(link.side.getOpposite(), key, amount, false);
+                if (sent > 0) {
+                    pipe.noteFluidFlow(link.side);
+                    link.pipe.noteFluidFlow(link.side);
+                }
                 budget -= sent;
                 pipe.debit(sent);
             }

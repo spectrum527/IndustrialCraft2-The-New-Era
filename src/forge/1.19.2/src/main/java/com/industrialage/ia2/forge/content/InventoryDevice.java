@@ -10,7 +10,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 
-abstract class InventoryDevice extends BlockEntity implements ForgeDevice, ForgePower.Endpoint {
+/** Base block entity for Forge 1.19.2 industrial machines with EU and item automation ports. */
+public abstract class InventoryDevice extends BlockEntity
+        implements ForgeDevice, ForgePower.Endpoint {
     private final MachineInventory inventory;
 
     InventoryDevice(BlockEntityType<?> type, BlockPos pos, BlockState state, MachineKind kind) {

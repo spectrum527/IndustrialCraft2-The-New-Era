@@ -1247,6 +1247,26 @@
             <sha256 value="8f0d645f03f5472a823597a1fe8369aedca89b67058f1cfa9786a0a04767afc6" origin="Verified Modrinth release artifact"/>
          </artifact>
       </component>
+      <component group="maven.modrinth" name="emi" version="lvh62wOB">
+         <artifact name="emi-lvh62wOB.jar">
+            <sha256 value="1f3902eae8d9e6a4c719a7c176d9f9deee12ec0487cf8a05a61c2d3ecf32d43d" origin="Verified Modrinth release artifact"/>
+         </artifact>
+      </component>
+      <component group="maven.modrinth" name="jade" version="kp0HjPre">
+         <artifact name="jade-kp0HjPre.jar">
+            <sha256 value="2c06173bae9074b11523ca9366db2b37431a90f6b65ce97a7820dac11aefca81" origin="Verified Modrinth release artifact"/>
+         </artifact>
+      </component>
+      <component group="maven.modrinth" name="jei" version="yr59GtS6">
+         <artifact name="jei-yr59GtS6.jar">
+            <sha256 value="47f911243bffb88da01fd901664deaf0c410acc5455faf758ab72fdfd78d773d" origin="Verified Modrinth release artifact"/>
+         </artifact>
+      </component>
+      <component group="maven.modrinth" name="wthit" version="FuMynGus">
+         <artifact name="wthit-FuMynGus.jar">
+            <sha256 value="e9013738a5ff42537f778056e3d4694d6ba0dc8be52b0fbb32227f7b951a064b" origin="Verified Modrinth release artifact"/>
+         </artifact>
+      </component>
       <component group="maven.modrinth" name="the-one-probe" version="KCnKC3d7">
          <artifact name="the-one-probe-KCnKC3d7.jar">
             <sha256 value="df20e0bb050a4a887c3bf4409e54d11e1f5d1706d401463d5cbcc2797716b4b4" origin="Verified Modrinth release artifact"/>

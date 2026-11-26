@@ -51,7 +51,8 @@ final class WorkshopRecipes {
     }
 
     static boolean knownMember(String tag, String item) {
-        return TAG_MEMBERS.getOrDefault(tag, Set.of()).contains(item);
+        return com.industrialage.ia2.content.ProcessingMachine.matchesTagAlias(
+                tag, candidate -> TAG_MEMBERS.getOrDefault(candidate, Set.of()).contains(item));
     }
 
     private static Map<String, List<Recipe>> recipes() {

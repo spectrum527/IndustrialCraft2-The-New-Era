@@ -148,7 +148,13 @@ final class ProcessingDevice extends InventoryDevice {
                     .map(recipe -> new Work(id, recipe.assemble(single)))
                     .orElse(null);
         }
-        var recipe = ProcessingMachine.recipe(kind.path, id);
+        var recipe =
+                ProcessingMachine.recipe(
+                        kind.path,
+                        id,
+                        tag ->
+                                com.industrialage.ia2.industrial.WorkshopPlatform.tagged(
+                                        input, tag));
         if (recipe == null) {
             return null;
         }

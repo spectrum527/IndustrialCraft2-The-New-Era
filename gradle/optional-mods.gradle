@@ -1,10 +1,10 @@
 // Pin the publishers' Modrinth version IDs. Both APIs are compile-only; no third-party
 // JAR goes into the production runtime classpath or the IC2 distribution.
 def versions = [
-        '1.19.2': [top: 'KCnKC3d7', curios: 'uUAY30IE'],
-        '1.21.1': [top: 'kxB9y8zd', curios: 'KJsZIQrT'],
-        '26.1.2': [top: 'xD8Yvxod', curios: 'dRnRThvD'],
-        '26.2': [top: 'igbuHaA1', curios: 'BI7D0sbK']
+        '1.19.2': [top: 'KCnKC3d7', curios: 'uUAY30IE', jade: 'kp0HjPre', wthit: 'FuMynGus', jei: 'yr59GtS6', emiSlug: 'emi', emi: 'lvh62wOB'],
+        '1.21.1': [top: 'kxB9y8zd', curios: 'KJsZIQrT', jade: 'eYz2YBGT', wthit: 'xmRpwbgr', jei: 'lDv3cHMp', emiSlug: 'emi', emi: '5sIPA1To'],
+        '26.1.2': [top: 'xD8Yvxod', curios: 'dRnRThvD', jade: 'Pr1h4azo', wthit: '86roxNra', jei: 'dptdI3yM', emiSlug: 'TfSvU3a3', emi: 'N2tHzL14'],
+        '26.2':   [top: 'igbuHaA1', curios: 'BI7D0sbK', jade: 'GBES6etT', wthit: '6TB1L4QG', jei: 'lU7Sz0zI', emiSlug: 'TfSvU3a3', emi: 'jlaivqox']
 ][project.ext.has('minecraftVersion') ? minecraftVersion : minecraft_version]
 
 repositories {
@@ -30,6 +30,10 @@ configurations {
 dependencies {
     compatTestMods "maven.modrinth:the-one-probe:${versions.top}"
     compatTestMods "maven.modrinth:curios:${versions.curios}"
+    compileOnly("maven.modrinth:jade:${versions.jade}") { transitive = false }
+    compileOnly("maven.modrinth:wthit:${versions.wthit}") { transitive = false }
+    compileOnly("maven.modrinth:jei:${versions.jei}") { transitive = false }
+    compileOnly("maven.modrinth:${versions.emiSlug}:${versions.emi}") { transitive = false }
 }
 
 ext.compatMode = providers.gradleProperty('ic2.compat.mode').getOrElse('both')

@@ -8,7 +8,7 @@ LAVA_CELLS = ["ic2:basic_lava_cell", "ic2:lava_cell", "ic2:empty_cell", "ic2:flu
 CHEMICAL_SHELLS = {"ic2:bio_cell", "ic2:hydrated_coal_cell", "ic2:weed_ex_cell", "ic2:near_depleted_uranium"}
 WATER_REAGENTS = {"ic2:coal_fuel_dust", "ic2:cold_coffee_mug", "ic2:hydrated_tin_dust", "ic2:heavy_water_bucket"}
 RECOVERABLE = (
-    "water_cell", "lava_cell", "air_cell", "weed_ex_cell", "electrolyzed_water_cell",
+    "water_cell", "lava_cell", "air_cell", "weed_ex_cell", "biogas_cell", "electrolyzed_water_cell",
     "hydration_cell", "bio_cell", "hydrated_coal_cell", "biofuel_cell", "coalfuel_cell",
 )
 
@@ -100,7 +100,7 @@ def generate_cell_recipes(repo, forge, modern, write):
         for definition in csv.DictReader(source, delimiter="\t"):
             fluid = definition["path"]
             preview_fluid = None
-            if fluid in ("air", "weed_ex"):
+            if fluid in ("air", "weed_ex", "biogas"):
                 sample = stack(fluid + "_cell")
             else:
                 sample = stack("fluid_cell")

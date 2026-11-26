@@ -60,6 +60,7 @@ public final class WorkshopNode extends WorkshopSaveBase
     WaterConnectivity waterConnectivity;
     long rotorSampleTick = Long.MIN_VALUE;
     int rotorSample;
+    int rotorWearTicks;
     long handledAt = Long.MIN_VALUE;
     long kineticAt = Long.MIN_VALUE;
     String lastRecipe = "";

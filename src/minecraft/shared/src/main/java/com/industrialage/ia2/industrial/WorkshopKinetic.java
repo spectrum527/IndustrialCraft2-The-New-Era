@@ -18,12 +18,26 @@ final class WorkshopKinetic {
             case KINETIC -> active = convert(node, level, facing);
             case WIND_KINETIC -> {
                 int available = wind(node, level, facing);
+                if (available > 0) {
+                    boolean overWind =
+                            windStrength(node, level, facing)
+                                    > WindRotorMount.maxSafeWind(node.inventory.getItem(0));
+                    if (wearRotor(node, overWind)) {
+                        node.rotorSampleTick = Long.MIN_VALUE;
+                        available = 0;
+                    }
+                }
                 node.auxiliaryUnits = available;
                 node.publishRotorVisual(level, available);
                 active = available > 0;
             }
             case WATER_KINETIC -> {
                 int available = water(node, level);
+                if (available > 0 && wearRotor(node, false)) {
+                    node.rotorSampleTick = Long.MIN_VALUE;
+                    node.waterConnectivity = null;
+                    available = 0;
+                }
                 node.auxiliaryUnits = available;
                 node.publishRotorVisual(level, available);
                 active = available > 0;
@@ -153,6 +167,10 @@ final class WorkshopKinetic {
             return 0;
         }
         if (!RotorSweep.clear(node, level, false)) return 0;
+        return windStrength(node, level, side) * quality / 100;
+    }
+
+    static int windStrength(WorkshopNode node, ServerLevel level, Direction side) {
         var center = node.getBlockPos().relative(side.getOpposite());
         long sampled = level.getGameTime() / 200L;
         int variation =
@@ -164,7 +182,42 @@ final class WorkshopKinetic {
                                         4)
                         - 10;
         int altitude = Math.max(0, Math.min(200, center.getY() - 64));
-        return Math.max(0, (altitude + variation) * quality / 100);
+        return Math.max(0, altitude + variation);
+    }
+
+    record WearOutcome(int nextWearTicks, int nextDamage, boolean broke) {}
+
+    static WearOutcome advanceRotorWear(
+            int wearTicks, int currentDamage, int maxDamage, boolean overWind) {
+        if (maxDamage <= 0) return new WearOutcome(wearTicks, currentDamage, false);
+        int updatedTicks = wearTicks + 1;
+        if (updatedTicks < 20) return new WearOutcome(updatedTicks, currentDamage, false);
+        updatedTicks -= 20;
+        int damage = overWind ? 4 : 1;
+        int next = currentDamage + damage;
+        if (next >= maxDamage) {
+            return new WearOutcome(updatedTicks, maxDamage, true);
+        }
+        return new WearOutcome(updatedTicks, next, false);
+    }
+
+    private static boolean wearRotor(WorkshopNode node, boolean overWind) {
+        var rotor = node.inventory.getItem(0);
+        int maxDamage = WindRotorMount.maxDurability(rotor);
+        if (maxDamage <= 0) return false;
+        var outcome =
+                advanceRotorWear(node.rotorWearTicks, rotor.getDamageValue(), maxDamage, overWind);
+        node.rotorWearTicks = outcome.nextWearTicks();
+        if (outcome.broke()) {
+            node.inventory.setItem(0, net.minecraft.world.item.ItemStack.EMPTY);
+            node.setChanged();
+            return true;
+        }
+        if (outcome.nextDamage() != rotor.getDamageValue()) {
+            rotor.setDamageValue(outcome.nextDamage());
+            node.setChanged();
+        }
+        return false;
     }
 
     static int rotor(WorkshopNode node) {

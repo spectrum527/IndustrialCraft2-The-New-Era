@@ -52,10 +52,56 @@ final class ProcessingRecipes {
     Recipe find(String machine, String input, Predicate<String> matchesTag) {
         var exact = direct.getOrDefault(machine, Map.of()).get(input);
         if (exact != null) return exact;
-        if (matchesTag == null) return reference.getOrDefault(machine, Map.of()).get(input);
-        for (var ingredient : tagged.getOrDefault(machine, List.of())) {
-            if (matchesTag.test(ingredient.id().substring(1))) return ingredient.match(input);
+        if (matchesTag != null) {
+            for (var ingredient : tagged.getOrDefault(machine, List.of())) {
+                if (matchesTagAlias(ingredient.id().substring(1), matchesTag)) {
+                    return ingredient.match(input);
+                }
+            }
         }
+        return reference.getOrDefault(machine, Map.of()).get(input);
+    }
+
+    static boolean matchesTagAlias(String tag, Predicate<String> matchesTag) {
+        if (tag == null || tag.isEmpty() || matchesTag == null) return false;
+        if (matchesTag.test(tag)) return true;
+        int colon = tag.indexOf(':');
+        if (colon <= 0) return false;
+        String ns = tag.substring(0, colon);
+        String path = tag.substring(colon + 1);
+        String altNs = "forge".equals(ns) ? "c" : "c".equals(ns) ? "forge" : null;
+        if (altNs != null && matchesTag.test(altNs + ":" + path)) return true;
+        String altPath = alternateTagPath(path);
+        if (altPath != null) {
+            if (matchesTag.test(ns + ":" + altPath)) return true;
+            if (altNs != null && matchesTag.test(altNs + ":" + altPath)) return true;
+        }
+        return false;
+    }
+
+    private static String alternateTagPath(String path) {
+        if (path.equals("raw_ores")) return "raw_materials";
+        if (path.startsWith("raw_ores/")) return "raw_materials/" + path.substring(9);
+        if (path.equals("raw_materials")) return "raw_ores";
+        if (path.startsWith("raw_materials/")) return "raw_ores/" + path.substring(14);
+        if (path.equals("blocks")) return "storage_blocks";
+        if (path.startsWith("blocks/")) return "storage_blocks/" + path.substring(7);
+        if (path.equals("storage_blocks")) return "blocks";
+        if (path.startsWith("storage_blocks/")) return "blocks/" + path.substring(15);
         return null;
+    }
+
+    List<Recipe> all(String machine) {
+        var list = new ArrayList<Recipe>();
+        list.addAll(direct.getOrDefault(machine, Map.of()).values());
+        for (var ingredient : tagged.getOrDefault(machine, List.of())) {
+            list.add(
+                    new Recipe(
+                            ingredient.id(),
+                            ingredient.count(),
+                            ingredient.output(),
+                            ingredient.resultSize()));
+        }
+        return List.copyOf(list);
     }
 }
