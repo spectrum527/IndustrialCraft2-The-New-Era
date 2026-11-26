@@ -36,10 +36,6 @@ final class ReactorVessel {
     /** A port binds to an intact, loaded shell. Shared walls cannot connect two reactors. */
     static PowerNode core(PowerNode port, ServerLevel level) {
         var origin = port.getBlockPos();
-        if (port.vesselCenter != null
-                && level.hasChunkAt(port.vesselCenter)
-                && level.getBlockEntity(port.vesselCenter) instanceof PowerNode cached
-                && cached.fluidMode) return cached;
         port.vesselCenter = null;
         PowerNode result = null;
         for (int x = -2; x <= 2; x++)

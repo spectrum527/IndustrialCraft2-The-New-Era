@@ -180,6 +180,8 @@ def _crafting(repo, registered, eligible, forge, modern, write):
     root = "recipes" if forge else "recipe"
     tags = "items" if forge else "item"
     for key, (kind, width, height, result, count, indices) in book["recipes"].items():
+        if key == "ic2:shaped/heat_exchanger_from_gold":
+            continue
         if not result.startswith("ic2:") or result[4:] not in eligible:
             continue
         options = [expand_liquid_choices(book["ingredientSets"][i]) for i in indices]

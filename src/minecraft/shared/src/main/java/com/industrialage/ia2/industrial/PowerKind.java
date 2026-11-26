@@ -145,4 +145,8 @@ enum PowerKind {
     boolean storage() {
         return this == CLASSIC_MFE || this == CLASSIC_MFSU;
     }
+
+    boolean connectsPower() {
+        return !chargeBlock() && !vesselPart() && this != TRADE_O_MAT && this != TELEPORTER;
+    }
 }

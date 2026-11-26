@@ -30,17 +30,21 @@ public final class ProcessingItemPort extends WorldlyContainerWrapper {
 
     @Override
     public long getCapacityAsLong(int slot, ItemResource resource) {
+        int[] mapped = slots.getSlotsForFace(face);
+        if (slot < 0 || slot >= mapped.length) return 0;
         if (resource.isEmpty()) return super.getCapacityAsLong(slot, resource);
         return Math.min(
                 super.getCapacityAsLong(slot, resource),
-                slots.automationLimit(slots.getSlotsForFace(face)[slot], resource.toStack()));
+                slots.automationLimit(mapped[slot], resource.toStack()));
     }
 
     @Override
     public boolean isValid(int slot, ItemResource resource) {
+        int[] mapped = slots.getSlotsForFace(face);
         return !resource.isEmpty()
-                && slots.canPlaceItemThroughFace(
-                        slots.getSlotsForFace(face)[slot], resource.toStack(), face);
+                && slot >= 0
+                && slot < mapped.length
+                && slots.canPlaceItemThroughFace(mapped[slot], resource.toStack(), face);
     }
 
     @Override

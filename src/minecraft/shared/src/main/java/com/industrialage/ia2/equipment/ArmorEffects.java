@@ -116,7 +116,10 @@ public final class ArmorEffects {
         var chest = player.getItemBySlot(CHEST);
         var legs = player.getItemBySlot(LEGS);
         if (wears(head, "quantum_helmet")) quantumHelmet(level, player, head);
-        if (wears(chest, "quantum_chestplate") || fullHazmat(player)) player.clearFire();
+        if (fullHazmat(player)
+                || player.isOnFire()
+                        && wears(chest, "quantum_chestplate")
+                        && ArmorPlatform.spend(chest, 200)) player.clearFire();
         boolean boost =
                 player.isSprinting()
                         && !player.isPassenger()
@@ -131,10 +134,10 @@ public final class ArmorEffects {
             player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 240, 0, false, false));
         }
         if (wears(head, "solar_helmet") && ArmorPlatform.sunlight(level, player)) {
-            ArmorPlatform.charge(chest, 1);
+            ArmorPlatform.chargeWorn(player, 1);
         }
         if (wears(player, FEET, "static_boots")) {
-            chargeByWalking(player, level, chest);
+            chargeByWalking(player, level);
         } else {
             WALKS.remove(player);
         }
@@ -167,7 +170,7 @@ public final class ArmorEffects {
         if (player.getFoodData().getFoodLevel() <= 16) ArmorPlatform.feed(player, helmet);
     }
 
-    private static void chargeByWalking(ServerPlayer player, ServerLevel level, ItemStack chest) {
+    private static void chargeByWalking(ServerPlayer player, ServerLevel level) {
         var pos = player.position();
         var old = WALKS.get(player);
         double carried = 0;
@@ -179,7 +182,7 @@ public final class ArmorEffects {
             if (stride <= 3) {
                 carried = old.distance() + stride;
                 if (carried >= 10) {
-                    ArmorPlatform.charge(chest, 2);
+                    ArmorPlatform.chargeWorn(player, 2);
                     carried -= 10;
                 }
             }
@@ -243,14 +246,16 @@ public final class ArmorEffects {
         return material;
     }
 
-    /** Charges only the proportion of the impact that the complete suit actually absorbs. */
+    /** Charges only the proportion of the impact that the worn electric armor actually absorbs. */
     static float absorbImpact(ServerPlayer player, float incoming) {
-        Suit material = completeSuit(player);
-        if (material == null || !Float.isFinite(incoming) || incoming <= 0) return 0;
-        double cost = Math.max(material.minimum(), incoming * (double) material.perDamage());
+        if (!Float.isFinite(incoming) || incoming <= 0) return 0;
+        Suit full = completeSuit(player);
         double absorbed = 0;
         for (var slot : ARMOR) {
             var stack = player.getItemBySlot(slot);
+            Suit material = full != null ? full : suit(stack);
+            if (material == null) continue;
+            double cost = Math.max(material.minimum(), incoming * (double) material.perDamage());
             double charge = ArmorPlatform.energy(stack);
             double paid = Math.min(charge, cost);
             if (paid > 0) {

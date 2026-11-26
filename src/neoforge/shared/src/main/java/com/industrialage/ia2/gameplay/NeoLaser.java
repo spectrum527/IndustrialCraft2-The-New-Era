@@ -139,6 +139,7 @@ final class NeoLaser {
         var state = level.getBlockState(pos);
         if (state.isAir()
                 || state.getDestroySpeed(level, pos) < 0
+                || state.getDestroyProgress(owner, level, pos) <= 0
                 || !NativeGameplay.allowLaserBreak(level, pos, state, owner)) return false;
         if (!smelt) return level.destroyBlock(pos, true, owner, Block.UPDATE_LIMIT);
         var drops =

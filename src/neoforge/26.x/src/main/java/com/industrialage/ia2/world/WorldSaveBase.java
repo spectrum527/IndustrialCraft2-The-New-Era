@@ -56,8 +56,8 @@ abstract class WorldSaveBase extends BlockEntity {
         var stacks =
                 tag.read("contents", ItemStack.OPTIONAL_CODEC.listOf())
                         .orElseGet(java.util.List::of);
-        for (int i = 0; i < inventory.getContainerSize() && i < stacks.size(); i++)
-            inventory.setItem(i, stacks.get(i));
+        for (int i = 0; i < inventory.getContainerSize(); i++)
+            inventory.setItem(i, i < stacks.size() ? stacks.get(i) : ItemStack.EMPTY);
     }
 
     @Override

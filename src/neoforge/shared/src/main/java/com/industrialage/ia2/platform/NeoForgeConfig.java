@@ -122,7 +122,14 @@ public final class NeoForgeConfig {
                                     case REPLACE -> "Invalid configuration value at ";
                                     case REMOVE -> "Unknown configuration key ";
                                 };
-                        throw new IllegalArgumentException(message + String.join("/", path));
+                        String detail = message + String.join("/", path);
+                        if (!createIfMissing) {
+                            throw new IllegalArgumentException(detail);
+                        }
+                        LOGGER.warn(
+                                "IC2 configuration at {}: {} (using default for this entry)",
+                                session.file(),
+                                detail);
                     });
             var values = new HashMap<String, Object>();
             for (var entry : ActiveConfig.entries()) {

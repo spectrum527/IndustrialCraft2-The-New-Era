@@ -50,8 +50,11 @@ public final class PortableGear {
                 event -> {
                     if (event.getEntity() instanceof ServerPlayer player) {
                         transferFromPack(player);
-                        NeoSaber.tick(player, player.getMainHandItem());
-                        NeoSaber.tick(player, player.getOffhandItem());
+                        var inv = player.getInventory();
+                        for (int i = 0; i < inv.getContainerSize(); i++) {
+                            var item = inv.getItem(i);
+                            if (NeoSaber.active(item)) NeoSaber.tick(player, item);
+                        }
                     }
                 });
         ToolMelee.install(gameBus);
@@ -122,16 +125,23 @@ public final class PortableGear {
             transfer(pack, player.getMainHandItem());
             transfer(pack, player.getOffhandItem());
         }
-        for (var stack : new ItemStack[] {player.getMainHandItem(), player.getOffhandItem()}) {
-            var device = type(stack);
-            if (device != null && device.kind == Kind.CHARGER) {
-                var target =
-                        stack == player.getMainHandItem()
-                                ? player.getOffhandItem()
-                                : player.getMainHandItem();
-                transfer(stack, target);
-            }
+        var inv = player.getInventory();
+        for (int slot = 0; slot < 9; slot++) {
+            chargeFromHotbarCharger(inv.getItem(slot), player);
         }
+        chargeFromHotbarCharger(player.getOffhandItem(), player);
+    }
+
+    private static void chargeFromHotbarCharger(ItemStack stack, ServerPlayer player) {
+        var device = type(stack);
+        if (device == null || device.kind != Kind.CHARGER || stored(stack) <= 0) return;
+        var inv = player.getInventory();
+        for (int slot = 0; slot < 9 && stored(stack) > 0; slot++) {
+            var candidate = inv.getItem(slot);
+            if (candidate != stack) transfer(stack, candidate);
+        }
+        var offhand = player.getOffhandItem();
+        if (offhand != stack && stored(stack) > 0) transfer(stack, offhand);
     }
 
     private static void transfer(ItemStack source, ItemStack target) {
@@ -372,11 +382,14 @@ public final class PortableGear {
 
         @Override
         public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-            return supports(state)
-                    && !state.is(
-                            device == PortableEquipment.DRILL
-                                    ? BlockTags.INCORRECT_FOR_IRON_TOOL
-                                    : BlockTags.INCORRECT_FOR_DIAMOND_TOOL);
+            if (!supports(state) || stored(stack) < device.cost) return false;
+            var incorrect =
+                    switch (device) {
+                        case DRILL -> BlockTags.INCORRECT_FOR_IRON_TOOL;
+                        case IRIDIUM_DRILL -> BlockTags.INCORRECT_FOR_NETHERITE_TOOL;
+                        default -> BlockTags.INCORRECT_FOR_DIAMOND_TOOL;
+                    };
+            return !state.is(incorrect);
         }
 
         @Override

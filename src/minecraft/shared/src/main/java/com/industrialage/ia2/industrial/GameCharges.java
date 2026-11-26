@@ -26,8 +26,12 @@ final class GameCharges {
         boolean nuclear = kind != PowerKind.ITNT;
         if (nuclear && !PowerSettings.gameChargesEnabled()) return false;
         var inner = node.inventory.getItem(0);
-        var outer = node.inventory.getItem(1);
-        if (kind == PowerKind.NUKE && !primingItem(outer)) return false;
+        int outerCount = 0;
+        for (int i = 1; i < node.inventory.getContainerSize(); i++) {
+            var stack = node.inventory.getItem(i);
+            if (primingItem(stack)) outerCount += stack.getCount();
+        }
+        if (kind == PowerKind.NUKE && outerCount <= 0) return false;
         float effect =
                 kind == PowerKind.ITNT
                         ? 5.5F
@@ -36,7 +40,7 @@ final class GameCharges {
                                 : Math.min(
                                         PowerSettings.gameChargeLimit(),
                                         4F
-                                                + outer.getCount()
+                                                + outerCount
                                                 + (cartridge(inner) ? inner.getCount() * 2F : 0));
         if (effect <= 0) return false;
         BlockPos pos = node.getBlockPos();

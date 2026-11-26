@@ -48,9 +48,18 @@ abstract class BoxHost extends BlockEntity {
         var data =
                 input.read("items", ItemStack.OPTIONAL_CODEC.listOf())
                         .orElseGet(java.util.List::of);
-        for (int i = 0; i < Math.min(node.kind.slots, data.size()); i++)
-            node.items.setItem(i, data.get(i));
-        node.owner = input.getString("owner").map(UUID::fromString).orElse(null);
+        for (int i = 0; i < node.kind.slots; i++)
+            node.items.setItem(i, i < data.size() ? data.get(i) : ItemStack.EMPTY);
+        node.owner = input.getString("owner").map(BoxHost::parseUuid).orElse(null);
+    }
+
+    private static UUID parseUuid(String raw) {
+        if (raw == null || raw.isEmpty()) return null;
+        try {
+            return UUID.fromString(raw);
+        } catch (IllegalArgumentException malformed) {
+            return null;
+        }
     }
 
     @Override

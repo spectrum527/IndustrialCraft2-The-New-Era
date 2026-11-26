@@ -210,7 +210,7 @@ public final class TransportNode extends TransportSaveBase
 
     /** Whether automation may put the transported medium into this world face of the pipe. */
     public boolean permitsInbound(Direction side) {
-        if (side == null) return true;
+        if (side == null) return spec.kind() == Kind.TANK;
         if (!open(side)) return false;
         return switch (nozzle(side)) {
             case EXTRACTION -> true;
@@ -221,7 +221,7 @@ public final class TransportNode extends TransportSaveBase
 
     /** Whether automation may remove the transported medium from this world face of the pipe. */
     public boolean permitsOutbound(Direction side) {
-        if (side == null) return true;
+        if (side == null) return spec.kind() == Kind.TANK;
         if (!open(side) || pump(side) > 0) return false;
         return switch (nozzle(side)) {
             case EXTRACTION -> false;
@@ -371,6 +371,7 @@ public final class TransportNode extends TransportSaveBase
 
     boolean toggle(Direction face) {
         if (spec.kind() != Kind.FLUID_PIPE) return false;
+        if (open(face) && (nozzle(face) != Nozzle.NONE || pump(face) != 0)) return false;
         closed ^= 1 << face.ordinal();
         setChanged();
         return true;

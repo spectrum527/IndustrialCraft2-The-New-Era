@@ -62,6 +62,15 @@ public final class PowerPlatform {
         return PowerNative.handFluid(node, player, hand);
     }
 
+    static boolean tradeCapability(
+            ServerLevel level,
+            BlockPos pos,
+            net.minecraft.core.Direction face,
+            ItemStack price,
+            ItemStack goods) {
+        return PowerNative.tradeCapability(level, pos, face, price, goods);
+    }
+
     /** Installs the physical blocks and item types for this game version. */
     public static void install(IEventBus bus, ConfigFacade config) {
         PowerSettings.config = config;

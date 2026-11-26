@@ -56,7 +56,7 @@ final class PowerMenu extends DeviceAccessMenu {
                                 at[1]));
                 continue;
             }
-            int backing = kind == PowerKind.NUKE && i > 0 ? 1 : i;
+            int backing = i;
             addSlot(
                     new Slot(contents, backing, at[0], at[1]) {
                         @Override
