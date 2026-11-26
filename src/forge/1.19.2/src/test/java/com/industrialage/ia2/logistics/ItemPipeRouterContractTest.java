@@ -195,6 +195,17 @@ class ItemPipeRouterContractTest {
     }
 
     @Test
+    void coldLoadedCargoAdvancesWithoutLongMinValueOverflow() {
+        assertTrue(TransportNode.itemReadyToAdvance(0L, Long.MIN_VALUE));
+        assertTrue(TransportNode.itemReadyToAdvance(1_000L, Long.MIN_VALUE));
+        assertFalse(TransportNode.itemReadyToAdvance(100L, 100L));
+        assertFalse(
+                TransportNode.itemReadyToAdvance(
+                        100L + TransportNode.ITEM_TRANSIT_TICKS - 1L, 100L));
+        assertTrue(TransportNode.itemReadyToAdvance(100L + TransportNode.ITEM_TRANSIT_TICKS, 100L));
+    }
+
+    @Test
     void biogasCellBelongsToUniversalCellFamily() {
         assertEquals("ic2:biogas", CellFamily.UNIVERSAL.namedLiquids().get("biogas_cell"));
         assertSame(CellFamily.UNIVERSAL, CellFamily.of("biogas_cell"));

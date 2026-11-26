@@ -152,7 +152,7 @@ public final class TransportNode extends TransportSaveBase
             }
             syncVisual();
         }
-        if (!cargo.isEmpty() && time - receivedItemAt >= ITEM_TRANSIT_TICKS) {
+        if (!cargo.isEmpty() && itemReadyToAdvance(time, receivedItemAt)) {
             for (int i = 0; i < SIDES.length && !cargo.isEmpty(); i++) {
                 var side = SIDES[Math.floorMod(time + i, SIDES.length)];
                 var mode = nozzle(side);
@@ -194,6 +194,10 @@ public final class TransportNode extends TransportSaveBase
                 }
             }
         }
+    }
+
+    static boolean itemReadyToAdvance(long time, long receivedAt) {
+        return receivedAt == Long.MIN_VALUE || time - receivedAt >= ITEM_TRANSIT_TICKS;
     }
 
     private void onCargoEntered(Direction fromSide, long time, boolean syncNow) {
