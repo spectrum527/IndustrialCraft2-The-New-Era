@@ -1,6 +1,7 @@
 {
   "items": {
     "air_cell": {},
+    "biogas_cell": {"texture": "items/cell/biogas_cell"},
     "basic_water_cell": {"texture": "items/cell/basic_water_cell"},
     "basic_lava_cell": {"texture": "items/cell/basic_lava_cell"},
     "iron_cutting_blade": {},

@@ -124,6 +124,21 @@ public final class TransportPlatform {
         return itemHandler(level, pos, side).isPresent();
     }
 
+    static boolean canAcceptItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+        return itemHandler(level, pos, side)
+                .map(
+                        port -> {
+                            var single = stack.copy();
+                            single.setCount(1);
+                            return ItemHandlerHelper.insertItemStacked(port, single, true)
+                                    .isEmpty();
+                        })
+                .orElse(false);
+    }
+
     private static Optional<IItemHandler> itemHandler(Level world, BlockPos pos, Direction side) {
         if (world.hasChunkAt(pos)) {
             var entity = world.getBlockEntity(pos);
@@ -304,6 +319,9 @@ public final class TransportPlatform {
             if (accepted == 0) {
                 return incoming;
             }
+            if (!simulate && node.getLevel() instanceof ServerLevel) {
+                node.flushCommittedVisualSync();
+            }
             var leftover = incoming.copy();
             leftover.shrink(accepted);
             return leftover.isEmpty() ? ItemStack.EMPTY : leftover;
@@ -320,8 +338,12 @@ public final class TransportPlatform {
                 node.cargo.shrink(output.getCount());
                 if (node.cargo.isEmpty()) {
                     node.cargo = ItemStack.EMPTY;
+                    node.cargoFrom = null;
+                    node.cargoTo = null;
+                    node.cargoStalled = false;
                 }
                 node.setChanged();
+                node.syncVisual();
             }
             return output;
         }
@@ -366,9 +388,15 @@ public final class TransportPlatform {
 
         @Override
         public int fill(FluidStack offered, FluidAction action) {
-            return !isFluidValid(0, offered)
-                    ? 0
-                    : node.fill(side, new FluidKey(offered), offered.getAmount(), simulate(action));
+            if (!isFluidValid(0, offered)) {
+                return 0;
+            }
+            int accepted =
+                    node.fill(side, new FluidKey(offered), offered.getAmount(), simulate(action));
+            if (!simulate(action) && accepted > 0) {
+                node.flushCommittedVisualSync();
+            }
+            return accepted;
         }
 
         @Override
@@ -377,15 +405,24 @@ public final class TransportPlatform {
                 return FluidStack.EMPTY;
             }
             var key = new FluidKey(requested);
-            return drained(key, node.drain(side, key, requested.getAmount(), simulate(action)));
+            int moved = node.drain(side, key, requested.getAmount(), simulate(action));
+            if (!simulate(action) && moved > 0) {
+                node.flushCommittedVisualSync();
+            }
+            return drained(key, moved);
         }
 
         @Override
         public FluidStack drain(int requested, FluidAction action) {
             var key = node.liquid;
-            return key == null || (!manual && !node.permitsOutbound(side))
-                    ? FluidStack.EMPTY
-                    : drained(key, node.drain(side, key, requested, simulate(action)));
+            if (key == null || (!manual && !node.permitsOutbound(side))) {
+                return FluidStack.EMPTY;
+            }
+            int moved = node.drain(side, key, requested, simulate(action));
+            if (!simulate(action) && moved > 0) {
+                node.flushCommittedVisualSync();
+            }
+            return drained(key, moved);
         }
 
         private boolean simulate(FluidAction action) {

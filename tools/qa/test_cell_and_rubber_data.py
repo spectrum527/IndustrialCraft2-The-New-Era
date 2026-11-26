@@ -55,14 +55,20 @@ class CellAndRubberDataTest(unittest.TestCase):
                     fill = read(recipes, "cells/fill_"+fluid)
                     self.assertEqual(fill["cell_use"], "fill")
                     self.assertIn("ic2:fluid_cell", [item(i) for i in fill["ingredients"]])
-                    if fluid in ("weed_ex", "air"):
+                    if fluid in ("weed_ex", "air", "biogas"):
                         self.assertEqual(fill["result"][field], "ic2:"+fluid+"_cell")
+                        recovered = read(recipes, "cells/recover_"+fluid+"_cell")
+                        self.assertEqual(recovered["cell_use"], "recover")
+                        self.assertEqual(recovered["result"][field], "ic2:fluid_cell")
                     elif target.startswith("neoforge-26"):
                         self.assertEqual(fill["cell_preview_fluid"], "ic2:"+fluid)
                     elif forge:
                         self.assertEqual(fill["result"]["nbt"]["Fluid"]["FluidName"], "ic2:"+fluid)
                     else:
                         self.assertEqual(fill["result"]["components"]["ic2:cell_fluid"]["id"], "ic2:"+fluid)
+                self.assertFalse((output / "assets/ic2/models/item/copper_ingot.json").exists())
+                self.assertFalse((recipes / "classic/copper_ingot.json").exists())
+                self.assertTrue((output / "assets/ic2/models/item/biogas_cell.json").exists())
                 for recipe, consumed in [("classic/bio_cell", "empty"), ("world/hydration_cell", "bind_water"), ("classic/heavy_water_bucket", "water"), ("classic/weed_ex_bucket", "weed_ex")]:
                     self.assertEqual(read(recipes, recipe)["cell_use"], consumed)
                 tag = read(data, "tags/worldgen/biome/has_rubber_trees")

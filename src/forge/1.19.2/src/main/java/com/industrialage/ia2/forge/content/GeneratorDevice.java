@@ -12,7 +12,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 
-final class GeneratorDevice extends FuelGeneratorBlockEntity
+/** Forge 1.19.2 fuel generator block entity exposing EU and item capabilities. */
+public final class GeneratorDevice extends FuelGeneratorBlockEntity
         implements ForgeDevice, ForgePower.Endpoint {
     private final boolean producing;
     private final MachineInventory inventory = new MachineInventory(MachineKind.GENERATOR, this);

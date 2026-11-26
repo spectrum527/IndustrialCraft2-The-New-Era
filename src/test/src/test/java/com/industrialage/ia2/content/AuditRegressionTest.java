@@ -149,4 +149,73 @@ class AuditRegressionTest {
         assertTrue(extreme.energyPerTick() > 0);
         assertTrue(extreme.capacity() >= extreme.energyPerTick());
     }
+
+    @Test
+    void copperIngotRemovedAndBiogasCellRegistered() {
+        assertFalse(
+                IndustrialMaterials.ADDITIONAL.contains("copper_ingot"),
+                "ic2:copper_ingot must be removed from passive materials");
+        assertFalse(
+                CreativeCategory.MATERIALS.entries().contains("copper_ingot"),
+                "ic2:copper_ingot must be removed from creative materials");
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CreativeCategory.forItem("copper_ingot"),
+                "ic2:copper_ingot must have no creative category");
+        assertTrue(
+                CreativeCategory.FLUIDS.entries().contains("biogas_cell"),
+                "ic2:biogas_cell must be listed in creative fluids");
+        assertEquals(CreativeCategory.FLUIDS, CreativeCategory.forItem("biogas_cell"));
+    }
+
+    @Test
+    void processingRecipesSupportDynamicTagPredicateFallbackAndEnumeration() {
+        var dynamicOre =
+                ProcessingMachine.recipe(
+                        "macerator",
+                        "mod:custom_silver_ore",
+                        tag -> tag.equals("forge:ores/silver"));
+        assertNotNull(dynamicOre, "Dynamic tag predicate should match third-party tagged ore");
+        assertEquals("mod:custom_silver_ore", dynamicOre.input());
+        assertEquals("ic2:crushed_silver", dynamicOre.output());
+        assertEquals(2, dynamicOre.outputCount());
+
+        var dynamicIngot =
+                ProcessingMachine.recipe(
+                        "macerator", "mod:custom_tin_ingot", tag -> tag.equals("c:ingots/tin"));
+        assertNotNull(
+                dynamicIngot,
+                "Dynamic tag predicate should match #forge:ingots/tin via c:ingots/tin alias");
+        assertEquals("ic2:tin_dust", dynamicIngot.output());
+
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "forge:raw_ores/tin", tag -> tag.equals("c:raw_materials/tin")));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "c:raw_materials", tag -> tag.equals("forge:raw_ores")));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "forge:blocks/steel", tag -> tag.equals("c:storage_blocks/steel")));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "c:storage_blocks", tag -> tag.equals("forge:blocks")));
+        assertFalse(
+                ProcessingMachine.matchesTagAlias("minecraft:logs", tag -> tag.equals("c:logs")));
+
+        var fallback = ProcessingMachine.recipe("macerator", "ic2:tin_ingot", tag -> false);
+        assertNotNull(
+                fallback,
+                "Built-in reference tag members must still match when runtime tag predicate misses");
+        assertEquals("ic2:tin_dust", fallback.output());
+
+        for (String machine : new String[] {"macerator", "extractor", "compressor"}) {
+            var all = ProcessingMachine.allRecipes(machine);
+            assertFalse(all.isEmpty(), machine + " must expose recipes for recipe viewers");
+        }
+        assertTrue(
+                ProcessingMachine.allRecipes("macerator").stream()
+                        .anyMatch(recipe -> recipe.input().startsWith("#")),
+                "macerator recipe enumeration must include tag-backed entries");
+    }
 }

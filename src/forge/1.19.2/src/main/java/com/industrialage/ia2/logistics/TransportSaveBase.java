@@ -44,13 +44,48 @@ abstract class TransportSaveBase extends BlockEntity {
         var node = (TransportNode) this;
         tag.putInt("nozzle_extraction", node.extractionNozzles);
         tag.putInt("nozzle_injection", node.injectionNozzles);
+        if (node.spec.kind() == Kind.ITEM_PIPE && !node.cargo.isEmpty()) {
+            tag.put("cargo", node.cargo.save(new CompoundTag()));
+            tag.putByte("cargo_from", encodeDirection(node.cargoFrom));
+            tag.putByte("cargo_to", encodeDirection(node.cargoTo));
+            tag.putInt("cargo_seq", node.cargoSeq);
+            tag.putBoolean("cargo_stalled", node.cargoStalled);
+        } else if (node.spec.kind() == Kind.FLUID_PIPE && node.liquid != null && node.amount > 0) {
+            tag.put("fluid", node.liquid.stack(node.amount).writeToNBT(new CompoundTag()));
+            tag.putByte("flow_dir", encodeDirection(node.fluidFlowDir));
+        }
         return tag;
     }
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
-        ((TransportNode) this)
-                .restoreNozzles(tag.getInt("nozzle_extraction"), tag.getInt("nozzle_injection"));
+        var node = (TransportNode) this;
+        var syncedCargo =
+                tag.contains("cargo") ? ItemStack.of(tag.getCompound("cargo")) : ItemStack.EMPTY;
+        var syncedFluid =
+                tag.contains("fluid")
+                        ? FluidStack.loadFluidStackFromNBT(tag.getCompound("fluid"))
+                        : FluidStack.EMPTY;
+        node.applyClientSync(
+                tag.getInt("nozzle_extraction"),
+                tag.getInt("nozzle_injection"),
+                syncedCargo,
+                decodeDirection(tag.contains("cargo_from") ? tag.getByte("cargo_from") : -1),
+                decodeDirection(tag.contains("cargo_to") ? tag.getByte("cargo_to") : -1),
+                tag.getInt("cargo_seq"),
+                tag.getBoolean("cargo_stalled"),
+                syncedFluid.isEmpty() ? null : new FluidKey(syncedFluid),
+                syncedFluid.getAmount(),
+                decodeDirection(tag.contains("flow_dir") ? tag.getByte("flow_dir") : -1));
+    }
+
+    private static byte encodeDirection(Direction direction) {
+        return direction == null ? (byte) -1 : (byte) direction.ordinal();
+    }
+
+    private static Direction decodeDirection(int ordinal) {
+        var values = TransportNode.SIDES;
+        return ordinal >= 0 && ordinal < values.length ? values[ordinal] : null;
     }
 
     @Override

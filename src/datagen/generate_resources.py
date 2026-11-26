@@ -9,6 +9,7 @@ from world_resources import generate as generate_world
 from gameplay_advancements import generate as generate_advancements
 
 from cell_recipes import cell_recipe, generate_cell_recipes
+from common_tags import generate as generate_common_tags
 
 import argparse
 import csv
@@ -275,47 +276,110 @@ if args.logistics:
             'bottom':tex('blocks/bronze_tank_cap' if bronze else 'blocks/machine/fluid/tank_bottom')}})
         blockstate(name, {'variants':{'':{'model':mod('block/' + name)}}})
         block_item(name)
-    # All 16 pipe IDs share four accurately sized multipart geometries per material.
+    # All 16 pipe IDs use transparent cutout models with culled internal junction faces and
+    # distinct material edges + kind accents (amber rails for item pipes, aqua rings for fluid pipes).
+    opposite_face = {'north':'south', 'south':'north', 'west':'east', 'east':'west', 'down':'up', 'up':'down'}
     for material in ('bronze','steel'):
-        for size, lo in [('tiny',6),('small',5),('medium',4),('large',3)]:
-            hi=16-lo
-            stem='transport/' + material + '_' + size
-            textures={'particle':tex(f'blocks/transport/{material}/pipe_side'),
-                      'side':tex(f'blocks/transport/{material}/pipe_side'),
-                      'end':tex(f'blocks/transport/{material}/pipe_{size}')}
-            def part(start,end,end_faces=()):
-                faces={face:{'texture':'#end' if face in end_faces else '#side'}
-                       for face in ('down','up','north','south','west','east')}
-                for face in end_faces: faces[face]['uv']=[0,0,16,16]
-                return {'from':start,'to':end,'faces':faces}
-            pieces={
-                'core':part([lo,lo,lo],[hi,hi,hi]),
-                'north':part([lo,lo,0],[hi,hi,lo],('north',)),
-                'south':part([lo,lo,hi],[hi,hi,16],('south',)),
-                'west':part([0,lo,lo],[lo,hi,hi],('west',)),
-                'east':part([hi,lo,lo],[16,hi,hi],('east',)),
-                'down':part([lo,0,lo],[hi,lo,hi],('down',)),
-                'up':part([lo,hi,lo],[hi,16,hi],('up',)),
-                'outlet':part([lo-.15,lo-.15,lo-.4],[hi+.15,hi+.15,lo+.1],('north',)),
+        for kind in ('item','fluid'):
+            textures = {
+                'particle': tex(f'blocks/transport/{material}/{kind}_pipe_core'),
+                'core': tex(f'blocks/transport/{material}/{kind}_pipe_core'),
+                'arm': tex(f'blocks/transport/{material}/{kind}_pipe_arm'),
+                'end': tex(f'blocks/transport/{material}/{kind}_pipe_end'),
             }
-            for part_name, element in pieces.items():
-                block_model(stem+'_'+part_name, {'parent':'minecraft:block/block','textures':textures,'elements':[element]})
-            block_model(stem+'_inventory', {'parent':'minecraft:block/block','textures':textures,
-                'elements':[pieces['core'],pieces['west'],pieces['east']]})
-            for kind in ('item','fluid'):
-                name=f'{material}_{kind}_pipe_{size}'
-                parts=[{'apply':{'model':mod('block/'+stem+'_core')}}]
-                parts += [{'when':{direction:'true'},'apply':{'model':mod('block/'+stem+'_'+direction)}}
-                          for direction in directions]
+            if kind == 'item':
+                textures['outlet'] = tex(f'blocks/transport/{material}/item_pipe_outlet')
+            for size, lo in [('tiny',6),('small',5),('medium',4),('large',3)]:
+                hi = 16 - lo
+                stem = f'transport/{material}_{kind}_{size}'
+                def core_face(face):
+                    return {
+                        'from': [lo, lo, lo], 'to': [hi, hi, hi],
+                        'faces': {face: {'texture': '#core', 'uv': [0, 0, 16, 16]}}
+                    }
+                def arm_element(direction, start, end, include_end=False):
+                    inner = opposite_face[direction]
+                    faces = {}
+                    for face in ('down','up','north','south','west','east'):
+                        if face == inner:
+                            continue
+                        if face == direction:
+                            if include_end:
+                                faces[face] = {'texture': '#end', 'uv': [0, 0, 16, 16]}
+                            continue
+                        entry = {'texture': '#arm', 'uv': [0, 0, 16, 16]}
+                        if (direction in ('north','south') and face in ('up','down')) or direction in ('up','down'):
+                            entry['rotation'] = 90
+                        faces[face] = entry
+                    return {'from': start, 'to': end, 'faces': faces}
+                arm_bounds = {
+                    'north': ([lo, lo, 0], [hi, hi, lo]),
+                    'south': ([lo, lo, hi], [hi, hi, 16]),
+                    'west':  ([0, lo, lo], [lo, hi, hi]),
+                    'east':  ([hi, lo, lo], [16, hi, hi]),
+                    'down':  ([lo, 0, lo], [hi, lo, hi]),
+                    'up':    ([lo, hi, lo], [hi, 16, hi]),
+                }
+                for direction in directions:
+                    block_model(f'{stem}_core_{direction}', {
+                        'parent': 'minecraft:block/block',
+                        'render_type': 'minecraft:cutout',
+                        'textures': textures,
+                        'elements': [core_face(direction)],
+                    })
+                    start, end = arm_bounds[direction]
+                    block_model(f'{stem}_{direction}', {
+                        'parent': 'minecraft:block/block',
+                        'render_type': 'minecraft:cutout',
+                        'textures': textures,
+                        'elements': [arm_element(direction, start, end)],
+                    })
+                if kind == 'item':
+                    outlet_faces = {
+                        face: {'texture': '#outlet', 'uv': [0, 0, 16, 16]}
+                        for face in ('down','up','north','south','west','east')
+                    }
+                    block_model(f'{stem}_outlet', {
+                        'parent': 'minecraft:block/block',
+                        'render_type': 'minecraft:cutout',
+                        'textures': textures,
+                        'elements': [{
+                            'from': [lo - .15, lo - .15, lo - .4],
+                            'to': [hi + .15, hi + .15, lo + .1],
+                            'faces': outlet_faces,
+                        }],
+                    })
+                inv_elements = [
+                    {
+                        'from': [lo, lo, lo], 'to': [hi, hi, hi],
+                        'faces': {
+                            f: {'texture': '#core', 'uv': [0, 0, 16, 16]}
+                            for f in ('up','down','north','south')
+                        },
+                    },
+                    arm_element('west', *arm_bounds['west'], include_end=True),
+                    arm_element('east', *arm_bounds['east'], include_end=True),
+                ]
+                block_model(f'{stem}_inventory', {
+                    'parent': 'minecraft:block/block',
+                    'render_type': 'minecraft:cutout',
+                    'textures': textures,
+                    'elements': inv_elements,
+                })
+                name = f'{material}_{kind}_pipe_{size}'
+                parts = []
+                for direction in directions:
+                    parts.append({'when': {direction: 'false'}, 'apply': {'model': mod(f'block/{stem}_core_{direction}')}})
+                    parts.append({'when': {direction: 'true'}, 'apply': {'model': mod(f'block/{stem}_{direction}')}})
                 if kind == 'item':
                     for facing, degrees in rotations.items():
-                        model={'model':mod('block/'+stem+'_outlet')}
-                        if degrees:model['y']=degrees
-                        parts.append({'when':{'facing':facing},'apply':model})
-                    for facing,degrees in [('up',270),('down',90)]:
-                        parts.append({'when':{'facing':facing},'apply':{'model':mod('block/'+stem+'_outlet'),'x':degrees}})
-                blockstate(name, {'multipart':parts})
-                block_item(name, stem+'_inventory')
+                        model = {'model': mod(f'block/{stem}_outlet')}
+                        if degrees: model['y'] = degrees
+                        parts.append({'when': {'facing': facing}, 'apply': model})
+                    for facing, degrees in [('up', 270), ('down', 90)]:
+                        parts.append({'when': {'facing': facing}, 'apply': {'model': mod(f'block/{stem}_outlet'), 'x': degrees}})
+                blockstate(name, {'multipart': parts})
+                block_item(name, f'{stem}_inventory')
 
 # All recipe declarations use the same layouts as the observed 39-item slice.
 # Tool remainder is implemented by the native item classes on each platform.
@@ -553,6 +617,7 @@ if not forge:
         write("assets/minecraft/atlases/items", {"sources":[items]})
 
 generate_world(repo, out, args.target, write)
+generate_common_tags(repo, forge, write)
 generate_advancements(repo, args.target, write)
 generate_families(repo, out, args.target, write)
 

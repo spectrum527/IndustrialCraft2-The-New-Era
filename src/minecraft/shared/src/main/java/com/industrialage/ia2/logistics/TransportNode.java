@@ -19,6 +19,10 @@ public final class TransportNode extends TransportSaveBase
         implements com.industrialage.ia2.access.MachineAccessTarget,
                 net.minecraft.world.MenuProvider {
     static final Direction[] SIDES = Direction.values();
+
+    /** Number of server ticks an item batch glides across one pipe block. */
+    public static final int ITEM_TRANSIT_TICKS = 3;
+
     private static final int SIDE_MASK = (1 << SIDES.length) - 1;
 
     /** A directional attachment viewed from the pipe. */
@@ -52,6 +56,23 @@ public final class TransportNode extends TransportSaveBase
     private boolean pendingConnections = true;
     long lastFluidTick = Long.MIN_VALUE;
     long receivedItemAt = Long.MIN_VALUE;
+    Direction cargoFrom;
+    Direction cargoTo;
+    boolean cargoStalled;
+    int cargoSeq;
+    Direction fluidFlowDir;
+    boolean pendingItemVisualSync;
+    boolean pendingFluidVisualSync;
+    private FluidKey syncedFluid;
+    private int syncedFluidBucket = -1;
+    private Direction syncedFlowDir;
+    int clientCargoSeq = -1;
+    long clientCargoStartTick;
+    Direction clientCargoFrom;
+    Direction clientCargoTo;
+    boolean clientCargoStalled;
+    float clientFluidFill;
+    long clientFluidRenderNanos;
 
     /** Constructs an empty node. Native load restores its complete contents and sides together. */
     public TransportNode(BlockPos pos, BlockState state) {
@@ -124,12 +145,35 @@ public final class TransportNode extends TransportSaveBase
     private void tickItems(ServerLevel world) {
         Direction output = getBlockState().getValue(TransportBlock.OUT);
         long time = world.getGameTime();
-        if (!cargo.isEmpty() && receivedItemAt != time) {
+        if (pendingItemVisualSync) {
+            pendingItemVisualSync = false;
+            if (!cargo.isEmpty()) {
+                cargoTo = previewNextHop(world, time);
+            }
+            syncVisual();
+        }
+        if (!cargo.isEmpty() && time - receivedItemAt >= ITEM_TRANSIT_TICKS) {
             for (int i = 0; i < SIDES.length && !cargo.isEmpty(); i++) {
                 var side = SIDES[Math.floorMod(time + i, SIDES.length)];
                 var mode = nozzle(side);
                 if (mode == Nozzle.INJECTION || (mode == Nozzle.NONE && side == output)) {
-                    sendItems(world, side, time);
+                    sendToNonPipe(world, side);
+                }
+            }
+            if (!cargo.isEmpty()) {
+                Direction routed = ItemPipeRouter.nextHop(world, this, cargo, time);
+                if (routed != null) {
+                    sendToRoutedPipe(world, routed, time);
+                } else if (nozzle(output) == Nozzle.NONE) {
+                    sendToDirectedPipe(world, output, time);
+                }
+            }
+            if (!cargo.isEmpty()) {
+                Direction nextTarget = previewNextHop(world, time);
+                if (!cargoStalled || nextTarget != cargoTo) {
+                    cargoStalled = true;
+                    cargoTo = nextTarget;
+                    syncVisual();
                 }
             }
         }
@@ -146,30 +190,269 @@ public final class TransportNode extends TransportSaveBase
                 var extracted = TransportPlatform.takeItem(world, pos, face, spec.rate());
                 if (!extracted.isEmpty()) {
                     cargo = extracted;
-                    receivedItemAt = time;
-                    setChanged();
+                    onCargoEntered(side, time, true);
                 }
             }
         }
     }
 
-    private void sendItems(ServerLevel world, Direction side, long time) {
+    private void onCargoEntered(Direction fromSide, long time, boolean syncNow) {
+        receivedItemAt = time;
+        cargoFrom = fromSide;
+        cargoStalled = false;
+        cargoSeq++;
+        if (syncNow) {
+            cargoTo =
+                    level instanceof ServerLevel world
+                            ? previewNextHop(world, time)
+                            : defaultExit(fromSide);
+            pendingItemVisualSync = false;
+            setChanged();
+            syncVisual();
+        } else {
+            cargoTo = defaultExit(fromSide);
+            pendingItemVisualSync = true;
+            setChanged();
+        }
+    }
+
+    void flushCommittedVisualSync() {
+        if (!(level instanceof ServerLevel world)) return;
+        if (pendingItemVisualSync) {
+            pendingItemVisualSync = false;
+            if (!cargo.isEmpty()) {
+                cargoTo = previewNextHop(world, world.getGameTime());
+            }
+            syncVisual();
+        }
+        if (pendingFluidVisualSync) {
+            pendingFluidVisualSync = false;
+            syncFluidVisualIfNeeded();
+        }
+    }
+
+    private Direction previewNextHop(ServerLevel world, long time) {
+        var state = getBlockState();
+        Direction output =
+                state.hasProperty(TransportBlock.OUT)
+                        ? state.getValue(TransportBlock.OUT)
+                        : Direction.NORTH;
+        for (var side : SIDES) {
+            var mode = nozzle(side);
+            if (mode != Nozzle.INJECTION && (mode != Nozzle.NONE || side != output)) continue;
+            var pos = worldPosition.relative(side);
+            if (!world.hasChunkAt(pos)) continue;
+            var other = world.getBlockEntity(pos);
+            if (isPipe(other)) continue;
+            var face = side.getOpposite();
+            if (machineInput(other, face)
+                    && TransportPlatform.canAcceptItem(world, pos, face, cargo)) {
+                return side;
+            }
+        }
+        Direction routed = ItemPipeRouter.previewHop(world, this, cargo, time);
+        if (routed != null) return routed;
+        if (cargoFrom != null) {
+            Direction straight = cargoFrom.getOpposite();
+            if (isVisualExitFace(world, state, straight, output)) return straight;
+        }
+        if (output != cargoFrom && isVisualExitFace(world, state, output, output)) return output;
+        for (var side : SIDES) {
+            if (side == cargoFrom) continue;
+            if (isVisualExitFace(world, state, side, output)) return side;
+        }
+        return null;
+    }
+
+    private boolean isVisualExitFace(
+            ServerLevel world, BlockState state, Direction side, Direction output) {
+        var pos = worldPosition.relative(side);
+        if (!world.hasChunkAt(pos)) return false;
+        var other = world.getBlockEntity(pos);
+        if (other instanceof TransportNode next && next.spec.kind() != Kind.TANK) {
+            return linksTo(side, next);
+        }
+        var mode = nozzle(side);
+        return (mode == Nozzle.INJECTION || (mode == Nozzle.NONE && side == output))
+                && TransportBlock.connected(state, side);
+    }
+
+    private Direction defaultExit(Direction fromSide) {
+        var state = getBlockState();
+        if (fromSide != null) {
+            Direction straight = fromSide.getOpposite();
+            if (TransportBlock.connected(state, straight)) return straight;
+        }
+        if (state.hasProperty(TransportBlock.OUT)) {
+            Direction output = state.getValue(TransportBlock.OUT);
+            if (output != fromSide && TransportBlock.connected(state, output)) return output;
+        }
+        for (var side : SIDES) {
+            if (side != fromSide && TransportBlock.connected(state, side)) return side;
+        }
+        return null;
+    }
+
+    void syncVisual() {
+        if (level instanceof ServerLevel world && spec.kind() != Kind.TANK) {
+            var state = getBlockState();
+            world.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_CLIENTS);
+        }
+    }
+
+    void noteFluidFlow(Direction direction) {
+        fluidFlowDir = direction;
+    }
+
+    void syncFluidVisualIfNeeded() {
+        if (spec.kind() != Kind.FLUID_PIPE || !(level instanceof ServerLevel)) return;
+        int bucket =
+                (liquid == null || amount <= 0)
+                        ? 0
+                        : (amount >= spec.capacity()
+                                ? 12
+                                : Math.max(1, (amount * 11) / spec.capacity()));
+        Direction dir = (liquid == null || amount <= 0) ? null : fluidFlowDir;
+        if (!java.util.Objects.equals(liquid, syncedFluid)
+                || bucket != syncedFluidBucket
+                || dir != syncedFlowDir) {
+            syncedFluid = liquid;
+            syncedFluidBucket = bucket;
+            syncedFlowDir = dir;
+            syncVisual();
+        }
+    }
+
+    void applyClientSync(
+            int extraction,
+            int injection,
+            ItemStack syncedCargo,
+            Direction from,
+            Direction to,
+            int seq,
+            boolean stalled,
+            FluidKey syncedLiquid,
+            int syncedAmount,
+            Direction flowDir) {
+        restoreNozzles(extraction, injection);
+        if (spec.kind() == Kind.ITEM_PIPE) {
+            if (syncedCargo.isEmpty()) {
+                cargo = ItemStack.EMPTY;
+                clientCargoFrom = null;
+                clientCargoTo = null;
+                clientCargoStalled = false;
+            } else {
+                cargo = syncedCargo;
+                if (seq != clientCargoSeq) {
+                    clientCargoSeq = seq;
+                    clientCargoStartTick = level != null ? level.getGameTime() : 0L;
+                }
+                clientCargoFrom = from;
+                clientCargoTo = to;
+                clientCargoStalled = stalled;
+            }
+        } else if (spec.kind() == Kind.FLUID_PIPE) {
+            liquid = syncedLiquid;
+            amount = syncedAmount;
+            fluidFlowDir = flowDir;
+        }
+    }
+
+    /** Whether this block entity has nozzles, moving cargo, or visible fluid to render. */
+    public boolean hasVisualRender() {
+        if (hasNozzles()) return true;
+        if (spec.kind() == Kind.ITEM_PIPE) return !cargo.isEmpty();
+        if (spec.kind() == Kind.FLUID_PIPE) {
+            return (liquid != null && amount > 0) || clientFluidFill > 0.005F;
+        }
+        return false;
+    }
+
+    /** Live synced cargo stack visible inside this item pipe on the client. */
+    public ItemStack clientCargo() {
+        return cargo;
+    }
+
+    /** Smooth normalized transit progress in [0, 1] for the item moving through this pipe. */
+    public float clientCargoProgress(float partialTick) {
+        return PipeVisuals.itemProgress(this, partialTick);
+    }
+
+    /** Entry face of the synced cargo moving through this item pipe, if known. */
+    public Direction clientCargoFrom() {
+        return clientCargoFrom;
+    }
+
+    /** Exit face of the synced cargo moving through this item pipe, if known. */
+    public Direction clientCargoTo() {
+        return clientCargoTo;
+    }
+
+    /** Monotonic transit sequence number for client interpolation handoffs. */
+    public int clientCargoSeq() {
+        return clientCargoSeq;
+    }
+
+    /** Whether this fluid pipe currently holds visible synced fluid. */
+    public boolean hasFluidVisual() {
+        return spec.kind() == Kind.FLUID_PIPE && liquid != null && amount > 0;
+    }
+
+    /** Target fluid fill fraction in [0, 1] for this fluid pipe. */
+    public float clientFluidFillFraction() {
+        if (spec.kind() != Kind.FLUID_PIPE || liquid == null || amount <= 0) return 0F;
+        return Math.min(1F, (float) amount / Math.max(1, spec.capacity()));
+    }
+
+    /** Dominant synced fluid flow direction, if known. */
+    public Direction clientFluidFlowDirection() {
+        return fluidFlowDir;
+    }
+
+    private void sendToNonPipe(ServerLevel world, Direction side) {
         var pos = worldPosition.relative(side);
         if (!world.hasChunkAt(pos)) return;
         var target = world.getBlockEntity(pos);
+        if (target instanceof TransportNode next && next.spec.kind() != Kind.TANK) return;
         var face = side.getOpposite();
-        int sent;
-        if (target instanceof TransportNode next) {
-            if (!linksTo(side, next)) return;
-            sent = next.insertItem(face, cargo, false, time);
-        } else {
-            if (!machineInput(target, face)) return;
-            sent = TransportPlatform.offerItem(world, pos, face, cargo);
+        if (!machineInput(target, face)) return;
+        int sent = TransportPlatform.offerItem(world, pos, face, cargo);
+        consumeSent(sent);
+    }
+
+    private void sendToRoutedPipe(ServerLevel world, Direction side, long time) {
+        var pos = worldPosition.relative(side);
+        if (!world.hasChunkAt(pos)) return;
+        if (!(world.getBlockEntity(pos) instanceof TransportNode next) || !linksTo(side, next)) {
+            return;
         }
+        int sent = next.receiveFromPipe(side.getOpposite(), cargo, time);
+        consumeSent(sent);
+    }
+
+    private void sendToDirectedPipe(ServerLevel world, Direction side, long time) {
+        var pos = worldPosition.relative(side);
+        if (!world.hasChunkAt(pos)) return;
+        if (!(world.getBlockEntity(pos) instanceof TransportNode next) || !linksTo(side, next)) {
+            return;
+        }
+        int sent = next.insertItem(side.getOpposite(), cargo, false, time);
+        consumeSent(sent);
+    }
+
+    private void consumeSent(int sent) {
         if (sent > 0) {
             cargo.shrink(sent);
-            if (cargo.isEmpty()) cargo = ItemStack.EMPTY;
+            if (cargo.isEmpty()) {
+                cargo = ItemStack.EMPTY;
+                cargoFrom = null;
+                cargoTo = null;
+                cargoStalled = false;
+            } else {
+                cargoStalled = false;
+            }
             setChanged();
+            syncVisual();
         }
     }
 
@@ -291,14 +574,43 @@ public final class TransportNode extends TransportSaveBase
         int space = Math.min(spec.capacity(), incoming.getMaxStackSize()) - cargo.getCount();
         int accepted = Math.min(incoming.getCount(), Math.max(0, space));
         if (!simulate && accepted > 0) {
-            if (cargo.isEmpty()) {
+            boolean wasEmpty = cargo.isEmpty();
+            if (wasEmpty) {
                 cargo = incoming.copy();
                 cargo.setCount(accepted);
+                onCargoEntered(side, time, false);
             } else {
                 cargo.grow(accepted);
+                pendingItemVisualSync = true;
+                setChanged();
             }
-            receivedItemAt = time;
-            setChanged();
+        }
+        return accepted;
+    }
+
+    boolean canAcceptRoutedPipeItem(Direction side, ItemStack incoming) {
+        if (spec.kind() != Kind.ITEM_PIPE
+                || incoming.isEmpty()
+                || !exposesPipeFace(side)
+                || (!cargo.isEmpty() && !TransportPlatform.sameItem(cargo, incoming))) return false;
+        return Math.min(spec.capacity(), incoming.getMaxStackSize()) - cargo.getCount() > 0;
+    }
+
+    int receiveFromPipe(Direction side, ItemStack incoming, long time) {
+        if (!canAcceptRoutedPipeItem(side, incoming)) return 0;
+        int space = Math.min(spec.capacity(), incoming.getMaxStackSize()) - cargo.getCount();
+        int accepted = Math.min(incoming.getCount(), Math.max(0, space));
+        if (accepted > 0) {
+            boolean wasEmpty = cargo.isEmpty();
+            if (wasEmpty) {
+                cargo = incoming.copy();
+                cargo.setCount(accepted);
+                onCargoEntered(side, time, true);
+            } else {
+                cargo.grow(accepted);
+                setChanged();
+                syncVisual();
+            }
         }
         return accepted;
     }
@@ -322,6 +634,10 @@ public final class TransportNode extends TransportSaveBase
         if (!simulate && accepted > 0) {
             liquid = key;
             amount += accepted;
+            if (side != null) {
+                noteFluidFlow(side.getOpposite());
+                pendingFluidVisualSync = true;
+            }
             setChanged();
         }
         return accepted;
@@ -334,14 +650,23 @@ public final class TransportNode extends TransportSaveBase
                 || pump(side) != 0
                 || (key != null && !liquid.equals(key))) return 0;
         int drained = Math.min(amount, requested);
-        if (!simulate) debit(drained);
+        if (!simulate && drained > 0) {
+            if (side != null) {
+                noteFluidFlow(side);
+                pendingFluidVisualSync = true;
+            }
+            debit(drained);
+        }
         return drained;
     }
 
     void debit(int transferred) {
         if (transferred == 0) return;
         amount -= transferred;
-        if (amount == 0) liquid = null;
+        if (amount == 0) {
+            liquid = null;
+            fluidFlowDir = null;
+        }
         setChanged();
     }
 

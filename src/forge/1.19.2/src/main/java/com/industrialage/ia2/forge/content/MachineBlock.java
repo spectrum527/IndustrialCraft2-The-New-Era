@@ -37,7 +37,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-class MachineBlock extends BaseEntityBlock implements WrenchTarget {
+/** Base block for early industrial processors, generators, and EU storage units. */
+public class MachineBlock extends BaseEntityBlock implements WrenchTarget {
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     static final DirectionProperty OUTPUT_FACE = BlockStateProperties.FACING;
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");

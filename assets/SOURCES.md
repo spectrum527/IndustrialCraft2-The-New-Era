@@ -1791,3 +1791,24 @@
 | `assets/ic2/textures/items/cover/pipe_injection_nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制 16×16 注入嘴图标 | 2026-11-22 |
 | `assets/ic2/textures/blocks/transport/bronze/nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制青铜管嘴 UV，参照项目作者青铜管配色 | 2026-11-22 |
 | `assets/ic2/textures/blocks/transport/steel/nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制钢管嘴 UV，参照项目作者钢管配色 | 2026-11-22 |
+
+## 1.0.8 透明镂空管道纹理
+
+14 张透明镂空青铜与钢制物品/流体管道纹理均为独立手工绘制，采用青铜与钢配色搭配物品管琥珀导轨、流体管蓝绿环带。
+
+| resource_path | status | author | license | source | date |
+|---|---|---|---|---|---|
+| `assets/ic2/textures/blocks/transport/bronze/fluid_pipe_arm.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空青铜流体管道臂部纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/fluid_pipe_core.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空青铜流体管道核心纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/fluid_pipe_end.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空青铜流体管道端面纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_arm.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空青铜物品管道臂部纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_core.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空青铜物品管道核心纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_end.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空青铜物品管道端面纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_outlet.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空青铜物品管道出口环纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/fluid_pipe_arm.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空钢制流体管道臂部纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/fluid_pipe_core.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空钢制流体管道核心纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/fluid_pipe_end.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空钢制流体管道端面纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_arm.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空钢制物品管道臂部纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_core.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空钢制物品管道核心纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_end.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空钢制物品管道端面纹理 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_outlet.png` | new | IC2 项目（净室重绘） | CC BY-SA 4.0 | 1.0.8 透明镂空钢制物品管道出口环纹理 | 2026-11-26 |

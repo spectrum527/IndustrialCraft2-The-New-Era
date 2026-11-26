@@ -73,6 +73,16 @@ final class PipeUpgradeChecks {
                 require(
                         !pipe.blocksUpgrade(Direction.WEST, eject, false),
                         upgradeName + " released face");
+                if (!eject) {
+                    require(
+                            level.getBlockState(adjacent).getValue(BlockStateProperties.FACING)
+                                    == Direction.EAST,
+                            upgradeName + " extraction nozzle auto-flipped OUT away from WEST");
+                    level.setBlockAndUpdate(
+                            adjacent,
+                            level.getBlockState(adjacent)
+                                    .setValue(BlockStateProperties.FACING, Direction.WEST));
+                }
                 require(
                         MachineAutomation.transfer(
                                 level, pos, storage, 0, 1, List.of(upgrade), stack -> true),
