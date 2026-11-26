@@ -119,9 +119,12 @@ public final class WorkshopPlatform {
                                                     }
                                                 })));
         for (String material : WorkshopKinetic.ROTOR_MATERIALS) {
-            WorkshopNative.unstackable(ITEMS, material + "_rotor");
+            WorkshopNative.durable(ITEMS, material + "_rotor", WindRotorMount.durability(material));
             ITEMS.registerSimpleItem(material + "_rotor_blade");
         }
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+                net.neoforged.neoforge.event.entity.player.ItemTooltipEvent.class,
+                event -> WindRotorMount.appendTooltip(event.getItemStack(), event.getToolTip()));
         WorkshopNative.unstackable(ITEMS, "steam_turbine");
         ITEMS.registerSimpleItem("steam_turbine_blade");
         var casing = WorkshopNative.advancedCasing(BLOCKS);
@@ -254,7 +257,44 @@ public final class WorkshopPlatform {
         return ItemStack.isSameItemSameComponents(left, right);
     }
 
-    static boolean tagged(ItemStack item, String tag) {
+    /** Read-only stack entry exposed to optional recipe viewer integrations. */
+    public record RecipeStackView(String id, int count) {}
+
+    /** Read-only workshop recipe exposed to optional recipe viewer integrations. */
+    public record WorkshopRecipeView(
+            String id, List<RecipeStackView> inputs, List<RecipeStackView> outputs) {}
+
+    /** Returns all registered recipes for a workshop machine type (e.g. {@code "ore_washer"}). */
+    public static List<WorkshopRecipeView> workshopRecipes(String type) {
+        return WorkshopRecipes.forType(type).stream()
+                .map(
+                        recipe ->
+                                new WorkshopRecipeView(
+                                        recipe.id(),
+                                        recipe.inputs().stream()
+                                                .map(s -> new RecipeStackView(s.id(), s.count()))
+                                                .toList(),
+                                        recipe.outputs().stream()
+                                                .map(s -> new RecipeStackView(s.id(), s.count()))
+                                                .toList()))
+                .toList();
+    }
+
+    /** Returns whether {@code itemId} is a built-in fallback member of {@code tag}. */
+    public static boolean knownTagMember(String tag, String itemId) {
+        return WorkshopRecipes.knownMember(tag, itemId);
+    }
+
+    /** Creates an ItemStack for a registered item ID, or empty if absent. */
+    public static ItemStack itemStack(String id, int count) {
+        return stack(id, count);
+    }
+
+    /**
+     * Checks whether {@code item} matches {@code tag} (supporting {@code c:} and {@code forge:}
+     * aliases).
+     */
+    public static boolean tagged(ItemStack item, String tag) {
         return WorkshopNative.tagged(item, tag);
     }
 

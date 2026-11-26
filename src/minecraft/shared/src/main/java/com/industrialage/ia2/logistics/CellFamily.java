@@ -13,7 +13,8 @@ public enum CellFamily {
                     "water_cell", "minecraft:water",
                     "lava_cell", "minecraft:lava",
                     "air_cell", "ic2:air",
-                    "weed_ex_cell", "ic2:weed_ex"));
+                    "weed_ex_cell", "ic2:weed_ex",
+                    "biogas_cell", "ic2:biogas"));
 
     /** Volume of one filled cell, in millibuckets. */
     public static final int CAPACITY = 1000;

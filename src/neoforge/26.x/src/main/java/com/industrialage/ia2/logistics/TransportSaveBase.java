@@ -2,8 +2,10 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +26,17 @@ abstract class TransportSaveBase extends BlockEntity {
                 protected TransferState createSnapshot() {
                     var node = (TransportNode) TransportSaveBase.this;
                     return new TransferState(
-                            node.cargo.copy(), node.liquid, node.amount, node.receivedItemAt);
+                            node.cargo.copy(),
+                            node.liquid,
+                            node.amount,
+                            node.receivedItemAt,
+                            node.cargoFrom,
+                            node.cargoTo,
+                            node.cargoStalled,
+                            node.cargoSeq,
+                            node.fluidFlowDir,
+                            node.pendingItemVisualSync,
+                            node.pendingFluidVisualSync);
                 }
 
                 @Override
@@ -34,6 +46,18 @@ abstract class TransportSaveBase extends BlockEntity {
                     node.liquid = snapshot.fluid();
                     node.amount = snapshot.amount();
                     node.receivedItemAt = snapshot.receivedAt();
+                    node.cargoFrom = snapshot.cargoFrom();
+                    node.cargoTo = snapshot.cargoTo();
+                    node.cargoStalled = snapshot.cargoStalled();
+                    node.cargoSeq = snapshot.cargoSeq();
+                    node.fluidFlowDir = snapshot.fluidFlowDir();
+                    node.pendingItemVisualSync = snapshot.pendingItemVisualSync();
+                    node.pendingFluidVisualSync = snapshot.pendingFluidVisualSync();
+                }
+
+                @Override
+                protected void onRootCommit(TransferState originalState) {
+                    ((TransportNode) TransportSaveBase.this).flushCommittedVisualSync();
                 }
             };
 
@@ -54,15 +78,51 @@ abstract class TransportSaveBase extends BlockEntity {
         var node = (TransportNode) this;
         tag.putInt("nozzle_extraction", node.extractionNozzles);
         tag.putInt("nozzle_injection", node.injectionNozzles);
+        var ops = registries.createSerializationContext(NbtOps.INSTANCE);
+        if (node.spec.kind() == Kind.ITEM_PIPE && !node.cargo.isEmpty()) {
+            ItemStack.OPTIONAL_CODEC
+                    .encodeStart(ops, node.cargo)
+                    .result()
+                    .ifPresent(encoded -> tag.put("cargo", encoded));
+            tag.putInt("cargo_from", encodeDirection(node.cargoFrom));
+            tag.putInt("cargo_to", encodeDirection(node.cargoTo));
+            tag.putInt("cargo_seq", node.cargoSeq);
+            tag.putBoolean("cargo_stalled", node.cargoStalled);
+        } else if (node.spec.kind() == Kind.FLUID_PIPE && node.liquid != null && node.amount > 0) {
+            FluidStack.OPTIONAL_CODEC
+                    .encodeStart(ops, TransportPlatform.fluid(node))
+                    .result()
+                    .ifPresent(encoded -> tag.put("fluid", encoded));
+            tag.putInt("flow_dir", encodeDirection(node.fluidFlowDir));
+        }
         return tag;
     }
 
     @Override
     public void handleUpdateTag(ValueInput input) {
-        ((TransportNode) this)
-                .restoreNozzles(
-                        input.getIntOr("nozzle_extraction", 0),
-                        input.getIntOr("nozzle_injection", 0));
+        var node = (TransportNode) this;
+        var syncedCargo = input.read("cargo", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
+        var syncedFluid = input.read("fluid", FluidStack.OPTIONAL_CODEC).orElse(FluidStack.EMPTY);
+        node.applyClientSync(
+                input.getIntOr("nozzle_extraction", 0),
+                input.getIntOr("nozzle_injection", 0),
+                syncedCargo,
+                decodeDirection(input.getIntOr("cargo_from", -1)),
+                decodeDirection(input.getIntOr("cargo_to", -1)),
+                input.getIntOr("cargo_seq", 0),
+                input.getBooleanOr("cargo_stalled", false),
+                syncedFluid.isEmpty() ? null : new FluidKey(syncedFluid),
+                syncedFluid.getAmount(),
+                decodeDirection(input.getIntOr("flow_dir", -1)));
+    }
+
+    private static int encodeDirection(Direction direction) {
+        return direction == null ? -1 : direction.ordinal();
+    }
+
+    private static Direction decodeDirection(int ordinal) {
+        var values = TransportNode.SIDES;
+        return ordinal >= 0 && ordinal < values.length ? values[ordinal] : null;
     }
 
     @Override
@@ -114,5 +174,16 @@ abstract class TransportSaveBase extends BlockEntity {
         }
     }
 
-    record TransferState(ItemStack cargo, FluidKey fluid, int amount, long receivedAt) {}
+    record TransferState(
+            ItemStack cargo,
+            FluidKey fluid,
+            int amount,
+            long receivedAt,
+            Direction cargoFrom,
+            Direction cargoTo,
+            boolean cargoStalled,
+            int cargoSeq,
+            Direction fluidFlowDir,
+            boolean pendingItemVisualSync,
+            boolean pendingFluidVisualSync) {}
 }

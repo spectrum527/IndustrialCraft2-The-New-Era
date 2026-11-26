@@ -28,7 +28,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 
 /** A placeable machine that opens its own inventory and ticks on the server. */
-class MachineBlock extends NativeGameplay.MachineBlockBase implements WrenchTarget {
+public class MachineBlock extends NativeGameplay.MachineBlockBase implements WrenchTarget {
     static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     final MachineKind kind;
 

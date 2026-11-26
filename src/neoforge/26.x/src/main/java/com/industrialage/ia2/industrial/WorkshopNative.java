@@ -71,6 +71,10 @@ final class WorkshopNative {
         items.registerSimpleItem(path, () -> new Item.Properties().stacksTo(1));
     }
 
+    static void durable(DeferredRegister.Items items, String path, int maxDamage) {
+        items.registerSimpleItem(path, () -> new Item.Properties().durability(maxDamage));
+    }
+
     static void registerToolBox(DeferredRegister.Items items, WorkshopToolBox.Kind kind) {
         items.registerItem(
                 kind.path,
@@ -154,6 +158,11 @@ final class WorkshopNative {
     }
 
     static boolean tagged(ItemStack item, String tag) {
+        return com.industrialage.ia2.content.ProcessingMachine.matchesTagAlias(
+                tag, candidate -> matchesRawTag(item, candidate));
+    }
+
+    private static boolean matchesRawTag(ItemStack item, String tag) {
         return item.is(TagKey.create(Registries.ITEM, Identifier.parse(tag)));
     }
 

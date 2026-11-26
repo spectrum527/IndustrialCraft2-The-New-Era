@@ -1,0 +1,10 @@
+{
+  "ic2:devices": {
+    "entrypoints": {
+      "common": "com.industrialage.ia2.compat.Ic2WthitCommonPlugin",
+      "client": "com.industrialage.ia2.compat.Ic2WthitClientPlugin"
+    },
+    "side": "*",
+    "required": []
+  }
+}

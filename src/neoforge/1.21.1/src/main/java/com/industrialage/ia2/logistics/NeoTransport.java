@@ -86,6 +86,14 @@ final class NeoTransport {
         return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, side) != null;
     }
 
+    static boolean canAcceptItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
+        var handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, side);
+        if (handler == null || stack.isEmpty()) {
+            return false;
+        }
+        return ItemHandlerHelper.insertItemStacked(handler, stack.copyWithCount(1), true).isEmpty();
+    }
+
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
         var handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, side);
         if (handler == null) {
@@ -185,14 +193,22 @@ final class NeoTransport {
                 return stack;
             }
             int inserted = node.insertItem(side, stack, simulate, node.getLevel().getGameTime());
+            if (!simulate && inserted > 0) {
+                node.flushCommittedVisualSync();
+            }
             return stack.copyWithCount(stack.getCount() - inserted);
         }
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            return slot == 0
-                    ? TransportPlatform.extract(node, side, amount, simulate)
-                    : ItemStack.EMPTY;
+            if (slot != 0) {
+                return ItemStack.EMPTY;
+            }
+            var extracted = TransportPlatform.extract(node, side, amount, simulate);
+            if (!simulate && !extracted.isEmpty()) {
+                node.flushCommittedVisualSync();
+            }
+            return extracted;
         }
 
         @Override
@@ -239,9 +255,15 @@ final class NeoTransport {
 
         @Override
         public int fill(FluidStack stack, FluidAction action) {
-            return isFluidValid(0, stack)
-                    ? node.fill(side, new FluidKey(stack), stack.getAmount(), action.simulate())
-                    : 0;
+            if (!isFluidValid(0, stack)) {
+                return 0;
+            }
+            int accepted =
+                    node.fill(side, new FluidKey(stack), stack.getAmount(), action.simulate());
+            if (!action.simulate() && accepted > 0) {
+                node.flushCommittedVisualSync();
+            }
+            return accepted;
         }
 
         @Override
@@ -263,6 +285,9 @@ final class NeoTransport {
                 return FluidStack.EMPTY;
             }
             int moved = node.drain(side, key, amount, action.simulate());
+            if (!action.simulate() && moved > 0) {
+                node.flushCommittedVisualSync();
+            }
             return moved == 0 ? FluidStack.EMPTY : key.stack(moved);
         }
     }

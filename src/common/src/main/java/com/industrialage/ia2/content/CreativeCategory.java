@@ -91,7 +91,7 @@ public enum CreativeCategory {
             advanced_machine alloy ashes bio_chaff bronze_block bronze_casing bronze_dust bronze_plate
             carbon_fibre carbon_mesh carbon_plate clay_dust coal_ball coal_block coal_chunk coal_dust
             coal_fuel_dust coil coin coke compressed_hydrated_coal compressed_plants copper_boiler
-            copper_dust copper_ingot crushed_copper crushed_gold crushed_iron crushed_lead
+            copper_dust crushed_copper crushed_gold crushed_iron crushed_lead
             crushed_silver crushed_tin crystal_memory deepslate_lead_ore deepslate_tin_ore
             dense_bronze_plate dense_copper_plate dense_gold_plate dense_iron_plate dense_lapis_plate
             dense_lead_plate dense_obsidian_plate dense_steel_plate dense_tin_plate
@@ -114,7 +114,7 @@ public enum CreativeCategory {
             "fluid_cell",
             """
             empty_cell basic_water_cell basic_lava_cell fluid_cell water_cell lava_cell air_cell
-            electrolyzed_water_cell tin_can filled_tin_can empty_fuel_can filled_fuel_can air_bucket
+            biogas_cell electrolyzed_water_cell tin_can filled_tin_can empty_fuel_can filled_fuel_can air_bucket
             bio_cell biofuel_cell biogas_bucket biomass_bucket coalfuel_cell construction_foam_bucket
             coolant_bucket creosote_bucket distilled_water_bucket heavy_water_bucket hot_coolant_bucket
             hot_water_bucket hydrated_coal_cell hydration_cell hydrogen_bucket oxygen_bucket

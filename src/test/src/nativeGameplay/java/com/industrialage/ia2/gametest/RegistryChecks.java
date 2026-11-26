@@ -17,6 +17,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 
 /** Compare each IC2 runtime registry to the complete independent repaired-game inventory. */
 final class RegistryChecks {
+    private static final java.util.Set<String> INTENTIONALLY_REMOVED_ITEMS =
+            java.util.Set.of("ic2:copper_ingot");
+
     private RegistryChecks() {}
 
     static void run(BiConsumer<String, Boolean> check) {
@@ -48,6 +51,11 @@ final class RegistryChecks {
                         .forEach(k -> actual.add(k.toString()));
                 var needed = new TreeSet<String>();
                 expected.getAsJsonArray(key).forEach(e -> needed.add(e.getAsString()));
+                if (key.equals("minecraft:item")) {
+                    needed.removeAll(INTENTIONALLY_REMOVED_ITEMS);
+                    check.accept("removed-copper-ingot", !actual.contains("ic2:copper_ingot"));
+                    check.accept("registered-biogas-cell", actual.contains("ic2:biogas_cell"));
+                }
                 var missing = new TreeSet<>(needed);
                 missing.removeAll(actual);
                 var extra = new TreeSet<>(actual);
