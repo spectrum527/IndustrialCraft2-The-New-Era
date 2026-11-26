@@ -17,7 +17,10 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
 final class WorldBlocks {
     private WorldBlocks() {}
@@ -275,12 +278,37 @@ final class WorldBlocks {
         }
     }
 
-    private static final class MiningPipe extends Block {
+    private static final class MiningPipe extends WorldNative.MiningPipeBase {
         private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE =
                 box(5, 0, 5, 11, 16, 11);
 
         MiningPipe(Properties settings) {
             super(settings);
+            registerDefaultState(
+                    defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(
+                StateDefinition.Builder<Block, BlockState> builder) {
+            builder.add(BlockStateProperties.WATERLOGGED);
+        }
+
+        @Override
+        public FluidState getFluidState(BlockState state) {
+            return state.getValue(BlockStateProperties.WATERLOGGED)
+                    ? Fluids.WATER.getSource(false)
+                    : super.getFluidState(state);
+        }
+
+        @Override
+        public BlockState getStateForPlacement(
+                net.minecraft.world.item.context.BlockPlaceContext context) {
+            return defaultBlockState()
+                    .setValue(
+                            BlockStateProperties.WATERLOGGED,
+                            context.getLevel().getFluidState(context.getClickedPos()).getType()
+                                    == Fluids.WATER);
         }
 
         @Override

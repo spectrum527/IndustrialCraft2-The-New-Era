@@ -42,6 +42,11 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends De
         return -1;
     }
 
+    /** Optional tooltip for an authored control at panel-local coordinates. */
+    protected Component tooltipAt(int x, int y) {
+        return null;
+    }
+
     @Override
     protected boolean panelMouseClicked(MouseButtonEvent button, boolean twice) {
         var local = unscale(button);
@@ -85,9 +90,14 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends De
     /** Paint background, inlaid controls and text before native item stacks are rendered. */
     protected abstract void paint(PanelCanvas canvas);
 
+    /** Paint background, inlaid controls and text with panel-local pointer coordinates. */
+    protected void paint(PanelCanvas canvas, int mouseX, int mouseY) {
+        paint(canvas);
+    }
+
     @Override
     public void extractContents(GuiGraphicsExtractor g, int mouseX, int mouseY, float tick) {
-        paint(PanelGraphics.at(g, font, leftPos, topPos));
+        paint(PanelGraphics.at(g, font, leftPos, topPos), mouseX - leftPos, mouseY - topPos);
         super.extractContents(g, mouseX, mouseY, tick);
     }
 
@@ -118,5 +128,11 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends De
     @Override
     protected void extractTooltip(GuiGraphicsExtractor g, int x, int y) {
         super.extractTooltip(g, viewport.screenX(x), viewport.screenY(y));
+        if (menu.getCarried().isEmpty() && (hoveredSlot == null || !hoveredSlot.hasItem())) {
+            var tip = tooltipAt(x - leftPos, y - topPos);
+            if (tip != null) {
+                g.setTooltipForNextFrame(font, tip, viewport.screenX(x), viewport.screenY(y));
+            }
+        }
     }
 }

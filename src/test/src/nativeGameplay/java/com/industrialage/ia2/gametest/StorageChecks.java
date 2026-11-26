@@ -140,6 +140,9 @@ final class StorageChecks {
         var node = (BoxNode) level.getBlockEntity(POS);
         var menu = node.menu(1, owner.getInventory(), 0);
         check.accept(key + "owner-can-open", menu != null);
+        if (method.equals("hand")) {
+            verifyBoxSorting(level, node, menu, check);
+        }
         special = new ItemStack(Items.IRON_SWORD);
         special.setDamageValue(7);
         special.set(DataComponents.CUSTOM_NAME, Component.literal("Storage QA marker"));
@@ -254,6 +257,109 @@ final class StorageChecks {
                 key + "no-residual-drops",
                 level.getEntitiesOfClass(ItemEntity.class, new AABB(POS).inflate(3)).isEmpty());
         level.setBlockAndUpdate(POS, Blocks.AIR.defaultBlockState());
+    }
+
+    private void verifyBoxSorting(
+            ServerLevel level,
+            BoxNode node,
+            net.minecraft.world.inventory.AbstractContainerMenu menu,
+            BiConsumer<String, Boolean> check) {
+        owner.setPos(POS.getX() + 0.5, POS.getY(), POS.getZ() + 0.5);
+        outsider.setPos(POS.getX() + 2.5, POS.getY(), POS.getZ() + 0.5);
+
+        var wornSword = new ItemStack(Items.IRON_SWORD);
+        wornSword.setDamageValue(12);
+        var namedAlpha = new ItemStack(Items.IRON_SWORD);
+        namedAlpha.set(DataComponents.CUSTOM_NAME, Component.literal("Alpha Blade"));
+        var namedBeta = new ItemStack(Items.IRON_SWORD);
+        namedBeta.set(DataComponents.CUSTOM_NAME, Component.literal("Beta Blade"));
+
+        menu.getSlot(0).set(new ItemStack(Items.COBBLESTONE, 40));
+        menu.getSlot(1).set(new ItemStack(Items.REDSTONE, 40));
+        menu.getSlot(2).set(wornSword.copy());
+        menu.getSlot(3).set(namedBeta.copy());
+        menu.getSlot(4).set(new ItemStack(Items.ENDER_PEARL, 10));
+        menu.getSlot(5).set(namedAlpha.copy());
+        menu.getSlot(box.slots() / 2).set(new ItemStack(Items.COBBLESTONE, 40));
+        menu.getSlot(box.slots() / 2 + 1).set(new ItemStack(Items.ENDER_PEARL, 12));
+        menu.getSlot(box.slots() - 1).set(new ItemStack(Items.REDSTONE, 30));
+
+        if (box.id().equals("personal_chest")) {
+            boolean outsiderSorted = menu.clickMenuButton(outsider, 1);
+            check.accept(
+                    key + "sort-outsider-denied",
+                    !outsiderSorted
+                            && ItemStack.matches(
+                                    menu.getSlot(0).getItem(), new ItemStack(Items.COBBLESTONE, 40))
+                            && ItemStack.matches(
+                                    menu.getSlot(box.slots() - 1).getItem(),
+                                    new ItemStack(Items.REDSTONE, 30)));
+        }
+
+        check.accept(key + "sort-ignores-action-0", !menu.clickMenuButton(owner, 0));
+        check.accept(key + "sort-action-accepted", menu.clickMenuButton(owner, 1));
+        boolean ordered =
+                ItemStack.matches(menu.getSlot(0).getItem(), new ItemStack(Items.COBBLESTONE, 64))
+                        && ItemStack.matches(
+                                menu.getSlot(1).getItem(), new ItemStack(Items.COBBLESTONE, 16))
+                        && ItemStack.matches(
+                                menu.getSlot(2).getItem(), new ItemStack(Items.ENDER_PEARL, 16))
+                        && ItemStack.matches(
+                                menu.getSlot(3).getItem(), new ItemStack(Items.ENDER_PEARL, 6))
+                        && ItemStack.matches(menu.getSlot(4).getItem(), namedAlpha)
+                        && ItemStack.matches(menu.getSlot(5).getItem(), namedBeta)
+                        && ItemStack.matches(menu.getSlot(6).getItem(), wornSword)
+                        && ItemStack.matches(
+                                menu.getSlot(7).getItem(), new ItemStack(Items.REDSTONE, 64))
+                        && ItemStack.matches(
+                                menu.getSlot(8).getItem(), new ItemStack(Items.REDSTONE, 6));
+        for (int i = 9; i < box.slots(); i++) {
+            ordered &= menu.getSlot(i).getItem().isEmpty();
+        }
+        check.accept(key + "sort-merged-and-ordered", ordered);
+
+        if (box.id().equals("iridium_storage_box")) {
+            var paged = node.menu(9, owner.getInventory(), 2);
+            menu.getSlot(125).set(new ItemStack(Items.APPLE, 3));
+            check.accept(
+                    key + "sort-offset-page-sorts-full-container",
+                    paged != null
+                            && paged.clickMenuButton(owner, 1)
+                            && ItemStack.matches(
+                                    menu.getSlot(0).getItem(), new ItemStack(Items.APPLE, 3))
+                            && menu.getSlot(125).getItem().isEmpty());
+        }
+
+        for (int i = 0; i < box.slots(); i++) {
+            menu.getSlot(i).set(ItemStack.EMPTY);
+        }
+
+        if (box.id().equals("wooden_storage_box")) {
+            var benchPos = POS.west(2);
+            NativeGameplayFixture.place(level, owner, "industrial_workbench", benchPos);
+            var benchNode = (BoxNode) level.getBlockEntity(benchPos);
+            var benchMenu = benchNode.menu(10, owner.getInventory(), 0);
+            benchMenu.getSlot(0).set(new ItemStack(Items.OAK_LOG, 1));
+            benchMenu.getSlot(13).set(new ItemStack(Items.COBBLESTONE, 5));
+            boolean ignoredSort = !benchMenu.clickMenuButton(owner, 1);
+            boolean preserved =
+                    ItemStack.matches(benchMenu.getSlot(0).getItem(), new ItemStack(Items.OAK_LOG))
+                            && ItemStack.matches(
+                                    benchMenu.getSlot(13).getItem(),
+                                    new ItemStack(Items.COBBLESTONE, 5));
+            boolean clearedGrid =
+                    benchMenu.clickMenuButton(owner, 0)
+                            && benchMenu.getSlot(0).getItem().isEmpty()
+                            && ItemStack.matches(
+                                    benchMenu.getSlot(13).getItem(),
+                                    new ItemStack(Items.COBBLESTONE, 5));
+            check.accept(
+                    "workbench-action-0-preserved-and-sort-ignored",
+                    ignoredSort && preserved && clearedGrid);
+            benchMenu.getSlot(13).set(ItemStack.EMPTY);
+            level.setBlockAndUpdate(benchPos, Blocks.AIR.defaultBlockState());
+            owner.getInventory().clearContent();
+        }
     }
 
     private static BlockHitResult hit(ServerLevel level) {

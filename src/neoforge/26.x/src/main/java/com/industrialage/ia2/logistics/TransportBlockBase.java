@@ -12,6 +12,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
 /** Native 26.x interaction and connection hooks for transport blocks. */
@@ -50,6 +52,10 @@ abstract class TransportBlockBase extends Block {
             BlockPos neighborPos,
             BlockState neighbor,
             RandomSource random) {
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED)
+                && state.getValue(BlockStateProperties.WATERLOGGED)) {
+            ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
         return connect(state, side, neighbor, level, pos);
     }
 }

@@ -25,7 +25,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
@@ -292,6 +294,28 @@ final class WorldNative {
         public List<ItemStack> getDrops(BlockState state, LootParams.Builder loot) {
             var entity = loot.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
             return CropPlot.broken(state, entity instanceof CropPlot plot ? plot : null);
+        }
+    }
+
+    abstract static class MiningPipeBase extends Block implements SimpleWaterloggedBlock {
+        MiningPipeBase(Properties settings) {
+            super(settings);
+        }
+
+        @Override
+        protected BlockState updateShape(
+                BlockState state,
+                LevelReader level,
+                net.minecraft.world.level.ScheduledTickAccess ticks,
+                BlockPos pos,
+                Direction side,
+                BlockPos neighborPos,
+                BlockState neighbor,
+                RandomSource random) {
+            if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+                ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            }
+            return super.updateShape(state, level, ticks, pos, side, neighborPos, neighbor, random);
         }
     }
 
