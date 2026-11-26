@@ -19,10 +19,17 @@ final class WorldChunkTickets {
         int count =
                 HOLDERS.computeIfAbsent(level, ignored -> new HashMap<>())
                         .merge(chunk, 1, Integer::sum);
-        if (count == 1) level.getChunkSource().addRegionTicket(LEASE, chunk, 2, chunk);
+        if (count == 1) {
+            level.getChunkSource().addRegionTicket(LEASE, chunk, 2, chunk);
+            level.setChunkForced(chunk.x, chunk.z, true);
+        }
     }
 
     static void release(ServerLevel level, ChunkPos chunk) {
+        release(level, chunk, true);
+    }
+
+    static void release(ServerLevel level, ChunkPos chunk, boolean unforce) {
         var leases = HOLDERS.get(level);
         if (leases == null) return;
         var count = leases.get(chunk);
@@ -32,6 +39,7 @@ final class WorldChunkTickets {
         } else {
             leases.remove(chunk);
             level.getChunkSource().removeRegionTicket(LEASE, chunk, 2, chunk);
+            if (unforce) level.setChunkForced(chunk.x, chunk.z, false);
         }
         if (leases.isEmpty()) HOLDERS.remove(level);
     }

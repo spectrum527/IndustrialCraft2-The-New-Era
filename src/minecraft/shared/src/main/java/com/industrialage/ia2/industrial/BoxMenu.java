@@ -76,6 +76,18 @@ final class BoxMenu extends DeviceAccessMenu {
                             }
 
                             @Override
+                            public java.util.Optional<ItemStack> tryRemove(
+                                    int count, int decrement, Player who) {
+                                if (!mayPickup(who)) return java.util.Optional.empty();
+                                var current = getItem();
+                                if (current.isEmpty() || decrement < current.getCount())
+                                    return java.util.Optional.empty();
+                                var taken = remove(current.getCount());
+                                if (!taken.isEmpty()) onTake(who, taken);
+                                return java.util.Optional.of(taken);
+                            }
+
+                            @Override
                             public void onTake(Player who, ItemStack taken) {
                                 if (node != null) craft(stationIndex, who);
                                 super.onTake(who, taken);

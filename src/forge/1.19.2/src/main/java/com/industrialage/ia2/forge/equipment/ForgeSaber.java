@@ -63,7 +63,7 @@ final class ForgeSaber {
         if (FMLEnvironment.dist == Dist.CLIENT) Client.install(modBus);
     }
 
-    private static boolean active(ItemStack stack) {
+    static boolean active(ItemStack stack) {
         return ForgeGear.type(stack) == PortableEquipment.NANO_SABER
                 && stack.hasTag()
                 && stack.getTag().getBoolean(STATE);

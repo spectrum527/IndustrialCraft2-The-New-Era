@@ -100,14 +100,25 @@ final class JetpackControls {
     private void tick(ServerPlayer player) {
         var state = flight.get(player);
         if (state == null) return;
+        if (!ForgeGear.hasJetpack(player)) {
+            flight.remove(player);
+            return;
+        }
         boolean thrust = state.until() != 0 && player.server.getTickCount() <= state.until();
-        if ((!thrust && (!state.hover() || player.isOnGround()))
+        if (!thrust && !state.hover()) {
+            flight.remove(player);
+            return;
+        }
+        if ((!thrust && player.isOnGround())
                 || player.isPassenger()
                 || player.isSpectator()
                 || player.isUnderWater()
-                || player.getAbilities().flying
-                || !ForgeGear.payForFlight(player, state.hover())) {
-            flight.remove(player);
+                || player.getAbilities().flying) {
+            if (thrust) flight.put(player, new Flight(0, state.hover()));
+            return;
+        }
+        if (!ForgeGear.payForFlight(player, state.hover())) {
+            if (thrust) flight.put(player, new Flight(0, state.hover()));
             return;
         }
         var velocity = player.getDeltaMovement();

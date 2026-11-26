@@ -86,10 +86,12 @@ public class CableBlock extends Block implements EntityBlock, SimpleWaterloggedB
         if (!(level instanceof ServerLevel server)) return true;
         var painted = state.setValue(CableColors.COLOR, color);
         for (Direction side : Direction.values()) {
+            var neighborPos = pos.relative(side);
             painted =
                     painted.setValue(
                             arm(side),
-                            cable.connects(painted, level.getBlockState(pos.relative(side))));
+                            cable.connectsInWorld(
+                                    level, painted, neighborPos, level.getBlockState(neighborPos)));
         }
         if (!server.setBlockAndUpdate(pos, painted)) return false;
         var conductor = server.getBlockEntity(pos);
@@ -125,8 +127,9 @@ public class CableBlock extends Block implements EntityBlock, SimpleWaterloggedB
             state = state.setValue(ACTIVE, level.hasNeighborSignal(pos));
         }
         for (Direction side : Direction.values()) {
-            var neighbor = level.getBlockState(pos.relative(side));
-            state = state.setValue(arm(side), connects(state, neighbor));
+            var neighborPos = pos.relative(side);
+            var neighbor = level.getBlockState(neighborPos);
+            state = state.setValue(arm(side), connectsInWorld(level, state, neighborPos, neighbor));
         }
         return state;
     }
@@ -142,16 +145,51 @@ public class CableBlock extends Block implements EntityBlock, SimpleWaterloggedB
         if (state.getValue(BlockStateProperties.WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return state.setValue(arm(side), connects(state, neighbor));
+        return state.setValue(arm(side), connectsInWorld(level, state, neighborPos, neighbor));
     }
 
     final boolean connects(BlockState state, BlockState neighbor) {
         return neighbor.getBlock() instanceof CableBlock && CableColors.compatible(state, neighbor)
-                || neighbor.getBlock() instanceof PowerBlock
+                || neighbor.getBlock() instanceof PowerBlock power && power.acceptsPower()
                 || neighbor.getBlock() instanceof WorldMachineBlock world && world.acceptsPower()
                 || neighbor.getBlock() instanceof WorkshopBlock workshop && workshop.acceptsPower()
                 || neighbor.getBlock() instanceof MachineBlock machine
                         && machine.kind != MachineKind.IRON_FURNACE;
+    }
+
+    final boolean connectsInWorld(
+            BlockGetter level, BlockState state, BlockPos neighborPos, BlockState neighbor) {
+        if (connects(state, neighbor)) return true;
+        if (level == null) return false;
+        if (level.getBlockEntity(neighborPos)
+                        instanceof com.industrialage.ia2.power.WorldPowerPort port
+                && !port.isRemoved()) {
+            var ports = port.energyPorts();
+            if (!ports.inputs().isEmpty() || !ports.outputs().isEmpty()) {
+                return true;
+            }
+        }
+        return level instanceof ServerLevel server && ForgePower.contains(server, neighborPos);
+    }
+
+    static void refreshNeighbors(ServerLevel level, BlockPos pos) {
+        if (!level.hasChunkAt(pos)) return;
+        var self = level.getBlockState(pos);
+        for (var side : Direction.values()) {
+            var cablePos = pos.relative(side);
+            if (!level.hasChunkAt(cablePos)) continue;
+            var cableState = level.getBlockState(cablePos);
+            if (cableState.getBlock() instanceof CableBlock cable) {
+                var property = arm(side.getOpposite());
+                boolean connected = cable.connectsInWorld(level, cableState, pos, self);
+                if (cableState.getValue(property) != connected) {
+                    level.setBlock(
+                            cablePos,
+                            cableState.setValue(property, connected),
+                            Block.UPDATE_CLIENTS);
+                }
+            }
+        }
     }
 
     @Override
@@ -389,10 +427,11 @@ public class CableBlock extends Block implements EntityBlock, SimpleWaterloggedB
         }
 
         private void sample(Level level, BlockPos pos, BlockState state) {
-            if ((level.getGameTime() - pos.hashCode()) % 32 != 0) {
+            if (Math.floorMod(level.getGameTime() - pos.hashCode(), 32) != 0) {
                 return;
             }
-            boolean active = lastTransfer >= level.getGameTime() - 1;
+            boolean active =
+                    lastTransfer != Long.MIN_VALUE && level.getGameTime() - lastTransfer < 32;
             if (state.getValue(ACTIVE) != active) {
                 level.setBlockAndUpdate(pos, state.setValue(ACTIVE, active));
             }

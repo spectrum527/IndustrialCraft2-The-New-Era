@@ -81,6 +81,7 @@ final class TopProbe {
     }
 
     private static String eu(double amount) {
+        if (!Double.isFinite(amount)) return "0";
         var display = new DecimalFormat("0.###", DecimalFormatSymbols.getInstance(Locale.ROOT));
         display.setRoundingMode(RoundingMode.HALF_UP);
         String digits = display.format(BigDecimal.valueOf(amount));

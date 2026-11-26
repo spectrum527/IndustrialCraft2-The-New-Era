@@ -48,7 +48,11 @@ abstract class BoxHost extends BlockEntity {
         var items = NonNullList.withSize(node.kind.slots, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, items);
         restore(items);
-        node.owner = tag.hasUUID("owner") ? tag.getUUID("owner") : null;
+        try {
+            node.owner = tag.hasUUID("owner") ? tag.getUUID("owner") : null;
+        } catch (IllegalArgumentException malformed) {
+            node.owner = null;
+        }
     }
 
     private final MachinePortCache automation = new MachinePortCache(this);

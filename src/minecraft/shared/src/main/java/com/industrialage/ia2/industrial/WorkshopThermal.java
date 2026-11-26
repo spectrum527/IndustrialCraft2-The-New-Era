@@ -140,13 +140,14 @@ final class WorkshopThermal {
                         && temperature >= threshold
                         && node.outlet.fill(gas, 100, true) == 100
                         && node.cycles < 10_000;
+        int boilCost = node.mode == 0 ? 110 : 300;
         if (producing) {
             if (node.inlet.id.equals(WATER)) {
                 node.cycles++;
             }
             node.inlet.drain(1, false);
             node.outlet.fill(gas, 100, false);
-            temperature -= 1;
+            temperature = Math.max(0, temperature - boilCost);
         }
         if (node.heat != temperature || producing) {
             node.heat = temperature;

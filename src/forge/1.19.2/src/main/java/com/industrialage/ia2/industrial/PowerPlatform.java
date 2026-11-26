@@ -49,6 +49,64 @@ public final class PowerPlatform {
                 player, hand, new LavaInlet(node));
     }
 
+    static boolean tradeCapability(
+            ServerLevel level,
+            BlockPos pos,
+            net.minecraft.core.Direction face,
+            ItemStack price,
+            ItemStack goods) {
+        var entity = level.getBlockEntity(pos);
+        if (entity == null || entity.isRemoved()) return false;
+        var handler =
+                entity.getCapability(
+                                net.minecraftforge.common.capabilities.ForgeCapabilities
+                                        .ITEM_HANDLER,
+                                face)
+                        .orElse(null);
+        if (handler == null) return false;
+        int slots = handler.getSlots();
+        int[] takePlan = new int[slots];
+        int owed = goods.getCount();
+        for (int i = 0; i < slots && owed > 0; i++) {
+            var current = handler.getStackInSlot(i);
+            if (!current.isEmpty() && WorkshopPlatform.sameItem(current, goods)) {
+                var taken = handler.extractItem(i, owed, true);
+                if (!taken.isEmpty() && WorkshopPlatform.sameItem(taken, goods)) {
+                    takePlan[i] = taken.getCount();
+                    owed -= taken.getCount();
+                }
+            }
+        }
+        if (owed > 0) return false;
+        var remainder = price.copy();
+        for (int i = 0; i < slots && !remainder.isEmpty(); i++) {
+            remainder = handler.insertItem(i, remainder, true);
+        }
+        if (!remainder.isEmpty()) return false;
+        var extracted = new ArrayList<ItemStack>();
+        for (int i = 0; i < slots; i++) {
+            if (takePlan[i] > 0) {
+                var got = handler.extractItem(i, takePlan[i], false);
+                if (!got.isEmpty()) extracted.add(got);
+            }
+        }
+        var payment = price.copy();
+        for (int i = 0; i < slots && !payment.isEmpty(); i++) {
+            payment = handler.insertItem(i, payment, false);
+        }
+        if (!payment.isEmpty()) {
+            for (var rollback : extracted) {
+                var left = rollback;
+                for (int i = 0; i < slots && !left.isEmpty(); i++) {
+                    left = handler.insertItem(i, left, false);
+                }
+                if (!left.isEmpty()) Block.popResource(level, pos, left);
+            }
+            return false;
+        }
+        return true;
+    }
+
     /** Installs the physical blocks and item types for this game version. */
     public static void install(IEventBus bus, ConfigFacade config) {
         PowerSettings.config = config;

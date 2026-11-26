@@ -164,12 +164,27 @@ public final class ForgeGear {
             transfer(pack, player.getMainHandItem());
             transfer(pack, player.getOffhandItem());
         }
-        var main = player.getMainHandItem();
-        var off = player.getOffhandItem();
-        if (type(main) != null && type(main).kind == Kind.CHARGER) transfer(main, off);
-        if (type(off) != null && type(off).kind == Kind.CHARGER) transfer(off, main);
-        ForgeSaber.tick(player, main);
-        ForgeSaber.tick(player, off);
+        var inv = player.getInventory();
+        for (int slot = 0; slot < 9; slot++) {
+            chargeFromHotbarCharger(inv.getItem(slot), player);
+        }
+        chargeFromHotbarCharger(player.getOffhandItem(), player);
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            var item = inv.getItem(i);
+            if (ForgeSaber.active(item)) ForgeSaber.tick(player, item);
+        }
+    }
+
+    private static void chargeFromHotbarCharger(ItemStack stack, ServerPlayer player) {
+        var device = type(stack);
+        if (device == null || device.kind != Kind.CHARGER || stored(stack) <= 0) return;
+        var inv = player.getInventory();
+        for (int slot = 0; slot < 9 && stored(stack) > 0; slot++) {
+            var candidate = inv.getItem(slot);
+            if (candidate != stack) transfer(stack, candidate);
+        }
+        var offhand = player.getOffhandItem();
+        if (offhand != stack && stored(stack) > 0) transfer(stack, offhand);
     }
 
     private static void paidToolHit(LivingDamageEvent event) {
@@ -489,9 +504,14 @@ public final class ForgeGear {
 
         @Override
         public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-            return supports(state)
-                    && TierSortingRegistry.isCorrectTierForDrops(
-                            device == PortableEquipment.DRILL ? Tiers.IRON : Tiers.DIAMOND, state);
+            if (!supports(state) || stored(stack) < device.cost) return false;
+            var tier =
+                    switch (device) {
+                        case DRILL -> Tiers.IRON;
+                        case IRIDIUM_DRILL -> Tiers.NETHERITE;
+                        default -> Tiers.DIAMOND;
+                    };
+            return TierSortingRegistry.isCorrectTierForDrops(tier, state);
         }
 
         @Override

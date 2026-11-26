@@ -198,13 +198,15 @@ final class WorkshopKinetic {
                 || distill && node.outlet.fill(WorkshopThermal.DISTILLED, 1, true) != 1) {
             return 0;
         }
-        if (node.byproduct.fill(WorkshopThermal.STEAM, 90, true) != 90
-                || superheated
-                        && !WorkshopPlatform.hasExternalFluidPort(
-                                level, node.getBlockPos().relative(side.getOpposite()), side)) {
+        if (superheated
+                && (node.byproduct.fill(WorkshopThermal.STEAM, 90, true) != 90
+                        || !WorkshopPlatform.hasExternalFluidPort(
+                                level, node.getBlockPos().relative(side.getOpposite()), side))) {
             return 0;
         }
-        node.byproduct.fill(WorkshopThermal.STEAM, 90, false);
+        if (superheated) {
+            node.byproduct.fill(WorkshopThermal.STEAM, 90, false);
+        }
         if (distill) {
             node.outlet.fill(WorkshopThermal.DISTILLED, 1, false);
         }

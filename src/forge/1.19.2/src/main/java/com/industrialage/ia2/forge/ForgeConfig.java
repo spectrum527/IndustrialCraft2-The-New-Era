@@ -104,6 +104,7 @@ public final class ForgeConfig {
 
     private Optional<String> load(Session session, boolean createIfMissing) {
         try {
+            format.allowFallback(createIfMissing);
             session.file().load(createIfMissing);
             LOGGER.info(
                     "Loaded {} IC2 configuration values from {}",
@@ -120,15 +121,28 @@ public final class ForgeConfig {
             LOGGER.warn(
                     "Rejected IC2 configuration at {} because {}", session.file().path(), reason);
             return Optional.of(reason);
+        } finally {
+            format.allowFallback(false);
         }
     }
 
-    private record Format(ForgeConfigSpec schema) implements WorldConfigFile.Format {
+    private static final class Format implements WorldConfigFile.Format {
+        private final ForgeConfigSpec schema;
+        private boolean fallback;
+
+        private Format(ForgeConfigSpec schema) {
+            this.schema = schema;
+        }
+
+        private void allowFallback(boolean allow) {
+            fallback = allow;
+        }
+
         @Override
         public Function<List<String>, Object> read(Reader text) {
             var candidate = new TomlParser().parse(text);
             // This listener observes value corrections, not comment changes. A correction aborts
-            // validation of this detached parse result, which is never written back to the file.
+            // validation on explicit reload; on initial startup, bad entries fall back to defaults.
             schema.correct(
                     candidate,
                     (action, path, original, replacement) -> {
@@ -138,7 +152,11 @@ public final class ForgeConfig {
                                     case REPLACE -> "Invalid configuration value at ";
                                     case REMOVE -> "Unknown configuration key ";
                                 };
-                        throw new IllegalArgumentException(message + String.join("/", path));
+                        String detail = message + String.join("/", path);
+                        if (!fallback) {
+                            throw new IllegalArgumentException(detail);
+                        }
+                        LOGGER.warn("IC2 configuration: {} (using default for this entry)", detail);
                     });
             return candidate::get;
         }

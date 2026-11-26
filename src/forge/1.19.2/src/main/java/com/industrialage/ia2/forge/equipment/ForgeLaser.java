@@ -149,6 +149,7 @@ final class ForgeLaser {
         var state = level.getBlockState(pos);
         if (state.isAir()
                 || state.getDestroySpeed(level, pos) < 0
+                || state.getDestroyProgress(player, level, pos) <= 0
                 || MinecraftForge.EVENT_BUS.post(
                         new BlockEvent.BreakEvent(level, pos, state, player))) return false;
         if (!smelt) return level.destroyBlock(pos, true, player, Block.UPDATE_LIMIT);
@@ -205,6 +206,14 @@ final class ForgeLaser {
 
         @Override
         protected void onHitEntity(EntityHitResult impact) {
+            if (level instanceof ServerLevel && profile != null) {
+                var target = impact.getEntity();
+                float damage = profile.smelt() ? 8F : Math.max(4F, profile.hits() * 2F);
+                target.hurt(
+                        net.minecraft.world.damagesource.DamageSource.arrow(this, getOwner()),
+                        damage);
+                if (profile.smelt()) target.setSecondsOnFire(4);
+            }
             discard();
         }
 
