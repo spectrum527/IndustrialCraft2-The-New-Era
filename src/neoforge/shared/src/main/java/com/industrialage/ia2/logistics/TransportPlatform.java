@@ -229,6 +229,10 @@ public final class TransportPlatform {
         return NeoTransport.hasItemPort(level, pos, side);
     }
 
+    static boolean canAcceptItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
+        return NeoTransport.canAcceptItem(level, pos, side, stack);
+    }
+
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
         return NeoTransport.offerItem(level, pos, side, stack);
     }
@@ -288,7 +292,11 @@ public final class TransportPlatform {
             node.cargo.shrink(amount);
             if (node.cargo.isEmpty()) {
                 node.cargo = ItemStack.EMPTY;
+                node.cargoFrom = null;
+                node.cargoTo = null;
+                node.cargoStalled = false;
             }
+            node.pendingItemVisualSync = true;
             node.setChanged();
         }
         return stack;

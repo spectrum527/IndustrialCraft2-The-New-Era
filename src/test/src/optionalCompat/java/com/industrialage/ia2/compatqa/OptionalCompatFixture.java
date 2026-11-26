@@ -47,7 +47,12 @@ public final class OptionalCompatFixture {
         NeoForge.EVENT_BUS.addListener(
                 ServerTickEvent.Post.class,
                 event -> {
-                    if (++startupTicks == 30) run(event.getServer());
+                    int tick = ++startupTicks;
+                    if (tick == 10) {
+                        EcosystemLiveChecks.setup(event.getServer().overworld());
+                    } else if (tick == 35) {
+                        run(event.getServer());
+                    }
                 });
     }
 
@@ -169,6 +174,7 @@ public final class OptionalCompatFixture {
             PipeUpgradeChecks.run(level, player, report);
             FixedMenuCensus.run(level, player, report);
             MachineSlotFlowChecks.run(level, player, report);
+            EcosystemLiveChecks.verify(level, player, report);
             player.discard();
             Files.writeString(
                     Path.of("compat-checks.txt"), "passed\n" + String.join("\n", report) + "\n");

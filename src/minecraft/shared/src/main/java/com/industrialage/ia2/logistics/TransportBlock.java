@@ -149,6 +149,22 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
             }
         } else if (pumpRate > 0 ? node.cover(side, pumpRate) : node.installNozzle(side, mode)) {
             if (!player.getAbilities().instabuild) item.shrink(1);
+            if (mode == Nozzle.EXTRACTION && spec.kind() == Kind.ITEM_PIPE) {
+                var state = level.getBlockState(pos);
+                if (state.hasProperty(OUT) && state.getValue(OUT) == side) {
+                    Direction redirected =
+                            ItemPipeRouter.redirectedOutput(
+                                    side,
+                                    candidate -> {
+                                        var adjacent = pos.relative(candidate);
+                                        return level.hasChunkAt(adjacent)
+                                                && level.getBlockEntity(adjacent)
+                                                        instanceof TransportNode next
+                                                && node.linksTo(candidate, next);
+                                    });
+                    level.setBlock(pos, state.setValue(OUT, redirected), Block.UPDATE_CLIENTS);
+                }
+            }
             configurationChanged(level, pos, mode != Nozzle.NONE);
         }
         return true;
@@ -284,10 +300,26 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
         @Override
         public BlockState getStateForPlacement(BlockPlaceContext context) {
             BlockState state = defaultBlockState();
-            if (state.hasProperty(OUT))
-                state = state.setValue(OUT, context.getNearestLookingDirection());
             var level = context.getLevel();
             var pos = context.getClickedPos();
+            if (state.hasProperty(OUT)) {
+                var clicked = context.getClickedFace();
+                var against = pos.relative(clicked.getOpposite());
+                Direction facing = context.getNearestLookingDirection();
+                if (level.hasChunkAt(against)) {
+                    var neighbor = level.getBlockState(against);
+                    boolean againstItemPipe =
+                            neighbor.getBlock() instanceof Pipe pipe
+                                    && pipe.spec.kind() == Kind.ITEM_PIPE;
+                    boolean againstPort =
+                            level instanceof ServerLevel server
+                                    && TransportPlatform.hasItemPort(server, against, clicked);
+                    if (againstItemPipe || againstPort) {
+                        facing = clicked;
+                    }
+                }
+                state = state.setValue(OUT, facing);
+            }
             for (Direction side : TransportNode.SIDES) {
                 var adjacent = pos.relative(side);
                 if (level.hasChunkAt(adjacent)) {

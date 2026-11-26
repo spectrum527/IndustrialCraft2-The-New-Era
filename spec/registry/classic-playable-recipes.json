@@ -323,14 +323,6 @@
       "source": "survival-access: inverse of nine-small unit conversion"
     },
     {
-      "output": "copper_ingot",
-      "count": 1,
-      "ingredients": [
-        "minecraft:copper_ingot"
-      ],
-      "source": "survival-access: registered legacy or optional-integration specimen"
-    },
-    {
       "output": "lithium_fuel_rod",
       "count": 1,
       "ingredients": [

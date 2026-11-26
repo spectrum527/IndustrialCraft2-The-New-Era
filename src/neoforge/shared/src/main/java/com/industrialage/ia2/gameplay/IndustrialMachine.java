@@ -289,7 +289,13 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                         output);
             }
         }
-        Recipe recipe = ProcessingMachine.recipe(kind.path, id);
+        Recipe recipe =
+                ProcessingMachine.recipe(
+                        kind.path,
+                        id,
+                        tag ->
+                                com.industrialage.ia2.industrial.WorkshopPlatform.tagged(
+                                        input, tag));
         if (recipe == null) {
             return null;
         }

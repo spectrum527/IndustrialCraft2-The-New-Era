@@ -87,6 +87,20 @@ public final class ProcessingMachine {
         return ProcessingRecipes.BUILTIN.find(machinePath, fullInputId, matchesTag);
     }
 
+    /** Returns all built-in recipes registered for {@code machinePath} (direct and tag-backed). */
+    public static java.util.List<Recipe> allRecipes(String machinePath) {
+        return ProcessingRecipes.BUILTIN.all(machinePath);
+    }
+
+    /**
+     * Evaluates {@code matchesTag} against {@code tag} and standard cross-loader tag aliases
+     * ({@code c:}/{@code forge:}, {@code raw_ores}/{@code raw_materials}, and {@code blocks}/{@code
+     * storage_blocks}).
+     */
+    public static boolean matchesTagAlias(String tag, Predicate<String> matchesTag) {
+        return ProcessingRecipes.matchesTagAlias(tag, matchesTag);
+    }
+
     /**
      * Advances from the live input and space. A completion authorizes one atomic inventory
      * transaction containing {@link #completedOperations()} operations.

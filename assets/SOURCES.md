@@ -1812,3 +1812,24 @@
 | `assets/ic2/textures/items/cover/pipe_injection_nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制 16×16 注入嘴图标 | 2026-11-22 |
 | `assets/ic2/textures/blocks/transport/bronze/nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制青铜管嘴 UV，参照项目作者青铜管配色 | 2026-11-22 |
 | `assets/ic2/textures/blocks/transport/steel/nozzle.png` | new | IC2 项目（Codex 协助逐像素绘制） | CC BY-SA 4.0 | 1.0.6 手工绘制钢管嘴 UV，参照项目作者钢管配色 | 2026-11-22 |
+
+## 1.0.7 透明镂空管道纹理
+
+青铜与钢制物品/流体管道的透明镂空（cutout）管壁、管核、端面与物品出口环纹理为本次独立绘制。
+
+| resource_path | status | author | license | source | date |
+|---|---|---|---|---|---|
+| `assets/ic2/textures/blocks/transport/bronze/fluid_pipe_arm.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制青铜流体管道镂空管壁 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/fluid_pipe_core.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制青铜流体管道镂空管核 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/fluid_pipe_end.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制青铜流体管道端面 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_arm.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制青铜物品管道镂空管壁 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_core.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制青铜物品管道镂空管核 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_end.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制青铜物品管道端面 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/bronze/item_pipe_outlet.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制青铜物品管道出口环 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/fluid_pipe_arm.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制钢制流体管道镂空管壁 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/fluid_pipe_core.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制钢制流体管道镂空管核 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/fluid_pipe_end.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制钢制流体管道端面 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_arm.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制钢制物品管道镂空管壁 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_core.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制钢制物品管道镂空管核 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_end.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制钢制物品管道端面 | 2026-11-26 |
+| `assets/ic2/textures/blocks/transport/steel/item_pipe_outlet.png` | new | IC2 项目 | CC BY-SA 4.0 | 1.0.7 手工绘制钢制物品管道出口环 | 2026-11-26 |

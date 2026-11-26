@@ -90,6 +90,18 @@ final class NeoTransport {
         return level.getCapability(Capabilities.Item.BLOCK, pos, side) != null;
     }
 
+    static boolean canAcceptItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
+        var handler = level.getCapability(Capabilities.Item.BLOCK, pos, side);
+        if (handler == null || stack.isEmpty()) {
+            return false;
+        }
+        try (var transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
+            return ResourceHandlerUtil.insertStacking(
+                            handler, ItemResource.of(stack), 1, transaction)
+                    > 0;
+        }
+    }
+
     static int offerItem(ServerLevel level, BlockPos pos, Direction side, ItemStack stack) {
         var handler = level.getCapability(Capabilities.Item.BLOCK, pos, side);
         if (handler == null) {

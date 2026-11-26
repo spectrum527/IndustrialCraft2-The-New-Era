@@ -2,6 +2,7 @@ package com.industrialage.ia2.logistics;
 
 import com.industrialage.ia2.content.TransportSpec.Kind;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -31,13 +32,50 @@ abstract class TransportSaveBase extends BlockEntity {
         var node = (TransportNode) this;
         tag.putInt("nozzle_extraction", node.extractionNozzles);
         tag.putInt("nozzle_injection", node.injectionNozzles);
+        if (node.spec.kind() == Kind.ITEM_PIPE && !node.cargo.isEmpty()) {
+            tag.put("cargo", node.cargo.saveOptional(registries));
+            tag.putByte("cargo_from", encodeDirection(node.cargoFrom));
+            tag.putByte("cargo_to", encodeDirection(node.cargoTo));
+            tag.putInt("cargo_seq", node.cargoSeq);
+            tag.putBoolean("cargo_stalled", node.cargoStalled);
+        } else if (node.spec.kind() == Kind.FLUID_PIPE && node.liquid != null && node.amount > 0) {
+            tag.put("fluid", TransportPlatform.fluid(node).saveOptional(registries));
+            tag.putByte("flow_dir", encodeDirection(node.fluidFlowDir));
+        }
         return tag;
     }
 
     @Override
     public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
-        ((TransportNode) this)
-                .restoreNozzles(tag.getInt("nozzle_extraction"), tag.getInt("nozzle_injection"));
+        var node = (TransportNode) this;
+        var syncedCargo =
+                tag.contains("cargo")
+                        ? ItemStack.parseOptional(registries, tag.getCompound("cargo"))
+                        : ItemStack.EMPTY;
+        var syncedFluid =
+                tag.contains("fluid")
+                        ? FluidStack.parseOptional(registries, tag.getCompound("fluid"))
+                        : FluidStack.EMPTY;
+        node.applyClientSync(
+                tag.getInt("nozzle_extraction"),
+                tag.getInt("nozzle_injection"),
+                syncedCargo,
+                decodeDirection(tag.contains("cargo_from") ? tag.getByte("cargo_from") : -1),
+                decodeDirection(tag.contains("cargo_to") ? tag.getByte("cargo_to") : -1),
+                tag.getInt("cargo_seq"),
+                tag.getBoolean("cargo_stalled"),
+                syncedFluid.isEmpty() ? null : new FluidKey(syncedFluid),
+                syncedFluid.getAmount(),
+                decodeDirection(tag.contains("flow_dir") ? tag.getByte("flow_dir") : -1));
+    }
+
+    private static byte encodeDirection(Direction direction) {
+        return direction == null ? (byte) -1 : (byte) direction.ordinal();
+    }
+
+    private static Direction decodeDirection(int ordinal) {
+        var values = TransportNode.SIDES;
+        return ordinal >= 0 && ordinal < values.length ? values[ordinal] : null;
     }
 
     @Override
