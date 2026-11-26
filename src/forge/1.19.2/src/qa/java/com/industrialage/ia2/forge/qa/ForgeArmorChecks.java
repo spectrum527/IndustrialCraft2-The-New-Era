@@ -100,7 +100,11 @@ final class ForgeArmorChecks {
                 player.getFoodData().getFoodLevel() == 16
                         && player.getInventory().contains(new ItemStack(item("tin_can")))
                         && ForgeGear.stored(helmet) == 0);
-        check.accept("quantum-chest-extinguishes", !player.isOnFire());
+        check.accept("quantum-chest-empty-leaves-fire", player.isOnFire());
+        var chest = equip(player, EquipmentSlot.CHEST, "quantum_chestplate", 200);
+        tick(player);
+        check.accept(
+                "quantum-chest-extinguishes", !player.isOnFire() && ForgeGear.stored(chest) == 0);
         check.accept(
                 "quantum-walk-costs-zero",
                 ForgeGear.stored(leggings) == 2_000
@@ -321,11 +325,13 @@ final class ForgeArmorChecks {
         player.setHealth(20);
         player.invulnerableTime = 0;
         impact(player, "magic", 10);
+        int otherCost = family.equals("nano") ? 50_000 : 12_500;
         check.accept(
-                family + "-mixed-suit-has-no-powered-shield",
-                player.getHealth() < 20
-                        && ForgeGear.stored(mixed) == 200_000
-                        && stacks.stream().allMatch(piece -> ForgeGear.stored(piece) == 200_000));
+                family + "-mixed-suit-absorbs-per-piece",
+                player.getHealth() == 20
+                        && ForgeGear.stored(mixed) == 200_000 - otherCost
+                        && stacks.subList(1, 4).stream()
+                                .allMatch(piece -> ForgeGear.stored(piece) == 200_000 - cost));
 
         stacks = suit(player, family, 200_000);
         player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
@@ -333,9 +339,10 @@ final class ForgeArmorChecks {
         player.invulnerableTime = 0;
         impact(player, "magic", 10);
         check.accept(
-                family + "-incomplete-has-no-powered-shield",
-                player.getHealth() < 20
-                        && stacks.stream().allMatch(piece -> ForgeGear.stored(piece) == 200_000));
+                family + "-incomplete-suit-absorbs-three-quarters",
+                Math.abs(player.getHealth() - 17.5F) < 0.0001F
+                        && stacks.subList(1, 4).stream()
+                                .allMatch(piece -> ForgeGear.stored(piece) == 200_000 - cost));
 
         stacks = suit(player, family, 200_000);
         player.setHealth(20);

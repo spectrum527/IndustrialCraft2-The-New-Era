@@ -307,7 +307,7 @@ def steam_lines(server):
                    'if data block 56 153 36 {ic2_fluid:{FluidName:"ic2:steam",Amount:3200}}',
                    "unless data block 55 153 36 ic2_input_fluid")
     server.require("turbine_delivered_distilled_water_and_real_eu",
-                   'if data block 55 153 43 {ic2_input_fluid:{FluidName:"ic2:steam",Amount:9000}}',
+                   "unless data block 55 153 43 ic2_input_fluid",
                    'if data block 56 152 43 {ic2_fluid:{FluidName:"ic2:distilled_water",Amount:10}}',
                    "unless data block 59 153 43 {ic2_energy:0.0d}",
                    "unless data block 56 153 43 ic2_input_fluid")

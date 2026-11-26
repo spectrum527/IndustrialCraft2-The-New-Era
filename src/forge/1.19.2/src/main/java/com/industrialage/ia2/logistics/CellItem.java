@@ -78,7 +78,8 @@ public final class CellItem extends Item {
                     ? InteractionResult.CONSUME
                     : InteractionResult.PASS;
         }
-        return FluidUtil.getFluidHandler(level, pos, face).isPresent()
+        return level.getBlockEntity(pos) instanceof com.industrialage.ia2.access.MachineAccessTarget
+                        || FluidUtil.getFluidHandler(level, pos, face).isPresent()
                 ? InteractionResult.SUCCESS
                 : InteractionResult.PASS;
     }

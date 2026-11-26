@@ -226,6 +226,11 @@ public final class MachineAutomation {
         return settings(upgrade).faces();
     }
 
+    /** Whether an ejector or pulling upgrade's configured filter allows this candidate stack. */
+    public static boolean matchesFilter(ItemStack upgrade, ItemStack candidate) {
+        return candidate != null && !candidate.isEmpty() && settings(upgrade).matches(candidate);
+    }
+
     static Settings settings(ItemStack stack) {
         String raw = WorldNative.upgradeConfig(stack);
         String[] data = raw.split(",", -1);

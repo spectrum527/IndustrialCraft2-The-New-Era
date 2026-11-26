@@ -31,6 +31,14 @@ class BuildContractTest {
                     bytes.readUnsignedShort();
                     assertEquals(61, bytes.readUnsignedShort());
                 }
+                var mixinConfig = jar.getJarEntry("ic2.mixins.json");
+                assertNotNull(mixinConfig);
+                try (var stream = jar.getInputStream(mixinConfig)) {
+                    assertTrue(
+                            new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                                    .contains("\"minVersion\""),
+                            path);
+                }
                 var metadata = jar.getJarEntry("META-INF/mods.toml");
                 assertNotNull(metadata);
                 var text =
@@ -133,6 +141,8 @@ class BuildContractTest {
                                                         || name.startsWith("data/ia2_gametest/")
                                                         || name.startsWith("assets/ia2/")
                                                         || name.startsWith("assets/brand/")
+                                                        || name.startsWith("assets/")
+                                                                && name.endsWith(".csv")
                                                         || name.startsWith("data/ia2/")
                                                         || compiledTests.contains(name)
                                                         || name.startsWith("org/junit/")
@@ -142,6 +152,14 @@ class BuildContractTest {
                 assertTrue(
                         unexpectedEntries.isEmpty(),
                         () -> path + " contains unexpected entries: " + unexpectedEntries);
+                var mixinConfig = jar.getJarEntry("ic2.mixins.json");
+                assertNotNull(mixinConfig);
+                try (var stream = jar.getInputStream(mixinConfig)) {
+                    assertTrue(
+                            new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                                    .contains("\"minVersion\""),
+                            path);
+                }
                 var metadata = jar.getJarEntry("META-INF/mods.toml");
                 assertNotNull(metadata);
                 try (var stream = jar.getInputStream(metadata)) {

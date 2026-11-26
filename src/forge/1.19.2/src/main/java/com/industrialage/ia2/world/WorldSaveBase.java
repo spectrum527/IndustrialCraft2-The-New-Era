@@ -89,7 +89,11 @@ abstract class WorldSaveBase extends BlockEntity {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        readFields(tag::getDouble);
+        readFields(
+                key -> {
+                    double value = tag.getDouble(key);
+                    return Double.isFinite(value) ? value : 0;
+                });
         var inventory = savedInventory();
         if (inventory == null) return;
         var stacks = NonNullList.withSize(inventory.getContainerSize(), ItemStack.EMPTY);

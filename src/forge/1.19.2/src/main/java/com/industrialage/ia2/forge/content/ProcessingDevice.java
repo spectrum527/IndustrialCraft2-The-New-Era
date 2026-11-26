@@ -285,11 +285,17 @@ final class ProcessingDevice extends InventoryDevice {
             cooking = Math.max(0, Math.min(IRON_FURNACE_DURATION - 1, tag.getInt("ic2_progress")));
         } else {
             refreshUpgrades();
-            machine.restore(
-                    tag.getDouble("ic2_energy"),
-                    tag.getInt("ic2_progress"),
-                    tag.getString("ic2_recipe"),
-                    tag.getInt("ic2_duration"));
+            double savedEnergy = tag.getDouble("ic2_energy");
+            double safeEnergy = Double.isFinite(savedEnergy) ? Math.max(0, savedEnergy) : 0;
+            String safeRecipe = tag.getString("ic2_recipe");
+            int savedDuration = Math.max(0, tag.getInt("ic2_duration"));
+            int effectiveDuration = savedDuration > 0 ? savedDuration : machine.duration();
+            int safeProgress = Math.max(0, tag.getInt("ic2_progress"));
+            int clampedProgress =
+                    safeRecipe.isEmpty() || effectiveDuration <= 1
+                            ? 0
+                            : Math.min(safeProgress, effectiveDuration - 1);
+            machine.restore(safeEnergy, clampedProgress, safeRecipe, savedDuration);
         }
     }
 

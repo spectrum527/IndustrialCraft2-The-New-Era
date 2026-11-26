@@ -219,24 +219,13 @@ public final class ElectricReactor {
 
     private static int balance(int stored, int capacity, int other, int otherCapacity, int limit) {
         if (limit == 0 || capacity <= 0 || otherCapacity <= 0) return 0;
-        double level = (double) stored / capacity;
-        double neighbor = (double) other / otherCapacity;
-        if (level == neighbor) return 0;
-        double share = (level + neighbor) * 0.5;
-        int amount =
-                Math.min(
-                        limit,
-                        Math.max(
-                                1,
-                                (int)
-                                        Math.floor(
-                                                (share < 0.01
-                                                        ? 1
-                                                        : (level > neighbor
-                                                                        ? otherCapacity
-                                                                        : capacity)
-                                                                * share))));
-        return level > neighbor
+        double exact =
+                ((double) otherCapacity * stored - (double) capacity * other)
+                        / ((double) capacity + otherCapacity);
+        long rounded = Math.round(exact);
+        if (rounded == 0) return 0;
+        int amount = (int) Math.min(limit, Math.abs(rounded));
+        return rounded > 0
                 ? Math.min(stored, Math.min(otherCapacity - other, amount))
                 : -Math.min(other, Math.min(capacity - stored, amount));
     }

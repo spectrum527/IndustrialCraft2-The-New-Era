@@ -23,6 +23,23 @@ public final class BoxBlock extends WorkshopBlockBase implements EntityBlock, Wr
     }
 
     @Override
+    public void setPlacedBy(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            net.minecraft.world.entity.LivingEntity placer,
+            net.minecraft.world.item.ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (kind == BoxKind.PERSONAL_CHEST
+                && placer instanceof Player player
+                && level.getBlockEntity(pos) instanceof BoxNode node
+                && node.owner == null) {
+            node.owner = player.getUUID();
+            node.setChanged();
+        }
+    }
+
+    @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BoxNode(pos, state);
     }

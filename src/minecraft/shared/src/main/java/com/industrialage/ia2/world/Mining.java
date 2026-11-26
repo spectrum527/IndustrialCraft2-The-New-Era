@@ -37,9 +37,10 @@ final class Mining {
         var head = origin.below(machine.pipeDepth + 1);
         if (head.getY() < WorldNative.minY(level)) return false;
         var block = level.getBlockState(head);
-        if (!canDrill(level, head, block)) return false;
+        if (!canDescendThrough(level, head, block)) return false;
         var tool = tool(machine);
         if (ore(block)) {
+            if (!canHarvest(block, tool)) return false;
             var drops = WorldNative.drops(level, head, block, tool);
             if (!machine.inventory.store(drops)) return false;
         }
@@ -55,6 +56,7 @@ final class Mining {
                 var found = level.getBlockState(pos);
                 if (ore(found)
                         && canDrill(level, pos, found)
+                        && canHarvest(found, tool)
                         && machine.inventory.store(WorldNative.drops(level, pos, found, tool))) {
                     level.removeBlock(pos, false);
                     machine.pay(40);
@@ -88,12 +90,13 @@ final class Mining {
     }
 
     private static boolean advanced(WorldMachine machine, ServerLevel level) {
+        eject(machine, level);
         if (!machine.inventory.canPlaceItem(0, machine.inventory.getItem(0))
                 || !machine.canPay(128)
                 || level.hasNeighborSignal(machine.getBlockPos())
                         != machine.inventory.has(9, "ic2:redstone_inverter_upgrade")) return false;
         var origin = machine.getBlockPos();
-        var tool = new ItemStack(Items.DIAMOND_PICKAXE);
+        var tool = new ItemStack(Items.NETHERITE_PICKAXE);
         for (int checked = 0; checked < 48; checked++) {
             if (origin.getY() - machine.scanDepth < WorldNative.minY(level)) return false;
             int index = machine.cursor;
@@ -107,7 +110,10 @@ final class Mining {
                 if (ore(state) && canDrill(level, pos, state)) {
                     var drops = WorldNative.drops(level, pos, state, tool);
                     if (accepts(machine, state, drops)) {
-                        if (!machine.inventory.store(drops)) return false;
+                        if (!machine.inventory.store(drops)) {
+                            eject(machine, level);
+                            if (!machine.inventory.store(drops)) return false;
+                        }
                         advanceCursor(machine);
                         level.removeBlock(pos, false);
                         eject(machine, level);
@@ -159,8 +165,29 @@ final class Mining {
     }
 
     private static ItemStack tool(WorldMachine machine) {
-        return new ItemStack(
-                machine.inventory.has(0, "ic2:drill") ? Items.IRON_PICKAXE : Items.DIAMOND_PICKAXE);
+        var installed = machine.inventory.getItem(0);
+        var base =
+                new ItemStack(
+                        machine.inventory.has(0, "ic2:drill")
+                                ? Items.IRON_PICKAXE
+                                : machine.inventory.has(0, "ic2:iridium_drill")
+                                        ? Items.NETHERITE_PICKAXE
+                                        : Items.DIAMOND_PICKAXE);
+        var enchantments =
+                net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantments(installed);
+        if (!enchantments.isEmpty()) {
+            net.minecraft.world.item.enchantment.EnchantmentHelper.setEnchantments(
+                    enchantments, base);
+        }
+        return base;
+    }
+
+    private static boolean canHarvest(BlockState state, ItemStack tool) {
+        return !state.requiresCorrectToolForDrops() || tool.isCorrectToolForDrops(state);
+    }
+
+    private static boolean canDescendThrough(ServerLevel level, BlockPos pos, BlockState block) {
+        return canDrill(level, pos, block) || block.is(Blocks.WATER) || block.is(Blocks.LAVA);
     }
 
     private static boolean canDrill(ServerLevel level, BlockPos pos, BlockState block) {

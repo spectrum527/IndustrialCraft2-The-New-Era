@@ -74,6 +74,16 @@ final class RubberTree {
         }
 
         @Override
+        public BlockState rotate(
+                BlockState state, net.minecraft.world.level.block.Rotation rotation) {
+            var hole = state.getValue(RESIN_HOLE);
+            var rotated = super.rotate(state, rotation);
+            return hole.side == null
+                    ? rotated
+                    : rotated.setValue(RESIN_HOLE, Hole.at(rotation.rotate(hole.side), hole.wet));
+        }
+
+        @Override
         public boolean isRandomlyTicking(BlockState state) {
             var hole = state.getValue(RESIN_HOLE);
             return hole.side != null && !hole.wet;
@@ -83,7 +93,7 @@ final class RubberTree {
         public void randomTick(
                 BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
             var hole = state.getValue(RESIN_HOLE);
-            if (hole.side != null && !hole.wet && random.nextInt(7) == 0) {
+            if (hole.side != null && !hole.wet && random.nextInt(8) == 0) {
                 level.setBlockAndUpdate(pos, state.setValue(RESIN_HOLE, Hole.at(hole.side, true)));
             }
         }

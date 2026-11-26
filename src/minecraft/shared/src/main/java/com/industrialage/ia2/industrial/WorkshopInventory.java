@@ -118,7 +118,9 @@ final class WorkshopInventory extends SimpleContainer implements ProcessingSlots
                     return WorkshopCokeKiln.suitable(stack);
                 }
                 case UU_ASSEMBLY -> {
-                    return id.equals("ic2:uu_matter");
+                    return slot == 0
+                            ? WorkshopPlans.acceptsUuTemplate(stack)
+                            : id.equals("ic2:uu_matter");
                 }
                 case RADIOISOTOPE_HEAT -> {
                     return id.equals("ic2:rtg_pellet");

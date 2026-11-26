@@ -98,9 +98,13 @@ final class PlayerMachines {
                         be instanceof BoxNode b && b.kind.portable() && b.kind.automatable()
                                 ? b.items
                                 : be instanceof Container c ? c : null;
-                if (stock == null) continue;
-                if (exchange(
-                        stock, dir.getOpposite(), price, vendingEnergy ? ItemStack.EMPTY : goods)) {
+                var outgoing = vendingEnergy ? ItemStack.EMPTY : goods;
+                boolean exchanged =
+                        stock != null
+                                ? exchange(stock, dir.getOpposite(), price, outgoing)
+                                : PowerPlatform.tradeCapability(
+                                        level, p, dir.getOpposite(), price, outgoing);
+                if (exchanged) {
                     inv.removeItem(2, price.getCount());
                     if (vendingEnergy) machine.credit = machine.saleSize;
                     else if (inv.getItem(3).isEmpty()) inv.setItem(3, goods.copy());
@@ -329,7 +333,7 @@ final class PlayerMachines {
         for (ServerPlayer user :
                 level.getEntitiesOfClass(ServerPlayer.class, new AABB(p).inflate(1.2, 12, 1.2))) {
             var boots = user.getItemBySlot(EquipmentSlot.FEET);
-            if (boots.isEmpty()) continue;
+            if (!isMetalBoots(boots)) continue;
             var userPos = user.blockPosition();
             boolean onPost = false;
             for (Direction side : Direction.values()) {
@@ -362,5 +366,24 @@ final class PlayerMachines {
         magnet.liftContacts.finish(tick);
         if (active) magnet.setChanged();
         return active;
+    }
+
+    private static boolean isMetalBoots(ItemStack boots) {
+        if (boots.isEmpty()) return false;
+        String id = WorkshopPlatform.itemId(boots);
+        if (id.equals("minecraft:leather_boots") || id.equals("ic2:rubber_boots")) return false;
+        return id.equals("minecraft:iron_boots")
+                || id.equals("minecraft:chainmail_boots")
+                || id.equals("minecraft:golden_boots")
+                || id.equals("minecraft:netherite_boots")
+                || id.equals("ic2:bronze_boots")
+                || id.equals("ic2:nano_boots")
+                || id.equals("ic2:quantum_boots")
+                || id.equals("ic2:static_boots")
+                || id.contains("iron")
+                || id.contains("steel")
+                || id.contains("bronze")
+                || id.contains("nano")
+                || id.contains("quantum");
     }
 }

@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 final class WorldMenu extends DeviceAccessMenu {
     final WorldMachineBlock.Kind kind;
     final WorldLayout layout;
-    final SimpleContainerData data = new SimpleContainerData(8);
+    final SimpleContainerData data = new SimpleContainerData(9);
     private final WorldInventory live;
     private final Container contents;
     final int deviceSlots;
@@ -73,7 +73,9 @@ final class WorldMenu extends DeviceAccessMenu {
     private void measure() {
         if (live == null) return;
         var machine = live.owner();
-        data.set(1, (int) machine.storedEnergy());
+        int eu = (int) Math.round(machine.storedEnergy());
+        data.set(1, eu & 0xffff);
+        data.set(8, eu >>> 16);
         data.set(2, machine.fluid(false));
         data.set(3, machine.fluid(true));
         data.set(
@@ -84,6 +86,10 @@ final class WorldMenu extends DeviceAccessMenu {
         data.set(5, machine.ticketX + 4);
         data.set(6, machine.ticketZ + 4);
         data.set(7, machine.chunkEnabled ? 1 : 0);
+    }
+
+    int storedEnergy() {
+        return (data.get(1) & 0xffff) | ((data.get(8) & 0xffff) << 16);
     }
 
     @Override

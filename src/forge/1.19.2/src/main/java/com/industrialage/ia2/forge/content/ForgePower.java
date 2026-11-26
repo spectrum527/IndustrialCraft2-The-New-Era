@@ -24,10 +24,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public final class ForgePower {
+    private static final int MAX_PACKETS_PER_TICK = 256;
     private static final Map<ServerLevel, ForgePower> WORLDS = new IdentityHashMap<>();
     private static ConfigFacade config;
 
@@ -46,6 +48,32 @@ public final class ForgePower {
                             grid.settle(level);
                         }
                         MeterSampling.finishTick(level);
+                    }
+                });
+        bus.addListener(
+                (ChunkEvent.Unload event) -> {
+                    if (event.getLevel() instanceof ServerLevel level) {
+                        var grid = WORLDS.get(level);
+                        if (grid != null) {
+                            var chunk = event.getChunk().getPos();
+                            boolean changed =
+                                    grid.nodes
+                                            .entrySet()
+                                            .removeIf(
+                                                    entry -> {
+                                                        var p = entry.getKey();
+                                                        if ((p.x() >> 4) == chunk.x
+                                                                && (p.z() >> 4) == chunk.z) {
+                                                            grid.graph.remove(p);
+                                                            return true;
+                                                        }
+                                                        return false;
+                                                    });
+                            if (changed) {
+                                grid.routes.clear();
+                                if (grid.nodes.isEmpty()) WORLDS.remove(level);
+                            }
+                        }
                     }
                 });
         bus.addListener(
@@ -83,6 +111,9 @@ public final class ForgePower {
             int color = com.industrialage.ia2.world.CableColors.color(entity.getBlockState());
             grid.graph.put(pos, new EnergyGraph.Ports(input, output, endpoint.conducts(), color));
             grid.routes.clear();
+            if (!input.isEmpty() || !output.isEmpty() || endpoint.conducts()) {
+                CableBlock.refreshNeighbors(level, entity.getBlockPos());
+            }
         }
     }
 
@@ -122,13 +153,19 @@ public final class ForgePower {
         return node != null && node.entity == entity;
     }
 
+    /** Whether the loaded position is currently registered in the native EU graph. */
+    public static boolean contains(ServerLevel level, BlockPos pos) {
+        var grid = WORLDS.get(level);
+        return grid != null && grid.nodes.containsKey(position(pos));
+    }
+
     /** Checks whether the loaded position belongs to the native EU graph. */
     public static boolean metered(ServerLevel level, BlockPos pos) {
         if (!level.hasChunkAt(pos)) return false;
         var entity = level.getBlockEntity(pos);
         if (entity == null || entity.isRemoved()) return false;
         var endpoint = endpoint(entity);
-        if (endpoint == null) return false;
+        if (endpoint == null) return contains(level, pos);
         if (endpoint.conducts()) return true;
         for (var side : Direction.values()) {
             if (endpoint.accepts(side) || endpoint.emits(side)) return true;
@@ -142,7 +179,14 @@ public final class ForgePower {
                 (pos, node) -> {
                     double budget = node.endpoint.offers();
                     if (budget > 0 && node.ticking(level)) {
-                        offers.add(new Offer(pos, node, budget, node.endpoint.packetsPerTick()));
+                        offers.add(
+                                new Offer(
+                                        pos,
+                                        node,
+                                        budget,
+                                        Math.min(
+                                                node.endpoint.packetsPerTick(),
+                                                MAX_PACKETS_PER_TICK)));
                     }
                 });
         if (offers.isEmpty()) {
@@ -172,7 +216,7 @@ public final class ForgePower {
         for (var machine : round.overloadedMachines) {
             if (owns(machine)) {
                 var pos = machine.getBlockPos();
-                level.removeBlock(pos, false);
+                level.destroyBlock(pos, false);
                 level.explode(
                         null,
                         pos.getX() + 0.5,
@@ -202,7 +246,8 @@ public final class ForgePower {
                     || round.overloadedMachines.contains(sink.entity)) {
                 continue;
             }
-            boolean lossless = (round.rounded ? Math.floor(route.rawLoss()) : route.rawLoss()) == 0;
+            double loss = round.rounded ? Math.floor(route.rawLoss()) : route.rawLoss();
+            double arrived = Math.max(0, offer.eu - loss);
             double debit =
                     PowerGrid.transfer(
                             budget,
@@ -212,8 +257,8 @@ public final class ForgePower {
                                 double accepted = sink.endpoint.receive(eu);
                                 if (round.meltdown
                                         && round.explosions
-                                        && lossless
-                                        && accepted > sink.endpoint.inputRating()) {
+                                        && accepted > 0
+                                        && arrived > sink.endpoint.inputRating()) {
                                     round.overloadedMachines.add(sink.entity);
                                 }
                                 return accepted;

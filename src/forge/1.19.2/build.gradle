@@ -97,7 +97,7 @@ tasks.named('processResources') {
     from(rootProject.file('assets')) {
         exclude 'qa/**', 'brand/**'  // Documentation and project branding stay outside the mod JAR.
         into 'assets'
-        exclude '**/*.md', '**/.git*', '**/.DS_Store'
+        exclude '**/*.md', '**/*.csv', '**/.git*', '**/.DS_Store'
         includeEmptyDirs = false
     }
 }

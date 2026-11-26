@@ -83,8 +83,9 @@ final class WorldInventory extends SimpleContainer implements WorldlyContainer {
             case CROPMATRON ->
                     switch (slot) {
                         case 0 -> id.equals("ic2:fertilizer");
-                        case 1 -> id.equals("minecraft:water_bucket");
-                        case 2 -> id.equals("ic2:weed_ex_bucket");
+                        case 1 ->
+                                id.equals("minecraft:water_bucket") || id.equals("ic2:water_cell");
+                        case 2 -> id.equals("ic2:weed_ex_bucket") || id.equals("ic2:weed_ex_cell");
                         case 9, 10, 11, 12 -> id.equals("ic2:fluid_pulling_upgrade");
                         default -> false;
                     };
