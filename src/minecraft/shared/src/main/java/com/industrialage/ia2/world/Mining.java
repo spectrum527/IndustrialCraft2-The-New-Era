@@ -11,6 +11,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 
 final class Mining {
     private static final int ADVANCED_RADIUS = 8;
@@ -67,8 +69,8 @@ final class Mining {
         var tip = WorldNative.block("ic2:mining_pipe_tip");
         var pipe = WorldNative.block("ic2:mining_pipe");
         if (level.getBlockState(previous).is(tip))
-            level.setBlockAndUpdate(previous, pipe.defaultBlockState());
-        level.setBlockAndUpdate(head, tip.defaultBlockState());
+            level.setBlockAndUpdate(previous, pipeState(pipe, level, previous));
+        level.setBlockAndUpdate(head, pipeState(tip, level, head));
         machine.inventory.removeItem(2, 1);
         machine.pipeDepth++;
         return machine.pay(40);
@@ -84,9 +86,18 @@ final class Mining {
                 && !machine.inventory.store(List.of(new ItemStack(pipe)))) return false;
         if (state.is(pipe) || state.is(tip)) level.removeBlock(head, false);
         if (level.getBlockState(head.above()).is(pipe))
-            level.setBlockAndUpdate(head.above(), tip.defaultBlockState());
+            level.setBlockAndUpdate(head.above(), pipeState(tip, level, head.above()));
         machine.pipeDepth--;
         return machine.pay(20);
+    }
+
+    private static BlockState pipeState(Block block, ServerLevel level, BlockPos pos) {
+        var state = block.defaultBlockState();
+        return state.hasProperty(BlockStateProperties.WATERLOGGED)
+                ? state.setValue(
+                        BlockStateProperties.WATERLOGGED,
+                        level.getFluidState(pos).getType() == Fluids.WATER)
+                : state;
     }
 
     private static boolean advanced(WorldMachine machine, ServerLevel level) {

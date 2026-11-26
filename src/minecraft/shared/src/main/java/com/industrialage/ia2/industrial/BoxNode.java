@@ -41,7 +41,11 @@ public final class BoxNode extends BoxHost
     }
 
     boolean permits(Player player) {
-        return owner == null || player.getUUID().equals(owner);
+        return permitsOwner(owner, player == null ? null : player.getUUID());
+    }
+
+    static boolean permitsOwner(UUID owner, UUID actor) {
+        return owner == null || (actor != null && actor.equals(owner));
     }
 
     void open(Player player, int page) {

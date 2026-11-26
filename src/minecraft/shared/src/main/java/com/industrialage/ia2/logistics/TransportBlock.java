@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,6 +26,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -151,18 +154,40 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
             if (!player.getAbilities().instabuild) item.shrink(1);
             if (mode == Nozzle.EXTRACTION && spec.kind() == Kind.ITEM_PIPE) {
                 var state = level.getBlockState(pos);
-                if (state.hasProperty(OUT) && state.getValue(OUT) == side) {
-                    Direction redirected =
-                            ItemPipeRouter.redirectedOutput(
-                                    side,
-                                    candidate -> {
-                                        var adjacent = pos.relative(candidate);
-                                        return level.hasChunkAt(adjacent)
-                                                && level.getBlockEntity(adjacent)
-                                                        instanceof TransportNode next
-                                                && node.linksTo(candidate, next);
-                                    });
-                    level.setBlock(pos, state.setValue(OUT, redirected), Block.UPDATE_CLIENTS);
+                if (state.hasProperty(OUT)) {
+                    Direction currentOut = state.getValue(OUT);
+                    boolean conflict =
+                            currentOut == side || node.nozzle(currentOut) == Nozzle.EXTRACTION;
+                    boolean currentProductive =
+                            !conflict
+                                    && (node.isLinkedItemPipe(level, currentOut)
+                                            || node.isValidNonPipeItemTarget(level, currentOut));
+                    Direction redirected = null;
+                    if (conflict) {
+                        redirected =
+                                ItemPipeRouter.redirectedOutput(
+                                        side,
+                                        candidate -> node.isLinkedItemPipe(level, candidate),
+                                        candidate ->
+                                                node.isValidNonPipeItemTarget(level, candidate));
+                    } else if (!currentProductive && node.injectionNozzles == 0) {
+                        Direction pipeTarget =
+                                ItemPipeRouter.preferredTarget(
+                                        candidate -> node.nozzle(candidate) == Nozzle.EXTRACTION,
+                                        candidate -> node.isLinkedItemPipe(level, candidate));
+                        redirected =
+                                pipeTarget != null
+                                        ? pipeTarget
+                                        : ItemPipeRouter.preferredTarget(
+                                                candidate ->
+                                                        node.nozzle(candidate) == Nozzle.EXTRACTION,
+                                                candidate ->
+                                                        node.isValidNonPipeItemTarget(
+                                                                level, candidate));
+                    }
+                    if (redirected != null && redirected != currentOut) {
+                        level.setBlock(pos, state.setValue(OUT, redirected), Block.UPDATE_CLIENTS);
+                    }
                 }
             }
             configurationChanged(level, pos, mode != Nozzle.NONE);
@@ -238,12 +263,13 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
         return state;
     }
 
-    private static class Pipe extends TransportBlock {
+    private static class Pipe extends TransportBlock implements SimpleWaterloggedBlock {
         private final PipeGeometry geometry;
 
         Pipe(Properties props, TransportSpec spec) {
             super(props, spec);
-            BlockState state = defaultBlockState();
+            BlockState state =
+                    defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false);
             for (var property : SIDES.values()) state = state.setValue(property, false);
             registerDefaultState(state);
             geometry = PipeGeometry.ofSize(spec.size());
@@ -252,7 +278,15 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
         @Override
         protected void createBlockStateDefinition(
                 StateDefinition.Builder<Block, BlockState> builder) {
+            builder.add(BlockStateProperties.WATERLOGGED);
             SIDES.values().forEach(builder::add);
+        }
+
+        @Override
+        public FluidState getFluidState(BlockState state) {
+            return state.getValue(BlockStateProperties.WATERLOGGED)
+                    ? Fluids.WATER.getSource(false)
+                    : super.getFluidState(state);
         }
 
         @Override
@@ -299,9 +333,13 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
 
         @Override
         public BlockState getStateForPlacement(BlockPlaceContext context) {
-            BlockState state = defaultBlockState();
             var level = context.getLevel();
             var pos = context.getClickedPos();
+            BlockState state =
+                    defaultBlockState()
+                            .setValue(
+                                    BlockStateProperties.WATERLOGGED,
+                                    level.getFluidState(pos).getType() == Fluids.WATER);
             if (state.hasProperty(OUT)) {
                 var clicked = context.getClickedFace();
                 var against = pos.relative(clicked.getOpposite());
