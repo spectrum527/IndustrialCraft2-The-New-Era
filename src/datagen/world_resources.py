@@ -180,7 +180,7 @@ def generate(repo, out, target, write):
 
     for path, sprite in (("mining_pipe", "mining_pipe"), ("mining_pipe_tip", "mining_pipe_tip")):
         geom(path, [([5, 0, 5], [11, 16, 11])], "blocks/machine/resource/" + sprite)
-        variant(path)
+        variant(path, {"waterlogged=false": file_model(path), "waterlogged=true": file_model(path)})
         if path == "mining_pipe":
             item_model(path)
         drop(path, "ic2:mining_pipe")

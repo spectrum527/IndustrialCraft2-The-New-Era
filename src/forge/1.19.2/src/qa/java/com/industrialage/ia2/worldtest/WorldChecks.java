@@ -13,12 +13,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -34,6 +38,9 @@ public final class WorldChecks {
     private static final BlockPos MATRON = ORIGIN.east(26);
     private static final BlockPos CLASSIC = MATRON.east(10);
     private static final BlockPos MINER = ORIGIN.west(9).south(12);
+    private static final BlockPos WET_MINER = ORIGIN.west(15).south(12);
+    private static final BlockPos MINING_PIPE_WATER = ORIGIN.west(15).south(2);
+    private static final BlockPos MINING_PIPE_FLOW = MINING_PIPE_WATER.south(4);
     private static final BlockPos ADVANCED = ORIGIN.east(13).south(13);
     private static final BlockPos FOAM = ORIGIN.west(6);
     private static final BlockPos TERRAFORMER = ORIGIN.east(64).south(64);
@@ -60,6 +67,9 @@ public final class WorldChecks {
     private int firstBatchTick;
     private boolean batchRetemplated;
     private boolean poweredChunkObserved;
+    private boolean wetMinerDescended;
+    private boolean wetMinerHalfWithdrawn;
+    private boolean wetMinerWithdrawn;
 
     /** Creates a native check using version-specific registry access. */
     public WorldChecks(
@@ -201,6 +211,7 @@ public final class WorldChecks {
         miner.slots.get(0).set(stack("drill"));
         miner.slots.get(2).set(stack("mining_pipe"));
         port(level, MINER).receive(1000);
+        setupMiningPipeWaterlogging(level, player);
 
         set(level, ADVANCED, block("advanced_miner"));
         set(level, ADVANCED.below(), Blocks.IRON_ORE);
@@ -385,10 +396,12 @@ public final class WorldChecks {
             poweredChunkObserved = true;
             set(level, CHUNK_LOADER.west(), Blocks.REDSTONE_BLOCK);
         }
+        tickWetMiner(level, player);
         return batchRetemplated
                 && !batch.slots.get(9).getItem().isEmpty()
                 && poweredChunkObserved
                 && !loaded
+                && wetMinerWithdrawn
                 && (processorMeter == null
                         || checkedDrain
                                 && processorMeter.read(device(level, player, UPGRADE_MILL)).energy()
@@ -457,6 +470,7 @@ public final class WorldChecks {
                 level.getBlockState(MINER.below()).is(block("mining_pipe_tip"))
                         && device(level, player, MINER).slots.get(3).getItem().is(Items.RAW_IRON)
                         && level.getBlockState(MINER.below(2)).is(Blocks.BEDROCK));
+        checkMiningPipeWaterloggingOutcomes(level);
         verify(
                 "advanced-miner-filters-and-ejects",
                 level.isEmptyBlock(ADVANCED.below())
@@ -947,5 +961,183 @@ public final class WorldChecks {
 
     private void verify(String name, boolean passed) {
         check.accept(name, passed);
+    }
+
+    private void setupMiningPipeWaterlogging(ServerLevel level, ServerPlayer player) {
+        var pipe = block("mining_pipe");
+        var tip = block("mining_pipe_tip");
+        verify(
+                "mining-pipes-implement-waterlogged",
+                pipe instanceof SimpleWaterloggedBlock
+                        && tip instanceof SimpleWaterloggedBlock
+                        && !pipe.defaultBlockState().getValue(BlockStateProperties.WATERLOGGED)
+                        && !tip.defaultBlockState().getValue(BlockStateProperties.WATERLOGGED)
+                        && pipe.defaultBlockState().getFluidState().isEmpty()
+                        && tip.defaultBlockState().getFluidState().isEmpty()
+                        && pipe.defaultBlockState()
+                                .setValue(BlockStateProperties.WATERLOGGED, true)
+                                .getFluidState()
+                                .isSource()
+                        && tip.defaultBlockState()
+                                .setValue(BlockStateProperties.WATERLOGGED, true)
+                                .getFluidState()
+                                .isSource());
+
+        for (int dx = -1; dx <= 2; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                set(level, MINING_PIPE_WATER.offset(dx, -1, dz), Blocks.STONE);
+                boolean wall = dx == -1 || dx == 2 || dz == -1 || dz == 1;
+                set(
+                        level,
+                        MINING_PIPE_WATER.offset(dx, 0, dz),
+                        wall || dx == 1 ? Blocks.STONE : Blocks.AIR);
+            }
+        }
+        set(level, MINING_PIPE_WATER, Blocks.WATER);
+        var held = stack("mining_pipe");
+        player.setPos(
+                MINING_PIPE_WATER.getX() + 0.5,
+                MINING_PIPE_WATER.getY() + 1,
+                MINING_PIPE_WATER.getZ() + 0.5);
+        player.setItemInHand(InteractionHand.MAIN_HAND, held);
+        var hit =
+                new BlockHitResult(
+                        Vec3.atCenterOf(MINING_PIPE_WATER.below()).add(0, 0.5, 0),
+                        Direction.UP,
+                        MINING_PIPE_WATER.below(),
+                        false);
+        var placed =
+                ((BlockItem) held.getItem())
+                        .place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, held, hit));
+        var placedState = level.getBlockState(MINING_PIPE_WATER);
+        verify(
+                "mining-pipe-placed-in-water",
+                placed.consumesAction()
+                        && placedState.is(pipe)
+                        && placedState.getValue(BlockStateProperties.WATERLOGGED)
+                        && level.getFluidState(MINING_PIPE_WATER).isSource()
+                        && level.getFluidState(MINING_PIPE_WATER).getType() == Fluids.WATER);
+        var scooped =
+                ((SimpleWaterloggedBlock) pipe).pickupBlock(level, MINING_PIPE_WATER, placedState);
+        verify(
+                "mining-pipe-bucket-unwaterlogs",
+                scooped.is(Items.WATER_BUCKET)
+                        && !level.getBlockState(MINING_PIPE_WATER)
+                                .getValue(BlockStateProperties.WATERLOGGED)
+                        && level.getFluidState(MINING_PIPE_WATER).isEmpty());
+        verify(
+                "mining-pipe-refill-waterlog",
+                ((SimpleWaterloggedBlock) pipe)
+                                .placeLiquid(
+                                        level,
+                                        MINING_PIPE_WATER,
+                                        level.getBlockState(MINING_PIPE_WATER),
+                                        Fluids.WATER.getSource(false))
+                        && level.getBlockState(MINING_PIPE_WATER)
+                                .getValue(BlockStateProperties.WATERLOGGED));
+        set(level, MINING_PIPE_WATER.east(), Blocks.AIR);
+        verify(
+                "mining-pipe-update-shape-schedules-water-tick",
+                level.getFluidTicks().hasScheduledTick(MINING_PIPE_WATER, Fluids.WATER));
+
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 1; dz++) {
+                set(level, MINING_PIPE_FLOW.offset(dx, -1, dz), Blocks.STONE);
+                boolean wall = dx == -2 || dx == 2 || dz == -2 || dz == 1;
+                set(level, MINING_PIPE_FLOW.offset(dx, 0, dz), wall ? Blocks.STONE : Blocks.AIR);
+            }
+        }
+        set(level, MINING_PIPE_FLOW.east(), pipe);
+        set(level, MINING_PIPE_FLOW.west(), tip);
+        set(level, MINING_PIPE_FLOW, Blocks.WATER);
+
+        for (int depth = 1; depth <= 2; depth++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx != 0 || dz != 0)
+                        set(level, WET_MINER.offset(dx, -depth, dz), Blocks.STONE);
+                }
+            }
+        }
+        set(level, WET_MINER.below(3), Blocks.BEDROCK);
+        set(level, WET_MINER.below(), Blocks.WATER);
+        set(level, WET_MINER.below(2), Blocks.WATER);
+        set(level, WET_MINER.north(), Blocks.AIR);
+        set(level, WET_MINER, block("miner"));
+        var wetMiner = device(level, player, WET_MINER);
+        wetMiner.slots.get(0).set(stack("drill"));
+        wetMiner.slots.get(2).set(new ItemStack(items.apply("mining_pipe"), 2));
+        port(level, WET_MINER).receive(2000);
+    }
+
+    private void tickWetMiner(ServerLevel level, ServerPlayer player) {
+        var pipe = block("mining_pipe");
+        var tip = block("mining_pipe_tip");
+        if (!wetMinerDescended) {
+            var lower = level.getBlockState(WET_MINER.below(2));
+            if (lower.is(tip)) {
+                var upper = level.getBlockState(WET_MINER.below());
+                verify(
+                        "miner-preserves-waterlogging-when-descending",
+                        upper.is(pipe)
+                                && upper.getValue(BlockStateProperties.WATERLOGGED)
+                                && level.getFluidState(WET_MINER.below()).isSource()
+                                && lower.getValue(BlockStateProperties.WATERLOGGED)
+                                && level.getFluidState(WET_MINER.below(2)).isSource());
+                wetMinerDescended = true;
+                set(level, WET_MINER.north(), Blocks.REDSTONE_BLOCK);
+            }
+            return;
+        }
+        if (!wetMinerHalfWithdrawn) {
+            var lower = level.getBlockState(WET_MINER.below(2));
+            if (lower.is(Blocks.WATER)) {
+                var upper = level.getBlockState(WET_MINER.below());
+                verify(
+                        "miner-preserves-waterlogging-during-withdrawal",
+                        level.getFluidState(WET_MINER.below(2)).isSource()
+                                && upper.is(tip)
+                                && upper.getValue(BlockStateProperties.WATERLOGGED)
+                                && level.getFluidState(WET_MINER.below()).isSource());
+                wetMinerHalfWithdrawn = true;
+            }
+            return;
+        }
+        if (!wetMinerWithdrawn && level.getBlockState(WET_MINER.below()).is(Blocks.WATER)) {
+            var menu = device(level, player, WET_MINER);
+            int recovered = 0;
+            for (int i = 0; i < 8 && i < menu.slots.size(); i++) {
+                var item = menu.slots.get(i).getItem();
+                if (item.is(items.apply("mining_pipe"))) recovered += item.getCount();
+            }
+            verify(
+                    "miner-restores-water-source-on-full-withdrawal",
+                    level.getFluidState(WET_MINER.below()).isSource()
+                            && level.getFluidState(WET_MINER.below(2)).isSource()
+                            && recovered == 2);
+            wetMinerWithdrawn = true;
+        }
+    }
+
+    private void checkMiningPipeWaterloggingOutcomes(ServerLevel level) {
+        var pipe = block("mining_pipe");
+        var tip = block("mining_pipe_tip");
+        verify(
+                "waterlogged-mining-pipe-spreads-water",
+                level.getFluidState(MINING_PIPE_WATER.east()).getType() == Fluids.FLOWING_WATER);
+        var east = level.getBlockState(MINING_PIPE_FLOW.east());
+        var west = level.getBlockState(MINING_PIPE_FLOW.west());
+        verify(
+                "flowing-water-preserves-mining-pipes",
+                level.getFluidState(MINING_PIPE_FLOW.north()).getType() == Fluids.FLOWING_WATER
+                        && east.is(pipe)
+                        && !east.getValue(BlockStateProperties.WATERLOGGED)
+                        && west.is(tip)
+                        && !west.getValue(BlockStateProperties.WATERLOGGED));
+        verify(
+                "destroying-waterlogged-mining-pipe-leaves-water",
+                level.destroyBlock(MINING_PIPE_WATER, false)
+                        && level.getBlockState(MINING_PIPE_WATER).is(Blocks.WATER)
+                        && level.getFluidState(MINING_PIPE_WATER).isSource());
     }
 }

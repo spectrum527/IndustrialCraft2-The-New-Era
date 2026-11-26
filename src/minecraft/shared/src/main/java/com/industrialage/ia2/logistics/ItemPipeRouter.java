@@ -211,12 +211,46 @@ final class ItemPipeRouter {
      */
     static Direction redirectedOutput(
             Direction extractionFace, java.util.function.Predicate<Direction> linksToPipe) {
+        return redirectedOutput(extractionFace, linksToPipe, side -> false);
+    }
+
+    /**
+     * Picks an output face when an extraction nozzle is installed on {@code extractionFace},
+     * preferring a linked neighboring item pipe, then an adjacent non-pipe target container
+     * (checking the opposite face first in each category), and falling back to the opposite face.
+     */
+    static Direction redirectedOutput(
+            Direction extractionFace,
+            java.util.function.Predicate<Direction> linksToPipe,
+            java.util.function.Predicate<Direction> linksToTarget) {
+        Direction pipe = preferredTarget(side -> side == extractionFace, linksToPipe);
+        if (pipe != null) return pipe;
+        Direction target = preferredTarget(side -> side == extractionFace, linksToTarget);
+        if (target != null) return target;
+        return extractionFace.getOpposite();
+    }
+
+    /**
+     * Picks an adjacent candidate face for an item pipe with extraction nozzle(s), preferring faces
+     * directly opposite an extraction nozzle before perpendicular faces, or {@code null} if none.
+     */
+    static Direction preferredTarget(
+            java.util.function.Predicate<Direction> isExtraction,
+            java.util.function.Predicate<Direction> matchesTarget) {
         for (var candidate : Direction.values()) {
-            if (candidate != extractionFace && linksToPipe.test(candidate)) {
+            if (isExtraction.test(candidate)) {
+                Direction opposite = candidate.getOpposite();
+                if (!isExtraction.test(opposite) && matchesTarget.test(opposite)) {
+                    return opposite;
+                }
+            }
+        }
+        for (var candidate : Direction.values()) {
+            if (!isExtraction.test(candidate) && matchesTarget.test(candidate)) {
                 return candidate;
             }
         }
-        return extractionFace.getOpposite();
+        return null;
     }
 
     private static boolean compatible(

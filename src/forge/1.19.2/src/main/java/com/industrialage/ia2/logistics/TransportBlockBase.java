@@ -11,6 +11,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
 abstract class TransportBlockBase extends Block {
@@ -50,6 +52,10 @@ abstract class TransportBlockBase extends Block {
             LevelAccessor level,
             BlockPos pos,
             BlockPos neighborPos) {
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED)
+                && state.getValue(BlockStateProperties.WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
         return connect(state, side, neighbor, level, pos);
     }
 

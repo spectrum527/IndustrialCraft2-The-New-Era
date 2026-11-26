@@ -18,12 +18,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -415,6 +421,105 @@ public final class LogisticsGameTests {
     }
 
     /**
+     * Verifies a single-segment item pipe with an extraction nozzle redirects air-facing OUT and
+     * delivers without stalling across straight, 90-degree bend, and late-placed target layouts.
+     */
+    @GameTest(template = "smoke", timeoutTicks = 60)
+    public static void singleSegmentExtractionPipeDeliversWithoutStalling(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var player = player(helper, helper.absolutePos(new BlockPos(2, 2, 2)));
+        var pipeBlock =
+                ForgeRegistries.BLOCKS.getValue(
+                        ResourceLocation.fromNamespaceAndPath("ic2", "bronze_item_pipe_small"));
+
+        var straightPipe = helper.absolutePos(new BlockPos(1, 2, 1));
+        level.setBlockAndUpdate(straightPipe.west(), Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(straightPipe.east(), Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(
+                straightPipe,
+                pipeBlock
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.FACING, Direction.NORTH));
+        interact(helper, player, straightPipe, Direction.WEST, stack("pipe_extraction_nozzle"));
+        check(
+                helper,
+                level.getBlockState(straightPipe).getValue(BlockStateProperties.FACING)
+                        == Direction.EAST,
+                "Straight single-segment extraction nozzle redirected air-facing OUT to EAST");
+        ((net.minecraft.world.Container) level.getBlockEntity(straightPipe.west()))
+                .setItem(0, new ItemStack(Items.IRON_INGOT, 6));
+
+        var bendPipe = helper.absolutePos(new BlockPos(1, 2, 4));
+        level.setBlockAndUpdate(bendPipe.west(), Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(bendPipe.south(), Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(
+                bendPipe,
+                pipeBlock
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.FACING, Direction.EAST));
+        interact(helper, player, bendPipe, Direction.WEST, stack("pipe_extraction_nozzle"));
+        check(
+                helper,
+                level.getBlockState(bendPipe).getValue(BlockStateProperties.FACING)
+                        == Direction.SOUTH,
+                "90-degree single-segment extraction nozzle redirected OUT to SOUTH target");
+        level.setBlockAndUpdate(bendPipe.north(), Blocks.BARREL.defaultBlockState());
+        ((net.minecraft.world.Container) level.getBlockEntity(bendPipe.north()))
+                .setItem(0, new ItemStack(Items.GOLD_INGOT, 3));
+        ((net.minecraft.world.Container) level.getBlockEntity(bendPipe.west()))
+                .setItem(0, new ItemStack(Items.COPPER_INGOT, 5));
+
+        var latePipe = helper.absolutePos(new BlockPos(5, 2, 2));
+        level.setBlockAndUpdate(latePipe.west(), Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(
+                latePipe,
+                pipeBlock
+                        .defaultBlockState()
+                        .setValue(BlockStateProperties.FACING, Direction.NORTH));
+        interact(helper, player, latePipe, Direction.WEST, stack("pipe_extraction_nozzle"));
+        ((net.minecraft.world.Container) level.getBlockEntity(latePipe.west()))
+                .setItem(0, new ItemStack(Items.EMERALD, 4));
+
+        boolean[] placedLate = {false};
+        helper.onEachTick(
+                () -> {
+                    var bendBystander =
+                            (net.minecraft.world.Container) level.getBlockEntity(bendPipe.north());
+                    if (bendBystander.getItem(0).getCount() != 3) {
+                        helper.fail("Extraction-nozzled bend pipe pulled from bystander container");
+                    }
+                    if (!placedLate[0]) {
+                        var cargo =
+                                machine(helper, latePipe)
+                                        .getCapability(
+                                                ForgeCapabilities.ITEM_HANDLER, Direction.NORTH)
+                                        .map(h -> h.getStackInSlot(0))
+                                        .orElse(ItemStack.EMPTY);
+                        if (cargo.getCount() == 4) {
+                            level.setBlockAndUpdate(
+                                    latePipe.south(), Blocks.BARREL.defaultBlockState());
+                            placedLate[0] = true;
+                        }
+                        return;
+                    }
+                    var straightDst =
+                            (net.minecraft.world.Container)
+                                    level.getBlockEntity(straightPipe.east());
+                    var bendDst =
+                            (net.minecraft.world.Container) level.getBlockEntity(bendPipe.south());
+                    var lateDst =
+                            (net.minecraft.world.Container) level.getBlockEntity(latePipe.south());
+                    if (straightDst.getItem(0).getCount() == 6
+                            && bendDst.getItem(0).getCount() == 5
+                            && lateDst.getItem(0).getCount() == 4
+                            && level.getBlockState(latePipe).getValue(BlockStateProperties.FACING)
+                                    == Direction.SOUTH) {
+                        helper.succeed();
+                    }
+                });
+    }
+
+    /**
      * Verifies native rotor durability, biogas_cell, copper_ingot removal, and c:/forge: tag
      * matching.
      */
@@ -462,6 +567,272 @@ public final class LogisticsGameTests {
                                 steelBlock, "c:blocks/steel"),
                 "steel_block matches both storage_blocks and blocks aliases");
         helper.succeed();
+    }
+
+    /**
+     * Verifies Miner preserves waterlogging on mining_pipe / mining_pipe_tip during descent and
+     * withdrawal.
+     */
+    @GameTest(template = "smoke", timeoutTicks = 120)
+    public static void wetMinerPreservesMiningPipeWaterlogging(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var minerPos = helper.absolutePos(new BlockPos(2, 130, 2));
+        var player = player(helper, minerPos);
+        var pipe = PlayableGameTests.block("mining_pipe");
+        var tip = PlayableGameTests.block("mining_pipe_tip");
+
+        for (int depth = 1; depth <= 2; depth++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx != 0 || dz != 0) {
+                        level.setBlockAndUpdate(
+                                minerPos.offset(dx, -depth, dz), Blocks.STONE.defaultBlockState());
+                    }
+                }
+            }
+        }
+        level.setBlockAndUpdate(minerPos.below(3), Blocks.BEDROCK.defaultBlockState());
+        level.setBlockAndUpdate(minerPos.below(), Blocks.WATER.defaultBlockState());
+        level.setBlockAndUpdate(minerPos.below(2), Blocks.WATER.defaultBlockState());
+        level.setBlockAndUpdate(minerPos.north(), Blocks.AIR.defaultBlockState());
+        level.setBlockAndUpdate(minerPos, PlayableGameTests.block("miner").defaultBlockState());
+        var menu =
+                ((net.minecraft.world.MenuProvider) level.getBlockEntity(minerPos))
+                        .createMenu(7, player.getInventory(), player);
+        menu.getSlot(0).set(stack("drill"));
+        var pipes = stack("mining_pipe");
+        pipes.setCount(2);
+        menu.getSlot(2).set(pipes);
+        ((com.industrialage.ia2.power.WorldPowerPort) level.getBlockEntity(minerPos)).receive(2000);
+
+        boolean[] stage = {false, false};
+        helper.onEachTick(
+                () -> {
+                    if (!stage[0]) {
+                        var lower = level.getBlockState(minerPos.below(2));
+                        if (lower.is(tip)) {
+                            var upper = level.getBlockState(minerPos.below());
+                            check(
+                                    helper,
+                                    upper.is(pipe)
+                                            && upper.getValue(BlockStateProperties.WATERLOGGED)
+                                            && level.getFluidState(minerPos.below()).isSource()
+                                            && lower.getValue(BlockStateProperties.WATERLOGGED)
+                                            && level.getFluidState(minerPos.below(2)).isSource(),
+                                    "Miner preserved WATERLOGGED on descent through water");
+                            stage[0] = true;
+                            level.setBlockAndUpdate(
+                                    minerPos.north(), Blocks.REDSTONE_BLOCK.defaultBlockState());
+                        }
+                        return;
+                    }
+                    if (!stage[1]) {
+                        var lower = level.getBlockState(minerPos.below(2));
+                        if (lower.is(Blocks.WATER)) {
+                            var upper = level.getBlockState(minerPos.below());
+                            check(
+                                    helper,
+                                    level.getFluidState(minerPos.below(2)).isSource()
+                                            && upper.is(tip)
+                                            && upper.getValue(BlockStateProperties.WATERLOGGED)
+                                            && level.getFluidState(minerPos.below()).isSource(),
+                                    "Miner preserved WATERLOGGED during withdrawal");
+                            stage[1] = true;
+                        }
+                        return;
+                    }
+                    if (level.getBlockState(minerPos.below()).is(Blocks.WATER)) {
+                        check(
+                                helper,
+                                level.getFluidState(minerPos.below()).isSource()
+                                        && level.getFluidState(minerPos.below(2)).isSource(),
+                                "Miner restored both water sources on full withdrawal");
+                        helper.succeed();
+                    }
+                });
+    }
+
+    /**
+     * Verifies waterlogging, fluid tick propagation, and flowing-water/lava survival for item
+     * pipes, fluid pipes, and mining pipes.
+     */
+    @GameTest(template = "smoke", timeoutTicks = 40)
+    public static void pipesAndMiningPipesWaterlogging(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var origin = helper.absolutePos(new BlockPos(1, 120, 1));
+        var player = player(helper, origin);
+
+        PipeGeometryChecks.run(level, PlayableGameTests::block);
+
+        var itemPipe = PlayableGameTests.block("bronze_item_pipe_tiny");
+        var fluidPipe = PlayableGameTests.block("bronze_fluid_pipe_medium");
+        var miningPipe = PlayableGameTests.block("mining_pipe");
+        var miningTip = PlayableGameTests.block("mining_pipe_tip");
+        check(
+                helper,
+                miningPipe instanceof SimpleWaterloggedBlock
+                        && miningTip instanceof SimpleWaterloggedBlock
+                        && !miningPipe
+                                .defaultBlockState()
+                                .getValue(BlockStateProperties.WATERLOGGED)
+                        && !miningTip
+                                .defaultBlockState()
+                                .getValue(BlockStateProperties.WATERLOGGED),
+                "Mining pipes implement SimpleWaterloggedBlock with WATERLOGGED=false default");
+
+        var wetItemPos = origin;
+        var wetFluidPos = origin.south(4);
+        var wetMiningPos = origin.south(8);
+        var flowSource = origin.east(6);
+
+        for (var pos : new BlockPos[] {wetItemPos, wetFluidPos, wetMiningPos}) {
+            for (int dx = -1; dx <= 2; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    level.setBlockAndUpdate(
+                            pos.offset(dx, -1, dz), Blocks.STONE.defaultBlockState());
+                    boolean wall = dx == -1 || dx == 2 || dz == -1 || dz == 1;
+                    level.setBlockAndUpdate(
+                            pos.offset(dx, 0, dz),
+                            (wall || dx == 1 ? Blocks.STONE : Blocks.AIR).defaultBlockState());
+                }
+            }
+        }
+
+        verifyWaterloggedPlacementAndToggle(helper, player, wetItemPos, itemPipe, "item_pipe");
+        verifyWaterloggedPlacementAndToggle(helper, player, wetFluidPos, fluidPipe, "fluid_pipe");
+        verifyWaterloggedPlacementAndToggle(
+                helper, player, wetMiningPos, miningPipe, "mining_pipe");
+
+        // Non-sneak water bucket on item pipe does not get swallowed by TransportBlock.interact.
+        player.setShiftKeyDown(false);
+        var itemBucket = new ItemStack(Items.WATER_BUCKET);
+        player.setPos(wetItemPos.getX() + 0.5, wetItemPos.getY() + 1, wetItemPos.getZ() + 0.5);
+        player.setItemInHand(InteractionHand.MAIN_HAND, itemBucket);
+        check(
+                helper,
+                !useOn(helper, player, wetItemPos, Direction.UP, itemBucket).consumesAction(),
+                "Item pipe defers water bucket to vanilla waterlogging");
+        // Normal water bucket on medium fluid pipe still fills its internal fluid buffer.
+        var fluidBucket = new ItemStack(Items.WATER_BUCKET);
+        player.setPos(wetFluidPos.getX() + 0.5, wetFluidPos.getY() + 1, wetFluidPos.getZ() + 0.5);
+        player.setItemInHand(InteractionHand.MAIN_HAND, fluidBucket);
+        check(
+                helper,
+                useOn(helper, player, wetFluidPos, Direction.UP, fluidBucket).consumesAction()
+                        && water(fluid(helper, wetFluidPos, Direction.UP)) == 1000,
+                "Fluid pipe retains normal water bucket filling");
+        // Sneak + water bucket on fluid pipe bypasses Block.use so vanilla waterlogging still
+        // works.
+        var sneakBucket = new ItemStack(Items.WATER_BUCKET);
+        player.setShiftKeyDown(true);
+        player.setItemInHand(InteractionHand.MAIN_HAND, sneakBucket);
+        check(
+                helper,
+                !useOn(helper, player, wetFluidPos, Direction.UP, sneakBucket).consumesAction(),
+                "Sneak water bucket on fluid pipe defers to vanilla waterlogging");
+        player.setShiftKeyDown(false);
+
+        // Re-waterlog all three and open east wall to confirm updateShape schedules water ticks.
+        for (var entry :
+                new Object[][] {
+                    {wetItemPos, itemPipe},
+                    {wetFluidPos, fluidPipe},
+                    {wetMiningPos, miningPipe}
+                }) {
+            var pos = (BlockPos) entry[0];
+            var block = (SimpleWaterloggedBlock) entry[1];
+            check(
+                    helper,
+                    block.placeLiquid(
+                                    level,
+                                    pos,
+                                    level.getBlockState(pos),
+                                    Fluids.WATER.getSource(false))
+                            && level.getBlockState(pos).getValue(BlockStateProperties.WATERLOGGED),
+                    "Re-waterlogged " + pos);
+            level.setBlockAndUpdate(pos.east(), Blocks.AIR.defaultBlockState());
+            check(
+                    helper,
+                    level.getFluidTicks().hasScheduledTick(pos, Fluids.WATER),
+                    "updateShape scheduled fluid tick for " + pos);
+        }
+
+        // Flowing water basin with dry item pipe, fluid pipe, and mining pipe adjacent to source.
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                level.setBlockAndUpdate(
+                        flowSource.offset(dx, -1, dz), Blocks.STONE.defaultBlockState());
+                boolean wall = dx == -2 || dx == 2 || dz == -2 || dz == 2;
+                level.setBlockAndUpdate(
+                        flowSource.offset(dx, 0, dz),
+                        (wall ? Blocks.STONE : Blocks.AIR).defaultBlockState());
+            }
+        }
+        level.setBlockAndUpdate(flowSource.east(), itemPipe.defaultBlockState());
+        level.setBlockAndUpdate(flowSource.west(), fluidPipe.defaultBlockState());
+        level.setBlockAndUpdate(flowSource.south(), miningPipe.defaultBlockState());
+        level.setBlockAndUpdate(flowSource, Blocks.WATER.defaultBlockState());
+
+        helper.onEachTick(
+                () -> {
+                    if (level.getFluidState(wetItemPos.east()).getType() == Fluids.FLOWING_WATER
+                            && level.getFluidState(wetFluidPos.east()).getType()
+                                    == Fluids.FLOWING_WATER
+                            && level.getFluidState(wetMiningPos.east()).getType()
+                                    == Fluids.FLOWING_WATER
+                            && level.getFluidState(flowSource.north()).getType()
+                                    == Fluids.FLOWING_WATER) {
+                        check(
+                                helper,
+                                level.getBlockState(flowSource.east()).is(itemPipe)
+                                        && !level.getBlockState(flowSource.east())
+                                                .getValue(BlockStateProperties.WATERLOGGED)
+                                        && level.getBlockState(flowSource.west()).is(fluidPipe)
+                                        && !level.getBlockState(flowSource.west())
+                                                .getValue(BlockStateProperties.WATERLOGGED)
+                                        && level.getBlockState(flowSource.south()).is(miningPipe)
+                                        && !level.getBlockState(flowSource.south())
+                                                .getValue(BlockStateProperties.WATERLOGGED),
+                                "Flowing water did not wash away item, fluid, or mining pipes");
+                        helper.succeed();
+                    }
+                });
+    }
+
+    private static void verifyWaterloggedPlacementAndToggle(
+            GameTestHelper helper, ServerPlayer player, BlockPos pos, Block pipe, String label) {
+        var level = helper.getLevel();
+        level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
+        var stack = new ItemStack(pipe);
+        player.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+        player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        var hit =
+                new BlockHitResult(
+                        Vec3.atCenterOf(pos.below()).add(0, 0.5, 0),
+                        Direction.UP,
+                        pos.below(),
+                        false);
+        var placed =
+                ((BlockItem) stack.getItem())
+                        .place(
+                                new BlockPlaceContext(
+                                        player, InteractionHand.MAIN_HAND, stack, hit));
+        var state = level.getBlockState(pos);
+        check(
+                helper,
+                placed.consumesAction()
+                        && state.is(pipe)
+                        && state.getValue(BlockStateProperties.WATERLOGGED)
+                        && level.getFluidState(pos).isSource()
+                        && level.getFluidState(pos).getType() == Fluids.WATER,
+                label + " placed inside water source sets WATERLOGGED=true");
+        var scooped = ((SimpleWaterloggedBlock) pipe).pickupBlock(level, pos, state);
+        check(
+                helper,
+                scooped.is(Items.WATER_BUCKET)
+                        && !level.getBlockState(pos).getValue(BlockStateProperties.WATERLOGGED)
+                        && level.getFluidState(pos).isEmpty(),
+                label + " pickupBlock unwaterlogs cleanly");
     }
 
     private static int water(IFluidHandler port) {

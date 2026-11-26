@@ -163,6 +163,38 @@ class ItemPipeRouterContractTest {
     }
 
     @Test
+    void singleSegmentExtractionPrefersOppositeThenPerpendicularTargetContainer() {
+        // Linked neighboring pipe still wins over an adjacent non-pipe target container.
+        assertEquals(
+                Direction.NORTH,
+                ItemPipeRouter.redirectedOutput(
+                        Direction.WEST,
+                        side -> side == Direction.NORTH,
+                        side -> side == Direction.EAST));
+        // When no pipe neighbors exist, prefers the target directly opposite the extraction nozzle.
+        assertEquals(
+                Direction.EAST,
+                ItemPipeRouter.redirectedOutput(
+                        Direction.WEST,
+                        side -> false,
+                        side -> side == Direction.NORTH || side == Direction.EAST));
+        // On a 90-degree single-segment bend, picks the perpendicular target instead of empty air.
+        assertEquals(
+                Direction.SOUTH,
+                ItemPipeRouter.redirectedOutput(
+                        Direction.WEST, side -> false, side -> side == Direction.SOUTH));
+        // preferredTarget returns null when no non-extraction face matches.
+        assertNull(
+                ItemPipeRouter.preferredTarget(
+                        side -> side == Direction.WEST, side -> side == Direction.WEST));
+        assertEquals(
+                Direction.SOUTH,
+                ItemPipeRouter.preferredTarget(
+                        side -> side == Direction.WEST || side == Direction.EAST,
+                        side -> side == Direction.WEST || side == Direction.SOUTH));
+    }
+
+    @Test
     void longDistanceMixedItemPipelineRoutesPastDownstreamIncompatibleCargo() {
         // 64-block single-lane pipeline with a bend and vertical climb; downstream pipes hold a
         // different item in transit while the immediate next hop is free.
