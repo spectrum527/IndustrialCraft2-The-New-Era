@@ -90,7 +90,12 @@ final class ArmorChecks {
                         && player.getInventory()
                                 .contains(new ItemStack(NativeGameplayFixture.item("tin_can")))
                         && PortableGear.stored(helmet) == 0);
-        check.accept("quantum-chest-extinguishes", !player.isOnFire());
+        check.accept("quantum-chest-empty-leaves-fire", player.isOnFire());
+        var chest = equip(player, EquipmentSlot.CHEST, "quantum_chestplate", 200);
+        tick(player);
+        check.accept(
+                "quantum-chest-extinguishes",
+                !player.isOnFire() && PortableGear.stored(chest) == 0);
         check.accept(
                 "quantum-walk-costs-zero",
                 PortableGear.stored(leggings) == 2_000
@@ -306,12 +311,13 @@ final class ArmorChecks {
         player.setHealth(20);
         player.invulnerableTime = 0;
         NativeArmorCheckAccess.impact(level, player, "magic", 10);
+        int otherCost = family.equals("nano") ? 50_000 : 12_500;
         check.accept(
-                family + "-mixed-suit-has-no-powered-shield",
-                player.getHealth() < 20
-                        && PortableGear.stored(mixed) == 200_000
-                        && stacks.stream()
-                                .allMatch(piece -> PortableGear.stored(piece) == 200_000));
+                family + "-mixed-suit-absorbs-per-piece",
+                player.getHealth() == 20
+                        && PortableGear.stored(mixed) == 200_000 - otherCost
+                        && stacks.subList(1, 4).stream()
+                                .allMatch(piece -> PortableGear.stored(piece) == 200_000 - cost));
 
         stacks = suit(player, family, 200_000);
         player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
@@ -319,10 +325,10 @@ final class ArmorChecks {
         player.invulnerableTime = 0;
         NativeArmorCheckAccess.impact(level, player, "magic", 10);
         check.accept(
-                family + "-incomplete-has-no-powered-shield",
-                player.getHealth() < 20
-                        && stacks.stream()
-                                .allMatch(piece -> PortableGear.stored(piece) == 200_000));
+                family + "-incomplete-suit-absorbs-three-quarters",
+                Math.abs(player.getHealth() - 17.5F) < 0.0001F
+                        && stacks.subList(1, 4).stream()
+                                .allMatch(piece -> PortableGear.stored(piece) == 200_000 - cost));
 
         stacks = suit(player, family, 200_000);
         player.setHealth(20);

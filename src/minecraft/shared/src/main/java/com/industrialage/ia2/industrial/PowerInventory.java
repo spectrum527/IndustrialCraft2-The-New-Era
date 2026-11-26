@@ -88,7 +88,7 @@ final class PowerInventory extends SimpleContainer
                                     || PowerPlatform.use(stack) == 0);
             case NUKE ->
                     slot == 0 && GameCharges.cartridge(stack)
-                            || slot == 1 && GameCharges.primingItem(stack);
+                            || slot >= 1 && slot < 9 && GameCharges.primingItem(stack);
             case RCI_RSH -> slot < 9 && stack.is(Items.REDSTONE_BLOCK);
             case RCI_LZH -> slot < 9 && stack.is(Items.LAPIS_BLOCK);
             case TRADE_O_MAT -> slot >= 0 && slot <= 2;

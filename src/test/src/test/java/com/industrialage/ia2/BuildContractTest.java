@@ -58,9 +58,32 @@ class BuildContractTest {
                 assertTrue(text.contains("[[dependencies.ic2]]"));
                 assertFalse(text.contains("modId=\"ia2\""));
                 var dependencies = dependencies(text, platform.target());
-                assertDependency(dependencies, "minecraft", platform.target(), platform.target());
                 assertDependency(
-                        dependencies, "neoforge", platform.neoForgeVersion(), platform.target());
+                        dependencies,
+                        "minecraft",
+                        "[" + platform.target() + "]",
+                        platform.target());
+                assertDependency(
+                        dependencies,
+                        "neoforge",
+                        "[" + platform.neoForgeVersion() + ",)",
+                        platform.target());
+                var mixins = jar.getJarEntry("ic2.mixins.json");
+                assertNotNull(mixins, platform.target() + ": ic2.mixins.json");
+                try (var stream = jar.getInputStream(mixins)) {
+                    var mixinText = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                    assertTrue(
+                            mixinText.contains("\"minVersion\""),
+                            platform.target() + ": ic2.mixins.json must declare minVersion");
+                }
+                assertNull(
+                        jar.getJarEntry(
+                                "data/ic2/recipe/industry/shaped/heat_exchanger_from_gold.json"),
+                        platform.target() + ": conflicting heat_exchanger_from_gold recipe");
+                assertNotNull(
+                        jar.getJarEntry(
+                                "data/ic2/recipe/industry/shaped/component_heat_exchanger.json"),
+                        platform.target() + ": component_heat_exchanger recipe");
                 assertFalse(text.contains("${"));
                 assertNotNull(jar.getJarEntry("LICENSE"));
                 assertNotNull(jar.getJarEntry("COPYING"));
@@ -132,6 +155,7 @@ class BuildContractTest {
                                                         || compiledTests.contains(name)
                                                         || name.startsWith("org/junit/")
                                                         || name.startsWith("org/opentest4j/")
+                                                        || name.endsWith(".csv")
                                                         || name.startsWith("org/apiguardian/"))
                                 .toList();
                 assertTrue(
@@ -210,13 +234,15 @@ class BuildContractTest {
     }
 
     private static void assertDependency(
-            List<Map<String, String>> dependencies, String modId, String version, String target) {
+            List<Map<String, String>> dependencies,
+            String modId,
+            String expectedRange,
+            String target) {
         var matches =
                 dependencies.stream().filter(entry -> modId.equals(entry.get("modId"))).toList();
         assertEquals(1, matches.size(), target + ": expected exactly one " + modId + " dependency");
         assertEquals("required", matches.getFirst().get("type"), target + ": " + modId);
-        assertEquals(
-                "[" + version + "]", matches.getFirst().get("versionRange"), target + ": " + modId);
+        assertEquals(expectedRange, matches.getFirst().get("versionRange"), target + ": " + modId);
     }
 
     private record PlatformJar(

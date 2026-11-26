@@ -48,12 +48,14 @@ public final class EnergyNetwork {
             ActiveConfig.scalarKey("misc/enableEnetExplosions", Boolean.class);
     private static final ConfigFacade.Key<Float> GENERATOR_RATE =
             ActiveConfig.scalarKey("balance/energy/generator/generator", Float.class);
+    private static final int MAX_PACKETS_PER_TICK = 256;
     private static final Map<ServerLevel, EnergyNetwork> WORLDS = new HashMap<>();
     private static ConfigFacade config;
 
     private final Map<Position, WorldPowerPort> machines = new LinkedHashMap<>();
     private final Map<Position, List<Route>> routes = new HashMap<>();
-    private final Set<Position> energizedDetectors = new HashSet<>();
+    private final Map<Position, Long> energizedDetectors = new HashMap<>();
+    private final Set<net.minecraft.world.level.ChunkPos> trackedChunks = new HashSet<>();
     private boolean dirty = true;
 
     static void install(IEventBus gameBus, ConfigFacade settings) {
@@ -69,14 +71,14 @@ public final class EnergyNetwork {
                 ChunkEvent.Load.class,
                 event -> {
                     if (event.getLevel() instanceof ServerLevel level) {
-                        invalidate(level);
+                        invalidateChunk(level, event.getChunk().getPos());
                     }
                 });
         gameBus.addListener(
                 ChunkEvent.Unload.class,
                 event -> {
                     if (event.getLevel() instanceof ServerLevel level) {
-                        invalidate(level);
+                        invalidateChunk(level, event.getChunk().getPos());
                     }
                 });
         gameBus.addListener(
@@ -106,19 +108,29 @@ public final class EnergyNetwork {
             return;
         }
         var network = WORLDS.computeIfAbsent(level, ignored -> new EnergyNetwork());
-        network.machines.put(position(machine.getBlockPos()), machine);
+        var pos = machine.getBlockPos();
+        network.machines.put(position(pos), machine);
+        network.trackPosition(pos);
         network.dirty = true;
+        CableBlock.refreshNeighbors(level, pos);
     }
 
     /** Withdraws a native endpoint, matching its instance to avoid removing a replacement. */
     public static void unload(ServerLevel level, WorldPowerPort machine) {
         var network = WORLDS.get(level);
-        if (network != null && network.machines.remove(position(machine.getBlockPos()), machine)) {
+        var pos = machine.getBlockPos();
+        if (network != null && network.machines.remove(position(pos), machine)) {
             network.dirty = true;
             if (network.machines.isEmpty()) {
                 WORLDS.remove(level);
             }
         }
+    }
+
+    /** Whether a loaded position is currently registered in this level's electrical network. */
+    public static boolean contains(ServerLevel level, BlockPos pos) {
+        var network = WORLDS.get(level);
+        return network != null && network.machines.containsKey(position(pos));
     }
 
     static void invalidate(ServerLevel level) {
@@ -128,15 +140,30 @@ public final class EnergyNetwork {
         }
     }
 
+    private static void invalidateChunk(
+            ServerLevel level, net.minecraft.world.level.ChunkPos chunk) {
+        var network = WORLDS.get(level);
+        if (network != null && network.trackedChunks.contains(chunk)) {
+            network.dirty = true;
+        }
+    }
+
     static boolean wasCarryingPower(ServerLevel level, BlockPos pos) {
         var network = WORLDS.get(level);
-        return network != null && network.energizedDetectors.contains(position(pos));
+        if (network == null) return false;
+        var key = position(pos);
+        Long last = network.energizedDetectors.get(key);
+        if (last == null) return false;
+        if (level.getGameTime() - last <= CableBlock.DETECTOR_INTERVAL) return true;
+        network.energizedDetectors.remove(key, last);
+        return false;
     }
 
     /** Checks whether this loaded position belongs to a conductor or electricity endpoint. */
     public static boolean metered(ServerLevel level, BlockPos pos) {
         if (!level.hasChunkAt(pos)) return false;
         if (level.getBlockState(pos).getBlock() instanceof CableBlock) return true;
+        if (contains(level, pos)) return true;
         if (!(level.getBlockEntity(pos) instanceof WorldPowerPort port) || port.isRemoved())
             return false;
         var ports = port.energyPorts();
@@ -144,15 +171,18 @@ public final class EnergyNetwork {
     }
 
     private void settle(ServerLevel level) {
-        energizedDetectors.clear();
+        long now = level.getGameTime();
+        if (now % 64 == 0 && !energizedDetectors.isEmpty()) {
+            energizedDetectors.values().removeIf(last -> now - last > CableBlock.DETECTOR_INTERVAL);
+        }
         var sources = new ArrayList<Source>();
         for (var entry : machines.entrySet()) {
             var machine = entry.getValue();
             if (machine.source() && machine.ranThisTick(level)) {
                 double offer = machine.offer();
-                if (offer > 0) {
-                    sources.add(
-                            new Source(entry.getKey(), machine, offer, machine.packetsPerTick()));
+                int packets = Math.max(0, Math.min(machine.packetsPerTick(), MAX_PACKETS_PER_TICK));
+                if (Double.isFinite(offer) && offer > 0 && packets > 0) {
+                    sources.add(new Source(entry.getKey(), machine, offer, packets));
                 }
             }
         }
@@ -197,7 +227,7 @@ public final class EnergyNetwork {
                     budget -= debit;
                     double loss = round.roundLoss ? Math.floor(route.rawLoss()) : route.rawLoss();
                     record(level, source, route, sink, debit, debit - loss);
-                    afterTransfer(level, route, sink, debit, loss, round);
+                    afterTransfer(level, route, sink, initialBudget, debit, loss, round);
                     if (dirty) {
                         return true;
                     }
@@ -231,6 +261,7 @@ public final class EnergyNetwork {
             ServerLevel level,
             Route route,
             WorldPowerPort sink,
+            double packetVoltage,
             double debit,
             double loss,
             Round round) {
@@ -239,7 +270,7 @@ public final class EnergyNetwork {
             if (level.getBlockState(pos).getBlock() instanceof CableBlock cable) {
                 if (cable.exposed) round.shocks.record(pos, debit - loss);
                 if (cable.detector()) {
-                    energizedDetectors.add(conductor);
+                    energizedDetectors.put(conductor, level.getGameTime());
                 }
                 if (round.meltdown && debit > cable.packetLimit() + 1) {
                     level.destroyBlock(pos, false);
@@ -247,7 +278,8 @@ public final class EnergyNetwork {
                 }
             }
         }
-        if (round.overload && loss == 0 && debit > sink.packetLimit() && !sink.isRemoved()) {
+        double arrivedVoltage = packetVoltage - loss;
+        if (round.overload && arrivedVoltage > sink.packetLimit() && !sink.isRemoved()) {
             var pos = sink.getBlockPos();
             level.destroyBlock(pos, false);
             level.explode(
@@ -266,9 +298,11 @@ public final class EnergyNetwork {
         var pending = new ArrayDeque<BlockPos>();
         var visited = new HashSet<BlockPos>();
         var losses = new HashMap<Position, Double>();
+        trackedChunks.clear();
         for (var entry : machines.entrySet()) {
             var machine = entry.getValue();
             graph.put(entry.getKey(), machine.energyPorts());
+            trackPosition(machine.getBlockPos());
             addNeighbors(machine.getBlockPos(), pending, visited);
         }
         while (!pending.isEmpty()) {
@@ -281,6 +315,7 @@ public final class EnergyNetwork {
                 var node = position(pos);
                 graph.put(node, CABLE_PORTS.get(CableColors.color(state)));
                 losses.put(node, PowerGrid.cableLoss(cable.path));
+                trackPosition(pos);
                 addNeighbors(pos, pending, visited);
             }
         }
@@ -291,6 +326,20 @@ public final class EnergyNetwork {
             }
         }
         dirty = false;
+    }
+
+    private void trackPosition(BlockPos pos) {
+        int cx = pos.getX() >> 4;
+        int cz = pos.getZ() >> 4;
+        trackedChunks.add(new net.minecraft.world.level.ChunkPos(cx, cz));
+        if ((pos.getX() & 15) == 0)
+            trackedChunks.add(new net.minecraft.world.level.ChunkPos(cx - 1, cz));
+        else if ((pos.getX() & 15) == 15)
+            trackedChunks.add(new net.minecraft.world.level.ChunkPos(cx + 1, cz));
+        if ((pos.getZ() & 15) == 0)
+            trackedChunks.add(new net.minecraft.world.level.ChunkPos(cx, cz - 1));
+        else if ((pos.getZ() & 15) == 15)
+            trackedChunks.add(new net.minecraft.world.level.ChunkPos(cx, cz + 1));
     }
 
     private static void addNeighbors(

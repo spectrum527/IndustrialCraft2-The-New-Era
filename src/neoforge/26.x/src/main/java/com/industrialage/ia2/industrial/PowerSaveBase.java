@@ -54,11 +54,10 @@ abstract class PowerSaveBase extends BlockEntity {
         var node = (PowerNode) this;
         var stacks =
                 tag.read("items", ItemStack.OPTIONAL_CODEC.listOf()).orElseGet(java.util.List::of);
-        for (int slot = 0;
-                slot < Math.min(stacks.size(), node.inventory.getContainerSize());
-                slot++) node.inventory.setItem(slot, stacks.get(slot));
-        node.energy = Math.max(0, tag.getDoubleOr("eu", 0));
-        node.waterFraction = Math.max(0, tag.getDoubleOr("water_fraction", 0));
+        for (int slot = 0; slot < node.inventory.getContainerSize(); slot++)
+            node.inventory.setItem(slot, slot < stacks.size() ? stacks.get(slot) : ItemStack.EMPTY);
+        node.energy = nonNegative(tag.getDoubleOr("eu", 0));
+        node.waterFraction = nonNegative(tag.getDoubleOr("water_fraction", 0));
         node.fuel = Math.max(0, tag.getIntOr("fuel", 0));
         node.liquid = Math.max(0, tag.getIntOr("millibuckets", 0));
         node.mode = Math.max(0, tag.getIntOr("mode", 0));
@@ -67,16 +66,29 @@ abstract class PowerSaveBase extends BlockEntity {
                 Math.min(ReactorVessel.TANK_CAPACITY, Math.max(0, tag.getIntOr("coolant", 0)));
         node.hotCoolant =
                 Math.min(ReactorVessel.TANK_CAPACITY, Math.max(0, tag.getIntOr("hot_coolant", 0)));
-        node.owner = tag.getString("trade_owner").map(java.util.UUID::fromString).orElse(null);
+        node.owner = tag.getString("trade_owner").map(PowerSaveBase::parseUuid).orElse(null);
         node.saleSize = Math.max(1, tag.getIntOr("offer_eu", 1000));
         node.trades = tag.getIntOr("trades", 0);
-        node.credit = Math.max(0, tag.getDoubleOr("credit", 0));
+        node.credit = nonNegative(tag.getDoubleOr("credit", 0));
         node.target =
                 tag.getBooleanOr("linked", false) ? BlockPos.of(tag.getLongOr("peer", 0)) : null;
         node.cooldownUntil = tag.getLongOr("transfer_cooldown", 0);
         node.reactor.restore(
                 Math.max(0, tag.getIntOr("hull_heat", 0)),
-                Math.max(0, tag.getDoubleOr("output", 0)));
+                nonNegative(tag.getDoubleOr("output", 0)));
+    }
+
+    private static double nonNegative(double value) {
+        return Double.isFinite(value) && value > 0 ? value : 0;
+    }
+
+    private static java.util.UUID parseUuid(String raw) {
+        if (raw == null || raw.isEmpty()) return null;
+        try {
+            return java.util.UUID.fromString(raw);
+        } catch (IllegalArgumentException malformed) {
+            return null;
+        }
     }
 
     @Override

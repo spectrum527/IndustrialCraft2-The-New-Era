@@ -316,6 +316,16 @@ public final class NativeGameplay {
 
         abstract BlockState updateConnection(BlockState state, Direction side, BlockState neighbor);
 
+        BlockState updateWorldConnection(
+                net.minecraft.world.level.BlockGetter level,
+                BlockPos pos,
+                BlockState state,
+                Direction side,
+                BlockPos neighborPos,
+                BlockState neighbor) {
+            return updateConnection(state, side, neighbor);
+        }
+
         abstract void updatePower(Level level, BlockPos pos, BlockState state);
 
         @Override
@@ -331,7 +341,7 @@ public final class NativeGameplay {
             if (state.getValue(BlockStateProperties.WATERLOGGED)) {
                 ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
             }
-            return updateConnection(state, side, neighbor);
+            return updateWorldConnection(level, pos, state, side, neighborPos, neighbor);
         }
 
         @Override

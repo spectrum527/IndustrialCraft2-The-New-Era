@@ -69,6 +69,12 @@ final class NativeLaser {
 
         @Override
         protected void onHitEntity(EntityHitResult hit) {
+            if (level() instanceof ServerLevel server && profile != null) {
+                var target = hit.getEntity();
+                float damage = profile.smelt() ? 8F : Math.max(4F, profile.hits() * 2F);
+                target.hurtServer(server, server.damageSources().arrow(this, getOwner()), damage);
+                if (profile.smelt()) target.igniteForSeconds(4);
+            }
             discard();
         }
 

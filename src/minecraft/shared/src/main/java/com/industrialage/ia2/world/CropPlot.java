@@ -66,7 +66,8 @@ final class CropPlot extends WorldSaveBase {
                                             Direction.Plane.HORIZONTAL.getRandomDirection(random)))
                             instanceof CropPlot next
                     && next.protection == 0
-                    && next.species() != CropSpecies.WEED) {
+                    && next.species() != CropSpecies.WEED
+                    && (next.species() == null || random.nextInt(32) >= next.genes.resistance())) {
                 next.plant(level, CropSpecies.WEED, CropGenes.WILD);
             }
         }
@@ -131,11 +132,22 @@ final class CropPlot extends WorldSaveBase {
 
     boolean clearWeed(ServerLevel level) {
         if (species() != CropSpecies.WEED) return false;
-        return level.setBlockAndUpdate(
+        int savedHydration = hydration;
+        int savedNutrients = nutrients;
+        int savedProtection = protection;
+        if (!level.setBlockAndUpdate(
                 worldPosition,
                 WorldNative.block("ic2:crop_stick")
                         .defaultBlockState()
-                        .setValue(CropBlock.CROSSED, getBlockState().getValue(CropBlock.CROSSED)));
+                        .setValue(CropBlock.CROSSED, getBlockState().getValue(CropBlock.CROSSED))))
+            return false;
+        if (level.getBlockEntity(worldPosition) instanceof CropPlot cleared) {
+            cleared.hydration = savedHydration;
+            cleared.nutrients = savedNutrients;
+            cleared.protection = savedProtection;
+            cleared.setChanged();
+        }
+        return true;
     }
 
     ItemStack harvestOutput() {

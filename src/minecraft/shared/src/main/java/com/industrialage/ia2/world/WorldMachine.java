@@ -196,9 +196,13 @@ final class WorldMachine extends WorldSaveBase
     }
 
     private void releaseChunks(ServerLevel level) {
+        releaseChunks(level, true);
+    }
+
+    private void releaseChunks(ServerLevel level, boolean unforce) {
         if (targetTicket != null && !targetTicket.equals(hostTicket))
-            WorldChunkTickets.release(level, targetTicket);
-        if (hostTicket != null) WorldChunkTickets.release(level, hostTicket);
+            WorldChunkTickets.release(level, targetTicket, unforce);
+        if (hostTicket != null) WorldChunkTickets.release(level, hostTicket, unforce);
         targetTicket = null;
         hostTicket = null;
     }
@@ -304,15 +308,25 @@ final class WorldMachine extends WorldSaveBase
     }
 
     private void refillFromBuckets() {
-        if (water <= 3000
-                && replaceContainer(1, "minecraft:water_bucket", new ItemStack(Items.BUCKET))) {
-            water += 1000;
-            setChanged();
+        if (water <= 3000) {
+            if (replaceContainer(1, "minecraft:water_bucket", new ItemStack(Items.BUCKET))
+                    || replaceContainer(
+                            1,
+                            "ic2:water_cell",
+                            TransportPlatform.emptyUniversalCell(inventory.getItem(1)))) {
+                water += 1000;
+                setChanged();
+            }
         }
-        if (weedEx <= 3000
-                && replaceContainer(2, "ic2:weed_ex_bucket", new ItemStack(Items.BUCKET))) {
-            weedEx += 1000;
-            setChanged();
+        if (weedEx <= 3000) {
+            if (replaceContainer(2, "ic2:weed_ex_bucket", new ItemStack(Items.BUCKET))
+                    || replaceContainer(
+                            2,
+                            "ic2:weed_ex_cell",
+                            TransportPlatform.emptyUniversalCell(inventory.getItem(2)))) {
+                weedEx += 1000;
+                setChanged();
+            }
         }
     }
 
@@ -399,18 +413,18 @@ final class WorldMachine extends WorldSaveBase
 
     @Override
     public void setRemoved() {
-        unlink();
+        unlink(true);
         super.setRemoved();
     }
 
     @Override
     public void onChunkUnloaded() {
-        unlink();
+        unlink(false);
         super.onChunkUnloaded();
     }
 
-    private void unlink() {
-        if (getLevel() instanceof ServerLevel level) releaseChunks(level);
+    private void unlink(boolean unforceChunks) {
+        if (getLevel() instanceof ServerLevel level) releaseChunks(level, unforceChunks);
         if (attached) {
             WorldEnergy.disconnect(this);
             attached = false;

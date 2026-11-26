@@ -38,15 +38,18 @@ public final class CellItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         var player = context.getPlayer();
-        if (player == null || !(context.getLevel() instanceof ServerLevel level)) {
-            return InteractionResult.PASS;
+        if (player == null) return InteractionResult.PASS;
+        var pos = context.getClickedPos();
+        var face = context.getClickedFace();
+        if (!(context.getLevel() instanceof ServerLevel level)) {
+            var world = context.getLevel();
+            return world.getBlockEntity(pos)
+                                    instanceof com.industrialage.ia2.access.MachineAccessTarget
+                            || world.getCapability(Capabilities.Fluid.BLOCK, pos, face) != null
+                    ? InteractionResult.SUCCESS
+                    : InteractionResult.PASS;
         }
-        return interactWithBlock(
-                        level,
-                        context.getClickedPos(),
-                        context.getClickedFace(),
-                        player,
-                        context.getHand())
+        return interactWithBlock(level, pos, face, player, context.getHand())
                 ? InteractionResult.SUCCESS
                 : InteractionResult.PASS;
     }

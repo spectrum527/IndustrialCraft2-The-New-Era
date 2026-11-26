@@ -106,19 +106,23 @@ final class NeoTransport {
 
     static ItemStack takeItem(ServerLevel level, BlockPos pos, Direction side, int amount) {
         var handler = level.getCapability(Capabilities.Item.BLOCK, pos, side);
-        if (handler == null) {
+        if (handler == null || amount <= 0) {
             return ItemStack.EMPTY;
         }
-        try (var transaction = Transaction.openRoot()) {
-            var stack =
-                    ResourceHandlerUtil.extractFirst(
-                            handler, resource -> true, amount, transaction);
-            if (stack == null) {
-                return ItemStack.EMPTY;
+        for (int slot = 0; slot < handler.size(); slot++) {
+            var resource = handler.getResource(slot);
+            if (resource.isEmpty()) continue;
+            int limit = Math.min(amount, resource.toStack(1).getMaxStackSize());
+            if (limit <= 0) continue;
+            try (var transaction = Transaction.openRoot()) {
+                int taken = handler.extract(slot, resource, limit, transaction);
+                if (taken > 0) {
+                    transaction.commit();
+                    return resource.toStack(taken);
+                }
             }
-            transaction.commit();
-            return stack.resource().toStack(stack.amount());
         }
+        return ItemStack.EMPTY;
     }
 
     static boolean hasFluidPort(ServerLevel level, BlockPos pos, Direction side) {

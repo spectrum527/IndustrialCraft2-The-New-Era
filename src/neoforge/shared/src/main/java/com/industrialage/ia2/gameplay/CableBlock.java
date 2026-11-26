@@ -36,7 +36,7 @@ public class CableBlock extends NativeGameplay.CableBlockBase
         return true;
     }
 
-    private static final int DETECTOR_INTERVAL = 32;
+    static final int DETECTOR_INTERVAL = 32;
     private static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     private static final Map<Direction, BooleanProperty> CONNECTIONS =
             Map.of(
@@ -96,8 +96,15 @@ public class CableBlock extends NativeGameplay.CableBlockBase
         if (!(level instanceof ServerLevel server)) return true;
         var painted = state.setValue(CableColors.COLOR, color);
         for (Direction side : Direction.values()) {
+            var neighborPos = pos.relative(side);
             painted =
-                    cable.updateConnection(painted, side, level.getBlockState(pos.relative(side)));
+                    cable.updateWorldConnection(
+                            level,
+                            pos,
+                            painted,
+                            side,
+                            neighborPos,
+                            level.getBlockState(neighborPos));
         }
         if (!server.setBlockAndUpdate(pos, painted)) return false;
         EnergyNetwork.invalidate(server);
@@ -139,7 +146,14 @@ public class CableBlock extends NativeGameplay.CableBlockBase
                                         == Fluids.WATER);
         for (var direction : Direction.values()) {
             var neighbor = context.getClickedPos().relative(direction);
-            state = updateConnection(state, direction, context.getLevel().getBlockState(neighbor));
+            state =
+                    updateWorldConnection(
+                            context.getLevel(),
+                            context.getClickedPos(),
+                            state,
+                            direction,
+                            neighbor,
+                            context.getLevel().getBlockState(neighbor));
         }
         if (path.equals("splitter_cable")) {
             state =
@@ -154,12 +168,55 @@ public class CableBlock extends NativeGameplay.CableBlockBase
         var block = neighbor.getBlock();
         boolean connected =
                 block instanceof CableBlock && CableColors.compatible(state, neighbor)
-                        || block instanceof PowerBlock
+                        || block instanceof PowerBlock power && power.acceptsPower()
                         || block instanceof WorldMachineBlock world && world.acceptsPower()
                         || block instanceof WorkshopBlock workshop && workshop.acceptsPower()
                         || block instanceof MachineBlock machine
                                 && machine.kind != MachineKind.IRON_FURNACE;
         return state.setValue(CONNECTIONS.get(side), connected);
+    }
+
+    @Override
+    BlockState updateWorldConnection(
+            BlockGetter level,
+            BlockPos pos,
+            BlockState state,
+            Direction side,
+            BlockPos neighborPos,
+            BlockState neighbor) {
+        var updated = updateConnection(state, side, neighbor);
+        var property = CONNECTIONS.get(side);
+        if (updated.getValue(property) || level == null) return updated;
+        if (level.getBlockEntity(neighborPos)
+                        instanceof com.industrialage.ia2.power.WorldPowerPort port
+                && !port.isRemoved()) {
+            var ports = port.energyPorts();
+            if (!ports.inputs().isEmpty() || !ports.outputs().isEmpty()) {
+                return updated.setValue(property, true);
+            }
+        }
+        if (level instanceof ServerLevel server && EnergyNetwork.contains(server, neighborPos)) {
+            return updated.setValue(property, true);
+        }
+        return updated;
+    }
+
+    static void refreshNeighbors(ServerLevel level, BlockPos pos) {
+        if (!level.hasChunkAt(pos)) return;
+        var self = level.getBlockState(pos);
+        for (var side : Direction.values()) {
+            var cablePos = pos.relative(side);
+            if (!level.hasChunkAt(cablePos)) continue;
+            var cableState = level.getBlockState(cablePos);
+            if (cableState.getBlock() instanceof CableBlock cable) {
+                var updated =
+                        cable.updateWorldConnection(
+                                level, cablePos, cableState, side.getOpposite(), pos, self);
+                if (updated != cableState) {
+                    level.setBlock(cablePos, updated, Block.UPDATE_CLIENTS);
+                }
+            }
+        }
     }
 
     @Override

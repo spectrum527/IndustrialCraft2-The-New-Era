@@ -4,11 +4,55 @@ import com.industrialage.ia2.industrial.WorkshopRecipes.Recipe;
 import com.industrialage.ia2.industrial.WorkshopRecipes.Stack;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 
 final class WorkshopPlans {
+    private record UuAssemblyRecipe(int uuCost, String outputId, int outputCount) {}
+
+    private static final Map<String, UuAssemblyRecipe> UU_ASSEMBLY_RECIPES =
+            Map.ofEntries(
+                    Map.entry("ic2:uu_matter", new UuAssemblyRecipe(1, "minecraft:oak_log", 8)),
+                    Map.entry("minecraft:oak_log", new UuAssemblyRecipe(1, "minecraft:oak_log", 8)),
+                    Map.entry(
+                            "minecraft:cobblestone",
+                            new UuAssemblyRecipe(1, "minecraft:cobblestone", 16)),
+                    Map.entry("minecraft:stone", new UuAssemblyRecipe(1, "minecraft:stone", 16)),
+                    Map.entry("minecraft:glass", new UuAssemblyRecipe(1, "minecraft:glass", 32)),
+                    Map.entry("ic2:resin", new UuAssemblyRecipe(1, "ic2:resin", 21)),
+                    Map.entry(
+                            "minecraft:redstone",
+                            new UuAssemblyRecipe(1, "minecraft:redstone", 24)),
+                    Map.entry(
+                            "minecraft:lapis_lazuli",
+                            new UuAssemblyRecipe(1, "minecraft:lapis_lazuli", 9)),
+                    Map.entry("minecraft:coal", new UuAssemblyRecipe(1, "minecraft:coal", 20)),
+                    Map.entry(
+                            "minecraft:glowstone_dust",
+                            new UuAssemblyRecipe(2, "minecraft:glowstone_dust", 8)),
+                    Map.entry(
+                            "minecraft:obsidian",
+                            new UuAssemblyRecipe(2, "minecraft:obsidian", 12)),
+                    Map.entry(
+                            "minecraft:copper_ore",
+                            new UuAssemblyRecipe(2, "minecraft:copper_ore", 5)),
+                    Map.entry("ic2:tin_ore", new UuAssemblyRecipe(2, "ic2:tin_ore", 5)),
+                    Map.entry(
+                            "minecraft:iron_ore", new UuAssemblyRecipe(2, "minecraft:iron_ore", 2)),
+                    Map.entry("ic2:lead_ore", new UuAssemblyRecipe(2, "ic2:lead_ore", 2)),
+                    Map.entry(
+                            "minecraft:gold_ore", new UuAssemblyRecipe(3, "minecraft:gold_ore", 2)),
+                    Map.entry("ic2:uranium_ore", new UuAssemblyRecipe(5, "ic2:uranium_ore", 1)),
+                    Map.entry("ic2:iridium_ore", new UuAssemblyRecipe(7, "ic2:iridium_ore", 1)),
+                    Map.entry(
+                            "minecraft:diamond", new UuAssemblyRecipe(9, "minecraft:diamond", 1)));
+
     private WorkshopPlans() {}
+
+    static boolean acceptsUuTemplate(ItemStack item) {
+        return !item.isEmpty() && UU_ASSEMBLY_RECIPES.containsKey(WorkshopPlatform.itemId(item));
+    }
 
     record Input(int slot, int count) {}
 
@@ -54,18 +98,24 @@ final class WorkshopPlans {
         if (kind == WorkshopKind.UU_ASSEMBLY) {
             var template = node.inventory.getItem(0);
             var supply = node.inventory.getItem(1);
-            return WorkshopPlatform.itemId(template).equals("ic2:uu_matter")
-                            && WorkshopPlatform.sameItem(template, supply)
-                    ? new Job(
-                            "uu_assembly/oak_log",
-                            List.of(new Input(1, 1)),
-                            List.of(WorkshopPlatform.stack("minecraft:oak_log", 8)),
+            var recipe = UU_ASSEMBLY_RECIPES.get(WorkshopPlatform.itemId(template));
+            if (recipe == null
+                    || !WorkshopPlatform.itemId(supply).equals("ic2:uu_matter")
+                    || supply.getCount() < recipe.uuCost()) {
+                return null;
+            }
+            var product = WorkshopPlatform.stack(recipe.outputId(), recipe.outputCount());
+            return product.isEmpty()
+                    ? null
+                    : new Job(
+                            "uu_assembly/" + recipe.outputId(),
+                            List.of(new Input(1, recipe.uuCost())),
+                            List.of(product),
                             Liquid.EMPTY,
                             Liquid.EMPTY,
                             kind.duration,
                             0,
-                            0)
-                    : null;
+                            0);
         }
         if (kind == WorkshopKind.CLASSIC_CANNER) {
             var fuel = classicFuel(node);

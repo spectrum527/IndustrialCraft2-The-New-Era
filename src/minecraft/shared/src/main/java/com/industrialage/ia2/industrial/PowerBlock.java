@@ -48,6 +48,28 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock, 
         return defaultBlockState().setValue(BlockStateProperties.FACING, side.getOpposite());
     }
 
+    /** Whether this power block participates in the electrical cable network. */
+    public boolean acceptsPower() {
+        return kind.connectsPower();
+    }
+
+    @Override
+    public void setPlacedBy(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            net.minecraft.world.entity.LivingEntity placer,
+            net.minecraft.world.item.ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (kind.trader()
+                && placer instanceof Player player
+                && level.getBlockEntity(pos) instanceof PowerNode device
+                && device.owner == null) {
+            device.owner = player.getUUID();
+            device.setChanged();
+        }
+    }
+
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return kind == PowerKind.REACTOR_VESSEL || kind == PowerKind.REACTOR_REDSTONE_PORT
@@ -140,6 +162,18 @@ public final class PowerBlock extends WorkshopBlockBase implements EntityBlock, 
         if ((stack.getItem() instanceof CellItem
                         || stack.getItem() instanceof net.minecraft.world.item.BucketItem)
                 && CellItem.interactWithBlock(server, pos, side, player, hand)) return true;
+        if (kind == PowerKind.CREATIVE_GENERATOR && player.isShiftKeyDown()) {
+            device.mode = (device.mode + 1) % 5;
+            device.setChanged();
+            player.sendSystemMessage(
+                    net.minecraft.network.chat.Component.literal(
+                            "Creative Generator: "
+                                    + (int) device.offer()
+                                    + " EU/t (Tier "
+                                    + (device.mode + 1)
+                                    + ")"));
+            return true;
+        }
         if ((kind.lowTier() > 0 || kind.storage()) && player.isShiftKeyDown())
             device.changeMode(server);
         else if (kind == PowerKind.REACTOR_CHAMBER) {

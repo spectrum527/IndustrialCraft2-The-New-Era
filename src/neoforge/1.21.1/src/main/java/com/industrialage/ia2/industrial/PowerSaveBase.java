@@ -53,8 +53,8 @@ abstract class PowerSaveBase extends BlockEntity {
         ContainerHelper.loadAllItems(tag, stacks, registries);
         for (int slot = 0; slot < stacks.size(); slot++)
             node.inventory.setItem(slot, stacks.get(slot));
-        node.energy = Math.max(0, tag.getDouble("eu"));
-        node.waterFraction = Math.max(0, tag.getDouble("water_fraction"));
+        node.energy = nonNegative(tag.getDouble("eu"));
+        node.waterFraction = nonNegative(tag.getDouble("water_fraction"));
         node.fuel = Math.max(0, tag.getInt("fuel"));
         node.liquid = Math.max(0, tag.getInt("millibuckets"));
         node.mode = Math.max(0, tag.getInt("mode"));
@@ -62,14 +62,26 @@ abstract class PowerSaveBase extends BlockEntity {
         node.coolant = Math.min(ReactorVessel.TANK_CAPACITY, Math.max(0, tag.getInt("coolant")));
         node.hotCoolant =
                 Math.min(ReactorVessel.TANK_CAPACITY, Math.max(0, tag.getInt("hot_coolant")));
-        String id = tag.getString("trade_owner");
-        node.owner = id.isEmpty() ? null : java.util.UUID.fromString(id);
+        node.owner = parseUuid(tag.getString("trade_owner"));
         node.saleSize = tag.contains("offer_eu") ? Math.max(1, tag.getInt("offer_eu")) : 1000;
         node.trades = tag.getInt("trades");
-        node.credit = Math.max(0, tag.getDouble("credit"));
+        node.credit = nonNegative(tag.getDouble("credit"));
         node.target = tag.getBoolean("linked") ? BlockPos.of(tag.getLong("peer")) : null;
         node.cooldownUntil = tag.getLong("transfer_cooldown");
         node.reactor.restore(
-                Math.max(0, tag.getInt("hull_heat")), Math.max(0, tag.getDouble("output")));
+                Math.max(0, tag.getInt("hull_heat")), nonNegative(tag.getDouble("output")));
+    }
+
+    private static double nonNegative(double value) {
+        return Double.isFinite(value) && value > 0 ? value : 0;
+    }
+
+    private static java.util.UUID parseUuid(String raw) {
+        if (raw == null || raw.isEmpty()) return null;
+        try {
+            return java.util.UUID.fromString(raw);
+        } catch (IllegalArgumentException malformed) {
+            return null;
+        }
     }
 }

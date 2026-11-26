@@ -133,6 +133,21 @@ public final class ArmorPlatform {
         PortableGear.charge(item, amount, Integer.MAX_VALUE);
     }
 
+    static void chargeWorn(ServerPlayer player, double amount) {
+        var chest = player.getItemBySlot(EquipmentSlot.CHEST);
+        double remaining = amount - PortableGear.charge(chest, amount, Integer.MAX_VALUE);
+        if (remaining > 0) {
+            var back =
+                    com.industrialage.ia2.compat.CuriosBack.preferChest(
+                            player,
+                            stack ->
+                                    stack != chest
+                                            && PortableGear.acceptsCharge(
+                                                    stack, Integer.MAX_VALUE));
+            if (!back.isEmpty()) PortableGear.charge(back, remaining, Integer.MAX_VALUE);
+        }
+    }
+
     static void sprint(ServerPlayer player, boolean boosted) {
         NativeArmor.sprint(player, boosted);
     }

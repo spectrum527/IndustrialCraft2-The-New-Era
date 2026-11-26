@@ -1,10 +1,12 @@
 package com.industrialage.ia2.world;
 
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -25,35 +27,34 @@ final class WorldItemAccess {
     }
 
     static ItemStack pull(ServerLevel level, BlockPos pos, Direction side, int max) {
-        var handler = level.getCapability(Capabilities.Item.BLOCK, pos, side);
-        if (handler == null) return ItemStack.EMPTY;
-        try (var transaction = Transaction.openRoot()) {
-            var stack =
-                    ResourceHandlerUtil.extractFirst(handler, resource -> true, max, transaction);
-            if (stack == null) return ItemStack.EMPTY;
-            transaction.commit();
-            return stack.resource().toStack(stack.amount());
-        }
+        return extractLimited(
+                level.getCapability(Capabilities.Item.BLOCK, pos, side), resource -> true, max);
     }
 
     static ItemStack pullMatching(
-            ServerLevel level,
-            BlockPos pos,
-            Direction side,
-            int max,
-            java.util.function.Predicate<ItemStack> filter) {
-        var handler = level.getCapability(Capabilities.Item.BLOCK, pos, side);
-        if (handler == null) return ItemStack.EMPTY;
-        try (var transaction = Transaction.openRoot()) {
-            var stack =
-                    ResourceHandlerUtil.extractFirst(
-                            handler,
-                            resource -> filter.test(resource.toStack(1)),
-                            max,
-                            transaction);
-            if (stack == null) return ItemStack.EMPTY;
-            transaction.commit();
-            return stack.resource().toStack(stack.amount());
+            ServerLevel level, BlockPos pos, Direction side, int max, Predicate<ItemStack> filter) {
+        return extractLimited(
+                level.getCapability(Capabilities.Item.BLOCK, pos, side),
+                resource -> filter.test(resource.toStack(1)),
+                max);
+    }
+
+    private static ItemStack extractLimited(
+            ResourceHandler<ItemResource> handler, Predicate<ItemResource> filter, int max) {
+        if (handler == null || max <= 0) return ItemStack.EMPTY;
+        for (int slot = 0; slot < handler.size(); slot++) {
+            var resource = handler.getResource(slot);
+            if (resource.isEmpty() || !filter.test(resource)) continue;
+            int limit = Math.min(max, resource.toStack(1).getMaxStackSize());
+            if (limit <= 0) continue;
+            try (var transaction = Transaction.openRoot()) {
+                int taken = handler.extract(slot, resource, limit, transaction);
+                if (taken > 0) {
+                    transaction.commit();
+                    return resource.toStack(taken);
+                }
+            }
         }
+        return ItemStack.EMPTY;
     }
 }

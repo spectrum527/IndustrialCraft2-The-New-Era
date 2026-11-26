@@ -19,6 +19,30 @@ final class PowerNative {
                 player, hand, node.getBlockPos(), node.inlet);
     }
 
+    static boolean tradeCapability(
+            net.minecraft.server.level.ServerLevel level,
+            net.minecraft.core.BlockPos pos,
+            Direction face,
+            net.minecraft.world.item.ItemStack price,
+            net.minecraft.world.item.ItemStack goods) {
+        var handler = level.getCapability(Capabilities.Item.BLOCK, pos, face);
+        if (handler == null) return false;
+        try (var tx = net.neoforged.neoforge.transfer.transaction.Transaction.openRoot()) {
+            if (!goods.isEmpty()) {
+                var goodsRes = net.neoforged.neoforge.transfer.item.ItemResource.of(goods);
+                int pulled = handler.extract(goodsRes, goods.getCount(), tx);
+                if (pulled < goods.getCount()) return false;
+            }
+            var priceRes = net.neoforged.neoforge.transfer.item.ItemResource.of(price);
+            int inserted =
+                    net.neoforged.neoforge.transfer.ResourceHandlerUtil.insertStacking(
+                            handler, priceRes, price.getCount(), tx);
+            if (inserted < price.getCount()) return false;
+            tx.commit();
+            return true;
+        }
+    }
+
     static BlockEntityType<PowerNode> type(Block[] blocks) {
         return new BlockEntityType<>(PowerNode::new, blocks);
     }

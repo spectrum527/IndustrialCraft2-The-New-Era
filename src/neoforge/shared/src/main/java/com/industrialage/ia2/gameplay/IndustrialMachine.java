@@ -140,24 +140,32 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                 completedFuel = fuel.copy();
             }
         }
+        double safeEnergy = Double.isFinite(snapshot.energy()) ? Math.max(0, snapshot.energy()) : 0;
+        int safeFuel = Math.max(0, snapshot.fuelTicks());
+        int safeProgress = Math.max(0, snapshot.progress());
+        String safeRecipe = snapshot.recipe() == null ? "" : snapshot.recipe();
         if (generator != null) {
             generator.restore(
                     new FuelGenerator.Snapshot(
-                            snapshot.fuelTicks(),
-                            Math.min(snapshot.energy(), FuelGenerator.CAPACITY)));
-            generator.restoreFuelCapacity(snapshot.fuelCapacity());
+                            safeFuel, Math.min(safeEnergy, FuelGenerator.CAPACITY)));
+            generator.restoreFuelCapacity(Math.max(0, snapshot.fuelCapacity()));
         } else if (processor != null) {
             refreshUpgrades();
-            processor.restore(
-                    snapshot.energy(), snapshot.progress(), snapshot.recipe(), snapshot.duration());
+            int savedDuration = Math.max(0, snapshot.duration());
+            int effectiveDuration = savedDuration > 0 ? savedDuration : processor.duration();
+            int clampedProgress =
+                    safeRecipe.isEmpty() || effectiveDuration <= 1
+                            ? 0
+                            : Math.min(safeProgress, effectiveDuration - 1);
+            processor.restore(safeEnergy, clampedProgress, safeRecipe, savedDuration);
         } else if (storage != null) {
-            stored = Math.min(snapshot.energy(), storage.capacity());
-            redstoneMode = snapshot.redstoneMode();
+            stored = Math.min(safeEnergy, storage.capacity());
+            redstoneMode = Math.max(0, Math.min(6, snapshot.redstoneMode()));
         } else {
-            furnaceProgress = Math.min(snapshot.progress(), IRON_FURNACE_DURATION - 1);
-            fuelRemaining = snapshot.fuelTicks();
-            fuelCapacity = Math.max(fuelRemaining, snapshot.fuelCapacity());
-            furnaceRecipe = snapshot.recipe();
+            furnaceProgress = Math.min(safeProgress, IRON_FURNACE_DURATION - 1);
+            fuelRemaining = safeFuel;
+            fuelCapacity = Math.max(fuelRemaining, Math.max(0, snapshot.fuelCapacity()));
+            furnaceRecipe = safeRecipe;
         }
     }
 

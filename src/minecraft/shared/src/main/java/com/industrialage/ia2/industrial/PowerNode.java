@@ -171,6 +171,7 @@ public final class PowerNode extends PowerSaveBase
                                         heat * 2,
                                         Math.min(
                                                 coolant, ReactorVessel.TANK_CAPACITY - hotCoolant));
+                        warmed &= ~1;
                         coolant -= warmed;
                         hotCoolant += warmed;
                         reactor.returnHeat(heat - warmed / 2);
@@ -273,10 +274,11 @@ public final class PowerNode extends PowerSaveBase
                         : (1 << (pellets - 1)) * PowerSettings.multiplier("radioisotope");
             case GEO_GENERATOR:
                 refillLava();
-                if (energy >= capacity() || liquid < LAVA_PER_TICK) return 0;
+                double gain = 20 * PowerSettings.multiplier("geothermal");
+                if (capacity() - energy < gain || liquid < LAVA_PER_TICK) return 0;
                 liquid -= LAVA_PER_TICK;
                 setChanged();
-                return 20 * PowerSettings.multiplier("geothermal");
+                return gain;
             case WIND_GENERATOR:
                 if (first || Math.floorMod(now + worldPosition.asLong(), 128) == 0) {
                     windObstructions = 0;
@@ -647,7 +649,8 @@ public final class PowerNode extends PowerSaveBase
                 && level.hasNeighborSignal(worldPosition)
                 && !(mode == 6 && energy > capacity() - 20 * packetLimit())) return 0;
         if (kind.playerMachine()) return 0;
-        if (kind == PowerKind.CREATIVE_GENERATOR) return PacketBudget.packetSize(1);
+        if (kind == PowerKind.CREATIVE_GENERATOR)
+            return PacketBudget.packetSize(Math.max(1, Math.min(5, mode + 1)));
         if (kind == PowerKind.NUCLEAR_REACTOR) return remaining;
         if (kind == PowerKind.REACTOR_CHAMBER && getLevel() instanceof ServerLevel level) {
             var core = controller(level);

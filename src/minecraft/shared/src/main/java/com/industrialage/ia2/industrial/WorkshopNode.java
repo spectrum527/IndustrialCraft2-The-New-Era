@@ -556,13 +556,11 @@ public final class WorkshopNode extends WorkshopSaveBase
         return 0;
     }
 
+    private static final int SOLID_HEAT_BUFFER = 8_000;
+
     private void tickSolidHeat(ServerLevel level) {
-        if (heat > Integer.MAX_VALUE - 20) {
-            setActive(level, false);
-            return;
-        }
         if (heatFuelTicks > 0) {
-            heat += 20;
+            heat = Math.min(SOLID_HEAT_BUFFER, heat + 20);
             if (--heatFuelTicks == 0 && solidProducesAsh) {
                 var ash = WorkshopPlatform.stack("ic2:ashes", 1);
                 var output = packed(List.of(ash));
@@ -573,7 +571,7 @@ public final class WorkshopNode extends WorkshopSaveBase
                 }
             }
             setChanged();
-        } else {
+        } else if (heat < 200) {
             var fuel = inventory.getItem(0);
             int burn = WorkshopPlatform.solidFuelTime(level, fuel) / 4;
             if (burn > 0) {

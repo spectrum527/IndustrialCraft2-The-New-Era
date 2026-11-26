@@ -9,7 +9,7 @@ description="A clean-room industrial mod featuring power, machines, logistics, a
 [[dependencies.ic2]]
 modId="neoforge"
 type="required"
-versionRange="[${neoForgeVersion}]"
+versionRange="[${neoForgeVersion},)"
 ordering="NONE"
 side="BOTH"
 [[dependencies.ic2]]
