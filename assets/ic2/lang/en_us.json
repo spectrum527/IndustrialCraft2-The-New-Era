@@ -340,6 +340,7 @@
   "fluid.ic2.superheated_steam": "Superheated Steam",
   "fluid.ic2.uu_matter": "UU-Matter",
   "fluid.ic2.weed_ex": "Weed-EX",
+  "gui.ic2.box.sort": "Sort",
   "gui.ic2.energy": "Energy: %s / %s EU",
   "gui.ic2.redstone.0": "Ignore",
   "gui.ic2.redstone.1": "Nearly full",

@@ -143,7 +143,7 @@ public final class TransportNode extends TransportSaveBase
     }
 
     private void tickItems(ServerLevel world) {
-        Direction output = getBlockState().getValue(TransportBlock.OUT);
+        Direction output = alignSingleSegmentOutput(world);
         long time = world.getGameTime();
         if (pendingItemVisualSync) {
             pendingItemVisualSync = false;
@@ -177,10 +177,12 @@ public final class TransportNode extends TransportSaveBase
                 }
             }
         }
+        boolean allowDefaultPull = extractionNozzles == 0;
         for (int i = 0; i < SIDES.length && cargo.isEmpty(); i++) {
             var side = SIDES[Math.floorMod(time + i, SIDES.length)];
             var mode = nozzle(side);
-            if (mode != Nozzle.EXTRACTION && (mode != Nozzle.NONE || side != output.getOpposite()))
+            if (mode != Nozzle.EXTRACTION
+                    && (!allowDefaultPull || mode != Nozzle.NONE || side != output.getOpposite()))
                 continue;
             var pos = worldPosition.relative(side);
             if (!world.hasChunkAt(pos)) continue;
@@ -194,6 +196,62 @@ public final class TransportNode extends TransportSaveBase
                 }
             }
         }
+    }
+
+    private Direction alignSingleSegmentOutput(ServerLevel world) {
+        var state = getBlockState();
+        Direction output = state.getValue(TransportBlock.OUT);
+        if (extractionNozzles == 0 || injectionNozzles != 0 || hasLinkedItemPipe(world)) {
+            return output;
+        }
+        if (nozzle(output) == Nozzle.NONE && isValidNonPipeItemTarget(world, output)) {
+            return output;
+        }
+        Direction target =
+                ItemPipeRouter.preferredTarget(
+                        candidate -> nozzle(candidate) == Nozzle.EXTRACTION,
+                        candidate -> isValidNonPipeItemTarget(world, candidate));
+        if (target != null && target != output) {
+            world.setBlock(
+                    worldPosition,
+                    state.setValue(TransportBlock.OUT, target),
+                    Block.UPDATE_CLIENTS);
+            TransportBlock.refreshConnections(world, worldPosition);
+            if (!cargo.isEmpty()) {
+                cargoTo = target;
+                cargoStalled = false;
+                syncVisual();
+            }
+            return target;
+        }
+        return output;
+    }
+
+    boolean isLinkedItemPipe(ServerLevel world, Direction side) {
+        if (spec.kind() != Kind.ITEM_PIPE) return false;
+        var adjacent = worldPosition.relative(side);
+        return world.hasChunkAt(adjacent)
+                && world.getBlockEntity(adjacent) instanceof TransportNode next
+                && linksTo(side, next);
+    }
+
+    boolean hasLinkedItemPipe(ServerLevel world) {
+        for (var side : SIDES) {
+            if (isLinkedItemPipe(world, side)) return true;
+        }
+        return false;
+    }
+
+    boolean isValidNonPipeItemTarget(ServerLevel world, Direction side) {
+        if (spec.kind() != Kind.ITEM_PIPE || !open(side) || nozzle(side) != Nozzle.NONE) {
+            return false;
+        }
+        var adjacent = worldPosition.relative(side);
+        if (!world.hasChunkAt(adjacent)) return false;
+        var other = world.getBlockEntity(adjacent);
+        if (isPipe(other)) return false;
+        var face = side.getOpposite();
+        return machineInput(other, face) && TransportPlatform.hasItemPort(world, adjacent, face);
     }
 
     static boolean itemReadyToAdvance(long time, long receivedAt) {

@@ -340,6 +340,7 @@
   "fluid.ic2.superheated_steam": "过热蒸汽",
   "fluid.ic2.uu_matter": "UU物质",
   "fluid.ic2.weed_ex": "除草剂喷雾",
+  "gui.ic2.box.sort": "自动整理",
   "gui.ic2.energy": "电量：%s / %s EU",
   "gui.ic2.redstone.0": "忽略红石",
   "gui.ic2.redstone.1": "接近满电",

@@ -5,8 +5,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Fluids;
 
 /**
  * Check every physical connection shape using face-center and outer-edge positions in the actual
@@ -31,6 +33,19 @@ final class PipeGeometryChecks {
                 for (int bore = 0; bore < sizes.length; bore++) {
                     String path = metal + "_" + material + "_pipe_" + sizes[bore];
                     Block block = registry.apply(path);
+                    if (!(block instanceof SimpleWaterloggedBlock))
+                        throw new AssertionError(path + " must implement SimpleWaterloggedBlock");
+                    var defaultState = block.defaultBlockState();
+                    if (!defaultState.hasProperty(BlockStateProperties.WATERLOGGED)
+                            || defaultState.getValue(BlockStateProperties.WATERLOGGED)
+                            || !defaultState.getFluidState().isEmpty())
+                        throw new AssertionError(path + " default waterlogged state");
+                    var wetFluid =
+                            defaultState
+                                    .setValue(BlockStateProperties.WATERLOGGED, true)
+                                    .getFluidState();
+                    if (!wetFluid.isSource() || wetFluid.getType() != Fluids.WATER)
+                        throw new AssertionError(path + " wet fluid state");
                     double low = (6 - bore) / 16.0;
                     for (int connections = 0; connections < 64; connections++) {
                         var state = block.defaultBlockState();
@@ -56,5 +71,12 @@ final class PipeGeometryChecks {
                     }
                 }
             }
+        for (String tank :
+                new String[] {"bronze_tank", "iron_tank", "steel_tank", "iridium_tank"}) {
+            Block block = registry.apply(tank);
+            if (block instanceof SimpleWaterloggedBlock
+                    || block.defaultBlockState().hasProperty(BlockStateProperties.WATERLOGGED))
+                throw new AssertionError(tank + " must not be waterloggable");
+        }
     }
 }

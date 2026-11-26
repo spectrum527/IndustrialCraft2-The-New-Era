@@ -285,6 +285,24 @@ class BuildContractTest {
                         assertTrue(text.contains("\"emi.category.ic2.macerator\""), lang);
                         assertTrue(text.contains("\"config.jade.plugin_ic2.device\""), lang);
                         assertTrue(text.contains("\"config.waila.plugin_ic2\""), lang);
+                        String sortLabel = lang.equals("zh_cn") ? "自动整理" : "Sort";
+                        assertTrue(
+                                text.contains("\"gui.ic2.box.sort\": \"" + sortLabel + "\""), lang);
+                    }
+                }
+
+                for (String miningPipe : new String[] {"mining_pipe", "mining_pipe_tip"}) {
+                    var stateEntry =
+                            jar.getJarEntry("assets/ic2/blockstates/" + miningPipe + ".json");
+                    assertNotNull(stateEntry, "Missing blockstate for " + miningPipe);
+                    try (var stream = jar.getInputStream(stateEntry)) {
+                        var json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                        assertTrue(
+                                json.contains("\"waterlogged=false\""),
+                                miningPipe + " missing waterlogged=false variant");
+                        assertTrue(
+                                json.contains("\"waterlogged=true\""),
+                                miningPipe + " missing waterlogged=true variant");
                     }
                 }
 

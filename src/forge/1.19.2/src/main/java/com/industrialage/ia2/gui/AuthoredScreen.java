@@ -77,9 +77,19 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends De
     /** Paint background, inlaid controls and text before native item stacks are rendered. */
     protected abstract void paint(PanelCanvas canvas);
 
+    /** Paint background and pointer-aware inlaid controls at authored panel coordinates. */
+    protected void paint(PanelCanvas canvas, int mouseX, int mouseY) {
+        paint(canvas);
+    }
+
+    /** Optional tooltip for an authored control at panel-local coordinates. */
+    protected Component tooltipAt(int x, int y) {
+        return null;
+    }
+
     @Override
     protected void renderBg(PoseStack g, float tick, int mouseX, int mouseY) {
-        paint(PanelGraphics.at(g, font, leftPos, topPos));
+        paint(PanelGraphics.at(g, font, leftPos, topPos), mouseX - leftPos, mouseY - topPos);
     }
 
     @Override
@@ -105,5 +115,12 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends De
             }
         }
         renderTooltip(g, x, y);
+        if (menu.getCarried().isEmpty() && (hoveredSlot == null || !hoveredSlot.hasItem())) {
+            var tip =
+                    tooltipAt(
+                            (int) Math.floor(viewport.unscaleX(x) - leftPos),
+                            (int) Math.floor(viewport.unscaleY(y) - topPos));
+            if (tip != null) renderTooltip(g, tip, x, y);
+        }
     }
 }

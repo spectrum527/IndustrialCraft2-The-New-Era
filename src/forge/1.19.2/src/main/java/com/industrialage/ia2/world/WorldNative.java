@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -29,16 +31,21 @@ import net.minecraftforge.registries.ForgeRegistries;
 final class WorldNative {
     private WorldNative() {}
 
-    static Block.Properties properties(String name) {
-        if (name.equals("reinforced_door") || name.equals("iron_fence"))
-            return Block.Properties.of(Material.METAL);
-        if (name.equals("reinforced_glass")) return Block.Properties.of(Material.GLASS);
+    static Material materialFor(String name) {
+        if (name.equals("reinforced_door")
+                || name.equals("iron_fence")
+                || name.equals("mining_pipe")
+                || name.equals("mining_pipe_tip")) return Material.METAL;
+        if (name.equals("reinforced_glass")) return Material.GLASS;
         if (name.equals("rubber_door")
                 || name.equals("rubber_trapdoor")
-                || name.startsWith("rubber_")) return Block.Properties.of(Material.WOOD);
-        if (name.endsWith("_ore") || name.endsWith("_block"))
-            return Block.Properties.of(Material.STONE);
-        return Block.Properties.of(Material.DECORATION);
+                || name.startsWith("rubber_")) return Material.WOOD;
+        if (name.endsWith("_ore") || name.endsWith("_block")) return Material.STONE;
+        return Material.DECORATION;
+    }
+
+    static Block.Properties properties(String name) {
+        return Block.Properties.of(materialFor(name));
     }
 
     static Block door(Block.Properties properties, boolean iron) {
@@ -300,6 +307,26 @@ final class WorldNative {
         public List<ItemStack> getDrops(BlockState state, LootContext.Builder loot) {
             var entity = loot.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
             return CropPlot.broken(state, entity instanceof CropPlot plot ? plot : null);
+        }
+    }
+
+    abstract static class MiningPipeBase extends Block implements SimpleWaterloggedBlock {
+        MiningPipeBase(Properties settings) {
+            super(settings);
+        }
+
+        @Override
+        public BlockState updateShape(
+                BlockState state,
+                Direction side,
+                BlockState neighbor,
+                LevelAccessor level,
+                BlockPos pos,
+                BlockPos neighborPos) {
+            if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+                level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            }
+            return super.updateShape(state, side, neighbor, level, pos, neighborPos);
         }
     }
 

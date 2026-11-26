@@ -209,17 +209,37 @@ final class BoxMenu extends DeviceAccessMenu {
         return original;
     }
 
+    static final int SORT_ACTION = 1;
+
     @Override
     protected boolean clickDeviceButton(Player who, int action) {
-        if (kind != BoxKind.INDUSTRIAL_WORKBENCH || action != 0 || node == null || !stillValid(who))
-            return false;
-        for (int i = 0; i < 9; i++) {
-            var item = inventory.removeItemNoUpdate(i);
-            if (!item.isEmpty() && !who.getInventory().add(item)) who.drop(item, false);
+        if (kind == BoxKind.INDUSTRIAL_WORKBENCH) {
+            if (action != 0 || node == null || !stillValid(who)) return false;
+            for (int i = 0; i < 9; i++) {
+                var item = inventory.removeItemNoUpdate(i);
+                if (!item.isEmpty() && !who.getInventory().add(item)) who.drop(item, false);
+            }
+            inventory.setChanged();
+            broadcastChanges();
+            return true;
         }
-        inventory.setChanged();
-        broadcastChanges();
-        return true;
+        if (canSort(
+                kind, action, node != null, stillValid(who), node != null && node.permits(who))) {
+            BoxSort.sort(inventory, kind.slots);
+            broadcastChanges();
+            return true;
+        }
+        return false;
+    }
+
+    static boolean canSort(
+            BoxKind kind, int action, boolean hasNode, boolean valid, boolean permitted) {
+        return kind != null
+                && kind.portable()
+                && action == SORT_ACTION
+                && hasNode
+                && valid
+                && permitted;
     }
 
     private boolean canStore(ItemStack stack) {
