@@ -20,7 +20,7 @@ public final class WindKineticGameTests {
     @GameTest(template = "smoke", batch = "wind", timeoutTicks = 250)
     public static void playerAssembledWindLine(GameTestHelper helper) {
         var near = helper.absolutePos(BlockPos.ZERO);
-        var pos = new BlockPos((near.getX() & ~15) + 7, 200, (near.getZ() & ~15) + 7);
+        var pos = new BlockPos((near.getX() & ~15) + 167, 200, (near.getZ() & ~15) + 167);
         var checks =
                 new WindKineticChecks(
                         id ->
