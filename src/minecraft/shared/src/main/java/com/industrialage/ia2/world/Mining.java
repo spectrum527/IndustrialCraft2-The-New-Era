@@ -184,10 +184,7 @@ final class Mining {
                                 : machine.inventory.has(0, "ic2:iridium_drill")
                                         ? Items.NETHERITE_PICKAXE
                                         : Items.DIAMOND_PICKAXE);
-        var enchantments = installed.get(net.minecraft.core.component.DataComponents.ENCHANTMENTS);
-        if (enchantments != null && !enchantments.isEmpty()) {
-            base.set(net.minecraft.core.component.DataComponents.ENCHANTMENTS, enchantments);
-        }
+        WorldNative.copyEnchantments(installed, base);
         return base;
     }
 

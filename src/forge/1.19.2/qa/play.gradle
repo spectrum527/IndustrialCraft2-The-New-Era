@@ -1,0 +1,73 @@
+import groovy.json.JsonOutput
+
+// Produce a private client whose only source change is the protocol advertised to Forge.
+def output = layout.buildDirectory.dir('qa-play')
+def registrar = file('src/main/java/com/industrialage/ia2/forge/ForgeNetwork.java')
+def generated = output.map { it.file('variant-source/ForgeNetwork.java') }
+def mismatch = tasks.register('generateQaProtocolMismatch') {
+    inputs.file(registrar)
+    outputs.file(generated)
+    doLast {
+        def original = registrar.getText('UTF-8')
+        def advertised = '() -> EchoProtocol.VERSION'
+        def acceptance = 'EchoProtocol.VERSION::equals'
+        if (original.count(advertised) != 1 || original.count(acceptance) != 2) {
+            throw new GradleException('Expected one Forge protocol declaration and two version predicates')
+        }
+        // The first case refuses the v1 server, the second accepts v1 and presents v2 to that server.
+        def testRule = 'version -> "2".equals(version) || ' +
+                '(Boolean.getBoolean("ic2.qa.acceptOlderServer") && EchoProtocol.VERSION.equals(version))'
+        def source = original.replace(advertised, '() -> "2"').replace(acceptance, testRule)
+        def target = generated.get().asFile
+        target.parentFile.mkdirs()
+        target.setText(source, 'UTF-8')
+    }
+}
+def compileMismatch = tasks.register('compileQaProtocolMismatch', JavaCompile) {
+    dependsOn mismatch, 'classes'
+    source(generated)
+    classpath = sourceSets.main.compileClasspath + sourceSets.main.output
+    options.release = 17
+    javaCompiler = tasks.named('compileJava', JavaCompile).flatMap { it.javaCompiler }
+    destinationDirectory = output.map { it.dir('variant-registrar') }
+}
+def stageMismatch = tasks.register('stageQaProtocolMismatch', Sync) {
+    from(compileMismatch.flatMap { it.destinationDirectory })
+    from(sourceSets.main.output.classesDirs)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    into(output.map { it.dir('variant-classes') })
+}
+
+// Export launch parameters directly from ModDevGradle's JavaExec run task without reflection.
+ext.qaHostLaunch = { run, side ->
+    return [java: run.javaLauncher.get().executablePath.asFile.absolutePath,
+            main: run.mainClass.get(),
+            jvm: run.allJvmArgs,
+            args: run.args + run.argumentProviders.collectMany { it.asArguments().toList() },
+            env: run.environmentProperty.get(),
+            classpath: files(run.classpath, run.classpathProvider).asPath]
+}
+
+tasks.register('prepareQaPlay') {
+    group = 'verification'
+    description = 'Export real Forge launch arguments for the isolated two-JVM acceptance run.'
+    dependsOn 'qaClasses', stageMismatch
+    dependsOn {
+        ['runQaPlayClient', 'runQaPlayServer'].collectMany { name ->
+            def run = tasks.getByName(name)
+            run.taskDependencies.getDependencies(run).toList()
+        }
+    }
+    outputs.file(output.map { it.file('launch.json') })
+    outputs.upToDateWhen { false }
+    doLast {
+        def manifest = ['client', 'server'].collectEntries { side ->
+            [(side): qaHostLaunch(tasks.getByName("runQaPlay${side.capitalize()}"), side)]
+        }
+        manifest.productionClasses = sourceSets.main.output.classesDirs.singleFile.absolutePath
+        manifest.mismatchClasses = stageMismatch.get().destinationDir.absolutePath
+        manifest.registrarClass = 'com/industrialage/ia2/forge/ForgeNetwork.class'
+        def file = output.get().file('launch.json').asFile
+        file.text = JsonOutput.prettyPrint(JsonOutput.toJson(manifest)) + '\n'
+    }
+}

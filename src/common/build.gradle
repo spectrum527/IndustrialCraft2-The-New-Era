@@ -1,5 +1,7 @@
 plugins { id 'java-library' }
 
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
 tasks.named('processResources') {
     from(rootProject.file('spec/registry/sounds.txt')) { into 'com/industrialage/ia2/audio' }
     from(rootProject.file('spec/registry')) {

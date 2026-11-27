@@ -25,7 +25,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-final class WorldMachine extends WorldSaveBase
+/** Block entity backing IC2 world utility machines such as miners, crop harvesters, and loaders. */
+public final class WorldMachine extends WorldSaveBase
         implements com.industrialage.ia2.access.MachineAccessTarget,
                 WorldPowerPort,
                 EuBuffer,

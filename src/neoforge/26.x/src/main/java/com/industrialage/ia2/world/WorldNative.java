@@ -265,6 +265,13 @@ final class WorldNative {
         return Block.getDrops(state, level, pos, level.getBlockEntity(pos), null, tool);
     }
 
+    static void copyEnchantments(ItemStack from, ItemStack to) {
+        var enchantments = from.get(net.minecraft.core.component.DataComponents.ENCHANTMENTS);
+        if (enchantments != null && !enchantments.isEmpty()) {
+            to.set(net.minecraft.core.component.DataComponents.ENCHANTMENTS, enchantments);
+        }
+    }
+
     static <T extends BlockEntity> BlockEntityType<T> type(
             BlockEntityType.BlockEntitySupplier<T> factory, Block[] blocks) {
         return new BlockEntityType<>(factory, blocks);

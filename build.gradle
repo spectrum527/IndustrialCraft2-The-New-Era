@@ -1,6 +1,7 @@
 plugins {
     id 'base'
     id 'net.neoforged.moddev' apply false
+    id 'net.neoforged.moddev.legacyforge' apply false
     id 'com.diffplug.spotless' version '8.0.0'
 }
 allprojects {

@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[43,44)"
+license="LGPL-3.0-only"
+
+[[mods]]
+modId="ic2"
+version="${version}"
+displayName="IndustrialCraft²: The New Era"
+displayURL="https://github.com/spectrum527/IndustrialCraft2-The-New-Era"
+description="A clean-room industrial mod featuring power, machines, logistics, and nuclear technology."
+
+[[dependencies.ic2]]
+modId="forge"
+mandatory=true
+versionRange="[${forgeVersion},44)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.ic2]]
+modId="minecraft"
+mandatory=true
+versionRange="[${minecraftVersion}]"
+ordering="NONE"
+side="BOTH"
