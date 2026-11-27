@@ -1,6 +1,7 @@
 package com.industrialage.ia2.industrial;
 
-import com.industrialage.ia2.gui.DeviceScreen;
+import com.industrialage.ia2.gui.AuthoredScreen;
+import com.industrialage.ia2.gui.PanelCanvas;
 import com.industrialage.ia2.gui.PanelGraphics;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Draws the device's returned industrial artwork around its real server inventory. */
-public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
+public final class WorkshopScreen extends AuthoredScreen<WorkshopMenu> {
     private final List<Button> controls = new ArrayList<>();
 
     /** Creates the screen for the machine menu sent by the server. */
@@ -54,14 +55,17 @@ public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
     }
 
     @Override
+    protected void paint(PanelCanvas canvas) {
+        WorkshopPanel.background(menu, canvas);
+    }
+
+    @Override
     public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tick) {
-        WorkshopPanel.background(menu, PanelGraphics.at(graphics, font, leftPos, topPos));
+        super.extractContents(graphics, mouseX, mouseY, tick);
         var mode = WorkshopPanel.modePicture(menu);
         if (mode != null) {
             graphics.item(mode.item(), leftPos + mode.x(), topPos + mode.y());
         }
-
-        super.extractContents(graphics, mouseX, mouseY, tick);
     }
 
     @Override
@@ -91,7 +95,8 @@ public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
                         hoveredSlot == null ? -1 : hoveredSlot.index,
                         item);
         if (!details.isEmpty()) {
-            graphics.setComponentTooltipForNextFrame(font, details, mouseX, mouseY);
+            graphics.setComponentTooltipForNextFrame(
+                    font, details, panelScreenX(mouseX), panelScreenY(mouseY));
         } else {
             super.extractTooltip(graphics, mouseX, mouseY);
         }

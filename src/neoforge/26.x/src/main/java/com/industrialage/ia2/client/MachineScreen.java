@@ -2,16 +2,16 @@ package com.industrialage.ia2.client;
 
 import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.gameplay.MachineMenu;
-import com.industrialage.ia2.gui.DeviceScreen;
+import com.industrialage.ia2.gui.AuthoredScreen;
 import com.industrialage.ia2.gui.PanelButton;
+import com.industrialage.ia2.gui.PanelCanvas;
 import com.industrialage.ia2.gui.PanelGraphics;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Native interaction and authored machine art for Minecraft 26.x. */
-final class MachineScreen extends DeviceScreen<MachineMenu> {
+final class MachineScreen extends AuthoredScreen<MachineMenu> {
     private PanelButton redstone;
 
     MachineScreen(MachineMenu menu, Inventory inventory, Component title) {
@@ -21,6 +21,7 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
     @Override
     protected void init() {
         super.init();
+        redstone = null;
         if (menu.layout().storage()) {
             redstone =
                     addRenderableWidget(
@@ -33,7 +34,6 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
                                     button ->
                                             minecraft.gameMode.handleInventoryButtonClick(
                                                     menu.containerId, 0)));
-            redstone.setTooltip(Tooltip.create(redstoneMode()));
         }
     }
 
@@ -44,7 +44,6 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
             var mode = redstoneMode();
             if (!redstone.getMessage().equals(mode)) {
                 redstone.setMessage(mode);
-                redstone.setTooltip(Tooltip.create(mode));
             }
         }
     }
@@ -54,7 +53,7 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
     }
 
     @Override
-    public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tick) {
+    protected void paint(PanelCanvas canvas) {
         double energy = menu.capacity() > 0 ? (double) menu.energy() / menu.capacity() : 0;
         double work = menu.duration() > 0 ? (double) menu.progress() / menu.duration() : 0;
         MachineArtwork.draw(
@@ -64,8 +63,7 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
                 energy,
                 work,
                 menu.fuelRatio(),
-                PanelGraphics.at(graphics, font, leftPos, topPos));
-        super.extractContents(graphics, mouseX, mouseY, tick);
+                canvas);
     }
 
     @Override
@@ -79,21 +77,19 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
     }
 
     @Override
-    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        super.extractTooltip(graphics, mouseX, mouseY);
-        if (menu.getCarried().isEmpty()) {
-            Component tip =
-                    hoveredSlot != null && !hoveredSlot.hasItem()
-                            ? menu.slotLabel(hoveredSlot.index)
-                            : MachineArtwork.gaugeTip(
-                                    menu.layout(),
-                                    mouseX - leftPos,
-                                    mouseY - topPos,
-                                    menu.energy(),
-                                    menu.capacity(),
-                                    menu.progress(),
-                                    menu.duration());
-            if (tip != null) graphics.setTooltipForNextFrame(font, tip, mouseX, mouseY);
+    protected Component tooltipAt(int x, int y) {
+        if (redstone != null && x >= 151 && x < 172 && y >= 3 && y < 25) {
+            return redstoneMode();
         }
+        return hoveredSlot != null && !hoveredSlot.hasItem()
+                ? menu.slotLabel(hoveredSlot.index)
+                : MachineArtwork.gaugeTip(
+                        menu.layout(),
+                        x,
+                        y,
+                        menu.energy(),
+                        menu.capacity(),
+                        menu.progress(),
+                        menu.duration());
     }
 }

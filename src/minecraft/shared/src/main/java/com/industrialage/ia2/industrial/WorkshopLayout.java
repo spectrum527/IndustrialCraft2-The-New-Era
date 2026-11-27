@@ -77,6 +77,7 @@ final class WorkshopLayout {
                         StandardCharsets.UTF_8)) {
             var all = JsonParser.parseReader(input).getAsJsonObject().getAsJsonObject("machines");
             return Arrays.stream(WorkshopKind.values())
+                    .filter(kind -> !kind.kilnPort())
                     .collect(
                             Collectors.toUnmodifiableMap(
                                     kind -> kind,

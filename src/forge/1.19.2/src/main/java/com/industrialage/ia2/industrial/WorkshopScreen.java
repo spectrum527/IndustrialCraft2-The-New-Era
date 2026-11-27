@@ -1,6 +1,7 @@
 package com.industrialage.ia2.industrial;
 
-import com.industrialage.ia2.gui.DeviceScreen;
+import com.industrialage.ia2.gui.AuthoredScreen;
+import com.industrialage.ia2.gui.PanelCanvas;
 import com.industrialage.ia2.gui.PanelGraphics;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.ArrayList;
@@ -10,14 +11,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Draws the device's returned industrial artwork around its real server inventory. */
-public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
+public final class WorkshopScreen extends AuthoredScreen<WorkshopMenu> {
     private final List<Button> controls = new ArrayList<>();
 
     /** Creates the screen for the machine menu sent by the server. */
     public WorkshopScreen(WorkshopMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
-        imageWidth = menu.layout().width;
-        imageHeight = menu.layout().height;
+        super(menu, inventory, title, menu.layout().width, menu.layout().height);
     }
 
     @Override
@@ -55,8 +54,13 @@ public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
     }
 
     @Override
+    protected void paint(PanelCanvas canvas) {
+        WorkshopPanel.background(menu, canvas);
+    }
+
+    @Override
     protected void renderBg(PoseStack graphics, float tick, int mouseX, int mouseY) {
-        WorkshopPanel.background(menu, PanelGraphics.at(graphics, font, leftPos, topPos));
+        super.renderBg(graphics, tick, mouseX, mouseY);
         var mode = WorkshopPanel.modePicture(menu);
         if (mode != null) {
             itemRenderer.renderAndDecorateItem(mode.item(), leftPos + mode.x(), topPos + mode.y());
@@ -85,8 +89,8 @@ public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
         var details =
                 WorkshopPanel.tooltip(
                         menu,
-                        mouseX - leftPos,
-                        mouseY - topPos,
+                        panelLocalX(mouseX),
+                        panelLocalY(mouseY),
                         hoveredSlot == null ? -1 : hoveredSlot.index,
                         item);
         if (!details.isEmpty()) {
@@ -94,12 +98,5 @@ public final class WorkshopScreen extends DeviceScreen<WorkshopMenu> {
         } else {
             super.renderTooltip(graphics, mouseX, mouseY);
         }
-    }
-
-    @Override
-    protected void renderPanel(PoseStack graphics, int mouseX, int mouseY, float tick) {
-        renderBackground(graphics);
-        super.renderPanel(graphics, mouseX, mouseY, tick);
-        renderTooltip(graphics, mouseX, mouseY);
     }
 }

@@ -55,15 +55,21 @@ public final class PanelGraphics {
                                 .getModelManager()
                                 .getFluidStateModelSet()
                                 .get(state);
+                var still = model.stillMaterial();
+                if (still == null) return;
                 var tint = model.fluidTintSource();
+                int color = tint == null ? -1 : tint.color(state);
+                if ((color & 0xFF000000) == 0 && color != 0) {
+                    color |= 0xFF000000;
+                }
                 g.blitSprite(
                         net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED,
-                        model.stillMaterial().sprite(),
+                        still.sprite(),
                         left + x,
                         top + y,
                         width,
                         height,
-                        tint == null ? -1 : tint.color(state));
+                        color);
             }
 
             public void fill(int x, int y, int right, int bottom, int colour) {
