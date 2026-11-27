@@ -1790,6 +1790,9 @@
 | `assets/qa/gameplay-fixes/electrolyzer_running.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.21.1 最终候选原始游戏截图，电解机通电后显示入水与五个输出窗口 | 2026-11-21 |
 | `assets/qa/gameplay-fixes/canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.21.1 最终候选原始游戏截图，流体/固体装罐机封装完成，容器、原料与产品使用作者布局 | 2026-11-21 |
 | `assets/qa/gameplay-fixes/solid_canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | 1.21.1 最终候选原始游戏截图，独立固体装罐机的原料、容器和成品槽 | 2026-11-21 |
+| `assets/qa/gameplay-fixes/1.19.2/electrolyzer_running.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | Forge 1.19.2 最终候选原始游戏截图，电解机通电后显示入水与五个输出窗口 | 2026-11-21 |
+| `assets/qa/gameplay-fixes/1.19.2/canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | Forge 1.19.2 最终候选原始游戏截图，流体/固体装罐机封装完成，容器、原料与产品使用作者布局 | 2026-11-21 |
+| `assets/qa/gameplay-fixes/1.19.2/solid_canner_pack_product.png` | new | IC2 重建项目 | 验收文档图，作者纹理及游戏元素保留原许可 | Forge 1.19.2 最终候选原始游戏截图，独立固体装罐机的原料、容器和成品槽 | 2026-11-21 |
 | `assets/qa/gameplay-fixes/top-live-water-tank.png` | new | IC2 重建项目 | 实机验收图，游戏、模组界面与作者纹理保留原许可 | NeoForge 1.21.1，探针显示存水和容量 | 2026-11-21 |
 | `assets/qa/gameplay-fixes/curios-live-back-slot.png` | new | IC2 重建项目 | 实机验收图，游戏、模组界面与作者纹理保留原许可 | NeoForge 1.21.1，原生装备菜单中的背饰背包 | 2026-11-21 |
 

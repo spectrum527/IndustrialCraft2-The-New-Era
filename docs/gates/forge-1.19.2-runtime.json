@@ -1,0 +1,292 @@
+{
+  "date": "2026-11-20",
+  "platform": "macOS arm64 / JDK 17 / Forge 43.5.0 / Minecraft 1.19.2",
+  "artifact": {
+    "name": "ic2-forge-1.19.2-0.1.0-SNAPSHOT.jar",
+    "bytes": 126621,
+    "sha256": "1c6b2bfc66d1441d785874f8e829617997ee5c3562592145b29430813137747b",
+    "production_classes": 62,
+    "class_version": 61,
+    "development_resources_matched": 6,
+    "qa_entries": 0
+  },
+  "junit": {
+    "tests": 28,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "smoke": {
+    "cases": [
+      "harnesssmoke"
+    ],
+    "requiredPassed": 1,
+    "requiredFailed": 0,
+    "processExit": 0
+  },
+  "world": {
+    "write": {
+      "phase": "write",
+      "retained": "28, 90, 24 ic2:qa_platform_pillar[axis=x]",
+      "world": "world",
+      "removed": "24, 90, 24 minecraft:air",
+      "passedChecks": "39",
+      "failedChecks": "0",
+      "run": "e192f5f1-524c-486b-843f-dcbddee9665d",
+      "pid": "11172",
+      "assertions": [
+        "factories-deferred",
+        "block-bound-once",
+        "item-bound-once",
+        "observed-block-registration",
+        "failed-factory-lazy-null",
+        "failed-without-publication-null",
+        "failed-factory-lazy-throws",
+        "failed-without-publication-throws",
+        "failed-factory-lazy-frozen",
+        "failed-without-publication-frozen",
+        "initial-air-24",
+        "placed-24",
+        "initial-air-28",
+        "placed-28",
+        "side-DOWN",
+        "side-UP",
+        "side-NORTH",
+        "side-SOUTH",
+        "side-WEST",
+        "side-EAST",
+        "no-side",
+        "absent-key",
+        "invalid-capability-inputs-rejected",
+        "native-forge-capability",
+        "forge-attachment",
+        "native-invalidation",
+        "forge-attachment-invalidated",
+        "native-capability-removed",
+        "chunk-unloaded-before",
+        "unloaded-target",
+        "chunk-unloaded-after",
+        "event-thread",
+        "event-forwarded-once",
+        "destroy-action",
+        "removed-provider",
+        "external-block-tag",
+        "external-item-tag",
+        "removed-is-air",
+        "retained-axis-x"
+      ],
+      "dimension": "minecraft:overworld",
+      "status": "passed",
+      "lifecycle": [
+        "start",
+        "load minecraft:overworld",
+        "load minecraft:the_nether",
+        "load minecraft:the_end",
+        "tick 1",
+        "unload minecraft:overworld",
+        "unload minecraft:the_nether",
+        "unload minecraft:the_end",
+        "stop"
+      ],
+      "config": [
+        "defaults 0.8/4000",
+        "58 generated defaults and snapshot values",
+        "denied-permission-0 0.8/4000",
+        "reloaded 0.25/5000",
+        "original-snapshot 0.8/4000",
+        "rejected-candidate 0.25/5000",
+        "retained-snapshot 0.25/5000",
+        "rejected-missing 0.25/5000",
+        "rejected-unknown 0.25/5000",
+        "rejected-duplicate 0.25/5000",
+        "rejected-malformed 0.25/5000",
+        "rejected-bool-string 0.25/5000",
+        "rejected-integer-overflow 0.25/5000",
+        "rejected-nonfinite 0.25/5000",
+        "rejected-list-element 0.25/5000",
+        "rejected-list-prefix 0.25/5000",
+        "recovered 0.5/6000",
+        "previous-snapshot 0.25/5000"
+      ],
+      "capability": [
+        "before world unload = EAST",
+        "after world unload = absent"
+      ],
+      "processExit": 0
+    },
+    "read": {
+      "phase": "read",
+      "retained": "28, 90, 24 ic2:qa_platform_pillar[axis=x]",
+      "world": "world",
+      "removed": "24, 90, 24 minecraft:air",
+      "passedChecks": "12",
+      "failedChecks": "0",
+      "run": "e192f5f1-524c-486b-843f-dcbddee9665d",
+      "pid": "11239",
+      "assertions": [
+        "factories-deferred",
+        "block-bound-once",
+        "item-bound-once",
+        "external-block-tag",
+        "external-item-tag",
+        "removed-is-air",
+        "retained-axis-x",
+        "reloaded-retained",
+        "reloaded-world",
+        "reloaded-removed",
+        "reloaded-run",
+        "reloaded-dimension"
+      ],
+      "dimension": "minecraft:overworld",
+      "status": "passed",
+      "lifecycle": [
+        "start",
+        "load minecraft:overworld",
+        "load minecraft:the_nether",
+        "load minecraft:the_end",
+        "tick 1",
+        "unload minecraft:overworld",
+        "unload minecraft:the_nether",
+        "unload minecraft:the_end",
+        "stop"
+      ],
+      "config": [
+        "reopened 0.5/6000"
+      ],
+      "capability": [
+        "before world unload = EAST",
+        "after world unload = absent"
+      ],
+      "processExit": 0
+    }
+  },
+  "play": {
+    "echo": "260187569451375",
+    "host": "127.0.0.1",
+    "port": 60918,
+    "serverPid": 11264,
+    "clientPid": 11278,
+    "exits": {
+      "server": 0,
+      "client": 0
+    },
+    "checks": [
+      "main-menu-unbound",
+      "dedicated-join",
+      "unbound-no-action",
+      "chat-focus",
+      "chat-key-not-replayed",
+      "status-screen",
+      "echo-reply",
+      "external-pack",
+      "invalid-resource-retains-old",
+      "resource-recovery",
+      "restored-resource",
+      "status-esc",
+      "non-operator-denied",
+      "denial-kept-current-values",
+      "operator-reload",
+      "operator-reload-snapshot",
+      "invalid-config",
+      "invalid-config-snapshot",
+      "corrected-reload",
+      "corrected-reload-snapshot",
+      "server-opened-menu",
+      "bound-key-keeps-menu",
+      "closed-menu",
+      "left-server",
+      "bound-key-keeps-main-menu",
+      "rejoined-server",
+      "cleared-echo",
+      "left-server-again",
+      "single-a-joined",
+      "single-a-config",
+      "single-a-fresh-connection",
+      "single-a-exit",
+      "single-b-joined",
+      "single-b-config",
+      "single-b-fresh-connection",
+      "single-b-exit"
+    ]
+  },
+  "mismatch": {
+    "client": {
+      "serverProtocol": "1",
+      "clientProtocol": "2",
+      "rejectingPeer": "client",
+      "rejectedRemoteVersion": "1",
+      "variant": {
+        "comparedClasses": 62,
+        "changedClass": "com/industrialage/ia2/forge/ForgeNetwork.class",
+        "productionSha256": "2f898af642004f4a4ee6603f01bc13cc48db0bfc06c98e25485d86384e1a4734",
+        "isolatedClientSha256": "03b84c3ad94d2ee2002b07c4949abeaa2bc5099deed2e80e91c2314976074b34"
+      },
+      "serverJoins": 0,
+      "echoes": 0,
+      "rejection": [
+        "[20Nov2026 15:55:20.365] [Netty Client IO #0/ERROR] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channels [ic2:echo_request,ic2:echo_reply] rejected their server side version number"
+      ],
+      "host": "127.0.0.1",
+      "port": 61128,
+      "serverPid": 11425,
+      "clientPid": 11445,
+      "exits": {
+        "server": 0,
+        "client": 0
+      },
+      "checks": [
+        "main-menu-unbound",
+        "negotiation-refused"
+      ]
+    },
+    "server": {
+      "serverProtocol": "1",
+      "clientProtocol": "2",
+      "rejectingPeer": "server",
+      "rejectedRemoteVersion": "2",
+      "variant": {
+        "comparedClasses": 62,
+        "changedClass": "com/industrialage/ia2/forge/ForgeNetwork.class",
+        "productionSha256": "2f898af642004f4a4ee6603f01bc13cc48db0bfc06c98e25485d86384e1a4734",
+        "isolatedClientSha256": "03b84c3ad94d2ee2002b07c4949abeaa2bc5099deed2e80e91c2314976074b34"
+      },
+      "serverJoins": 0,
+      "echoes": 0,
+      "rejection": [
+        "[20Nov2026 15:55:38.492] [Netty Server IO #1/ERROR] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channels [ic2:echo_request,ic2:echo_reply] rejected their client side version number"
+      ],
+      "host": "127.0.0.1",
+      "port": 61236,
+      "serverPid": 11568,
+      "clientPid": 11593,
+      "exits": {
+        "server": 0,
+        "client": 0
+      },
+      "checks": [
+        "main-menu-unbound",
+        "negotiation-refused"
+      ]
+    }
+  },
+  "packaged_dedicated_server": {
+    "minecraft": "1.19.2",
+    "forge": "43.5.0",
+    "sha256": "1c6b2bfc66d1441d785874f8e829617997ee5c3562592145b29430813137747b",
+    "pids": [
+      11047,
+      11116
+    ],
+    "server_exits": [
+      0,
+      0
+    ],
+    "config_reloads": 2,
+    "persisted_block": "minecraft:emerald_block",
+    "position": [
+      0,
+      80,
+      0
+    ]
+  }
+}
