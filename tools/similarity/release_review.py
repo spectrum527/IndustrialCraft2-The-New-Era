@@ -17,7 +17,7 @@ PROJECTS = {
     "neoforge-1.21.1": (":common", ":neoforge:1.21.1"),
     "neoforge-26.1.2": (":common", ":neoforge:26.1.2"),
     "neoforge-26.2": (":common", ":neoforge:26.2"),
-    "forge-1.19.2": (":forge:1.19.2",),
+    "forge-1.19.2": (":common", ":forge:1.19.2"),
 }
 INVENTORY_PREFIX = "ORIGINALITY_INVENTORY "
 SEED_LENGTH = 16
@@ -227,9 +227,9 @@ def by_version(groups):
     return dict(result)
 
 
-def read_inventories(neo_root, forge_root, neo_log, forge_log):
+def read_inventories(root, inventory_logs):
     targets = {}
-    for root, log in ((neo_root, neo_log), (forge_root, forge_log)):
+    for log in inventory_logs:
         rows = [row.removeprefix(INVENTORY_PREFIX) for row in log.read_text(encoding="utf-8").splitlines()
                 if row.startswith(INVENTORY_PREFIX)]
         if len(rows) != 1:
@@ -314,7 +314,7 @@ def review_triggers(original, body, has_parser_errors):
 
 
 def audit(args):
-    targets = read_inventories(args.neo_root, args.forge_root, args.neo_inventory, args.forge_inventory)
+    targets = read_inventories(args.root, args.inventory)
     supplied_references = {version: Path(path).resolve() for version, path in args.reference}
     if len(args.reference) != len(VERSIONS) or set(supplied_references) != set(VERSIONS):
         raise ValueError("Supply one source tree for each of the three baseline versions")
@@ -322,22 +322,17 @@ def audit(args):
         {version: supplied_references[version] for version in VERSIONS}, args.repair_commit)
     all_reference_sources = [source for files in references.values() for source in files]
     checker_hash = sha(Path(check.__file__).read_bytes())
-    policies = {}
+    tools_path = args.root / "tools/similarity"
+    if sha((tools_path / "check.py").read_bytes()) != checker_hash:
+        raise ValueError("Checker versions differ for the release tree")
+    policy_path = tools_path / "boilerplate.json"
+    policy_digest, policy_entries = sha(policy_path.read_bytes()), check.load_policy(policy_path)
     candidate_by_target = {}
     unique = {}
     copies_to_verify = set()
-    target_git = {
-        args.neo_root: git_java_blobs(args.neo_root / "src", args.neo_commit),
-        args.forge_root: git_java_blobs(args.forge_root / "src", args.forge_commit),
-    }
+    candidate_commit, algorithm, tracked = git_java_blobs(args.root / "src", args.commit)
     for target, (repo, _, paths) in targets.items():
-        tools_path = repo / "tools/similarity"
-        if sha((tools_path / "check.py").read_bytes()) != checker_hash:
-            raise ValueError(f"Checker versions differ for the {target} release tree")
-        policy_path = tools_path / "boilerplate.json"
-        policies[target] = (sha(policy_path.read_bytes()), check.load_policy(policy_path))
         candidates = []
-        candidate_commit, algorithm, tracked = target_git[repo]
         for path in paths:
             source = Source(repo / "src" / path, path.as_posix())
             if not verify_blob(source, algorithm, tracked):
@@ -346,9 +341,6 @@ def audit(args):
             copies_to_verify.add((source.absolute, source.sha256))
             candidates.append(source.identity)
         candidate_by_target[target] = candidates
-
-    if len({digest for digest, _ in policies.values()}) != 1:
-        raise ValueError("A26 policy versions differ across the release trees")
     parse_sources([*unique.values(), *all_reference_sources], args.java)
     if any(source.parser_errors for source in unique.values()):
         print("Candidate Javac parser diagnostics require review", flush=True)
@@ -388,12 +380,11 @@ def audit(args):
     separately_reviewed = []
     blocked_exact = []
     for target, (repo, _, _) in targets.items():
-        _, policy = policies[target]
         for identity in candidate_by_target[target]:
             if identity not in rows:
                 source = unique[identity]
                 candidate_root = repo / "src"
-                candidate = check.load(candidate_root, [candidate_root / source.path], policy)[0]
+                candidate = check.load(candidate_root, [candidate_root / source.path], policy_entries)[0]
                 original = check.compare(candidate, original_references)
                 primary, all_windows = exact_line_categories(source, candidate, original, original_references)
                 raw = {key: original[key] for key in ("score", "match", "status", "raw_status", "reasons",
@@ -432,7 +423,7 @@ def audit(args):
         original_counts = Counter(row["originalChecker"]["status"] for row in target_files)
         original_status = "fail" if original_counts["fail"] else "warn" if original_counts["warn"] else "pass"
         snapshots[target] = {
-            "gitCommit": target_git[repo][0],
+            "gitCommit": candidate_commit,
             "sourceSet": {project: {"roots": values["sourceRoots"], "javaFiles": len(values["compileFiles"])}
                           for project, values in projects.items()},
             "sha256": tree_fingerprint(candidate_by_target[target]),
@@ -449,7 +440,6 @@ def audit(args):
             raise ValueError("An audited source changed during the audit; regenerate the Gradle inventory and scan again")
     java_version = subprocess.run([args.java, "--version"], check=True, encoding="utf-8",
                                   capture_output=True).stdout.splitlines()[0]
-    policy_digest, policy_entries = next(iter(policies.values()))
     report = {
         "schemaVersion": 1,
         "reviewStatus": overall,
@@ -478,12 +468,10 @@ def main():
     inventory = commands.add_parser("inventory-init", help="write the read-only Gradle inventory init script")
     inventory.add_argument("path", type=Path)
     scan = commands.add_parser("audit", help="score actual production Java inputs and redact baseline locations")
-    for name in ("neo-root", "forge-root"):
-        scan.add_argument(f"--{name}", required=True, type=lambda path: Path(path).resolve())
-    for name in ("neo-commit", "forge-commit"):
-        scan.add_argument(f"--{name}", default="HEAD")
-    for name in ("neo-inventory", "forge-inventory", "output"):
-        scan.add_argument(f"--{name}", required=True, type=Path)
+    scan.add_argument("--root", required=True, type=lambda path: Path(path).resolve())
+    scan.add_argument("--commit", default="HEAD")
+    scan.add_argument("--inventory", action="append", required=True, type=Path)
+    scan.add_argument("--output", required=True, type=Path)
     scan.add_argument("--reference", nargs=2, action="append", required=True, metavar=("VERSION", "ROOT"))
     scan.add_argument("--repair-commit", required=True)
     scan.add_argument("--java", default="java")
@@ -506,7 +494,7 @@ gradle.projectsEvaluated {
                 ':neoforge:1.21.1': [':common', ':neoforge:1.21.1'],
                 ':neoforge:26.1.2': [':common', ':neoforge:26.1.2'],
                 ':neoforge:26.2': [':common', ':neoforge:26.2'],
-                ':forge:1.19.2': [':forge:1.19.2']
+                ':forge:1.19.2': [':common', ':forge:1.19.2']
             ]
             def sourceSetsByTarget = targets.findAll { target, projects -> root.findProject(target) != null }.collectEntries { target, projects ->
                 def sources = projects.collectEntries { name ->

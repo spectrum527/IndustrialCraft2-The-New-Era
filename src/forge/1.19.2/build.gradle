@@ -124,6 +124,14 @@ def generateResources = tasks.register('generatePlayableResources', Exec) {
             generatedResources.get().asFile
 }
 
+def legacy = providers.gradleProperty('ic2.legacyAssetsDir')
+        .orElse(providers.gradleProperty('ia2.legacyAssetsDir')).map { rootProject.file(it) }
+if (legacy.isPresent() && (!legacy.get().isDirectory()
+        || legacy.get().canonicalFile == rootProject.projectDir.canonicalFile
+        || legacy.get().canonicalPath.startsWith(rootProject.projectDir.canonicalPath + File.separator))) {
+    throw new GradleException('ic2.legacyAssetsDir must name an existing directory outside this repository')
+}
+
 tasks.named('processResources') {
     filteringCharset = 'UTF-8'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -131,16 +139,24 @@ tasks.named('processResources') {
     // Removed generated models must also disappear from the processed pack on incremental builds.
     doFirst { delete destinationDir }
     dependsOn generateResources
-    from(generatedResources) { exclude '.ic2-generated-output' }
-    inputs.properties(version: project.version, minecraftVersion: minecraftVersion, forgeVersion: forgeVersion)
-    filesMatching('META-INF/mods.toml') {
-        expand version: project.version, minecraftVersion: minecraftVersion, forgeVersion: forgeVersion
-    }
     from(rootProject.file('assets')) {
         exclude 'qa/**', 'brand/**', 'ic2/equipment/**', 'ic2/textures/entity/equipment/**'
         into 'assets'
         exclude '**/*.md', '**/*.csv', '**/.git*', '**/.DS_Store'
         includeEmptyDirs = false
+    }
+    from(generatedResources) { exclude '.ic2-generated-output' }
+    if (legacy.isPresent()) {
+        from(legacy) {
+            exclude '**/.git*/**', '**/*.md', '**/.DS_Store'
+            exclude 'assets/ia2/**', 'data/ia2/**'
+            // Private models and sounds can still be previewed; package only newly authored sprites.
+            exclude '**/*.png', '**/*.png.mcmeta'
+        }
+    }
+    inputs.properties(version: project.version, minecraftVersion: minecraftVersion, forgeVersion: forgeVersion)
+    filesMatching('META-INF/mods.toml') {
+        expand version: project.version, minecraftVersion: minecraftVersion, forgeVersion: forgeVersion
     }
 }
 

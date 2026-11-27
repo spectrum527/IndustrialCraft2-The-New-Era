@@ -6,14 +6,32 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
 }
-def platformProjects = rootProject.project(':neoforge').childProjects
+
+def targetEntries = [:]
+[forge: ':forge', neoforge: ':neoforge'].each { loader, parentPath ->
+    def parent = rootProject.findProject(parentPath)
+    if (parent != null) {
+        parent.childProjects.each { name, proj ->
+            if (proj.buildFile.isFile()) {
+                targetEntries[name] = [loader: loader, project: proj, path: "${parentPath}:${name}"]
+            }
+        }
+    }
+}
 def requestedTarget = providers.gradleProperty('ic2.testTarget')
         .orElse(providers.gradleProperty('ia2.testTarget'))
-def targets = requestedTarget.isPresent() ? [requestedTarget.get()] :
-        platformProjects.values().findAll { it.buildFile.isFile() }.collect { it.name }.sort()
-if (targets.isEmpty() || targets.any { !platformProjects.containsKey(it) }) {
-    throw new GradleException("Unknown or empty NeoForge test targets: ${targets}")
+def targets = requestedTarget.isPresent() ? [requestedTarget.get()] : targetEntries.keySet().sort()
+if (targets.isEmpty() || targets.any { !targetEntries.containsKey(it) }) {
+    throw new GradleException("Unknown or empty test targets: ${targets}")
 }
+def targetJarTask = { Map entry ->
+    entry.project.tasks.named(entry.loader == 'forge' ? 'reobfJar' : 'jar')
+}
+def targetVerifyDeps = targets.collect { target ->
+    def entry = targetEntries[target]
+    entry.loader == 'forge' ? "${entry.path}:reobfJar" : "${entry.path}:verifyDevelopmentJar"
+}
+
 def junit = tasks.named('test', Test) {
     useJUnitPlatform()
     outputs.upToDateWhen { false }
@@ -22,14 +40,22 @@ def junit = tasks.named('test', Test) {
         delete reports.junitXml.outputLocation
         systemProperty 'ia2.targets', targets.join(',')
         targets.each { target ->
-            def platform = platformProjects[target]
-            systemProperty "ia2.target.${target}.jar", platform.tasks.named('jar').get()
+            def entry = targetEntries[target]
+            def platform = entry.project
+            def loaderVersion = entry.loader == 'forge'
+                    ? platform.ext.forgeVersion
+                    : platform.ext.neoForgeVersion
+            systemProperty "ia2.target.${target}.jar", targetJarTask(entry).get()
                     .archiveFile.get().asFile.absolutePath
-            systemProperty "ia2.target.${target}.neoForgeVersion", platform.ext.neoForgeVersion
+            systemProperty "ia2.target.${target}.loader", entry.loader
+            systemProperty "ia2.target.${target}.loaderVersion", loaderVersion
+            if (entry.loader == 'neoforge') {
+                systemProperty "ia2.target.${target}.neoForgeVersion", platform.ext.neoForgeVersion
+            }
         }
     }
     finalizedBy 'requireJUnitExecution'
-    dependsOn targets.collect { ":neoforge:$it:verifyDevelopmentJar" }
+    dependsOn targetVerifyDeps
     systemProperty 'ia2.testClassesDirs', testClassesDirs.asPath
     systemProperty 'ic2.activeKeysTable', rootProject.file('spec/config/active-keys.tsv').absolutePath
     systemProperty 'ic2.modVersion', rootProject.version.toString()
@@ -38,11 +64,11 @@ def junit = tasks.named('test', Test) {
 def advancementResources = tasks.register('verifyAdvancementResources', Exec) {
     group = 'verification'
     description = 'Checks shipped progression criteria, rewards, and bilingual text against the gameplay contract.'
-    dependsOn targets.collect { ":neoforge:$it:verifyDevelopmentJar" }
+    dependsOn targetVerifyDeps
     doFirst {
         commandLine 'python3', rootProject.file('src/test/verify_gameplay_advancements.py'),
                 *targets.collect { target ->
-                    def jar = platformProjects[target].tasks.named('jar').get().archiveFile.get().asFile
+                    def jar = targetJarTask(targetEntries[target]).get().archiveFile.get().asFile
                     "${target}=${jar.absolutePath}"
                 }
     }

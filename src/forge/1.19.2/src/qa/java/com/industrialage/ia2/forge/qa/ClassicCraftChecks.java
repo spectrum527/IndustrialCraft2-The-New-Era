@@ -87,9 +87,9 @@ public final class ClassicCraftChecks {
             id =
                     switch (output) {
                         case "near_depleted_uranium",
-                                        "bio_cell",
-                                        "hydrated_coal_cell",
-                                        "weed_ex_cell" ->
+                                "bio_cell",
+                                "hydrated_coal_cell",
+                                "weed_ex_cell" ->
                                 "ic2:fluid_cell";
                         default -> id;
                     };

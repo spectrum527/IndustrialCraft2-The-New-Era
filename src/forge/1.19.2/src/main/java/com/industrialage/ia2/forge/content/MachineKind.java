@@ -37,13 +37,13 @@ enum MachineKind {
     boolean storesEnergy() {
         return switch (this) {
             case BATBOX,
-                            CESU,
-                            MFE,
-                            MFSU,
-                            BATBOX_CHARGEPAD,
-                            CESU_CHARGEPAD,
-                            MFE_CHARGEPAD,
-                            MFSU_CHARGEPAD ->
+                    CESU,
+                    MFE,
+                    MFSU,
+                    BATBOX_CHARGEPAD,
+                    CESU_CHARGEPAD,
+                    MFE_CHARGEPAD,
+                    MFSU_CHARGEPAD ->
                     true;
             default -> false;
         };
