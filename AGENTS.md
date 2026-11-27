@@ -26,11 +26,12 @@
 |---|---|
 | `spec/` | Spec 角色 |
 | `src/common/energy|machine|recipe|fluid|crop|reactor/` | Core Agent |
+| `src/forge/1.19.2/src/main/` | Platform Agent |
 | `src/neoforge/`（1.21.1、26.1.2、26.2 适配及 26.x 共用层） | Platform Agent |
 | `src/common/content/` | Content Agent（按波次分） |
 | `src/client/`、`src/compat/` | Client Agent |
 | `src/datagen/` | Content Agent + Platform Agent |
-| `src/test/` | QA Agent |
+| `src/test/`、`src/forge/1.19.2/src/qa/`、`src/forge/1.19.2/qa/` | QA Agent |
 | `assets/` | Artist/Audio Agent |
 | `parity/` | QA Agent |
 | `docs/` | Docs Agent（`00-charter.md`、`01-legal.md`、`02-platform.md` 归 Orchestrator） |
@@ -40,15 +41,16 @@
 
 跨目录修改需 Orchestrator 批准。`decisions.md` 是唯一决策事实源，发现任务与决策冲突时：停手 → 报 Orchestrator → 改决策或改任务。
 
-## 3. 平台与版本（decisions.md A5）
+## 3. 平台与版本（decisions.md A5 / A19）
 
-- 主基线 **NeoForge 1.21.1**（Java 21）：G5 内部切片和 G10 首发在此验收。
-- 同步目标 **NeoForge 26.1.2 与 26.2**（均为 Java 25）：每个目标分别编译、打包，从 P6 起分别进行运行验收。common 层不得 import 版本专属 API；26.x 共用的 Java 适配位于 `src/neoforge/26.x/src/main/java`；1.21.1 与 26.1.2 共用屏幕访问位于 `src/neoforge/pre-26.2/src/main/java`，26.2 的屏幕访问及其他目标专属差异留在各自版本目录。
-- **Forge 1.19.2 / Java 17** 是独立发行分支，保留 ForgeGradle 的重混淆打包。修复版 1.19.2 另起独立实例作为对照。四个平台共用玩法代码须可用 Java 17 编译。
+- 四个发布目标在同一 `main` 分支与同一套 Gradle 9.2.1 / ModDevGradle 2.0.148 工程中统一维护、分别编译、打包与运行验收。
+- 主基线 **NeoForge 1.21.1**（Java 21，`net.neoforged.moddev`）：G5 内部切片和 G10 首发在此验收。
+- 同步目标 **NeoForge 26.1.2 与 26.2**（均为 Java 25，`net.neoforged.moddev`）：每个目标分别编译、打包，从 P6 起分别进行运行验收。common 层不得 import Minecraft 或平台专属 API；26.x 共用的 Java 适配位于 `src/neoforge/26.x/src/main/java`；1.21.1 与 26.1.2 共用屏幕访问位于 `src/neoforge/pre-26.2/src/main/java`，26.2 的屏幕访问及其他目标专属差异留在各自版本目录。
+- **Forge 1.19.2 / Java 17**（`net.neoforged.moddev.legacyforge`，显式 `disableRecompilation = false`）同仓构建并由 `reobfJar` / `reobfQaFixtureJar` 输出 SRG 重混淆包。修复版 1.19.2 仍另起独立实例作为对照。`:common` 与 `src/minecraft/shared/` 四平台共用玩法代码须可用 Java 17 编译。
 
 ## 4. 工程规约
 
-- common 与 1.21.1 使用 Java 21，26.1.2 与 26.2 使用 Java 25；4 空格缩进；`final`/`record`/`sealed` 按宜使用。
+- `:common` 与 Forge 1.19.2 使用 Java 17（`src/minecraft/shared/` 保持 Java 17 兼容），NeoForge 1.21.1 使用 Java 21，26.1.2 与 26.2 使用 Java 25；4 空格缩进；`final`/`record`/`sealed` 按宜使用。
 - 公开 API 必须有 javadoc；禁止 `System.out`（用 SLF4J）；核心层禁止 import 平台类（CI 检查）。
 - 所有新增逻辑必须有单测或 parity 场景；PR ≤ 400 行（生成代码/数据除外）。
 - 网络层禁止反射序列化与从网络数据加载类（decisions.md：不做 DataEncoder 复刻）。

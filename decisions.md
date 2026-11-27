@@ -1,4 +1,4 @@
-# 重建决策表（更新至 2026-11-21）
+# 重建决策表（更新至 2026-11-27）
 
 本表是 `docs/IC2-2.9.40-实现拆解与续更指南.md` §11（40 项烂尾清单）与工作区根基决策的最终结论。任务与任务卡必须与本表一致；如需推翻某项，先改本表再改任务。
 
@@ -10,7 +10,7 @@
 | A2 | 重建策略 | 净室独立实现。Spec 从可观察的输入、输出、数值和失败场景整理规格；实现/QA 依据规格分别写代码和断言。原版和修复版的 Java、补丁、反编译片段、参考测试实现与原图均不移入生产工程。既有双基线检查保留，首发私有核查追加修复版生产源码。 |
 | A3 | 项目命名与兼容 | 正式名称为 **IndustrialCraft²: The New Era**。游戏 mod id 和资源命名空间为 `ic2`，既有注册路径、内部 Java 包与 Maven group `com.industrialage.ia2` 延续使用。 |
 | A4 | 工作区 | `IC2/rebuild/` 子目录（本目录），与 analysis/、docs/ 并列互引用 |
-| A5 | 目标平台 | **Minecraft 1.21.1 / NeoForge** 为主基线（Java 21，MVP/G5 在此验收）。**Minecraft 26.1.2、26.2 / NeoForge** 为同步移植目标（Java 25），每个目标独立编译、打包。common 层保持 Java 21，宿主差异由版本适配层承接。 |
+| A5 | 目标平台 | 四个目标在同一 `main` 分支统一维护、分别编译打包与运行验收：**Minecraft 1.19.2 / Forge**（Java 17）、**Minecraft 1.21.1 / NeoForge**（主基线，Java 21，MVP/G5 在此验收）、**Minecraft 26.1.2 与 26.2 / NeoForge**（同步移植目标，Java 25）。`:common` 与 `src/minecraft/shared/` 保持 Java 17 兼容，宿主差异由各自版本适配层承接；修复版 1.19.2 仍另起独立实例作行为对照。 |
 | A6 | 首发加载器 | 1.0.0 支持 Forge 1.19.2 和 NeoForge 1.21.1、26.1.2、26.2。Fabric 后续按社区需求评估。 |
 | A7 | 素材制作 | 所有机器、物品和线缆纹理从现在起独立重绘，包含状态面、共享壳体、物品形态、装备层及染色/绝缘变体。私有参考与新作分开存放。其他素材沿用公开前全部替换的要求。各波次按新作登记、实际输出和客户端验收核销。 |
 | A8 | 行为参考 | 公开索引列出参考版本及审查方法。源码、反编译资料、原始二进制和原版素材由隔离角色在私有工作区保管。 |
@@ -24,7 +24,7 @@
 | A16 | 工作安排 | 负责人已于 2026-11-19 指示直接准备 IC2 工作区和重绘计划。已定范围内的命名、资源规则、任务拆分、实现准备和本地验证由 Orchestrator 推进，无须逐项请示。代码评审、质量门禁及发布流程继续执行。 |
 | A17 | 文档约定 | 新文档放 `rebuild/docs/`；任务卡中 `common/` `neoforge/` `datagen/` `test/` 等路径一律相对 `rebuild/src/`；文件所有权以 `AGENTS.md` 为准；计划文档里的 `ic2-reforged/` 即 `rebuild/` |
 | A18 | 托管与流程 | 公开主仓库为 [spectrum527/IndustrialCraft2-The-New-Era](https://github.com/spectrum527/IndustrialCraft2-The-New-Era)。独立参考素材与计划仓库继续私有。主仓库接受 Issues、PR 和共创申请。 |
-| A19 | 构建插件 | **ModDevGradle**（含多版本子模块，满足 A5 三目标构建） |
+| A19 | 构建插件 | **ModDevGradle**（`2.0.148`），在单一 Gradle `9.2.1` 多模块工程内以 `net.neoforged.moddev` 构建 NeoForge 1.21.1 / 26.1.2 / 26.2，以 `net.neoforged.moddev.legacyforge`（显式 `disableRecompilation = false`）构建并重混淆 Forge 1.19.2，满足 A5 四目标统一构建。 |
 | A20 | 内部切片与参考实例 | G0 确认的 39 项（原上限 40）仍作基础切片与历史采样分母。G5 另验首发物流，不以 39 项限制整版范围。原版与修复版的 1.19.2 参考样本按发行包、存档分开保存，首发边界见 A27。 |
 | A21 | 游戏美术与标识 | 作者于 2026-11-21 确认重绘游戏美术采用 **CC BY-SA 4.0**。其他原创素材按来源表登记。图标与封面仅供标识本项目，见 `docs/branding.md`。文档游戏截图保留画面中各作品原有权利。 |
 | A22 | 素材隔离与打包 | 原版文件只在独立私有仓库 `ic2-legacy-assets` 保存。主仓库 `assets/<namespace>/` 只接收登记后的新作。可选外部目录使用 `ic2.legacyAssetsDir`（兼容旧属性 `ia2.legacyAssetsDir`）。外部目录可载入模型与音效等资源。机器 GUI、穿戴层及动态渲染也使用 PNG，因此构建只从新作目录打包图像和动画元数据。公开包独立构建并验证全量资源。 |
@@ -118,3 +118,4 @@
 负责人指定 Forge 1.19.2、NeoForge 1.21.1、26.1.2、26.2 分别交付可安装包。四版覆盖修复版的生存玩法、原始机器、工业设备、道具、管道、实体、导线与核工业。1.19.2 同时有独立的重建和修复版对照实例。配对新证据以修复版 `1.2.4-port.20261120` 为准，保留既有 `1.2.0-port.20261119` 与原版逐刻样本及 B#41 行为修正。生产实现独立编写；使用本次作者提供的重绘包。四个平台分别按候选包和实测项目交接。
 
 - 2026-11-21：按负责人指示以 IndustrialCraft²: The New Era 公开首发。更正原作书面授权状态，分别登记游戏美术与品牌图许可，增加双语 README 与 ChatGPT 署名自审查报告。
+- 2026-11-27：采用 Option A 方案将 Forge 1.19.2 正式并入 `main` 单分支与单一 Gradle `9.2.1` 构建，更新 A5 与 A19。工程使用 ModDevGradle `2.0.148` 的 `net.neoforged.moddev`（NeoForge 1.21.1 / 26.1.2 / 26.2）与 `net.neoforged.moddev.legacyforge`（Forge 1.19.2-43.5.0，`disableRecompilation = false`），`:common` 与 `src/minecraft/shared/` 统一保持 Java 17 兼容。PoC 全部四项门禁及收尾验证通过（四目标严格依赖校验共存构建、Java 17 字节码与 SRG `reobfJar`/`reobfQaFixtureJar` 校验、5,988/5,988 条目与 ForgeGradle 对齐、真实 Forge 43.5.0 专服 `runOptionalCompat`、以及 `verify.py` `smoke` 55/55、`world`、`mismatch`、`play` 53/53），并部署三作业并行统一 CI（`governance`、`neoforge`、`forge-1-19-2`）；既有 A26–A36 签核文件 SHA-256 零变动。

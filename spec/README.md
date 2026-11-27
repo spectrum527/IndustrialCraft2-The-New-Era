@@ -19,6 +19,10 @@
 
 首发物流的管段容量和配方见[物品管、流体管与泵盖](logistics/pipes.md)。直管每刻到货量、出口分配、满仓重试及跨区块重连见[路由与恢复样本](logistics/routing.md)。
 
+## Forge 1.19.2 目标
+
+39 项基础切片的输入、期望值和负例见[逐项规格](registry/mvp-39.md)。统一仓库中 `:forge:1.19.2`（Forge 43.5.0 / Java 17）的平台与基础机器契约分别见[Forge 1.19.2 平台契约](platform/forge-1.19.2.md)与[Forge 1.19.2 基础火力机宿主契约](machines/forge-1.19.2.md)。
+
 ## 状态
 
 - [x] P1-T1 六类模板和打粉机样板已交付

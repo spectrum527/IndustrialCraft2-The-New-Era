@@ -1,0 +1,673 @@
+{
+  "stage": "final",
+  "started_at_utc": "2026-11-20T07:54:30.309993+00:00",
+  "candidate_root": "src",
+  "excluded_directories": [
+    ".gradle",
+    "build",
+    "generated"
+  ],
+  "candidate_java_files": 61,
+  "candidate_fingerprint_sha256": "9671c5df177eff5a146f303874ece755ff4fd0eca46b5af0355443bb55b26d93",
+  "candidate_fingerprint_format": "SHA-256 of a UTF-8 JSON object mapping src-relative POSIX paths in lexicographic order to lowercase raw-file SHA-256, no ASCII escaping, separators comma and colon, no trailing newline",
+  "references": [
+    {
+      "version": "2.9.40 Forge",
+      "java_files": 901,
+      "java_input_fingerprint_sha256": "fa5847c1a1e88a171a6251b4b8aa57c63b9a1b5177df059fa8f322e0bfd214eb",
+      "jar_sha256": "5d06ca9146041043132a72bad9b5612e260e77a84a2f3773a3da9b0167ea1d3d"
+    },
+    {
+      "version": "2.8.222",
+      "java_files": 1162,
+      "java_input_fingerprint_sha256": "d7261fce210416866eaaa3b2d56849914b48b4f83a040593dc14ffce18de883b",
+      "jar_sha256": "f96b1886b6d060b308fb811029d5c5cc76deb17b835aa368dcb6071f2de290d4"
+    },
+    {
+      "version": "1.2.0-port.20261119 production",
+      "java_files": 949,
+      "java_input_fingerprint_sha256": "fcdfb5d7fb34919ffaaf2a7a1d13c930199c81d4b3979cf02b574660d94c97a7",
+      "jar_sha256": "dc1b803b24101d6372f3cbf7ffb633fed21f5339efb16e455e5a4ed5cbe0ccab"
+    }
+  ],
+  "reference_java_files": 3012,
+  "checker_sha256": "c0920a933f7ee750c13617a257fb07f820e653f0f8a4ed336766190c90c9338e",
+  "a26_policy_sha256": "847a8f4edc46e1944b3fc5de1a4ae2caa62894ad8a55a55408f3d69f7b8ff370",
+  "finished_at_utc": "2026-11-20T07:54:35.356867+00:00",
+  "comparisons": 183732,
+  "status": "warn",
+  "checker_exit_code": 0,
+  "score_thresholds": {
+    "warn_strictly_above": 0.15,
+    "fail_strictly_above": 0.25,
+    "consecutive_identical_lines_fail": 8
+  },
+  "raw_status_counts": {
+    "pass": 16,
+    "warn": 44,
+    "fail": 1
+  },
+  "final_status_counts": {
+    "pass": 17,
+    "warn": 44,
+    "fail": 0
+  },
+  "max_score": 0.375,
+  "max_score_without_a26": 0.248868778280543,
+  "eight_line_hits": 0,
+  "a26_listed_paths": 3,
+  "a26_matching_paths": 1,
+  "a26_applied": 1,
+  "files": [
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/package-info.java",
+      "score": 0.375,
+      "raw_status": "fail",
+      "status": "pass",
+      "boilerplate_matched": true,
+      "boilerplate_applied": true,
+      "eight_line_hits": 0,
+      "sha256": "9ec59094f563e524e317eb9ab5cd26b706eb0163edb6cae47a95c4181294f865"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/config/ActiveConfig.java",
+      "score": 0.15890850722311398,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "7b06a8d1d6dc658d38549ee7b63eee0df22188c8d178f7cb7b96b8fc8fd71091"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/config/WorldConfigFile.java",
+      "score": 0.20454545454545456,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ae21cd5aa379c698b2bd1bd77c58be3b4f978e4a988f69a570add8b3f994afe7"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/lifecycle/ServerLifecycle.java",
+      "score": 0.16853932584269662,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "8d3f5ecc60b936938e0b49019a51245b3c1f476145096b4c1e25403fb7752a6e"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/network/EchoProtocol.java",
+      "score": 0.19242902208201892,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "2fae449937f462385af1ea6d4592ee3559902ec5c1ee822766beefef25c5cff5"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/network/MessageChannel.java",
+      "score": 0.18057921635434412,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "d5da566120c35ea34ea1761d0bc4a960c3076ea4f6216961efae2266c6980c77"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/CapabilityFacade.java",
+      "score": 0.20168067226890757,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "5cea4c096a50e3e491e23bbb56f0fa031af4f92d7ccaf75451738842278f601b"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/ClientFacade.java",
+      "score": 0.15723270440251572,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "f94077f0e612d78a36b2ab45db319b0329d8e6002850736727a4cb2abbd5005b"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/ConfigFacade.java",
+      "score": 0.1744421906693712,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ddf08bcf1d278c719a32ded0f9c5b4f441ef531d1c914239c9220506412ecb1d"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/EventFacade.java",
+      "score": 0.24390243902439024,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ba1e975d32b465df708eb1fe2a0de37dfce174df9a759d9c068b30bfc2f4c8d0"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/EventStreams.java",
+      "score": 0.1749502982107356,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "dbcd7afa3da9d02037243d19a67c16b2508b35e5c22b56908a44ed4faac2de76"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/NetworkFacade.java",
+      "score": 0.15517241379310345,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "198395c9b983a58aab714acd2efeea922ff9cceb82f5651b216751875f33e982"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/Platform.java",
+      "score": 0.2191780821917808,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "04f73116c797f01a87a02004ec0e4aef21544f458c2efa284b87337ec653ebde"
+    },
+    {
+      "candidate": "common/src/main/java/com/industrialage/ia2/platform/RegistryFacade.java",
+      "score": 0.14601769911504425,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "151c6a90c44e677adae2162c90d15ad7d846e04b4ebb39517f8dec5738ea48b9"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/IndustrialAge2.java",
+      "score": 0.17134831460674158,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "0fa128c177d65f4e9aee99699c0c78517c1049b64c97efb4b532b4f78f40087b"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/ForgeCapabilities.java",
+      "score": 0.20754716981132076,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ef02e663f60d277a69f1b39eec53f3ba22260c845fc710cf16d55b5773269d24"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/ForgeConfig.java",
+      "score": 0.18668596237337193,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "e8672031a2a01c01d695aeabc540145782d8152042d9fbfeb1a8bb82a1ee1e67"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/ForgeEvents.java",
+      "score": 0.18848167539267016,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "795c793530cb49213e21a4c4d9484c44af5b32ac4f57a1edc03d57c1094a8a26"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/ForgeNetwork.java",
+      "score": 0.18543956043956045,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "af89df3af398fd8ed5651f29f411ebdd8007cf328a75c9c95a95c3b519c435bd"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/ForgePlatform.java",
+      "score": 0.17872340425531916,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "0c6f204934ab30cd235de1245c9c4b8401ccf40a33c5a6aebe4003c6343266d6"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/ForgeRegistry.java",
+      "score": 0.16925465838509315,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "d849ce615389ee0004ad9c85b976de2340e8cb2865ac201e0a4cd5a8fb678ec6"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/client/ForgeClient.java",
+      "score": 0.18741633199464525,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ef476451cda70a685d27ef2e0be6f9b28732bf9ce7bdc60295d9bf73b69c2916"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/client/StatusResources.java",
+      "score": 0.16600790513833993,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "60c3df8b71eb29280fb6214396222fd30181fc078d1bdc718854c3f0028b6801"
+    },
+    {
+      "candidate": "forge/1.19.2/src/main/java/com/industrialage/ia2/forge/client/StatusScreen.java",
+      "score": 0.17296511627906977,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "3930d5741453fff8122d0a1ef64bb8082365dc2373aa1f8701129ef2d62b4c1b"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/ForgeQa.java",
+      "score": 0.15513626834381553,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "3343705ccdc1beea00dfaf4e91823c2504f589d0f41c7611c5ca43fcaf2599cf"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/PlatformLifecycleTrace.java",
+      "score": 0.1492204899777283,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "118257abb44c392c804a23718779a33ec6ffd332c0a4765aa36d2e0de2687adf"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/PlatformRegistrationFailures.java",
+      "score": 0.15592203898050974,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "7bf6564f2e11b923178b3a36f79bd69a1bad74820593492ab2e3b8ecefc7d143"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/PlatformWorldConfig.java",
+      "score": 0.13857998289136014,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "d17e77b4d020db593121dd3e72ddc657b261a4a38468784631060d7d14b1cb37"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/PlatformWorldFixture.java",
+      "score": 0.14342629482071714,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "d28fe55e32c06ac5e192c1faf502b917e6a1876fd6b12180548be8871a0c308b"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/PlatformWorldServices.java",
+      "score": 0.16125541125541126,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "798c63df91e58a0826a485dd8be89956c22b633aa36e9a2b77933f6f930cc643"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/PlayClientFixture.java",
+      "score": 0.13821815154038303,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "a7b311fabad450095756ee91ab7d5d9d9a0c942d10f2a9ce8d4a78b588e9294c"
+    },
+    {
+      "candidate": "forge/1.19.2/src/qa/java/com/industrialage/ia2/forge/qa/PlayMenuFixture.java",
+      "score": 0.1660839160839161,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ed39db366d6c22cc9842ae928995f76eb19e66c0ec3eca129f9d9205e88ad135"
+    },
+    {
+      "candidate": "neoforge/1.21.1/src/main/java/com/industrialage/ia2/platform/NeoForgeVersion.java",
+      "score": 0.248868778280543,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "a3a240ea019b1e5ee98aa45c0000aef9a20f8d8e92654b7a452429eb9bd0ccd5"
+    },
+    {
+      "candidate": "neoforge/26.1/src/main/java/com/industrialage/ia2/platform/NeoForgeVersion.java",
+      "score": 0.2459396751740139,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "9d53059dad7b0db97959cea5f5dd561f9e1c292d5554be992543878c3a68b741"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/IndustrialAge2.java",
+      "score": 0.19433198380566802,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "a7096e81d2e7aa2487117733aab4791d2a1d632c56f550472c219d5fea69ff3b"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/client/ClientServices.java",
+      "score": 0.18580645161290324,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "b3af9ff76fe329c4326627613d5230e1d40f3eb81e85262325de725668147eef"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/client/StatusResources.java",
+      "score": 0.17286245353159851,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "270d4ddcc3cbc47fae784b02b3ea6fbe43a23428e0e0e40f5b3b33cb27a6364c"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/client/StatusScreen.java",
+      "score": 0.1821138211382114,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "43850a4d90dde072484215788647f30ed1bb10d397e3eaedca34dbf9a9cf7db0"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeCapabilities.java",
+      "score": 0.22102009273570325,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "56956588f5077cbc3864dae5d0a01d859e0e9e1375e86f004eeb94e1d03a640e"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeConfig.java",
+      "score": 0.18587896253602307,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "8b6f6b7ecaa92949520597ad232cfa3b06d94404fe15b004e0821d600db1a2a7"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeEvents.java",
+      "score": 0.1837837837837838,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ae7b8a54fc75551bc8ee2d52b490d0fcf9832c5a09aea8b8308fe6d2bb982105"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeNetwork.java",
+      "score": 0.17814726840855108,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "c4ac975ca709c5c445a8a11aa7949ce37f484152aeb9506361449f6c0c6c1629"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgePlatform.java",
+      "score": 0.1956521739130435,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "93a0b19a63ff5cea0bced3961a8f0275052d583330a73813f4b60f1db6d17028"
+    },
+    {
+      "candidate": "neoforge/shared/src/main/java/com/industrialage/ia2/platform/NeoForgeRegistry.java",
+      "score": 0.17404580152671756,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "3c637a262e634a13463963032907eb48c85eb0a3e3dfa76aaa22a46afaf30636"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/GameTestFixtures.java",
+      "score": 0.1794871794871795,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "acb1df99753c25ddd085ffa991b453d96cfc089d43497b79653da91b8d7849a4"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/PlatformLifecycleTrace.java",
+      "score": 0.14988814317673377,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "1daae0f2d71606e6948119d9117122a15e11df8e23bd1dba046c8a3cd02e1a84"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/PlatformRegistrationFailures.java",
+      "score": 0.14903846153846154,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "84aec085b2408e54df00256ccd52bcc3378c5b5c32f563fefb8685976d17ce25"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/PlatformWorldConfig.java",
+      "score": 0.13857998289136014,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "f097870fc40af5e0c8858516f94ec0ce2ca0b55052abe5b4672be33724260ae8"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/PlatformWorldFixture.java",
+      "score": 0.14539579967689822,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "f0d4747caddf800770a2b5958fd6b974acc9354c7d1d378bee9808ad184b4ab3"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/PlatformWorldServices.java",
+      "score": 0.16786570743405277,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "ee128ce3d23457181e72ed89fe600222046dd4404d94419c9ec9098a70d6bc40"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/PlayClientFixture.java",
+      "score": 0.13781512605042018,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "b60eaa7ea1593b21d2bbe28e51a01332a6371ee6f8cf7a497639a1707acf3a64"
+    },
+    {
+      "candidate": "test/src/gameTest/java/com/industrialage/ia2/gametest/PlayMenuFixture.java",
+      "score": 0.16666666666666666,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "0f7967e88e27ebb6c5c9712405f1299345a9e463a894ee3ab911232c20ee4acf"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/BuildContractTest.java",
+      "score": 0.11294765840220386,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "48474c03075cdc5abdd10e9aa0bc053b49c4b357054a14de267cdbc4f29ad698"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/config/ActiveConfigContractTest.java",
+      "score": 0.11038961038961038,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "e6e26ac75ebd4a730670f4cf98f3da0405966eeca727023c92eef687c17b9b32"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/lifecycle/ServerLifecycleContractTest.java",
+      "score": 0.17401960784313725,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "c19f22f6a1361fa8867e95b1bd5605cb45a77bb1023ac903f79f4aba5be7d395"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/network/MessageChannelContractTest.java",
+      "score": 0.16427640156453716,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "b367a93ee12b819cb9f2f4411be5de4bbba1cdf22a57f442dd21d41e418e2101"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/platform/ConfigSnapshotContractTest.java",
+      "score": 0.140893470790378,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "79c1314789981003e977ed73275e77269833a5431e6a1bdd9a50a7d8ffb8b95b"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/platform/EventStreamsContractTest.java",
+      "score": 0.10789473684210527,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "033af423183311e448a824deaa2c472ba211f5d4892c26407acd1da9cc1f4e36"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/platform/NetworkCapabilityContractTest.java",
+      "score": 0.17155425219941348,
+      "raw_status": "warn",
+      "status": "warn",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "86f2af8a23b0d5af0c11cb18c8e2da8fcccce67802eb6e76a4a7d607f1cb526f"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/platform/PlatformServicesContractTest.java",
+      "score": 0.11890243902439024,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "c8ab4cc93c4cac2d6d9551949f7a3f42344d15acbd909ffdd662bf7c37520bdd"
+    },
+    {
+      "candidate": "test/src/test/java/com/industrialage/ia2/platform/RegistryEventContractTest.java",
+      "score": 0.13194444444444445,
+      "raw_status": "pass",
+      "status": "pass",
+      "boilerplate_matched": false,
+      "boilerplate_applied": false,
+      "eight_line_hits": 0,
+      "sha256": "c21675d83a97e5714f73934d7a7fa6a5c1d39d8c9666b1325d4fc26bd7fcfa70"
+    }
+  ]
+}

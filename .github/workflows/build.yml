@@ -1,9 +1,57 @@
 name: Build
-on: { push: { branches: [main] }, pull_request: {}, workflow_dispatch: {} }
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+  workflow_dispatch: {}
 permissions:
   contents: read
 jobs:
-  build:
+  governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+      - name: Verify wrapper checksum
+        run: sha256sum -c gradle/wrapper/gradle-wrapper.jar.sha256
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Run common build, import isolation, asset isolation and Spotless
+        run: ./gradlew checkCommonImports checkAssetIsolation spotlessCheck :common:build --console=plain
+      - name: Test the production JAR comparison
+        run: python3 -m unittest discover -s src/test -p test_runtime_jar.py
+      - name: Test installed release JAR discovery
+        run: python3 -m unittest discover -s tools/qa -p 'test_*.py'
+      - name: Similarity tool tests
+        run: python3 -m unittest discover -s tools/similarity -p 'test_*.py'
+      - name: Similarity gate without private comparison input
+        shell: bash
+        run: |
+          set +e
+          python3 tools/similarity/check.py --candidate src --boilerplate-policy tools/similarity/boilerplate.json > similarity.json
+          result=$?
+          set -e
+          cat similarity.json
+          if [ "$result" -eq 3 ]; then
+            echo '::warning::Similarity gate skipped: private comparison input is absent; full gate was NOT evaluated.'
+          else
+            exit "$result"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-governance
+          path: |
+            similarity.json
+            src/common/build/reports/tests/
+            src/common/build/test-results/
+
+  neoforge:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -15,13 +63,14 @@ jobs:
         with:
           distribution: temurin
           java-version: |
+            17
             21
             25
       - name: Verify wrapper checksum
         run: sha256sum -c gradle/wrapper/gradle-wrapper.jar.sha256
       - uses: gradle/actions/setup-gradle@v4
       - name: Build target and verify JAR contract
-        run: ./gradlew :neoforge:${{ matrix.target }}:build :test:test -Pic2.testTarget=${{ matrix.target }} check
+        run: ./gradlew :neoforge:${{ matrix.target }}:build :test:test -Pic2.testTarget=${{ matrix.target }} --console=plain
       - name: Run 1.21.1 GameTests
         if: matrix.target == '1.21.1'
         timeout-minutes: 10
@@ -76,33 +125,11 @@ jobs:
       - name: Resource overlay regression
         if: matrix.target == '1.21.1'
         run: python3 src/test/resource_overlay.py
-      - name: Test the production JAR comparison
-        if: matrix.target == '1.21.1'
-        run: python3 -m unittest discover -s src/test -p test_runtime_jar.py
-      - name: Test installed release JAR discovery
-        if: matrix.target == '1.21.1'
-        run: python3 -m unittest discover -s tools/qa -p 'test_*.py'
-      - name: Similarity tool tests
-        run: python3 -m unittest discover -s tools/similarity -p 'test_*.py'
-      - name: Similarity gate without private comparison input
-        shell: bash
-        run: |
-          set +e
-          python3 tools/similarity/check.py --candidate src --boilerplate-policy tools/similarity/boilerplate.json > similarity.json
-          result=$?
-          set -e
-          cat similarity.json
-          if [ "$result" -eq 3 ]; then
-            echo '::warning::Similarity gate skipped: private comparison input is absent; full gate was NOT evaluated.'
-          else
-            exit "$result"
-          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: verification-${{ matrix.target }}
+          name: verification-neoforge-${{ matrix.target }}
           path: |
-            similarity.json
             game-test-ci.log
             platform-world-ci.log
             src/test/build/reports/tests/
@@ -133,3 +160,85 @@ jobs:
             src/neoforge/${{ matrix.target }}/build/run/native-water*/water*.properties
             src/neoforge/${{ matrix.target }}/build/run/native-cable-shock/cableShock.properties
             src/neoforge/${{ matrix.target }}/build/run/optional-compat-*/compat-checks.txt
+
+  forge-1-19-2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+      - name: Verify wrapper checksum
+        run: sha256sum -c gradle/wrapper/gradle-wrapper.jar.sha256
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build Forge 1.19.2 production JAR and verify contracts
+        run: ./gradlew :forge:1.19.2:build :forge:1.19.2:test :test:test -Pic2.testTarget=1.19.2 --console=plain
+      - name: Prepare Forge 1.19.2 QA server launch and fixture JAR
+        run: ./gradlew :forge:1.19.2:prepareQaWorld :forge:1.19.2:reobfQaFixtureJar --console=plain
+      - name: Run Forge 1.19.2 GameTests and cross-JVM world restart
+        run: |
+          python3 src/forge/1.19.2/qa/verify.py smoke --prepared \
+            --server-launch src/forge/1.19.2/build/qa-machine/server-launch.json \
+            --output build/evidence-smoke
+          python3 src/forge/1.19.2/qa/verify.py world --prepared \
+            --server-launch src/forge/1.19.2/build/qa-machine/server-launch.json \
+            --output build/evidence-world
+      - name: Check the matching and mismatching clients
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          ALSOFT_DRIVERS: 'null'
+        run: |
+          xvfb-run -a python3 src/forge/1.19.2/qa/verify.py play --output build/evidence-play
+          xvfb-run -a python3 src/forge/1.19.2/qa/verify.py mismatch --output build/evidence-mismatch --prepared
+      - name: Cache Forge 43.5.0 dedicated server
+        id: forge-server-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/ic2-optional-forge
+          key: forge-server-1.19.2-43.5.0-v1
+      - name: Install the Forge 43.5.0 dedicated server for optional mod checks
+        if: steps.forge-server-cache.outputs.cache-hit != 'true'
+        run: |
+          installer="$RUNNER_TEMP/forge-1.19.2-43.5.0-installer.jar"
+          server_dir="$RUNNER_TEMP/ic2-optional-forge"
+          mkdir -p "$server_dir"
+          curl --fail --location --retry 3 --output "$installer" https://maven.minecraftforge.net/net/minecraftforge/forge/1.19.2-43.5.0/forge-1.19.2-43.5.0-installer.jar
+          printf '%s  %s\n' 4869e60456321e99eb5120ae39171c382c27a05858cdfd4b90ff123e3750e681 "$installer" | sha256sum --check
+          "${JAVA_HOME_17_X64:-$JAVA_HOME}/bin/java" -jar "$installer" --installServer "$server_dir"
+      - name: Check isolated pools and real river and ocean connections in installed Forge
+        timeout-minutes: 18
+        run: ./gradlew :forge:1.19.2:runPackagedWater "-Pic2.compat.forgeServer=$RUNNER_TEMP/ic2-optional-forge" --console=plain
+      - name: Check The One Probe and Curios individually and together
+        timeout-minutes: 15
+        run: |
+          for mode in none top curios both; do
+            ./gradlew :forge:1.19.2:runOptionalCompat "-Pic2.compat.mode=$mode" "-Pic2.compat.forgeServer=$RUNNER_TEMP/ic2-optional-forge" --console=plain
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-forge-1.19.2
+          path: |
+            src/forge/1.19.2/build/libs/*.jar
+            src/forge/1.19.2/build/qa-machine/fixtures/*.jar
+            src/forge/1.19.2/build/test-results/test/TEST-*.xml
+            src/forge/1.19.2/build/run/packaged-water/run-*/*/water*.properties
+            src/forge/1.19.2/build/run/packaged-water/run-*/result.json
+            src/forge/1.19.2/build/run/optional-compat-*/run-*/compat-checks.txt
+            src/test/build/reports/tests/
+            src/test/build/test-results/test/TEST-*.xml
+            build/evidence-*/**/result.json
+            build/evidence-*/**/*.properties
+            build/evidence-*/**/game-test.xml
+            build/evidence-*/**/lifecycle-*.txt
+            build/evidence-*/**/config-*.txt
+            build/evidence-*/**/capability-*.txt
+            build/evidence-*/**/generator-*.nbt
+            build/evidence-*/**/generator-*.txt
+            build/evidence-*/**/process-exits.json
+            build/evidence-*/**/*.log
+            build/evidence-*/**/*checks*.json
