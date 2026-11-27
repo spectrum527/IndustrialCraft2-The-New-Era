@@ -5,6 +5,7 @@ import com.industrialage.ia2.content.ProcessingMachine.Recipe;
 import com.industrialage.ia2.forge.content.MachineKind.Slot;
 import com.industrialage.ia2.forge.equipment.ForgeGear;
 import com.industrialage.ia2.industrial.WorkshopNode;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import com.industrialage.ia2.logistics.CellProcessing;
 import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.world.MachineAutomation;
@@ -66,7 +67,8 @@ final class ProcessingDevice extends InventoryDevice {
         boolean upgradeChanged = refreshUpgrades();
         var battery = inventory.stack(Slot.DISCHARGE);
         receive(ForgeGear.discharge(battery, capacity() - energy(), capacity(), itemTier()));
-        if (battery.is(Items.REDSTONE) && capacity() - energy() >= 800) {
+        if ((battery.is(Items.REDSTONE) || WorkshopPlatform.tagged(battery, "c:dusts/redstone"))
+                && capacity() - energy() >= 800) {
             receive(800);
             battery.shrink(1);
             inventory.setChanged();

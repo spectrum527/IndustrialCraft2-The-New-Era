@@ -154,11 +154,18 @@ public final class ProcessingMachine {
 
     /**
      * Evaluates {@code matchesTag} against {@code tag} and standard cross-loader tag aliases
-     * ({@code c:}/{@code forge:}, {@code raw_ores}/{@code raw_materials}, and {@code blocks}/{@code
-     * storage_blocks}).
+     * ({@code c:}/{@code forge:}, multi-way wrench/shears tags, all vanilla ore tags, and 1.21+
+     * common tag renames).
      */
     public static boolean matchesTagAlias(String tag, Predicate<String> matchesTag) {
         return ProcessingRecipes.matchesTagAlias(tag, matchesTag);
+    }
+
+    /**
+     * Returns the ordered candidate tag IDs expanded from {@code tag} for cross-loader matching.
+     */
+    public static java.util.List<String> tagAliasCandidates(String tag) {
+        return ProcessingRecipes.tagAliasCandidates(tag);
     }
 
     /**

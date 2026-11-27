@@ -3,7 +3,8 @@ package com.industrialage.ia2.industrial;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 
-final class WorkshopThermal {
+/** Thermal fluid processors and canonical fluid-tag equivalence checks shared across loaders. */
+public final class WorkshopThermal {
     static final String WATER = "minecraft:water";
     static final String DISTILLED = "ic2:distilled_water";
     static final String STEAM = "ic2:steam";
@@ -89,6 +90,43 @@ final class WorkshopThermal {
 
     static boolean isUuMatter(String fluid) {
         return WorkshopPlatform.fluidMatches(fluid, "ic2:uu_matter", "c:uu_matter");
+    }
+
+    /**
+     * Checks whether {@code fluid} satisfies a machine or recipe's canonical {@code required} fluid
+     * ID, either by exact match or via cross-loader common fluid tags.
+     */
+    public static boolean matchesCanonical(String fluid, String required) {
+        if (fluid == null || fluid.isEmpty() || required == null || required.isEmpty()) {
+            return false;
+        }
+        if (fluid.equals(required)) {
+            return true;
+        }
+        return switch (required) {
+            case WATER -> isWater(fluid);
+            case DISTILLED -> isDistilledWater(fluid);
+            case STEAM -> isSteam(fluid);
+            case SUPERHEATED -> isSuperheatedSteam(fluid);
+            case BIOGAS -> isBiogas(fluid);
+            case "ic2:creosote" -> isCreosote(fluid);
+            case "minecraft:lava" -> isLava(fluid);
+            case "ic2:pahoehoe_lava" -> isPahoehoeLava(fluid);
+            case "ic2:biomass" -> isBiomass(fluid);
+            case "ic2:coolant" -> isCoolant(fluid);
+            case "ic2:hot_coolant" -> isHotCoolant(fluid);
+            case "ic2:air" -> isAir(fluid);
+            case "ic2:uu_matter" -> isUuMatter(fluid);
+            case "ic2:weed_ex" -> WorkshopPlatform.fluidMatches(fluid, "ic2:weed_ex", "c:weed_ex");
+            case "ic2:construction_foam" ->
+                    WorkshopPlatform.fluidMatches(
+                            fluid, "ic2:construction_foam", "c:construction_foam");
+            case WorkshopDevices.HYDROGEN ->
+                    WorkshopPlatform.fluidMatches(fluid, WorkshopDevices.HYDROGEN, "c:hydrogen");
+            case WorkshopDevices.OXYGEN ->
+                    WorkshopPlatform.fluidMatches(fluid, WorkshopDevices.OXYGEN, "c:oxygen");
+            default -> false;
+        };
     }
 
     static boolean validFuel(WorkshopKind kind, String fluid) {

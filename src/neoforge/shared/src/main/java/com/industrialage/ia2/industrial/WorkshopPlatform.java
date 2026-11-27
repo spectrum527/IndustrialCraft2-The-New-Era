@@ -1,10 +1,13 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.content.RecyclerRules;
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -262,7 +265,10 @@ public final class WorkshopPlatform {
 
     /** Read-only workshop recipe exposed to optional recipe viewer integrations. */
     public record WorkshopRecipeView(
-            String id, List<RecipeStackView> inputs, List<RecipeStackView> outputs) {}
+            String id,
+            List<RecipeStackView> inputs,
+            List<RecipeStackView> outputs,
+            Map<String, Integer> requirements) {}
 
     /** Returns all registered recipes for a workshop machine type (e.g. {@code "ore_washer"}). */
     public static List<WorkshopRecipeView> workshopRecipes(String type) {
@@ -276,7 +282,8 @@ public final class WorkshopPlatform {
                                                 .toList(),
                                         recipe.outputs().stream()
                                                 .map(s -> new RecipeStackView(s.id(), s.count()))
-                                                .toList()))
+                                                .toList(),
+                                        recipe.requirements()))
                 .toList();
     }
 
@@ -319,10 +326,18 @@ public final class WorkshopPlatform {
     }
 
     static boolean excludedFromRecycling(ItemStack item) {
-        return item.is(Items.SNOWBALL)
-                || item.is(Items.STICK)
-                || item.is(Items.GLASS_PANE)
-                || tagged(item, "ic2:recycler_blacklist");
+        if (item.isEmpty()) return true;
+        return RecyclerRules.isExcluded(
+                itemId(item),
+                tag -> tagged(item, tag),
+                PowerSettings.recyclerBlacklist(),
+                PowerSettings.recyclerWhitelist());
+    }
+
+    static int foodNutrition(ItemStack item) {
+        if (item.isEmpty()) return 0;
+        var food = item.get(DataComponents.FOOD);
+        return food == null ? 0 : Math.max(0, food.nutrition());
     }
 
     static int solidFuelTime(ServerLevel level, ItemStack item) {
@@ -373,6 +388,16 @@ public final class WorkshopPlatform {
             int amount,
             boolean simulate) {
         return WorkshopNative.pullFluid(level, pos, side, fluid, amount, simulate);
+    }
+
+    static Liquid pullMatchingFluid(
+            ServerLevel level,
+            BlockPos pos,
+            Direction side,
+            Predicate<String> accepts,
+            int amount,
+            boolean simulate) {
+        return WorkshopNative.pullMatchingFluid(level, pos, side, accepts, amount, simulate);
     }
 
     static boolean canSupplyContainer(ItemStack item, boolean filling) {

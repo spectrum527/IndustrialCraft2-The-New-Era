@@ -5,6 +5,7 @@ import com.industrialage.ia2.compat.Ic2RecipeCatalog.MachineRecipe;
 import com.industrialage.ia2.industrial.WorkshopPlatform;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -21,12 +22,13 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-/** Forge 1.19.2 JEI plugin exposing all 12 IC2 machine recipe categories and furnace catalysts. */
+/** Forge 1.19.2 JEI plugin exposing all 18 IC2 machine recipe categories and furnace catalysts. */
 @JeiPlugin
 public final class Ic2JeiPlugin implements IModPlugin {
     private static final ResourceLocation UID =
@@ -56,8 +58,9 @@ public final class Ic2JeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
+        var all = Ic2RecipeCatalog.buildAll();
         for (var spec : Ic2RecipeCatalog.CATEGORIES) {
-            registration.addRecipes(TYPES.get(spec.id()), Ic2RecipeCatalog.recipesFor(spec));
+            registration.addRecipes(TYPES.get(spec.id()), all.getOrDefault(spec, List.of()));
         }
     }
 
@@ -81,8 +84,8 @@ public final class Ic2JeiPlugin implements IModPlugin {
     }
 
     private static final class MachineCategory implements IRecipeCategory<MachineRecipe> {
-        private static final int WIDTH = 152;
-        private static final int HEIGHT = 42;
+        private static final int WIDTH = 166;
+        private static final int HEIGHT = 44;
         private final CategorySpec spec;
         private final RecipeType<MachineRecipe> type;
         private final IDrawable icon;
@@ -102,7 +105,7 @@ public final class Ic2JeiPlugin implements IModPlugin {
 
         @Override
         public Component getTitle() {
-            return Component.translatable("jei.ic2.category." + spec.id());
+            return Component.translatable(spec.titleKey());
         }
 
         @Override
@@ -123,19 +126,49 @@ public final class Ic2JeiPlugin implements IModPlugin {
         @Override
         public void setRecipe(
                 IRecipeLayoutBuilder builder, MachineRecipe recipe, IFocusGroup focuses) {
-            int inX = 8;
-            for (var inputChoices : recipe.inputs()) {
-                builder.addSlot(RecipeIngredientRole.INPUT, inX, 12)
-                        .setBackground(slotBg, -1, -1)
-                        .addItemStacks(inputChoices);
+            int inX = 6;
+            for (var fluidIn : recipe.fluidInputs()) {
+                var fluid = WorkshopPlatform.fluid(fluidIn.fluidId(), fluidIn.amountMb());
+                if (!fluid.isEmpty()) {
+                    builder.addSlot(RecipeIngredientRole.INPUT, inX, 12)
+                            .setBackground(slotBg, -1, -1)
+                            .setFluidRenderer(Math.max(1000L, fluidIn.amountMb()), false, 16, 16)
+                            .addFluidStack(fluid.getFluid(), fluidIn.amountMb());
+                    inX += 20;
+                }
+            }
+            for (var input : recipe.itemInputs()) {
+                var slot =
+                        builder.addSlot(RecipeIngredientRole.INPUT, inX, 12)
+                                .setBackground(slotBg, -1, -1)
+                                .addItemStacks(input.stacks());
+                if (input.isTag()) {
+                    String label = "#" + input.tag();
+                    slot.addRichTooltipCallback(
+                            (view, tooltip) ->
+                                    tooltip.add(
+                                            Component.literal(label)
+                                                    .withStyle(ChatFormatting.GRAY)));
+                }
                 inX += 20;
             }
-            int outX = Math.max(76, inX + 26);
-            for (var output : recipe.outputs()) {
+            int arrowX = Math.max(46, inX + 6);
+            int outX = Math.max(76, arrowX + 22);
+            for (var output : recipe.itemOutputs()) {
                 builder.addSlot(RecipeIngredientRole.OUTPUT, outX, 12)
                         .setBackground(slotBg, -1, -1)
                         .addItemStack(output);
                 outX += 20;
+            }
+            for (var fluidOut : recipe.fluidOutputs()) {
+                var fluid = WorkshopPlatform.fluid(fluidOut.fluidId(), fluidOut.amountMb());
+                if (!fluid.isEmpty()) {
+                    builder.addSlot(RecipeIngredientRole.OUTPUT, outX, 12)
+                            .setBackground(slotBg, -1, -1)
+                            .setFluidRenderer(Math.max(1000L, fluidOut.amountMb()), false, 16, 16)
+                            .addFluidStack(fluid.getFluid(), fluidOut.amountMb());
+                    outX += 20;
+                }
             }
         }
 
@@ -146,8 +179,12 @@ public final class Ic2JeiPlugin implements IModPlugin {
                 PoseStack poseStack,
                 double mouseX,
                 double mouseY) {
-            int arrowX = Math.max(46, 8 + recipe.inputs().size() * 20 + 6);
-            Minecraft.getInstance().font.draw(poseStack, "->", arrowX, 16, 0xFF404040);
+            int arrowX = Math.max(46, 6 + recipe.inputSlots() * 20 + 6);
+            var font = Minecraft.getInstance().font;
+            font.draw(poseStack, "->", arrowX, 16, 0xFF404040);
+            if (!recipe.note().isEmpty()) {
+                font.draw(poseStack, recipe.note(), Math.max(4, arrowX - 8), 32, 0xFF606060);
+            }
         }
     }
 }

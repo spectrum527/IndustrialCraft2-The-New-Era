@@ -2,6 +2,7 @@ package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.access.MachinePorts;
+import com.industrialage.ia2.industrial.WorkshopThermal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +16,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
@@ -78,12 +80,30 @@ final class WorldFluidAccess {
     static int drain(ServerLevel level, BlockPos pos, Direction side, String liquid, int maximum) {
         if (maximum <= 0 || !level.hasChunkAt(pos)) return 0;
         var handler = level.getCapability(Capabilities.Fluid.BLOCK, pos, side);
+        if (handler == null) return 0;
         var resource = fluid(liquid);
-        if (handler == null || resource == null || resource == Fluids.EMPTY) return 0;
+        if (resource != null && resource != Fluids.EMPTY) {
+            try (var transaction = Transaction.openRoot()) {
+                int drained = handler.extract(FluidResource.of(resource), maximum, transaction);
+                if (drained > 0) {
+                    transaction.commit();
+                    return drained;
+                }
+            }
+        }
         try (var transaction = Transaction.openRoot()) {
-            int drained = handler.extract(FluidResource.of(resource), maximum, transaction);
-            if (drained > 0) transaction.commit();
-            return drained;
+            var batch =
+                    ResourceHandlerUtil.extractFirst(
+                            handler,
+                            candidate ->
+                                    candidate.getComponentsPatch().isEmpty()
+                                            && WorkshopThermal.matchesCanonical(
+                                                    fluidId(candidate.getFluid()), liquid),
+                            maximum,
+                            transaction);
+            if (batch == null) return 0;
+            transaction.commit();
+            return batch.amount();
         }
     }
 
@@ -91,8 +111,16 @@ final class WorldFluidAccess {
         return net.minecraft.core.registries.BuiltInRegistries.FLUID.getValue(WorldNative.id(id));
     }
 
+    private static String fluidId(Fluid fluid) {
+        return net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid).toString();
+    }
+
     private static Fluid kind(int slot) {
         return slot == 0 ? Fluids.WATER : fluid("ic2:weed_ex");
+    }
+
+    private static String canonical(int slot) {
+        return slot == 0 ? "minecraft:water" : "ic2:weed_ex";
     }
 
     private static final class Port extends SnapshotJournal<int[]>
@@ -143,7 +171,12 @@ final class WorldFluidAccess {
 
         @Override
         public boolean isValid(int slot, FluidResource resource) {
-            return slot >= 0 && slot < 2 && resource.equals(FluidResource.of(kind(slot)));
+            return slot >= 0
+                    && slot < 2
+                    && !resource.isEmpty()
+                    && resource.getComponentsPatch().isEmpty()
+                    && WorkshopThermal.matchesCanonical(
+                            fluidId(resource.getFluid()), canonical(slot));
         }
 
         @Override

@@ -359,17 +359,33 @@ def generate(repo, out, target, write):
     tag_data = {"mineable/pickaxe": pickaxe, "needs_stone_tool": ["lead_ore", "deepslate_lead_ore"],
                 "needs_iron_tool": ["uranium_ore", "deepslate_uranium_ore"], "mineable/axe": timber + scaffolds[:2],
                 "climbable": scaffolds, "logs": roots, "logs_that_burn": roots, "planks": ["rubber_planks"],
+                "saplings": ["rubber_sapling"],
                 "wooden_fences": ["rubber_fence"], "fences": ["rubber_fence"], "fence_gates": ["rubber_fence_gate"],
-                "wooden_buttons": ["rubber_button"], "wooden_pressure_plates": ["rubber_pressure_plate"],
-                "wooden_slabs": ["rubber_slab"], "wooden_stairs": ["rubber_stairs"], "wooden_doors": ["rubber_door"],
-                "wooden_trapdoors": ["rubber_trapdoor"], "doors": ["rubber_door", "reinforced_door"],
-                "standing_signs": ["rubber_sign"], "wall_signs": ["rubber_wall_sign"], "signs": ["rubber_sign", "rubber_wall_sign"]}
+                "wooden_buttons": ["rubber_button"], "buttons": ["rubber_button"],
+                "wooden_pressure_plates": ["rubber_pressure_plate"],
+                "wooden_slabs": ["rubber_slab"], "slabs": ["rubber_slab"],
+                "wooden_stairs": ["rubber_stairs"], "stairs": ["rubber_stairs"],
+                "wooden_doors": ["rubber_door"], "wooden_trapdoors": ["rubber_trapdoor"],
+                "trapdoors": ["rubber_trapdoor"], "doors": ["rubber_door", "reinforced_door"],
+                "standing_signs": ["rubber_sign"], "wall_signs": ["rubber_wall_sign"],
+                "signs": ["rubber_sign", "rubber_wall_sign"]}
     for tag, blocks in tag_data.items():
         merge_tag("minecraft", blocktags, tag, [f"ic2:{p}" for p in blocks])
-    for tag, blocks in (("logs", roots), ("logs_that_burn", roots), ("planks", ["rubber_planks"])):
+    item_tag_data = {
+        "logs": roots, "logs_that_burn": roots, "planks": ["rubber_planks"],
+        "saplings": ["rubber_sapling"], "leaves": ["rubber_leaves"],
+        "wooden_fences": ["rubber_fence"], "fences": ["rubber_fence"], "fence_gates": ["rubber_fence_gate"],
+        "wooden_buttons": ["rubber_button"], "buttons": ["rubber_button"],
+        "wooden_pressure_plates": ["rubber_pressure_plate"],
+        "wooden_slabs": ["rubber_slab"], "slabs": ["rubber_slab"],
+        "wooden_stairs": ["rubber_stairs"], "stairs": ["rubber_stairs"],
+        "wooden_doors": ["rubber_door"], "wooden_trapdoors": ["rubber_trapdoor"],
+        "trapdoors": ["rubber_trapdoor"], "doors": ["rubber_door", "reinforced_door"],
+        "signs": ["rubber_sign"],
+    }
+    for tag, blocks in item_tag_data.items():
         merge_tag("minecraft", itemtags, tag, [f"ic2:{p}" for p in blocks])
     merge_tag("ic2", blocktags, "ores", [f"ic2:{p}" for p in ore_names])
-    merge_tag("forge" if forge else "c", blocktags, "ores", [f"ic2:{p}" for p in ore_names])
 
     def craft(name, pattern, key, ingredients, result, count=1):
         output = {"item" if forge else "id": result, "count": count}

@@ -1,6 +1,7 @@
 package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.world.SimpleContainer;
@@ -75,23 +76,19 @@ final class WorldInventory extends SimpleContainer implements WorldlyContainer {
     public boolean canPlaceItem(int slot, ItemStack stack) {
         String id = WorldNative.itemId(stack);
         if (owner.kind.packet > 0 && slot == owner.kind.batterySlot())
-            return id.startsWith("ic2:")
-                    && (id.contains("battery")
-                            || id.endsWith("energy_crystal")
-                            || id.endsWith("lapotron_crystal"));
+            return WorldNative.canDischarge(stack, owner.itemTier());
         return switch (owner.kind) {
             case CROPMATRON ->
                     switch (slot) {
-                        case 0 -> id.equals("ic2:fertilizer");
-                        case 1 ->
-                                id.equals("minecraft:water_bucket") || id.equals("ic2:water_cell");
-                        case 2 -> id.equals("ic2:weed_ex_bucket") || id.equals("ic2:weed_ex_cell");
+                        case 0 -> isFertilizer(stack);
+                        case 1 -> isWaterBucket(stack) || id.equals("ic2:water_cell");
+                        case 2 -> isWeedExBucket(stack) || id.equals("ic2:weed_ex_cell");
                         case 9, 10, 11, 12 -> id.equals("ic2:fluid_pulling_upgrade");
                         default -> false;
                     };
             case CLASSIC_CROPMATRON ->
                     switch (slot) {
-                        case 0 -> id.equals("ic2:fertilizer");
+                        case 0 -> isFertilizer(stack);
                         case 1 -> id.equals("ic2:hydration_cell");
                         case 2 -> id.equals("ic2:weed_ex_cell");
                         default -> false;
@@ -132,6 +129,24 @@ final class WorldInventory extends SimpleContainer implements WorldlyContainer {
             case ITEM_BUFFER -> slot < 26;
             default -> false;
         };
+    }
+
+    static boolean isFertilizer(ItemStack stack) {
+        return !stack.isEmpty()
+                && (WorldNative.itemId(stack).equals("ic2:fertilizer")
+                        || WorkshopPlatform.tagged(stack, "c:fertilizers"));
+    }
+
+    static boolean isWaterBucket(ItemStack stack) {
+        return !stack.isEmpty()
+                && (WorldNative.itemId(stack).equals("minecraft:water_bucket")
+                        || WorkshopPlatform.tagged(stack, "c:buckets/water"));
+    }
+
+    static boolean isWeedExBucket(ItemStack stack) {
+        return !stack.isEmpty()
+                && (WorldNative.itemId(stack).equals("ic2:weed_ex_bucket")
+                        || WorkshopPlatform.tagged(stack, "c:buckets/weed_ex"));
     }
 
     boolean has(int slot, String id) {

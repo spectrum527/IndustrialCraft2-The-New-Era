@@ -379,7 +379,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         boolean changed =
                 receive(PortableGear.discharge(discharge, capacity() - energy(), capacity(), tier))
                         > 0;
-        if (processor != null && discharge.is(Items.REDSTONE) && capacity() - energy() >= 800) {
+        if (processor != null && isRedstoneFuel(discharge) && capacity() - energy() >= 800) {
             receive(800);
             discharge.shrink(1);
             changed = true;
@@ -630,7 +630,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
             case CHARGE -> !PortableGear.chargeComplete(stack, itemTier());
             case DISCHARGE ->
                     PortableGear.canSupplyCharge(stack, itemTier())
-                            || processor != null && stack.is(Items.REDSTONE);
+                            || processor != null && isRedstoneFuel(stack);
             case OUTPUT, UPGRADE -> false;
         };
     }
@@ -669,10 +669,14 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
             case CHARGE -> PortableGear.acceptsCharge(stack, itemTier());
             case DISCHARGE ->
                     PortableGear.canDischarge(stack, itemTier())
-                            || processor != null && stack.is(Items.REDSTONE);
+                            || processor != null && isRedstoneFuel(stack);
             case OUTPUT -> false;
             case UPGRADE -> MachineAutomation.isProcessingUpgrade(stack);
         };
+    }
+
+    private static boolean isRedstoneFuel(ItemStack stack) {
+        return stack.is(Items.REDSTONE) || WorkshopPlatform.tagged(stack, "c:dusts/redstone");
     }
 
     @Override

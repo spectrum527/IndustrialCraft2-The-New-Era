@@ -24,6 +24,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ArmorItem;
@@ -183,6 +184,10 @@ public final class NativeGameplay {
     }
 
     static void bronzeGear(IEventBus bus, DeferredRegister.Items items) {
+        var bronzeRepair =
+                TagKey.create(
+                        Registries.ITEM,
+                        ResourceLocation.fromNamespaceAndPath("ic2", "bronze_ingots"));
         var materials = DeferredRegister.create(Registries.ARMOR_MATERIAL, "ic2");
         var bronze =
                 materials.register(
@@ -200,7 +205,7 @@ public final class NativeGameplay {
                                                 2),
                                         9,
                                         SoundEvents.ARMOR_EQUIP_IRON,
-                                        () -> Ingredient.of(stack("ic2:bronze_ingot", 1)),
+                                        () -> Ingredient.of(bronzeRepair),
                                         List.of(
                                                 new ArmorMaterial.Layer(
                                                         ResourceLocation.fromNamespaceAndPath(
@@ -248,7 +253,7 @@ public final class NativeGameplay {
 
                     @Override
                     public Ingredient getRepairIngredient() {
-                        return Ingredient.of(stack("ic2:bronze_ingot", 1));
+                        return Ingredient.of(bronzeRepair);
                     }
                 };
         items.registerItem(

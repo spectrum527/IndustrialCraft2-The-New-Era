@@ -200,6 +200,349 @@ class EcosystemAuditRegressionTest {
     }
 
     @Test
+    void multiCandidateTagAliasesCoverWrenchesShearsVanillaOresAndNeoForgeRenames() {
+        var wrenchTags =
+                List.of(
+                        "c:tools/wrench",
+                        "c:tools/wrenches",
+                        "c:wrenches",
+                        "forge:tools/wrench",
+                        "forge:tools/wrenches",
+                        "forge:wrenches");
+        for (String a : wrenchTags) {
+            for (String b : wrenchTags) {
+                assertTrue(
+                        ProcessingMachine.matchesTagAlias(a, b::equals), a + " must alias to " + b);
+            }
+        }
+        assertTrue(ProcessingMachine.tagAliasCandidates("c:tools/wrench").containsAll(wrenchTags));
+
+        var shearTags =
+                List.of(
+                        "c:shears",
+                        "c:tools/shear",
+                        "c:tools/shears",
+                        "forge:shears",
+                        "forge:tools/shear",
+                        "forge:tools/shears");
+        for (String a : shearTags) {
+            for (String b : shearTags) {
+                assertTrue(
+                        ProcessingMachine.matchesTagAlias(a, b::equals), a + " must alias to " + b);
+            }
+        }
+
+        for (String ore :
+                List.of(
+                        "coal",
+                        "copper",
+                        "iron",
+                        "gold",
+                        "lapis",
+                        "redstone",
+                        "diamond",
+                        "emerald")) {
+            assertTrue(
+                    ProcessingMachine.matchesTagAlias(
+                            "minecraft:" + ore + "_ores", ("c:ores/" + ore)::equals));
+            assertTrue(
+                    ProcessingMachine.matchesTagAlias(
+                            "minecraft:" + ore + "_ores", ("forge:ores/" + ore)::equals));
+            assertTrue(
+                    ProcessingMachine.matchesTagAlias(
+                            "c:ores/" + ore, ("minecraft:" + ore + "_ores")::equals));
+            assertTrue(
+                    ProcessingMachine.matchesTagAlias(
+                            "forge:ores/" + ore, ("minecraft:" + ore + "_ores")::equals));
+        }
+
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:gravel", "c:gravels"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("c:gravels", "forge:gravel"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:slimeballs", "c:slime_balls"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("c:slime_balls", "forge:slimeball"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:netherrack", "c:netherracks"::equals));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias("forge:sandstone", "c:sandstone/blocks"::equals));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias("c:sandstone/blocks", "forge:sandstone"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:leather", "c:leathers"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:string", "c:strings"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:bone", "c:bones"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:feather", "c:feathers"::equals));
+        assertTrue(ProcessingMachine.matchesTagAlias("forge:gunpowder", "c:gunpowders"::equals));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "forge:dense_plates/iron", "c:plates/dense/iron"::equals));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "c:plates/dense/copper", "forge:dense_plates/copper"::equals));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "forge:sand/colorless", "c:sands/colorless"::equals));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias("forge:ingots/brick", "c:bricks/normal"::equals));
+        assertTrue(
+                ProcessingMachine.matchesTagAlias(
+                        "c:bricks/nether", "forge:ingots/nether_brick"::equals));
+    }
+
+    @Test
+    void tagPriorityPreventsBroadStoneAndCobblestoneTagsFromShadowingSpecificOres() {
+        var silverCobbleOre =
+                ProcessingMachine.recipe(
+                        "macerator",
+                        "othermod:cobbled_silver_ore",
+                        tag -> tag.equals("c:cobblestones") || tag.equals("c:ores/silver"));
+        assertNotNull(silverCobbleOre);
+        assertEquals("ic2:crushed_silver", silverCobbleOre.output());
+        assertEquals(2, silverCobbleOre.outputCount());
+
+        var tinStoneOre =
+                ProcessingMachine.recipe(
+                        "macerator",
+                        "othermod:stone_tin_ore",
+                        tag -> tag.equals("c:stones") || tag.equals("c:ores/tin"));
+        assertNotNull(tinStoneOre);
+        assertEquals("ic2:raw_tin", tinStoneOre.output());
+
+        var plainCobble =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:cobbled_slate", "c:cobblestones"::equals);
+        assertNotNull(plainCobble);
+        assertEquals("minecraft:sand", plainCobble.output());
+
+        var plainStone =
+                ProcessingMachine.recipe("macerator", "othermod:limestone", "c:stones"::equals);
+        assertNotNull(plainStone);
+        assertEquals("minecraft:cobblestone", plainStone.output());
+    }
+
+    @Test
+    void expandedTagRecipesCoverCommonMaterialsOresCropsAndStorageBlocks() {
+        var gravel = ProcessingMachine.recipe("macerator", "othermod:gravel", "c:gravels"::equals);
+        assertNotNull(gravel);
+        assertEquals("minecraft:flint", gravel.output());
+
+        var netherrack =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:netherrack", "c:netherracks"::equals);
+        assertNotNull(netherrack);
+        assertEquals("ic2:netherrack_dust", netherrack.output());
+
+        var sandstone =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:sandstone", "c:sandstone/blocks"::equals);
+        assertNotNull(sandstone);
+        assertEquals("minecraft:sand", sandstone.output());
+
+        var bone = ProcessingMachine.recipe("macerator", "othermod:bone", "c:bones"::equals);
+        assertNotNull(bone);
+        assertEquals("minecraft:white_dye", bone.output());
+        assertEquals(4, bone.outputCount());
+
+        var carrot =
+                ProcessingMachine.recipe("macerator", "othermod:carrot", "c:crops/carrot"::equals);
+        assertNotNull(carrot);
+        assertEquals("ic2:bio_chaff", carrot.output());
+        assertEquals(8, carrot.inputCount());
+
+        var beetroot =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:beetroot", "c:crops/beetroot"::equals);
+        assertNotNull(beetroot);
+        assertEquals("ic2:bio_chaff", beetroot.output());
+        assertEquals(8, beetroot.inputCount());
+
+        var beetrootSeeds =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:beetroot_seeds", "c:seeds/beetroot"::equals);
+        assertNotNull(beetrootSeeds);
+        assertEquals("ic2:bio_chaff", beetrootSeeds.output());
+        assertEquals(16, beetrootSeeds.inputCount());
+
+        var rawSilver =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:raw_silver", "c:raw_materials/silver"::equals);
+        assertNotNull(rawSilver);
+        assertEquals("ic2:crushed_silver", rawSilver.output());
+        assertEquals(2, rawSilver.outputCount());
+
+        var coalOre =
+                ProcessingMachine.recipe("macerator", "othermod:coal_ore", "c:ores/coal"::equals);
+        assertNotNull(coalOre);
+        assertEquals("minecraft:coal", coalOre.output());
+        assertEquals(2, coalOre.outputCount());
+
+        var diamondOre =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:diamond_ore", "c:ores/diamond"::equals);
+        assertNotNull(diamondOre);
+        assertEquals("minecraft:diamond", diamondOre.output());
+        assertEquals(2, diamondOre.outputCount());
+
+        var emeraldOre =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:emerald_ore", "c:ores/emerald"::equals);
+        assertNotNull(emeraldOre);
+        assertEquals("minecraft:emerald", emeraldOre.output());
+        assertEquals(2, emeraldOre.outputCount());
+
+        var lapisOre =
+                ProcessingMachine.recipe("macerator", "othermod:lapis_ore", "c:ores/lapis"::equals);
+        assertNotNull(lapisOre);
+        assertEquals("minecraft:lapis_lazuli", lapisOre.output());
+        assertEquals(10, lapisOre.outputCount());
+
+        var redstoneOre =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:redstone_ore", "c:ores/redstone"::equals);
+        assertNotNull(redstoneOre);
+        assertEquals("minecraft:redstone", redstoneOre.output());
+        assertEquals(10, redstoneOre.outputCount());
+
+        var quartzOre =
+                ProcessingMachine.recipe(
+                        "macerator", "othermod:quartz_ore", "c:ores/quartz"::equals);
+        assertNotNull(quartzOre);
+        assertEquals("minecraft:quartz", quartzOre.output());
+        assertEquals(2, quartzOre.outputCount());
+
+        var expectedBlocks =
+                java.util.Map.of(
+                        "bronze", "ic2:bronze_ingot",
+                        "copper", "minecraft:copper_ingot",
+                        "gold", "minecraft:gold_ingot",
+                        "iron", "minecraft:iron_ingot",
+                        "silver", "ic2:silver_ingot",
+                        "steel", "ic2:steel_ingot");
+        for (var entry : expectedBlocks.entrySet()) {
+            var block =
+                    ProcessingMachine.recipe(
+                            "macerator",
+                            "othermod:" + entry.getKey() + "_block",
+                            ("c:storage_blocks/" + entry.getKey())::equals);
+            assertNotNull(block, "Missing macerator storage block recipe for " + entry.getKey());
+            assertEquals(entry.getValue(), block.output());
+            assertEquals(9, block.outputCount());
+        }
+
+        var gunpowder =
+                ProcessingMachine.recipe("extractor", "othermod:gunpowder", "c:gunpowders"::equals);
+        assertNotNull(gunpowder);
+        assertEquals("ic2:sulfur_dust", gunpowder.output());
+
+        var extNetherrack =
+                ProcessingMachine.recipe(
+                        "extractor", "othermod:netherrack", "c:netherracks"::equals);
+        assertNotNull(extNetherrack);
+        assertEquals("ic2:small_sulfur_dust", extNetherrack.output());
+    }
+
+    @Test
+    void recyclerRulesApplyActiveConfigBlacklistWhitelistAndTagPrecedence() {
+        assertEquals("balance/recyclerBlacklist", RecyclerRules.BLACKLIST.name());
+        assertEquals("balance/recyclerWhitelist", RecyclerRules.WHITELIST.name());
+
+        for (String blocked : RecyclerRules.DEFAULT_BLACKLIST) {
+            assertTrue(
+                    RecyclerRules.isExcluded(
+                            blocked, tag -> false, RecyclerRules.DEFAULT_BLACKLIST, List.of()),
+                    blocked + " must be excluded by default blacklist");
+        }
+        assertFalse(
+                RecyclerRules.isExcluded(
+                        "minecraft:cobblestone",
+                        tag -> false,
+                        RecyclerRules.DEFAULT_BLACKLIST,
+                        List.of()));
+
+        // Built-in tags exclude third-party panes, wooden rods, and custom ic2:recycler_blacklist.
+        assertTrue(
+                RecyclerRules.isExcluded(
+                        "othermod:stained_pane",
+                        "forge:glass_panes"::equals,
+                        List.of(),
+                        List.of()));
+        assertTrue(
+                RecyclerRules.isExcluded(
+                        "othermod:oak_rod", "c:rods/wooden"::equals, List.of(), List.of()));
+        assertTrue(
+                RecyclerRules.isExcluded(
+                        "othermod:junk", "ic2:recycler_blacklist"::equals, List.of(), List.of()));
+
+        // Configured Tag: entries expand across c:/forge: aliases; Fluid: entries do not match.
+        assertTrue(
+                RecyclerRules.isExcluded(
+                        "othermod:cobbled_basalt",
+                        "forge:cobblestone"::equals,
+                        List.of("Tag:c:cobblestones", "Fluid:minecraft:water"),
+                        List.of()));
+        assertFalse(
+                RecyclerRules.matchesEntry(
+                        "minecraft:water_bucket", tag -> true, "Fluid:minecraft:water"));
+
+        // Non-empty whitelist takes strict precedence over blacklist and built-in tag exclusions.
+        var whitelist = List.of("Tag:c:rods/wooden", "minecraft:stick");
+        assertFalse(
+                RecyclerRules.isExcluded(
+                        "minecraft:stick",
+                        "c:rods/wooden"::equals,
+                        RecyclerRules.DEFAULT_BLACKLIST,
+                        whitelist));
+        assertFalse(
+                RecyclerRules.isExcluded(
+                        "othermod:bamboo_rod",
+                        "forge:rods/wooden"::equals,
+                        RecyclerRules.DEFAULT_BLACKLIST,
+                        whitelist));
+        assertTrue(
+                RecyclerRules.isExcluded(
+                        "minecraft:cobblestone",
+                        tag -> false,
+                        RecyclerRules.DEFAULT_BLACKLIST,
+                        whitelist));
+    }
+
+    @Test
+    void uuValuesResolveExactAndCommonTagEquivalentsForScannerAndAssemblyBench() {
+        assertEquals(40_000, UuValues.scanCostMicroliters("minecraft:diamond", tag -> false));
+        assertEquals(2_000, UuValues.scanCostMicroliters("ic2:tin_ore", tag -> false));
+        assertEquals(120_000, UuValues.scanCostMicroliters("ic2:iridium_ore", tag -> false));
+
+        assertEquals(2_000, UuValues.scanCostMicroliters("othermod:tin_ore", "c:ores/tin"::equals));
+        assertEquals(
+                3_000,
+                UuValues.scanCostMicroliters("othermod:raw_lead", "forge:raw_ores/lead"::equals));
+        assertEquals(
+                6_000,
+                UuValues.scanCostMicroliters("othermod:silver_ingot", "c:ingots/silver"::equals));
+        assertEquals(
+                15_000,
+                UuValues.scanCostMicroliters("othermod:uranium_ingot", "c:ingots/uranium"::equals));
+        assertEquals(
+                8_000,
+                UuValues.scanCostMicroliters(
+                        "othermod:gold_stone_ore",
+                        tag -> tag.equals("c:stones") || tag.equals("c:ores/gold")));
+        assertEquals(0, UuValues.scanCostMicroliters("othermod:unknown", tag -> false));
+
+        var canonical = UuValues.assemblyRecipe("ic2:uu_matter", tag -> false);
+        assertNotNull(canonical);
+        assertEquals(1, canonical.uuCost());
+        assertEquals("minecraft:oak_log", canonical.outputId());
+        assertEquals(8, canonical.outputCount());
+
+        var moddedTin = UuValues.assemblyRecipe("othermod:tin_ore", "c:ores/tin"::equals);
+        assertNotNull(moddedTin);
+        assertEquals(2, moddedTin.uuCost());
+        assertEquals("othermod:tin_ore", moddedTin.outputId());
+        assertEquals(5, moddedTin.outputCount());
+
+        assertNull(UuValues.assemblyRecipe("othermod:unknown", tag -> false));
+        assertEquals(19, UuValues.allAssemblyRecipes().size());
+    }
+
+    @Test
     void packagedJarsReflectCopperRemovalBiogasCellCutoutPipesCommonTagsAndCompatPlugins()
             throws IOException {
         var targets = List.of(requiredProperty("ia2.targets").split(",", -1));

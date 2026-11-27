@@ -87,8 +87,9 @@ final class CropPlot extends WorldSaveBase {
     private boolean matchesSubstrate(ServerLevel level, CropSpecies crop) {
         if (crop.support == null || getBlockState().getValue(CropBlock.AGE) < crop.maxAge - 1)
             return true;
-        return level.getBlockState(worldPosition.below(2))
-                .is(WorldNative.block(CropSpecies.qualify(crop.support)));
+        var below = level.getBlockState(worldPosition.below(2));
+        return below.is(WorldNative.block(CropSpecies.qualify(crop.support)))
+                || crop.supportTag != null && WorldNative.blockTagged(below, crop.supportTag);
     }
 
     private void breed(ServerLevel level, RandomSource random) {

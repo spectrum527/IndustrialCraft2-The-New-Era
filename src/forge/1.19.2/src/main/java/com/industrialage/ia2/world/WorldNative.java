@@ -1,10 +1,16 @@
 package com.industrialage.ia2.world;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
@@ -29,6 +36,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /** Native calls whose signatures differ between supported Minecraft releases. */
 final class WorldNative {
+    private static final Map<String, Optional<TagKey<Block>>> BLOCK_TAGS =
+            new ConcurrentHashMap<>();
+
     private WorldNative() {}
 
     static Material materialFor(String name) {
@@ -135,9 +145,35 @@ final class WorldNative {
         return new IronBarsBlock(properties);
     }
 
-    static net.minecraft.tags.TagKey<Block> oreTag(String name) {
-        return net.minecraft.tags.TagKey.create(
-                net.minecraft.core.Registry.BLOCK_REGISTRY, id(name));
+    static TagKey<Block> oreTag(String name) {
+        return blockTag(name)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid block tag: " + name));
+    }
+
+    private static Optional<TagKey<Block>> blockTag(String name) {
+        return BLOCK_TAGS.computeIfAbsent(
+                name,
+                raw -> {
+                    var loc = ResourceLocation.tryParse(raw);
+                    return loc == null
+                            ? Optional.empty()
+                            : Optional.of(TagKey.create(Registry.BLOCK_REGISTRY, loc));
+                });
+    }
+
+    static boolean blockTagged(BlockState state, String tag) {
+        return com.industrialage.ia2.content.ProcessingMachine.matchesTagAlias(
+                tag, candidate -> blockTag(candidate).map(state::is).orElse(false));
+    }
+
+    static String customName(ItemStack stack) {
+        return stack.hasCustomHoverName() ? stack.getHoverName().getString() : "";
+    }
+
+    static ItemStack namedTagVisual(String label) {
+        var stack = new ItemStack(Items.NAME_TAG);
+        stack.setHoverName(Component.literal(label));
+        return stack;
     }
 
     static BlockState copySharedState(BlockState from, BlockState to) {

@@ -802,7 +802,7 @@ public final class WorkshopNode extends WorkshopSaveBase
         }
 
         boolean has(String fluid, int needed) {
-            return id.equals(fluid) && amount >= needed;
+            return amount >= needed && WorkshopThermal.matchesCanonical(id, fluid);
         }
 
         int fill(String fluid, int incoming, boolean simulate) {

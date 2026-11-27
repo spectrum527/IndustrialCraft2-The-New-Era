@@ -1,12 +1,17 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.content.RecyclerRules;
 import com.industrialage.ia2.forge.content.ForgeContent;
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -73,6 +78,10 @@ public final class WorkshopPlatform {
                                                     .map(RegistryObject::get)
                                                     .toArray(Block[]::new))
                                     .build(null));
+
+    private static final Map<String, Optional<TagKey<Item>>> ITEM_TAGS = new ConcurrentHashMap<>();
+    private static final Map<String, Optional<TagKey<Fluid>>> FLUID_TAGS =
+            new ConcurrentHashMap<>();
 
     private WorkshopPlatform() {}
 
@@ -345,7 +354,10 @@ public final class WorkshopPlatform {
 
     /** Read-only workshop recipe exposed to optional recipe viewer integrations. */
     public record WorkshopRecipeView(
-            String id, List<RecipeStackView> inputs, List<RecipeStackView> outputs) {}
+            String id,
+            List<RecipeStackView> inputs,
+            List<RecipeStackView> outputs,
+            Map<String, Integer> requirements) {}
 
     /** Returns all registered recipes for a workshop machine type (e.g. {@code "ore_washer"}). */
     public static List<WorkshopRecipeView> workshopRecipes(String type) {
@@ -359,7 +371,8 @@ public final class WorkshopPlatform {
                                                 .toList(),
                                         recipe.outputs().stream()
                                                 .map(s -> new RecipeStackView(s.id(), s.count()))
-                                                .toList()))
+                                                .toList(),
+                                        recipe.requirements()))
                 .toList();
     }
 
@@ -383,8 +396,16 @@ public final class WorkshopPlatform {
     }
 
     private static boolean matchesRawTag(ItemStack item, String tag) {
-        var location = ResourceLocation.tryParse(tag);
-        return location != null && item.is(TagKey.create(Registry.ITEM_REGISTRY, location));
+        var key =
+                ITEM_TAGS.computeIfAbsent(
+                        tag,
+                        raw -> {
+                            var loc = ResourceLocation.tryParse(raw);
+                            return loc == null
+                                    ? Optional.empty()
+                                    : Optional.of(TagKey.create(Registry.ITEM_REGISTRY, loc));
+                        });
+        return key.isPresent() && item.is(key.get());
     }
 
     /**
@@ -402,10 +423,16 @@ public final class WorkshopPlatform {
     }
 
     private static boolean matchesRawFluidTag(Fluid fluid, String tag) {
-        var location = ResourceLocation.tryParse(tag);
-        return location != null
-                && fluid.builtInRegistryHolder()
-                        .is(TagKey.create(Registry.FLUID_REGISTRY, location));
+        var key =
+                FLUID_TAGS.computeIfAbsent(
+                        tag,
+                        raw -> {
+                            var loc = ResourceLocation.tryParse(raw);
+                            return loc == null
+                                    ? Optional.empty()
+                                    : Optional.of(TagKey.create(Registry.FLUID_REGISTRY, loc));
+                        });
+        return key.isPresent() && fluid.builtInRegistryHolder().is(key.get());
     }
 
     /**
@@ -421,10 +448,18 @@ public final class WorkshopPlatform {
     }
 
     static boolean excludedFromRecycling(ItemStack item) {
-        return item.is(Items.SNOWBALL)
-                || item.is(Items.STICK)
-                || item.is(Items.GLASS_PANE)
-                || tagged(item, "ic2:recycler_blacklist");
+        if (item.isEmpty()) return true;
+        return RecyclerRules.isExcluded(
+                itemId(item),
+                tag -> tagged(item, tag),
+                PowerSettings.recyclerBlacklist(),
+                PowerSettings.recyclerWhitelist());
+    }
+
+    static int foodNutrition(ItemStack item) {
+        if (item.isEmpty() || !item.isEdible()) return 0;
+        var food = item.getFoodProperties(null);
+        return food == null ? 0 : Math.max(0, food.getNutrition());
     }
 
     static int solidFuelTime(ServerLevel level, ItemStack item) {
@@ -453,7 +488,8 @@ public final class WorkshopPlatform {
         return !id.isEmpty() && key != null && ForgeRegistries.FLUIDS.containsKey(key);
     }
 
-    static FluidStack fluid(String id, int amount) {
+    /** Creates a native stack for a registered fluid identifier. */
+    public static FluidStack fluid(String id, int amount) {
         return amount > 0 && fluidExists(id)
                 ? new FluidStack(
                         ForgeRegistries.FLUIDS.getValue(ResourceLocation.parse(id)), amount)
@@ -510,6 +546,36 @@ public final class WorkshopPlatform {
             stack = handler.drain(stack, IFluidHandler.FluidAction.EXECUTE);
         }
         return stack.isEmpty() ? Liquid.EMPTY : new Liquid(fluidId(stack), stack.getAmount());
+    }
+
+    static Liquid pullMatchingFluid(
+            ServerLevel level,
+            BlockPos pos,
+            Direction side,
+            Predicate<String> accepts,
+            int amount,
+            boolean simulate) {
+        var handler = neighborFluid(level, pos, side);
+        if (handler == null || amount <= 0) {
+            return Liquid.EMPTY;
+        }
+        for (int tank = 0; tank < handler.getTanks(); tank++) {
+            var stored = handler.getFluidInTank(tank);
+            if (stored.isEmpty() || stored.hasTag()) continue;
+            String id = fluidId(stored);
+            if (!accepts.test(id)) continue;
+            var request = new FluidStack(stored.getFluid(), Math.min(amount, stored.getAmount()));
+            var drained =
+                    handler.drain(
+                            request,
+                            simulate
+                                    ? IFluidHandler.FluidAction.SIMULATE
+                                    : IFluidHandler.FluidAction.EXECUTE);
+            if (!drained.isEmpty() && !drained.hasTag()) {
+                return new Liquid(fluidId(drained), drained.getAmount());
+            }
+        }
+        return Liquid.EMPTY;
     }
 
     static boolean canSupplyContainer(ItemStack item, boolean filling) {

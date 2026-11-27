@@ -2,7 +2,9 @@ package com.industrialage.ia2.compat;
 
 import com.industrialage.ia2.compat.Ic2RecipeCatalog.CategorySpec;
 import com.industrialage.ia2.compat.Ic2RecipeCatalog.MachineRecipe;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -18,13 +20,14 @@ import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
-/** NeoForge 26.x JEI plugin exposing all 12 IC2 machine recipe categories and furnace catalysts. */
+/** NeoForge 26.x JEI plugin exposing all 18 IC2 machine recipe categories and furnace catalysts. */
 @JeiPlugin
 public final class Ic2JeiPlugin implements IModPlugin {
     private static final Identifier UID = Identifier.fromNamespaceAndPath("ic2", "jei_plugin");
@@ -53,8 +56,9 @@ public final class Ic2JeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
+        var all = Ic2RecipeCatalog.buildAll();
         for (var spec : Ic2RecipeCatalog.CATEGORIES) {
-            registration.addRecipes(TYPES.get(spec.id()), Ic2RecipeCatalog.recipesFor(spec));
+            registration.addRecipes(TYPES.get(spec.id()), all.getOrDefault(spec, List.of()));
         }
     }
 
@@ -70,7 +74,7 @@ public final class Ic2JeiPlugin implements IModPlugin {
                 new String[] {
                     "ic2:iron_furnace", "ic2:electric_furnace", "ic2:induction_furnace"
                 }) {
-            var stack = com.industrialage.ia2.industrial.WorkshopPlatform.itemStack(furnace, 1);
+            var stack = WorkshopPlatform.itemStack(furnace, 1);
             if (!stack.isEmpty()) {
                 registration.addCraftingStation(RecipeTypes.SMELTING, stack);
             }
@@ -78,8 +82,8 @@ public final class Ic2JeiPlugin implements IModPlugin {
     }
 
     private static final class MachineCategory implements IRecipeCategory<MachineRecipe> {
-        private static final int WIDTH = 152;
-        private static final int HEIGHT = 42;
+        private static final int WIDTH = 166;
+        private static final int HEIGHT = 44;
         private final CategorySpec spec;
         private final IRecipeType<MachineRecipe> type;
         private final IDrawable icon;
@@ -97,7 +101,7 @@ public final class Ic2JeiPlugin implements IModPlugin {
 
         @Override
         public Component getTitle() {
-            return Component.translatable("jei.ic2.category." + spec.id());
+            return Component.translatable(spec.titleKey());
         }
 
         @Override
@@ -118,19 +122,49 @@ public final class Ic2JeiPlugin implements IModPlugin {
         @Override
         public void setRecipe(
                 IRecipeLayoutBuilder builder, MachineRecipe recipe, IFocusGroup focuses) {
-            int inX = 8;
-            for (var inputChoices : recipe.inputs()) {
-                builder.addSlot(RecipeIngredientRole.INPUT, inX, 12)
-                        .setStandardSlotBackground()
-                        .addItemStacks(inputChoices);
+            int inX = 6;
+            for (var fluidIn : recipe.fluidInputs()) {
+                var fluid = WorkshopPlatform.fluid(fluidIn.fluidId(), fluidIn.amountMb());
+                if (!fluid.isEmpty()) {
+                    builder.addSlot(RecipeIngredientRole.INPUT, inX, 12)
+                            .setStandardSlotBackground()
+                            .setFluidRenderer(Math.max(1000L, fluidIn.amountMb()), false, 16, 16)
+                            .addFluidStack(fluid.getFluid(), fluidIn.amountMb());
+                    inX += 20;
+                }
+            }
+            for (var input : recipe.itemInputs()) {
+                var slot =
+                        builder.addSlot(RecipeIngredientRole.INPUT, inX, 12)
+                                .setStandardSlotBackground()
+                                .addItemStacks(input.stacks());
+                if (input.isTag()) {
+                    String label = "#" + input.tag();
+                    slot.addRichTooltipCallback(
+                            (view, tooltip) ->
+                                    tooltip.add(
+                                            Component.literal(label)
+                                                    .withStyle(ChatFormatting.GRAY)));
+                }
                 inX += 20;
             }
-            int outX = Math.max(76, inX + 26);
-            for (var output : recipe.outputs()) {
+            int arrowX = Math.max(46, inX + 6);
+            int outX = Math.max(76, arrowX + 22);
+            for (var output : recipe.itemOutputs()) {
                 builder.addSlot(RecipeIngredientRole.OUTPUT, outX, 12)
                         .setStandardSlotBackground()
                         .add(output);
                 outX += 20;
+            }
+            for (var fluidOut : recipe.fluidOutputs()) {
+                var fluid = WorkshopPlatform.fluid(fluidOut.fluidId(), fluidOut.amountMb());
+                if (!fluid.isEmpty()) {
+                    builder.addSlot(RecipeIngredientRole.OUTPUT, outX, 12)
+                            .setStandardSlotBackground()
+                            .setFluidRenderer(Math.max(1000L, fluidOut.amountMb()), false, 16, 16)
+                            .addFluidStack(fluid.getFluid(), fluidOut.amountMb());
+                    outX += 20;
+                }
             }
         }
 
@@ -141,8 +175,12 @@ public final class Ic2JeiPlugin implements IModPlugin {
                 GuiGraphicsExtractor graphics,
                 double mouseX,
                 double mouseY) {
-            int arrowX = Math.max(46, 8 + recipe.inputs().size() * 20 + 6);
-            graphics.text(Minecraft.getInstance().font, "->", arrowX, 16, 0xFF404040, false);
+            int arrowX = Math.max(46, 6 + recipe.inputSlots() * 20 + 6);
+            var font = Minecraft.getInstance().font;
+            graphics.text(font, "->", arrowX, 16, 0xFF404040, false);
+            if (!recipe.note().isEmpty()) {
+                graphics.text(font, recipe.note(), Math.max(4, arrowX - 8), 32, 0xFF606060, false);
+            }
         }
     }
 }

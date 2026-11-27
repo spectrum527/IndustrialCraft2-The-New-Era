@@ -2,6 +2,7 @@ package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.access.MachinePorts;
+import com.industrialage.ia2.industrial.WorkshopThermal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -73,18 +74,45 @@ final class WorldFluidAccess {
     static int drain(ServerLevel level, BlockPos pos, Direction side, String liquid, int maximum) {
         if (maximum <= 0 || !level.hasChunkAt(pos)) return 0;
         var handler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, side);
+        if (handler == null) return 0;
         var resource = fluid(liquid);
-        if (handler == null || resource == null || resource == Fluids.EMPTY) return 0;
-        return handler.drain(new FluidStack(resource, maximum), IFluidHandler.FluidAction.EXECUTE)
-                .getAmount();
+        if (resource != null && resource != Fluids.EMPTY) {
+            int exact =
+                    handler.drain(
+                                    new FluidStack(resource, maximum),
+                                    IFluidHandler.FluidAction.EXECUTE)
+                            .getAmount();
+            if (exact > 0) return exact;
+        }
+        for (int tank = 0; tank < handler.getTanks(); tank++) {
+            var stored = handler.getFluidInTank(tank);
+            if (stored.isEmpty() || !stored.getComponentsPatch().isEmpty()) continue;
+            if (!WorkshopThermal.matchesCanonical(fluidId(stored.getFluid()), liquid)) continue;
+            var drained =
+                    handler.drain(
+                            new FluidStack(
+                                    stored.getFluid(), Math.min(maximum, stored.getAmount())),
+                            IFluidHandler.FluidAction.EXECUTE);
+            if (!drained.isEmpty() && drained.getComponentsPatch().isEmpty())
+                return drained.getAmount();
+        }
+        return 0;
     }
 
     private static Fluid fluid(String id) {
         return net.minecraft.core.registries.BuiltInRegistries.FLUID.get(WorldNative.id(id));
     }
 
+    private static String fluidId(Fluid fluid) {
+        return net.minecraft.core.registries.BuiltInRegistries.FLUID.getKey(fluid).toString();
+    }
+
     private static Fluid kind(int slot) {
         return slot == 0 ? Fluids.WATER : fluid("ic2:weed_ex");
+    }
+
+    private static String canonical(int slot) {
+        return slot == 0 ? "minecraft:water" : "ic2:weed_ex";
     }
 
     static final class Port implements IFluidHandler {
@@ -113,7 +141,10 @@ final class WorldFluidAccess {
 
         @Override
         public boolean isFluidValid(int slot, FluidStack stack) {
-            return getTankCapacity(slot) > 0 && stack.getFluid() == kind(slot);
+            return getTankCapacity(slot) > 0
+                    && !stack.isEmpty()
+                    && stack.getComponentsPatch().isEmpty()
+                    && WorkshopThermal.matchesCanonical(fluidId(stack.getFluid()), canonical(slot));
         }
 
         @Override

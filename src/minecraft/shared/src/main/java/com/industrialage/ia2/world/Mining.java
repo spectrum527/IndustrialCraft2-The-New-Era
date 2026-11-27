@@ -1,11 +1,13 @@
 package com.industrialage.ia2.world;
 
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.List;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -152,8 +154,15 @@ final class Mining {
             var filter = machine.inventory.getItem(slot);
             if (filter.isEmpty()) continue;
             filterPresent = true;
-            if (WorldNative.itemId(filter).equals(block)
-                    || drops.stream().anyMatch(stack -> stack.is(filter.getItem()))) {
+            String tag = MachineAutomation.tagSpec(filter);
+            boolean matched =
+                    tag != null
+                            ? WorldNative.blockTagged(state, tag)
+                                    || drops.stream()
+                                            .anyMatch(stack -> WorkshopPlatform.tagged(stack, tag))
+                            : WorldNative.itemId(filter).equals(block)
+                                    || drops.stream().anyMatch(stack -> stack.is(filter.getItem()));
+            if (matched) {
                 return !machine.blacklist;
             }
         }
@@ -193,7 +202,11 @@ final class Mining {
     }
 
     private static boolean canDescendThrough(ServerLevel level, BlockPos pos, BlockState block) {
-        return canDrill(level, pos, block) || block.is(Blocks.WATER) || block.is(Blocks.LAVA);
+        return canDrill(level, pos, block)
+                || block.is(Blocks.WATER)
+                || block.is(Blocks.LAVA)
+                || block.getFluidState().is(FluidTags.WATER)
+                || block.getFluidState().is(FluidTags.LAVA);
     }
 
     private static boolean canDrill(ServerLevel level, BlockPos pos, BlockState block) {
@@ -205,7 +218,11 @@ final class Mining {
                         || block.is(BlockTags.BASE_STONE_NETHER)
                         || WorldTerrain.soil(block)
                         || block.is(Blocks.SAND)
+                        || block.is(BlockTags.SAND)
+                        || WorldNative.blockTagged(block, "c:sands")
                         || block.is(Blocks.GRAVEL)
+                        || WorldNative.blockTagged(block, "c:gravels")
+                        || WorldNative.blockTagged(block, "c:stones")
                         || ore(block));
     }
 
@@ -226,9 +243,13 @@ final class Mining {
                         Blocks.ANCIENT_DEBRIS);
         static final java.util.List<net.minecraft.tags.TagKey<Block>> MODDED =
                 List.of(
+                        WorldNative.oreTag("minecraft:coal_ores"),
+                        WorldNative.oreTag("minecraft:redstone_ores"),
+                        WorldNative.oreTag("minecraft:diamond_ores"),
+                        WorldNative.oreTag("minecraft:lapis_ores"),
+                        WorldNative.oreTag("minecraft:emerald_ores"),
                         WorldNative.oreTag("c:ores"),
-                        WorldNative.oreTag("forge:ores"),
-                        WorldNative.oreTag("ic2:ores"));
+                        WorldNative.oreTag("forge:ores"));
     }
 
     static boolean ore(BlockState block) {

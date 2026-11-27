@@ -143,7 +143,7 @@ final class MachineInventory extends SimpleContainer implements ProcessingSlots 
             case DISCHARGE ->
                     owner instanceof ProcessingDevice device
                             ? ForgeGear.canDischarge(stack, device.itemTier())
-                                    || device.electric() && stack.is(Items.REDSTONE)
+                                    || device.electric() && isRedstoneFuel(stack)
                             : ForgeGear.canDischarge(stack, kind.itemTier());
             case UPGRADE -> MachineAutomation.isProcessingUpgrade(stack);
         };
@@ -165,10 +165,14 @@ final class MachineInventory extends SimpleContainer implements ProcessingSlots 
             case DISCHARGE ->
                     owner instanceof ProcessingDevice device
                             ? ForgeGear.canSupplyCharge(stack, device.itemTier())
-                                    || device.electric() && stack.is(Items.REDSTONE)
+                                    || device.electric() && isRedstoneFuel(stack)
                             : ForgeGear.canSupplyCharge(stack, kind.itemTier());
             case OUTPUT, UPGRADE -> false;
         };
+    }
+
+    private static boolean isRedstoneFuel(ItemStack stack) {
+        return stack.is(Items.REDSTONE) || WorkshopPlatform.tagged(stack, "c:dusts/redstone");
     }
 
     @Override

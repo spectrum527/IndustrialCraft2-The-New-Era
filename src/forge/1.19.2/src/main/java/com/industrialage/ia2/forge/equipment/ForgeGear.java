@@ -15,10 +15,12 @@ import com.industrialage.ia2.forge.content.ForgeContent;
 import com.industrialage.ia2.progress.IndustrialProgress;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -110,8 +112,9 @@ public final class ForgeGear {
                     @Override
                     public Ingredient getRepairIngredient() {
                         return Ingredient.of(
-                                ForgeRegistries.ITEMS.getValue(
-                                        new ResourceLocation("ic2", "bronze_ingot")));
+                                TagKey.create(
+                                        Registry.ITEM_REGISTRY,
+                                        new ResourceLocation("ic2", "bronze_ingots")));
                     }
                 };
         ITEMS.register(

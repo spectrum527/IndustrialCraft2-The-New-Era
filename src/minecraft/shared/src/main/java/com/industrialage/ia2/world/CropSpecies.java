@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 /** Crop cards with distinct planting materials, stages, and harvests. */
 enum CropSpecies {
     ACACIA_SAPLING(4, 3, "acacia_sapling", "acacia_log"),
-    AURELIA(3, 6, null, "gold_nugget", "gold_block"),
+    AURELIA(3, 6, null, "gold_nugget", "gold_block", "c:storage_blocks/gold"),
     BEETROOTS(3, 1, "beetroot_seeds", "beetroot"),
     BIRCH_SAPLING(4, 3, "birch_sapling", "birch_log"),
     BLACKTHORN(3, 4, null, "ink_sac"),
@@ -22,14 +22,14 @@ enum CropSpecies {
     CORPSE_PLANT(3, 4, null, "rotten_flesh"),
     CREEPER_WEED(3, 5, null, "gunpowder"),
     CYAZINT(3, 3, null, "cyan_dye"),
-    CYPRIUM(3, 5, null, "ic2:small_copper_dust", "copper_block"),
+    CYPRIUM(3, 5, null, "ic2:small_copper_dust", "copper_block", "c:storage_blocks/copper"),
     DANDELION(3, 2, "dandelion", "dandelion"),
     DARK_OAK_SAPLING(4, 3, "dark_oak_sapling", "dark_oak_log"),
-    DIAREED(3, 8, null, "diamond", "diamond_block"),
+    DIAREED(3, 8, null, "diamond", "diamond_block", "c:storage_blocks/diamond"),
     EATING_PLANT(5, 5, null, "ic2:grin_powder"),
     EGG_PLANT(2, 4, null, "egg"),
     ENDER_BLOSSOM(3, 7, null, "ender_pearl"),
-    FERRU(3, 6, null, "iron_nugget", "iron_block"),
+    FERRU(3, 6, null, "iron_nugget", "iron_block", "c:storage_blocks/iron"),
     FLAX(3, 2, null, "string"),
     HOPS(6, 5, null, "ic2:hops"),
     JUNGLE_SAPLING(4, 3, "jungle_sapling", "jungle_log"),
@@ -39,7 +39,7 @@ enum CropSpecies {
     NETHER_WART(2, 3, "nether_wart", "nether_wart"),
     OAK_SAPLING(4, 3, "oak_sapling", "oak_log"),
     OIL_BERRIES(2, 5, null, "ic2:oil_berry"),
-    PLUMBISCUS(3, 5, null, "ic2:small_lead_dust", "ic2:lead_block"),
+    PLUMBISCUS(3, 5, null, "ic2:small_lead_dust", "ic2:lead_block", "c:storage_blocks/lead"),
     POPPY(3, 2, "poppy", "poppy"),
     POTATO(3, 1, "potato", "potato"),
     PUMPKIN(3, 2, "pumpkin_seeds", "pumpkin"),
@@ -50,7 +50,7 @@ enum CropSpecies {
     SLIME_PLANT(3, 5, null, "slime_ball"),
     SPIDERNIP(3, 5, null, "spider_eye"),
     SPRUCE_SAPLING(4, 3, "spruce_sapling", "spruce_log"),
-    STAGNIUM(3, 5, null, "ic2:small_tin_dust", "ic2:tin_block"),
+    STAGNIUM(3, 5, null, "ic2:small_tin_dust", "ic2:tin_block", "c:storage_blocks/tin"),
     STICKY_REED(3, 4, null, "ic2:resin"),
     TEARSTALKS(3, 7, null, "ghast_tear"),
     TERRA_WART(2, 4, "ic2:terra_wart", "ic2:terra_wart"),
@@ -66,18 +66,21 @@ enum CropSpecies {
     final String seed;
     final String output;
     final String support;
+    final String supportTag;
 
     CropSpecies(int maxAge, int tier, String seed, String output) {
-        this(maxAge, tier, seed, output, null);
+        this(maxAge, tier, seed, output, null, null);
     }
 
-    CropSpecies(int maxAge, int tier, String seed, String output, String support) {
+    CropSpecies(
+            int maxAge, int tier, String seed, String output, String support, String supportTag) {
         name = name().toLowerCase(java.util.Locale.ROOT);
         this.maxAge = maxAge;
         this.tier = tier;
         this.seed = seed;
         this.output = output;
         this.support = support;
+        this.supportTag = supportTag;
     }
 
     String path() {

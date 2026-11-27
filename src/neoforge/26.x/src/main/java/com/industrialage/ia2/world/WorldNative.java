@@ -1,12 +1,19 @@
 package com.industrialage.ia2.world;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -18,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
@@ -33,6 +41,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 /** Native calls whose signatures differ between supported Minecraft releases. */
 final class WorldNative {
+    private static final Map<String, Optional<TagKey<Block>>> BLOCK_TAGS =
+            new ConcurrentHashMap<>();
+
     private WorldNative() {}
 
     static Block.Properties properties() {
@@ -127,9 +138,36 @@ final class WorldNative {
         return new IronBarsBlock(properties);
     }
 
-    static net.minecraft.tags.TagKey<Block> oreTag(String name) {
-        return net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.BLOCK, id(name));
+    static TagKey<Block> oreTag(String name) {
+        return blockTag(name)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid block tag: " + name));
+    }
+
+    private static Optional<TagKey<Block>> blockTag(String name) {
+        return BLOCK_TAGS.computeIfAbsent(
+                name,
+                raw -> {
+                    var loc = Identifier.tryParse(raw);
+                    return loc == null
+                            ? Optional.empty()
+                            : Optional.of(TagKey.create(Registries.BLOCK, loc));
+                });
+    }
+
+    static boolean blockTagged(BlockState state, String tag) {
+        return com.industrialage.ia2.content.ProcessingMachine.matchesTagAlias(
+                tag, candidate -> blockTag(candidate).map(state::is).orElse(false));
+    }
+
+    static String customName(ItemStack stack) {
+        var name = stack.get(DataComponents.CUSTOM_NAME);
+        return name == null ? "" : name.getString();
+    }
+
+    static ItemStack namedTagVisual(String label) {
+        var stack = new ItemStack(Items.NAME_TAG);
+        stack.set(DataComponents.CUSTOM_NAME, Component.literal(label));
+        return stack;
     }
 
     static BlockState copySharedState(BlockState from, BlockState to) {

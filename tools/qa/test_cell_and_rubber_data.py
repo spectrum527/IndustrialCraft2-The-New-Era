@@ -36,10 +36,11 @@ class CellAndRubberDataTest(unittest.TestCase):
                     if isinstance(ingredient, str):
                         return ingredient[1:] if ingredient.startswith("#") else None
                     return ingredient.get("tag")
+                ns = "forge" if forge else "c"
                 basic = read(recipes, "empty_cell")
                 self.assertEqual(basic["pattern"], ["TGT"])
-                self.assertEqual(item(basic["key"]["T"]), "ic2:tin_casing")
-                self.assertEqual(tag(basic["key"]["G"]), ("forge" if forge else "c") + ":glass_panes")
+                self.assertEqual(tag(basic["key"]["T"]), ns + ":item_casings/tin")
+                self.assertEqual(tag(basic["key"]["G"]), ns + ":glass_panes")
                 self.assertEqual(basic["result"], {field: "ic2:empty_cell", "count": 4})
                 for liquid in ("water", "lava"):
                     for recipe, shell, result in [
@@ -49,7 +50,12 @@ class CellAndRubberDataTest(unittest.TestCase):
                         derived = read(recipes, recipe)
                         self.assertEqual(derived["cell_use"], "fill")
                         self.assertEqual(derived["result"][field], "ic2:"+result)
-                        self.assertCountEqual([item(i) for i in derived["ingredients"]], ["ic2:"+shell, "minecraft:"+liquid+"_bucket"])
+                        expected_bucket = ("minecraft:" + liquid + "_bucket") if forge else ("#c:buckets/" + liquid)
+                        actual_inputs = [
+                            ("#" + tag(i)) if tag(i) else item(i)
+                            for i in derived["ingredients"]
+                        ]
+                        self.assertCountEqual(actual_inputs, ["ic2:"+shell, expected_bucket])
                         restored = read(recipes, "cells/recover_"+result)
                         self.assertEqual(restored["cell_use"], "recover")
                         self.assertEqual(restored["result"][field], "ic2:"+shell)
@@ -57,6 +63,7 @@ class CellAndRubberDataTest(unittest.TestCase):
                     fill = read(recipes, "cells/fill_"+fluid)
                     self.assertEqual(fill["cell_use"], "fill")
                     self.assertIn("ic2:fluid_cell", [item(i) for i in fill["ingredients"]])
+                    self.assertIn(ns + ":buckets/" + fluid, [tag(i) for i in fill["ingredients"]])
                     if fluid in ("weed_ex", "air", "biogas"):
                         self.assertEqual(fill["result"][field], "ic2:"+fluid+"_cell")
                         recovered = read(recipes, "cells/recover_"+fluid+"_cell")

@@ -1,7 +1,7 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.content.UuValues;
 import com.industrialage.ia2.power.WorldPowerStorage;
-import java.util.Map;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -12,48 +12,6 @@ final class WorkshopMatter {
     private static final int END_PATTERNS = FIRST_PATTERN + 12;
     private static final String UU = "ic2:uu_matter";
     private static final int UU_ENERGY = 1_000_000;
-    private static final Map<String, Integer> SCAN_COSTS_MICROLITERS =
-            Map.ofEntries(
-                    Map.entry("minecraft:cobblestone", 10),
-                    Map.entry("minecraft:dirt", 10),
-                    Map.entry("minecraft:stone", 20),
-                    Map.entry("minecraft:sand", 20),
-                    Map.entry("minecraft:gravel", 20),
-                    Map.entry("minecraft:oak_log", 50),
-                    Map.entry("minecraft:clay_ball", 80),
-                    Map.entry("minecraft:coal", 1_000),
-                    Map.entry("minecraft:redstone", 1_000),
-                    Map.entry("ic2:resin", 1_000),
-                    Map.entry("ic2:rubber", 1_000),
-                    Map.entry("minecraft:obsidian", 1_200),
-                    Map.entry("minecraft:glowstone_dust", 1_500),
-                    Map.entry("minecraft:lapis_lazuli", 1_500),
-                    Map.entry("minecraft:quartz", 1_500),
-                    Map.entry("minecraft:copper_ore", 1_500),
-                    Map.entry("minecraft:raw_copper", 1_500),
-                    Map.entry("minecraft:copper_ingot", 1_500),
-                    Map.entry("ic2:tin_ore", 2_000),
-                    Map.entry("ic2:raw_tin", 2_000),
-                    Map.entry("ic2:tin_ingot", 2_000),
-                    Map.entry("minecraft:iron_ore", 2_500),
-                    Map.entry("minecraft:raw_iron", 2_500),
-                    Map.entry("minecraft:iron_ingot", 2_500),
-                    Map.entry("ic2:lead_ore", 3_000),
-                    Map.entry("ic2:raw_lead", 3_000),
-                    Map.entry("ic2:lead_ingot", 3_000),
-                    Map.entry("ic2:silver_dust", 6_000),
-                    Map.entry("ic2:silver_ingot", 6_000),
-                    Map.entry("minecraft:gold_ore", 8_000),
-                    Map.entry("minecraft:raw_gold", 8_000),
-                    Map.entry("minecraft:gold_ingot", 8_000),
-                    Map.entry("ic2:uranium_ore", 15_000),
-                    Map.entry("ic2:raw_uranium", 15_000),
-                    Map.entry("ic2:uranium_ingot", 15_000),
-                    Map.entry("ic2:iridium_shard", 15_000),
-                    Map.entry("minecraft:emerald", 25_000),
-                    Map.entry("minecraft:diamond", 40_000),
-                    Map.entry("ic2:iridium_ore", 120_000),
-                    Map.entry("minecraft:netherite_scrap", 250_000));
 
     private WorkshopMatter() {}
 
@@ -167,14 +125,14 @@ final class WorkshopMatter {
 
     static int costMicroliters(ItemStack item) {
         if (item.isEmpty()) return 0;
-        String id = WorkshopPlatform.itemId(item);
-        return SCAN_COSTS_MICROLITERS.getOrDefault(id, 0);
+        return UuValues.scanCostMicroliters(
+                WorkshopPlatform.itemId(item), tag -> WorkshopPlatform.tagged(item, tag));
     }
 
     static boolean scannable(ItemStack item) {
         if (item.isEmpty()) return false;
         String id = WorkshopPlatform.itemId(item);
-        return SCAN_COSTS_MICROLITERS.containsKey(id)
+        return costMicroliters(item) > 0
                 && WorkshopPlatform.sameItem(item, WorkshopPlatform.stack(id, 1));
     }
 

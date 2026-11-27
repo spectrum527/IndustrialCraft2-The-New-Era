@@ -42,6 +42,7 @@
 | A34 | 1.0.6 管嘴与设备分面权限专项复核（2026-11-22） | 维护者按清单签核 15 个确切 SHA-256，并要求公开所有数据。全文件原始分数为 25.5319%–33.0784%。NeoForge 1.21.1 的 CellItem 有 4 个原有 import 窗口。共享接口 MachineAccessTarget 的 5 个默认方法共 19 个执行词元，仅执行体分数为 100%。逐项指纹、原始分数和上下文见[1.0.6 源码复核](parity/evidence/originality/pipe-access-1.0.6.md)。 |
 | A35 | 1.0.6 机器物品槽的自动化规则（2026-11-22） | 维护者要求按设备实际用途分槽。物品管、管嘴、原版漏斗及原生接口只向兼容电池位或真正原料位存入物品，只能取出产物。专用充电工作位中已充满的电池、同格已转化的耗尽燃料棒等可识别成品可取出。普通加工机供电电池、原料、未识别的旧存货、模板和升级留给玩家手动处理。分面权限仍与槽位规则同时生效。详见[机器自动化槽位](spec/logistics/nozzles-and-side-access.md#automation-slots)。 |
 | A36 | 1.0.6 机器槽位接口专项复核（2026-11-22） | 维护者按确切文件指纹签核共享接口 `src/minecraft/shared/src/main/java/com/industrialage/ia2/access/ProcessingSlots.java`（SHA-256 `8543682d11b7c84aa4bcb814c1eef80b21f136fdae7f0d4ca690ab4028c318e1`），并要求公开完整分数。原始 5-gram 为 67.7419%，只去 import 后为 57.6923%，去包声明及 import 后为 44.4444%。该接口只声明一个抽象方法，可执行词元为 0，仅执行体为 0.0000%，连续八行命中为 0。A34 的 15 个既有指纹继续分别登记。[两阶段复核](parity/evidence/originality/pipe-access-1.0.6.md) |
+| A37 | 跨模组生态通用物品标签规范（2026-11-27） | 负责人拍板全生态（IC2 / EcC2 / LC2 / TyC2 / CoC2）全面兼容 Forge 1.19.2 (`forge:*`、`tags/items`) 与 NeoForge 1.21.1 / 26.1.2 / 26.2 (`c:*`、`tags/item`) 通用物品/方块/流体标签：1）IC2 1.0.11 补齐矿/锭/粉/板/桶/工具/护甲/26.x 附魔/电路/电池/线缆(`cables/*`)/外壳/粉碎纯净矿/防搬运与父标签，同步修复运行时通用扳手(`tools/wrench`)、流体罐标签一致性、回收机配置黑白名单(`Tag:`)与 JEI/EMI 展示；2）CoC2 铜导线独立发布并消费 `c:wires/copper`，与 IC2 线缆 `cables/*` 隔离防套利；3）EcC2 / LC2 / TyC2 同步升级 `ic2` 最低依赖至 `1.0.11+` 直切通用标签，不写旧版兜底；4）不得改动既有 A26–A36 签核冻结文件。 |
 
 ## B. 烂尾内容处置（原清单 #21–#40，后续修复项顺延）
 
@@ -119,3 +120,4 @@
 
 - 2026-11-21：按负责人指示以 IndustrialCraft²: The New Era 公开首发。更正原作书面授权状态，分别登记游戏美术与品牌图许可，增加双语 README 与 ChatGPT 署名自审查报告。
 - 2026-11-27：采用 Option A 方案将 Forge 1.19.2 正式并入 `main` 单分支与单一 Gradle `9.2.1` 构建，更新 A5 与 A19。工程使用 ModDevGradle `2.0.148` 的 `net.neoforged.moddev`（NeoForge 1.21.1 / 26.1.2 / 26.2）与 `net.neoforged.moddev.legacyforge`（Forge 1.19.2-43.5.0，`disableRecompilation = false`），`:common` 与 `src/minecraft/shared/` 统一保持 Java 17 兼容。PoC 全部四项门禁及收尾验证通过（四目标严格依赖校验共存构建、Java 17 字节码与 SRG `reobfJar`/`reobfQaFixtureJar` 校验、5,988/5,988 条目与 ForgeGradle 对齐、真实 Forge 43.5.0 专服 `runOptionalCompat`、以及 `verify.py` `smoke` 55/55、`world`、`mismatch`、`play` 53/53），并部署三作业并行统一 CI（`governance`、`neoforge`、`forge-1-19-2`）；既有 A26–A36 签核文件 SHA-256 零变动。
+- 2026-11-27：新增 A37 并完成全生态（IC2 `1.0.11`、EcC2、LC2、TyC2、CoC2）Forge 1.19.2 与 NeoForge 1.21.1 / 26.1.2 / 26.2 通用物品/方块/流体标签 Wave 0–2 改造、四平台构建与跨包标签闭包验收；既有 A26–A36 签核文件 SHA-256 仍零变动。
