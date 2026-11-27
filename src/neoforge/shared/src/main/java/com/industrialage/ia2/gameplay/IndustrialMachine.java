@@ -63,6 +63,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
     private int furnaceProgress;
     private String furnaceRecipe = "";
     private int redstoneMode;
+    private int lastSignal;
     private int lastTick = Integer.MIN_VALUE;
 
     IndustrialMachine(BlockPos pos, BlockState state) {
@@ -171,7 +172,6 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
 
     private boolean work(ServerLevel level) {
         lastTick = level.getServer().getTickCount();
-        int oldSignal = redstoneOutput();
         boolean changed = refreshUpgrades();
         changed |= transferBattery();
         boolean active = false;
@@ -203,7 +203,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                     getBlockState().setValue(MachineBlock.ACTIVE, active),
                     Block.UPDATE_CLIENTS);
         }
-        updateSignal(oldSignal);
+        updateSignal();
         return changed;
     }
 
@@ -321,12 +321,21 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         if (!input.isEmpty()) {
             input.shrink(output.recipe().inputCount() * operations);
         }
+        int producedCount =
+                output.recipe().weightedCounts().isEmpty()
+                        ? output.recipe().outputCount() * operations
+                        : output.recipe()
+                                .rollOutputCount(
+                                        operations,
+                                        bound ->
+                                                getLevel() == null
+                                                        ? 0
+                                                        : getLevel().getRandom().nextInt(bound));
         int slot = kind.slots.indexOf(SlotRole.OUTPUT);
         if (items.get(slot).isEmpty()) {
-            items.set(
-                    slot, output.stack().copyWithCount(output.recipe().outputCount() * operations));
+            items.set(slot, output.stack().copyWithCount(producedCount));
         } else {
-            items.get(slot).grow(output.recipe().outputCount() * operations);
+            items.get(slot).grow(producedCount);
         }
     }
 
@@ -510,7 +519,6 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
 
     @Override
     public double draw(double requested) {
-        int oldSignal = redstoneOutput();
         double acted;
         if (generator != null) {
             acted = generator.extractEnergy(requested);
@@ -520,14 +528,13 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         }
         if (acted > 0) {
             setChanged();
-            updateSignal(oldSignal);
+            updateSignal();
         }
         return acted;
     }
 
     @Override
     public double receive(double requested) {
-        int oldSignal = redstoneOutput();
         double accepted = 0;
         if (processor != null) {
             accepted = processor.receive(requested);
@@ -537,7 +544,7 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
         }
         if (accepted > 0) {
             setChanged();
-            updateSignal(oldSignal);
+            updateSignal();
         }
         return accepted;
     }
@@ -575,10 +582,9 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
     }
 
     void cycleRedstoneMode(ServerPlayer player) {
-        int oldSignal = redstoneOutput();
         redstoneMode = (redstoneMode + 1) % 7;
         setChanged();
-        updateSignal(oldSignal);
+        updateSignal();
         NativeGameplay.overlay(
                 player,
                 Component.translatable(
@@ -586,8 +592,10 @@ public final class IndustrialMachine extends NativeGameplay.InventoryEntity
                         Component.translatable("container.ic2.redstone_mode." + redstoneMode)));
     }
 
-    private void updateSignal(int previous) {
-        if (getLevel() instanceof ServerLevel level && previous != redstoneOutput()) {
+    private void updateSignal() {
+        int signal = redstoneOutput();
+        if (getLevel() instanceof ServerLevel level && signal != lastSignal) {
+            lastSignal = signal;
             NativeGameplay.notifySignal(level, worldPosition, getBlockState().getBlock());
         }
     }

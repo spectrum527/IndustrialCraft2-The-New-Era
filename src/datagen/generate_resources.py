@@ -6,7 +6,7 @@ repair recipe book, Classic crafting layouts and loot data are versioned inputs.
 The output pack is specific to the selected game and loader.
 """
 from cell_recipes import cell_recipe, generate_cell_recipes
-from common_tags import generate as generate_common_tags
+from common_tags import common_tag_for, generate as generate_common_tags
 from industrial_families import generate as generate_families
 
 from world_resources import generate as generate_world
@@ -454,6 +454,7 @@ if args.logistics:
     shapeless['pump_cover_mv']=(['ic2:steel_fluid_pipe_medium','minecraft:piston','ic2:insulated_gold_cable'],1)
 recipe_dir = 'recipes/' if forge else 'recipe/'
 def ingredient(name):
+    name = common_tag_for(name, forge)
     if newest: return name
     return {('tag' if name.startswith('#') else 'item'): name.removeprefix('#')}
 def result(name,count=1):
@@ -559,8 +560,14 @@ minecraft_tag('needs_stone_tool', ('tin_ore','deepslate_tin_ore'))
 minecraft_tag('mineable/axe', ('rubber_log','wooden_storage_box'))
 minecraft_tag('logs', ('rubber_log',))
 minecraft_tag('leaves', ('rubber_leaves',))
-data(('tags/items/' if forge else 'tags/item/') + 'bronze_ingots',
-     {'replace':False,'values':[mod('bronze_ingot')]})
+item_tags_dir = 'tags/items/' if forge else 'tags/item/'
+common_ns = 'forge' if forge else 'c'
+data(item_tags_dir + 'bronze_ingots',
+     {'replace': False, 'values': [mod('bronze_ingot'), {'id': f'#{common_ns}:ingots/bronze', 'required': False}]})
+data(item_tags_dir + 'alloys',
+     {'replace': False, 'values': [mod('alloy')]})
+data(item_tags_dir + 'recycler_blacklist',
+     {'replace': False, 'values': []})
 
 # Vanilla tree and ore definitions; loader biome modifier adds them to real worlds.
 ore = {'type':'minecraft:ore','config':{'size':8,'discard_chance_on_air_exposure':0.0,'targets':[

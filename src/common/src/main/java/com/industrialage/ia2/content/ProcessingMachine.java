@@ -58,15 +58,75 @@ public final class ProcessingMachine {
         return completedOperations;
     }
 
+    /** One weighted output stack count entry for probabilistic processing recipes (e.g. ores). */
+    public record WeightedCount(int count, int weight) {
+        /** Requires a positive stack count and positive selection weight. */
+        public WeightedCount {
+            if (count < 1 || weight < 1) {
+                throw new IllegalArgumentException("Invalid weighted count");
+            }
+        }
+    }
+
     /** One recipe. The host supplies the current smelting recipe for an electric furnace. */
-    public record Recipe(String input, int inputCount, String output, int outputCount) {
+    public record Recipe(
+            String input,
+            int inputCount,
+            String output,
+            int outputCount,
+            java.util.List<WeightedCount> weightedCounts) {
         /** Requires an identifiable input and output with positive stack counts. */
         public Recipe {
             Objects.requireNonNull(input);
             Objects.requireNonNull(output);
+            weightedCounts =
+                    weightedCounts == null
+                            ? java.util.List.of()
+                            : java.util.List.copyOf(weightedCounts);
             if (input.isEmpty() || output.isEmpty() || inputCount < 1 || outputCount < 1) {
                 throw new IllegalArgumentException("Invalid processing recipe");
             }
+        }
+
+        /** Deterministic single-output recipe without weighted count distribution. */
+        public Recipe(String input, int inputCount, String output, int outputCount) {
+            this(input, inputCount, output, outputCount, java.util.List.of());
+        }
+
+        /** Maximum output count one operation can produce (used for safe output-slot checks). */
+        public int maxOutputCount() {
+            int max = outputCount;
+            for (var entry : weightedCounts) {
+                if (entry.count() > max) {
+                    max = entry.count();
+                }
+            }
+            return max;
+        }
+
+        /** Rolls total items produced across {@code operations} completed runs. */
+        public int rollOutputCount(int operations, java.util.function.IntUnaryOperator nextInt) {
+            if (weightedCounts.isEmpty()) {
+                return outputCount * operations;
+            }
+            int totalWeight = 0;
+            for (var entry : weightedCounts) {
+                totalWeight += entry.weight();
+            }
+            int produced = 0;
+            for (int op = 0; op < operations; op++) {
+                int roll = nextInt.applyAsInt(totalWeight);
+                int chosen = outputCount;
+                for (var entry : weightedCounts) {
+                    roll -= entry.weight();
+                    if (roll < 0) {
+                        chosen = entry.count();
+                        break;
+                    }
+                }
+                produced += chosen;
+            }
+            return produced;
         }
 
         private String identity() {
@@ -115,7 +175,7 @@ public final class ProcessingMachine {
                                 stats.operations(),
                                 Math.min(
                                         availableInput / recipe.inputCount(),
-                                        outputSpace / recipe.outputCount()));
+                                        outputSpace / recipe.maxOutputCount()));
         if (operations <= 0) {
             progress = 0;
             recipeKey = "";
@@ -137,7 +197,8 @@ public final class ProcessingMachine {
         active =
                 energy >= cost
                         && availableInput - operations * recipe.inputCount() >= recipe.inputCount()
-                        && outputSpace - operations * recipe.outputCount() >= recipe.outputCount();
+                        && outputSpace - operations * recipe.maxOutputCount()
+                                >= recipe.maxOutputCount();
         return true;
     }
 

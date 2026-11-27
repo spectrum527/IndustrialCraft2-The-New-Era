@@ -70,7 +70,13 @@ final class LavaInlet extends SnapshotJournal<int[]> implements ResourceHandler<
 
     @Override
     public boolean isValid(int slot, FluidResource value) {
-        return slot >= 0 && slot < size() && resource(slot).equals(value);
+        if (slot < 0 || slot >= size() || value.isEmpty()) return false;
+        if (resource(slot).equals(value)) return true;
+        if (slot == 0) {
+            String id = WorkshopPlatform.worldFluidId(value.getFluid());
+            return geo() ? WorkshopThermal.isLava(id) : WorkshopThermal.isCoolant(id);
+        }
+        return false;
     }
 
     @Override

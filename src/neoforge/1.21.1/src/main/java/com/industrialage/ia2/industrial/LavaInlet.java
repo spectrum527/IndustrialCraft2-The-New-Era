@@ -41,10 +41,9 @@ final class LavaInlet implements IFluidHandler {
 
     @Override
     public boolean isFluidValid(int slot, FluidStack stack) {
-        return slot == 0
-                && !stack.isEmpty()
-                && WorkshopPlatform.fluidId(stack)
-                        .equals(geothermal() ? "minecraft:lava" : "ic2:coolant");
+        if (slot != 0 || stack.isEmpty()) return false;
+        String id = WorkshopPlatform.fluidId(stack);
+        return geothermal() ? WorkshopThermal.isLava(id) : WorkshopThermal.isCoolant(id);
     }
 
     @Override

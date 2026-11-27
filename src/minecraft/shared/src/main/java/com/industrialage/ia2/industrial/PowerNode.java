@@ -297,7 +297,8 @@ public final class PowerNode extends PowerSaveBase
                         * PowerSettings.multiplier("wind");
             case WATER_GENERATOR:
                 if (fuel == 0 && energy < capacity()) {
-                    var water = WorkshopCells.measure(inventory.getItem(0), "minecraft:water");
+                    var water =
+                            WorkshopCells.measure(inventory.getItem(0), WorkshopThermal::isWater);
                     if (water != null && storeContainerRemainder(water.stack())) {
                         inventory.removeItem(0, 1);
                         fuel = 500;
@@ -360,7 +361,7 @@ public final class PowerNode extends PowerSaveBase
             var intake = new WorkshopNode.Tank(LAVA_CAPACITY);
             intake.fill(LAVA, liquid, false);
             var fuel = WorkshopPlatform.drainWholeContainer(intake, inventory.getItem(0));
-            if (fuel == null || !LAVA.equals(fuel.liquid().id())) return;
+            if (fuel == null || !WorkshopThermal.isLava(fuel.liquid().id())) return;
             int volume = fuel.liquid().amount();
             if (fillLava(volume, true) != volume || !storeContainerRemainder(fuel.stack())) return;
             inventory.removeItem(0, 1);
@@ -627,7 +628,12 @@ public final class PowerNode extends PowerSaveBase
         if (kind.lowTier() > 0) return PacketBudget.packetSize(kind.lowTier() + (stepUp ? 0 : 1));
         if (kind == PowerKind.MAGNETIZER || kind == PowerKind.RCI_RSH || kind == PowerKind.RCI_LZH)
             return PacketBudget.packetSize(upgradeTier());
-        return kind == PowerKind.CLASSIC_MFSU ? 512 : kind == PowerKind.CLASSIC_MFE ? 128 : 32;
+        return switch (kind) {
+            case ENERGY_O_MAT -> 2048;
+            case CLASSIC_MFSU -> 512;
+            case CLASSIC_MFE, TESLA_COIL -> 128;
+            default -> 32;
+        };
     }
 
     private double packet() {

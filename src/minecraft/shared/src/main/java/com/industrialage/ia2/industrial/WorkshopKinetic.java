@@ -244,7 +244,7 @@ final class WorkshopKinetic {
                         .equals("ic2:steam_turbine")) {
             return 0;
         }
-        boolean superheated = node.inlet.id.equals(WorkshopThermal.SUPERHEATED);
+        boolean superheated = WorkshopThermal.isSuperheatedSteam(node.inlet.id);
         int output = superheated ? 400 : 200;
         boolean distill = node.cycles == 9;
         if (maximum < output

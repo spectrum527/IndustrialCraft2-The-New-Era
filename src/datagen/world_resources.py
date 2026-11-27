@@ -2,6 +2,7 @@
 import csv
 import json
 from pathlib import Path
+from common_tags import common_tag_for
 
 COLORS = ("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray",
           "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black")
@@ -373,6 +374,7 @@ def generate(repo, out, target, write):
     def craft(name, pattern, key, ingredients, result, count=1):
         output = {"item" if forge else "id": result, "count": count}
         def ingredient(id):
+            id = common_tag_for(id, forge)
             return id if modern else ({"tag": id[1:]} if id.startswith("#") else {"item": id})
         data = {"type": "minecraft:crafting_shaped" if pattern else "minecraft:crafting_shapeless", "result": output}
         if pattern:

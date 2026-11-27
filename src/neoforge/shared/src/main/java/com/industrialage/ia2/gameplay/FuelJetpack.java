@@ -38,7 +38,8 @@ final class FuelJetpack extends Item {
     }
 
     static boolean accepts(Fluid fuel) {
-        return BuiltInRegistries.FLUID.getKey(fuel).toString().equals("ic2:biogas");
+        return com.industrialage.ia2.industrial.WorkshopPlatform.fluidMatches(
+                BuiltInRegistries.FLUID.getKey(fuel).toString(), "ic2:biogas", "c:biogas");
     }
 
     static boolean consume(ItemStack stack, boolean hover, boolean creative) {
