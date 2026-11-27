@@ -239,7 +239,7 @@ public final class WorldMachine extends WorldSaveBase
     private boolean cultivate(ServerLevel level, CropPlot crop) {
         if (crop.species() == null) return false;
         boolean work = false;
-        if (crop.nutrients < 20 && inventory.has(0, "ic2:fertilizer") && pay(10)) {
+        if (crop.nutrients < 20 && WorldInventory.isFertilizer(inventory.getItem(0)) && pay(10)) {
             inventory.removeItem(0, 1);
             crop.nutrients = Math.min(200, crop.nutrients + 100);
             work = true;
@@ -310,7 +310,7 @@ public final class WorldMachine extends WorldSaveBase
 
     private void refillFromBuckets() {
         if (water <= 3000) {
-            if (replaceContainer(1, "minecraft:water_bucket", new ItemStack(Items.BUCKET))
+            if (replaceMatching(1, WorldInventory::isWaterBucket, new ItemStack(Items.BUCKET))
                     || replaceContainer(
                             1,
                             "ic2:water_cell",
@@ -320,7 +320,7 @@ public final class WorldMachine extends WorldSaveBase
             }
         }
         if (weedEx <= 3000) {
-            if (replaceContainer(2, "ic2:weed_ex_bucket", new ItemStack(Items.BUCKET))
+            if (replaceMatching(2, WorldInventory::isWeedExBucket, new ItemStack(Items.BUCKET))
                     || replaceContainer(
                             2,
                             "ic2:weed_ex_cell",
@@ -329,6 +329,13 @@ public final class WorldMachine extends WorldSaveBase
                 setChanged();
             }
         }
+    }
+
+    private boolean replaceMatching(
+            int slot, java.util.function.Predicate<ItemStack> match, ItemStack result) {
+        if (!match.test(inventory.getItem(slot)) || !inventory.store(List.of(result))) return false;
+        inventory.removeItem(slot, 1);
+        return true;
     }
 
     private boolean replaceContainer(int slot, String used, ItemStack result) {

@@ -1,7 +1,9 @@
 package com.industrialage.ia2.industrial;
 
 import com.industrialage.ia2.config.ActiveConfig;
+import com.industrialage.ia2.content.RecyclerRules;
 import com.industrialage.ia2.platform.ConfigFacade;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 
@@ -58,6 +60,20 @@ final class PowerSettings {
                                                 "protection/reactorExplosionPowerLimit",
                                                 Float.class)))
                 .orElse(45F);
+    }
+
+    static List<String> recyclerBlacklist() {
+        return config == null
+                ? RecyclerRules.DEFAULT_BLACKLIST
+                : config.current()
+                        .map(s -> s.get(RecyclerRules.BLACKLIST))
+                        .orElse(RecyclerRules.DEFAULT_BLACKLIST);
+    }
+
+    static List<String> recyclerWhitelist() {
+        return config == null
+                ? List.of()
+                : config.current().map(s -> s.get(RecyclerRules.WHITELIST)).orElse(List.of());
     }
 
     static boolean sun(ServerLevel world, BlockPos pos) {

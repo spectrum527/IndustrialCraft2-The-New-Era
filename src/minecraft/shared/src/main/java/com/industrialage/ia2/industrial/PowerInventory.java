@@ -61,7 +61,8 @@ final class PowerInventory extends SimpleContainer
             if (!device.fluidMode) return false;
             if (slot == 56) return WorkshopPlatform.canSupplyContainer(stack, true);
             if (slot != 54) return false;
-            return WorkshopCells.canDrain(stack, ReactorVessel.TANK_CAPACITY, "ic2:coolant");
+            return WorkshopCells.canDrain(
+                    stack, ReactorVessel.TANK_CAPACITY, WorkshopThermal::isCoolant);
         }
         int upgrades =
                 device.kind == PowerKind.MAGNETIZER
@@ -89,8 +90,14 @@ final class PowerInventory extends SimpleContainer
             case NUKE ->
                     slot == 0 && GameCharges.cartridge(stack)
                             || slot >= 1 && slot < 9 && GameCharges.primingItem(stack);
-            case RCI_RSH -> slot < 9 && stack.is(Items.REDSTONE_BLOCK);
-            case RCI_LZH -> slot < 9 && stack.is(Items.LAPIS_BLOCK);
+            case RCI_RSH ->
+                    slot < 9
+                            && (stack.is(Items.REDSTONE_BLOCK)
+                                    || WorkshopPlatform.tagged(stack, "c:storage_blocks/redstone"));
+            case RCI_LZH ->
+                    slot < 9
+                            && (stack.is(Items.LAPIS_BLOCK)
+                                    || WorkshopPlatform.tagged(stack, "c:storage_blocks/lapis"));
             case TRADE_O_MAT -> slot >= 0 && slot <= 2;
             case ENERGY_O_MAT ->
                     slot == 0

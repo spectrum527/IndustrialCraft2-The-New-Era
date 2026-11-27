@@ -186,6 +186,10 @@ def _crafting(repo, registered, eligible, forge, modern, write):
         if not result.startswith("ic2:") or result[4:] not in eligible:
             continue
         options = [expand_liquid_choices(book["ingredientSets"][i]) for i in indices]
+        if kind == "smelting" and len(options) == 1 and options[0] in (
+            ["ic2:deepslate_tin_ore"], ["ic2:deepslate_lead_ore"], ["ic2:deepslate_uranium_ore"]
+        ):
+            continue
         if result == "ic2:fluid_cell":
             # The reference aliases both cell recipes to the same pane. A full glass center
             # leaves both manufacturing routes reachable in the same native recipe book.
@@ -209,14 +213,20 @@ def _crafting(repo, registered, eligible, forge, modern, write):
                     ingredient = standard_tag if modern else {"tag": standard_tag[1:]}
                 else:
                     tag = "book/ingredient_" + str(i)
+                    mapped_values = list(dict.fromkeys(common_tag_for(item_id, forge) for item_id in available))
                     write("data/ic2/tags/" + tags + "/" + tag, {"replace": False,
-                          "values": [{"id": id, "required": False} for id in available]})
+                          "values": [{"id": entry, "required": False} for entry in mapped_values]})
                     ingredient = "#ic2:" + tag if modern else {"tag": "ic2:" + tag}
             else:
                 id = available[0]
                 if not forge:
                     id = {"minecraft:grass": "minecraft:short_grass", "minecraft:scute": "minecraft:turtle_scute"}.get(id, id)
-                mapped = common_tag_for(id, forge)
+                if result == "ic2:rubber_boots" and id == "minecraft:white_wool":
+                    mapped = "#minecraft:wool"
+                elif result == "ic2:batch_crafter" and id == "ic2:wrench":
+                    mapped = "#forge:tools/wrench" if forge else "#c:tools/wrench"
+                else:
+                    mapped = common_tag_for(id, forge)
                 if mapped.startswith("#"):
                     ingredient = mapped if modern else {"tag": mapped[1:]}
                 else:

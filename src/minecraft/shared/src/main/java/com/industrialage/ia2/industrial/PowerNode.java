@@ -357,9 +357,9 @@ public final class PowerNode extends PowerSaveBase
 
     private void refillLava() {
         for (int queued = inventory.getItem(0).getCount(); queued > 0; queued--) {
-            if (liquid >= LAVA_CAPACITY) return;
-            var intake = new WorkshopNode.Tank(LAVA_CAPACITY);
-            intake.fill(LAVA, liquid, false);
+            int room = LAVA_CAPACITY - liquid;
+            if (room <= 0) return;
+            var intake = new WorkshopNode.Tank(room);
             var fuel = WorkshopPlatform.drainWholeContainer(intake, inventory.getItem(0));
             if (fuel == null || !WorkshopThermal.isLava(fuel.liquid().id())) return;
             int volume = fuel.liquid().amount();
@@ -540,13 +540,17 @@ public final class PowerNode extends PowerSaveBase
         var input = inventory.getItem(slot);
         if (input.isEmpty() || !filling && coolant >= ReactorVessel.TANK_CAPACITY) return false;
         String liquid = filling ? "ic2:hot_coolant" : "ic2:coolant";
-        var tank = new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY);
-        tank.fill(liquid, filling ? hotCoolant : coolant, false);
-        var move =
-                filling
-                        ? WorkshopPlatform.fillContainer(tank, input)
-                        : WorkshopPlatform.drainWholeContainer(tank, input);
-        if (move == null || !liquid.equals(move.liquid().id())) return false;
+        WorkshopPlans.ContainerResult move;
+        if (filling) {
+            var tank = new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY);
+            tank.fill(liquid, hotCoolant, false);
+            move = WorkshopPlatform.fillContainer(tank, input);
+        } else {
+            var tank = new WorkshopNode.Tank(ReactorVessel.TANK_CAPACITY - coolant);
+            move = WorkshopPlatform.drainWholeContainer(tank, input);
+        }
+        if (move == null || !WorkshopThermal.matchesCanonical(move.liquid().id(), liquid))
+            return false;
         int volume = move.liquid().amount();
         if (volume <= 0 || (filling ? hotCoolant : ReactorVessel.TANK_CAPACITY - coolant) < volume)
             return false;
@@ -592,11 +596,11 @@ public final class PowerNode extends PowerSaveBase
                                 Math.min(limit, core.hotCoolant));
             } else if (!extract && core.coolant < ReactorVessel.TANK_CAPACITY) {
                 var drawn =
-                        WorkshopPlatform.pullFluid(
+                        WorkshopPlatform.pullMatchingFluid(
                                 level,
                                 target,
                                 side.getOpposite(),
-                                "ic2:coolant",
+                                WorkshopThermal::isCoolant,
                                 Math.min(limit, ReactorVessel.TANK_CAPACITY - core.coolant),
                                 false);
                 if (drawn != null) core.coolant += drawn.amount();

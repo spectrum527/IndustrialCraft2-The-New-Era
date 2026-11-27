@@ -1,6 +1,7 @@
 package com.industrialage.ia2.wrench;
 
 import com.industrialage.ia2.forge.equipment.ForgeGear;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -46,8 +47,11 @@ public final class WrenchNative {
     }
 
     static boolean isWrench(ItemStack tool) {
+        if (tool.isEmpty()) return false;
         var id = ForgeRegistries.ITEMS.getKey(tool.getItem());
-        return WRENCH.equals(id) || ELECTRIC.equals(id);
+        return WRENCH.equals(id)
+                || ELECTRIC.equals(id)
+                || WorkshopPlatform.tagged(tool, "c:tools/wrench");
     }
 
     private static boolean electric(ItemStack tool) {
@@ -60,7 +64,8 @@ public final class WrenchNative {
 
     static void pay(ItemStack tool, ServerPlayer player, InteractionHand hand, int cost) {
         if (electric(tool)) ForgeGear.spend(tool, cost);
-        else tool.hurtAndBreak(1, player, holder -> holder.broadcastBreakEvent(hand));
+        else if (tool.isDamageableItem())
+            tool.hurtAndBreak(1, player, holder -> holder.broadcastBreakEvent(hand));
     }
 
     static boolean mayBreak(

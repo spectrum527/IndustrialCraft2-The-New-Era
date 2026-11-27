@@ -167,7 +167,7 @@ final class WorkshopInventory extends SimpleContainer implements ProcessingSlots
 
     static boolean acceptsWasherWater(ItemStack stack) {
         return WorkshopCells.canDrain(
-                stack, WorkshopKind.ORE_WASHER.inputVolume(), WorkshopThermal.WATER);
+                stack, WorkshopKind.ORE_WASHER.inputVolume(), WorkshopThermal::isWater);
     }
 
     static boolean acceptsBottlerInput(int slot, ItemStack stack) {
@@ -183,7 +183,8 @@ final class WorkshopInventory extends SimpleContainer implements ProcessingSlots
     }
 
     static boolean acceptsBlastAir(ItemStack stack) {
-        return WorkshopCells.canDrain(stack, WorkshopKind.BLAST_FURNACE.inputVolume(), "ic2:air");
+        return WorkshopCells.canDrain(
+                stack, WorkshopKind.BLAST_FURNACE.inputVolume(), WorkshopThermal::isAir);
     }
 
     @Override

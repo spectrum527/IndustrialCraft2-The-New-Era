@@ -1,6 +1,7 @@
 package com.industrialage.ia2.wrench;
 
 import com.industrialage.ia2.gameplay.PortableGear;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
@@ -39,13 +40,17 @@ public final class WrenchNative {
     }
 
     static boolean isWrench(ItemStack tool) {
+        if (tool.isEmpty()) return false;
         var id = BuiltInRegistries.ITEM.getKey(tool.getItem());
-        return id.getNamespace().equals("ic2")
-                && (id.getPath().equals("wrench") || id.getPath().equals("electric_wrench"));
+        return (id.getNamespace().equals("ic2")
+                        && (id.getPath().equals("wrench")
+                                || id.getPath().equals("electric_wrench")))
+                || WorkshopPlatform.tagged(tool, "c:tools/wrench");
     }
 
     private static boolean electric(ItemStack tool) {
-        return BuiltInRegistries.ITEM.getKey(tool.getItem()).getPath().equals("electric_wrench");
+        var id = BuiltInRegistries.ITEM.getKey(tool.getItem());
+        return id.getNamespace().equals("ic2") && id.getPath().equals("electric_wrench");
     }
 
     static boolean canPay(ItemStack tool, int cost) {
@@ -54,7 +59,7 @@ public final class WrenchNative {
 
     static void pay(ItemStack tool, ServerPlayer player, InteractionHand hand, int cost) {
         if (electric(tool)) PortableGear.spend(tool, cost);
-        else
+        else if (tool.isDamageableItem())
             tool.hurtAndBreak(
                     1,
                     player,

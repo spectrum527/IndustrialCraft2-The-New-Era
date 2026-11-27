@@ -1,12 +1,14 @@
 package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.industrial.WorkshopBlock;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import com.industrialage.ia2.logistics.TransportPlatform;
 import com.industrialage.ia2.wrench.WrenchUse;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -41,7 +43,7 @@ final class WorldInteractions {
                     && WorldFluidAccess.refillFoam(level, pos, face, stack, sprayer)) return true;
             if (sprayer.spray(level, pos, face, player, hand, stack)) return true;
         }
-        if (state.getBlock() instanceof WorldBlocks.WetFoam foam && stack.is(Items.SAND)) {
+        if (state.getBlock() instanceof WorldBlocks.WetFoam foam && isSand(stack)) {
             if (level instanceof ServerLevel world
                     && foam.harden(world, pos, state)
                     && !player.isCreative()) stack.shrink(1);
@@ -49,7 +51,7 @@ final class WorldInteractions {
         }
         if (state.hasProperty(FoamCasing.HARDENED)
                 && !state.getValue(FoamCasing.HARDENED)
-                && stack.is(Items.SAND)) {
+                && isSand(stack)) {
             if (server
                     && level.setBlockAndUpdate(pos, state.setValue(FoamCasing.HARDENED, true))
                     && !player.isCreative()) stack.shrink(1);
@@ -131,10 +133,11 @@ final class WorldInteractions {
             }
             return true;
         }
-        boolean nutrient = item.equals("ic2:fertilizer");
-        boolean irrigation =
-                item.equals("ic2:hydration_cell") || item.equals("minecraft:water_bucket");
-        boolean protection = item.equals("ic2:weed_ex_cell") || item.equals("ic2:weed_ex_bucket");
+        boolean nutrient = WorldInventory.isFertilizer(stack);
+        boolean waterBucket = WorldInventory.isWaterBucket(stack);
+        boolean weedBucket = WorldInventory.isWeedExBucket(stack);
+        boolean irrigation = item.equals("ic2:hydration_cell") || waterBucket;
+        boolean protection = item.equals("ic2:weed_ex_cell") || weedBucket;
         boolean analyze = item.equals("ic2:cropnalyzer");
         boolean emptyHand = hand == InteractionHand.MAIN_HAND && stack.isEmpty();
         if (!nutrient && !irrigation && !protection && !analyze && !emptyHand) return false;
@@ -153,7 +156,7 @@ final class WorldInteractions {
                     player,
                     hand,
                     stack,
-                    item.endsWith("_bucket")
+                    waterBucket
                             ? new ItemStack(Items.BUCKET)
                             : TransportPlatform.emptyUniversalCell(stack));
         } else if (protection && (crop.species == CropSpecies.WEED || plot.protection == 0)) {
@@ -166,7 +169,7 @@ final class WorldInteractions {
                     player,
                     hand,
                     stack,
-                    item.endsWith("_bucket")
+                    weedBucket
                             ? new ItemStack(Items.BUCKET)
                             : TransportPlatform.emptyUniversalCell(stack));
         } else if (analyze && crop.species != null) {
@@ -291,6 +294,12 @@ final class WorldInteractions {
                             genes.resistance()));
         }
         return genes;
+    }
+
+    private static boolean isSand(ItemStack stack) {
+        return stack.is(Items.SAND)
+                || stack.is(ItemTags.SAND)
+                || WorkshopPlatform.tagged(stack, "c:sands");
     }
 
     private static void consume(

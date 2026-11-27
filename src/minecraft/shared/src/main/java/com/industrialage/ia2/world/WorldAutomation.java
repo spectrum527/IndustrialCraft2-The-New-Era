@@ -1,6 +1,7 @@
 package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.access.MachineAccess;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.ArrayList;
 import java.util.Comparator;
 import net.minecraft.core.Direction;
@@ -82,7 +83,7 @@ final class WorldAutomation {
             Direction output = Direction.DOWN;
             for (Direction side : Direction.values()) {
                 var filter = node.inventory.getItem(ROUTER_INPUT + side.ordinal());
-                if (!filter.isEmpty() && WorldNative.sameStack(filter, stack)) {
+                if (matchesSortFilter(filter, stack)) {
                     output = side;
                     break;
                 }
@@ -90,6 +91,15 @@ final class WorldAutomation {
             if (push(node, server, input, output, 16) > 0) return node.pay(2);
         }
         return false;
+    }
+
+    private static boolean matchesSortFilter(ItemStack filter, ItemStack stack) {
+        if (filter.isEmpty()) return false;
+        String tag = MachineAutomation.tagSpec(filter);
+        if (tag != null) {
+            return WorkshopPlatform.tagged(stack, tag);
+        }
+        return WorldNative.sameStack(filter, stack);
     }
 
     private static boolean distribute(WorldMachine node, ServerLevel server) {

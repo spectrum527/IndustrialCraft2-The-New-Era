@@ -1,5 +1,6 @@
 package com.industrialage.ia2.logistics;
 
+import com.industrialage.ia2.industrial.WorkshopThermal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -72,7 +73,8 @@ final class CellCrafting {
                                                 CellFamily.itemPath(
                                                         TransportPlatform.itemId(input)))
                                         != CellFamily.UNIVERSAL)) return false;
-                if (contents.amount() != CellFamily.CAPACITY || !use.fluid.equals(contents.id()))
+                if (contents.amount() != CellFamily.CAPACITY
+                        || !WorkshopThermal.matchesCanonical(contents.id(), use.fluid))
                     return false;
             }
             found = true;

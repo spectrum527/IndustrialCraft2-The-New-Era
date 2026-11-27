@@ -7,11 +7,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -212,7 +214,9 @@ public final class ArmorPlatform {
 
         @Override
         public Ingredient getRepairIngredient() {
-            return alloy() ? Ingredient.of(item("alloy")) : Ingredient.EMPTY;
+            return alloy()
+                    ? Ingredient.of(TagKey.create(Registry.ITEM_REGISTRY, id("alloys")))
+                    : Ingredient.EMPTY;
         }
 
         @Override

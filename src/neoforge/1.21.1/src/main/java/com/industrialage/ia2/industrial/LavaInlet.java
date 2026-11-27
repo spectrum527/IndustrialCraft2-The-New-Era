@@ -62,7 +62,7 @@ final class LavaInlet implements IFluidHandler {
 
     @Override
     public FluidStack drain(FluidStack stack, FluidAction action) {
-        if (stack.isEmpty() || !WorkshopPlatform.fluidId(stack).equals("ic2:hot_coolant"))
+        if (stack.isEmpty() || !WorkshopThermal.isHotCoolant(WorkshopPlatform.fluidId(stack)))
             return FluidStack.EMPTY;
         return drain(stack.getAmount(), action);
     }

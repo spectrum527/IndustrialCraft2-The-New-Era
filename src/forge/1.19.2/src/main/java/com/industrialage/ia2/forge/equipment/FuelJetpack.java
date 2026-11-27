@@ -25,7 +25,7 @@ final class FuelJetpack extends Item {
         if (fluid.isEmpty()) return false;
         var key = ForgeRegistries.FLUIDS.getKey(fluid.getFluid());
         return key != null
-                && WorkshopPlatform.fluidMatches(key.toString(), "ic2:biogas", "c:biogas");
+                && WorkshopPlatform.fluidMatches(key.toString(), "ic2:biogas", "forge:biogas");
     }
 
     @Override

@@ -1,13 +1,14 @@
 package com.industrialage.ia2.forge.content;
 
+import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
 
 final class CraftingTool extends Item {
     CraftingTool(Properties properties) {
@@ -65,7 +66,8 @@ final class CraftingTool extends Item {
                 @Override
                 public Ingredient getRepairIngredient() {
                     return Ingredient.of(
-                            ForgeRegistries.ITEMS.getValue(ForgeContent.id("bronze_ingot")));
+                            TagKey.create(
+                                    Registry.ITEM_REGISTRY, ForgeContent.id("bronze_ingots")));
                 }
 
                 @Override

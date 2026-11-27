@@ -86,15 +86,21 @@ final class UpgradeMenu extends UpgradeClickBase {
         for (int i = 0; i < 9; i++) {
             var sample = settings.filters()[i];
             ItemStack visual = ItemStack.EMPTY;
-            if (sample != null)
-                try {
-                    var item = WorldNative.item(sample.id());
-                    if (item != null) {
-                        visual = new ItemStack(item);
-                        if (visual.isDamageableItem()) visual.setDamageValue(sample.damage());
+            if (sample != null) {
+                String tag = MachineAutomation.parseTagSpec(sample.id());
+                if (tag != null) {
+                    visual = WorldNative.namedTagVisual("#" + tag);
+                } else {
+                    try {
+                        var item = WorldNative.item(sample.id());
+                        if (item != null) {
+                            visual = new ItemStack(item);
+                            if (visual.isDamageableItem()) visual.setDamageValue(sample.damage());
+                        }
+                    } catch (RuntimeException ignored) {
                     }
-                } catch (RuntimeException ignored) {
                 }
+            }
             samples.setItem(i, visual);
         }
     }

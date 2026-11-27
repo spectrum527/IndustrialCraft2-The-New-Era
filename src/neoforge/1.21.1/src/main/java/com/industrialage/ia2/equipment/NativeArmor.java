@@ -12,6 +12,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
@@ -54,7 +55,10 @@ final class NativeArmor {
                 alloy ? Map.of(ArmorItem.Type.CHESTPLATE, 6) : Map.of(),
                 alloy ? 12 : 0,
                 SoundEvents.ARMOR_EQUIP_LEATHER,
-                () -> alloy ? Ingredient.of(item("alloy")) : Ingredient.EMPTY,
+                () ->
+                        alloy
+                                ? Ingredient.of(TagKey.create(Registries.ITEM, id("alloys")))
+                                : Ingredient.EMPTY,
                 name.equals("quantum")
                         ? List.of(
                                 new ArmorMaterial.Layer(id(name)),

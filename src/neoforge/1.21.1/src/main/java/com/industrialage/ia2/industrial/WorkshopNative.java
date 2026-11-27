@@ -5,6 +5,10 @@ import com.industrialage.ia2.access.MachinePorts;
 import com.industrialage.ia2.access.ProcessingItemPort;
 import com.industrialage.ia2.industrial.WorkshopPlans.ContainerResult;
 import com.industrialage.ia2.industrial.WorkshopPlans.Liquid;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -36,6 +40,10 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 final class WorkshopNative {
+    private static final Map<String, Optional<TagKey<Item>>> ITEM_TAGS = new ConcurrentHashMap<>();
+    private static final Map<String, Optional<TagKey<net.minecraft.world.level.material.Fluid>>>
+            FLUID_TAGS = new ConcurrentHashMap<>();
+
     private WorkshopNative() {}
 
     static BlockEntityType<WorkshopNode> type(Block[] blocks) {
@@ -162,8 +170,16 @@ final class WorkshopNative {
     }
 
     private static boolean matchesRawTag(ItemStack item, String tag) {
-        var location = ResourceLocation.tryParse(tag);
-        return location != null && item.is(TagKey.create(Registries.ITEM, location));
+        var key =
+                ITEM_TAGS.computeIfAbsent(
+                        tag,
+                        raw -> {
+                            var loc = ResourceLocation.tryParse(raw);
+                            return loc == null
+                                    ? Optional.empty()
+                                    : Optional.of(TagKey.create(Registries.ITEM, loc));
+                        });
+        return key.isPresent() && item.is(key.get());
     }
 
     static boolean fluidTagged(String fluidId, String tag) {
@@ -175,10 +191,16 @@ final class WorkshopNative {
         return com.industrialage.ia2.content.ProcessingMachine.matchesTagAlias(
                 tag,
                 candidate -> {
-                    var loc = ResourceLocation.tryParse(candidate);
-                    return loc != null
-                            && fluid.builtInRegistryHolder()
-                                    .is(TagKey.create(Registries.FLUID, loc));
+                    var fluidKey =
+                            FLUID_TAGS.computeIfAbsent(
+                                    candidate,
+                                    raw -> {
+                                        var loc = ResourceLocation.tryParse(raw);
+                                        return loc == null
+                                                ? Optional.empty()
+                                                : Optional.of(TagKey.create(Registries.FLUID, loc));
+                                    });
+                    return fluidKey.isPresent() && fluid.builtInRegistryHolder().is(fluidKey.get());
                 });
     }
 
@@ -243,6 +265,36 @@ final class WorkshopNative {
         return stack.isEmpty()
                 ? Liquid.EMPTY
                 : new Liquid(WorkshopPlatform.fluidId(stack), stack.getAmount());
+    }
+
+    static Liquid pullMatchingFluid(
+            ServerLevel level,
+            BlockPos pos,
+            Direction side,
+            Predicate<String> accepts,
+            int amount,
+            boolean simulate) {
+        var handler = neighborFluid(level, pos, side);
+        if (handler == null || amount <= 0) {
+            return Liquid.EMPTY;
+        }
+        for (int tank = 0; tank < handler.getTanks(); tank++) {
+            var stored = handler.getFluidInTank(tank);
+            if (stored.isEmpty() || !stored.getComponentsPatch().isEmpty()) continue;
+            String id = WorkshopPlatform.fluidId(stored);
+            if (!accepts.test(id)) continue;
+            var request = new FluidStack(stored.getFluid(), Math.min(amount, stored.getAmount()));
+            var drained =
+                    handler.drain(
+                            request,
+                            simulate
+                                    ? IFluidHandler.FluidAction.SIMULATE
+                                    : IFluidHandler.FluidAction.EXECUTE);
+            if (!drained.isEmpty() && drained.getComponentsPatch().isEmpty()) {
+                return new Liquid(WorkshopPlatform.fluidId(drained), drained.getAmount());
+            }
+        }
+        return Liquid.EMPTY;
     }
 
     static boolean canSupplyContainer(ItemStack item, boolean filling) {

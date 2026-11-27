@@ -1,57 +1,22 @@
 package com.industrialage.ia2.industrial;
 
+import com.industrialage.ia2.content.UuValues;
 import com.industrialage.ia2.industrial.WorkshopRecipes.Recipe;
 import com.industrialage.ia2.industrial.WorkshopRecipes.Stack;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 
 final class WorkshopPlans {
-    private record UuAssemblyRecipe(int uuCost, String outputId, int outputCount) {}
-
-    private static final Map<String, UuAssemblyRecipe> UU_ASSEMBLY_RECIPES =
-            Map.ofEntries(
-                    Map.entry("ic2:uu_matter", new UuAssemblyRecipe(1, "minecraft:oak_log", 8)),
-                    Map.entry("minecraft:oak_log", new UuAssemblyRecipe(1, "minecraft:oak_log", 8)),
-                    Map.entry(
-                            "minecraft:cobblestone",
-                            new UuAssemblyRecipe(1, "minecraft:cobblestone", 16)),
-                    Map.entry("minecraft:stone", new UuAssemblyRecipe(1, "minecraft:stone", 16)),
-                    Map.entry("minecraft:glass", new UuAssemblyRecipe(1, "minecraft:glass", 32)),
-                    Map.entry("ic2:resin", new UuAssemblyRecipe(1, "ic2:resin", 21)),
-                    Map.entry(
-                            "minecraft:redstone",
-                            new UuAssemblyRecipe(1, "minecraft:redstone", 24)),
-                    Map.entry(
-                            "minecraft:lapis_lazuli",
-                            new UuAssemblyRecipe(1, "minecraft:lapis_lazuli", 9)),
-                    Map.entry("minecraft:coal", new UuAssemblyRecipe(1, "minecraft:coal", 20)),
-                    Map.entry(
-                            "minecraft:glowstone_dust",
-                            new UuAssemblyRecipe(2, "minecraft:glowstone_dust", 8)),
-                    Map.entry(
-                            "minecraft:obsidian",
-                            new UuAssemblyRecipe(2, "minecraft:obsidian", 12)),
-                    Map.entry(
-                            "minecraft:copper_ore",
-                            new UuAssemblyRecipe(2, "minecraft:copper_ore", 5)),
-                    Map.entry("ic2:tin_ore", new UuAssemblyRecipe(2, "ic2:tin_ore", 5)),
-                    Map.entry(
-                            "minecraft:iron_ore", new UuAssemblyRecipe(2, "minecraft:iron_ore", 2)),
-                    Map.entry("ic2:lead_ore", new UuAssemblyRecipe(2, "ic2:lead_ore", 2)),
-                    Map.entry(
-                            "minecraft:gold_ore", new UuAssemblyRecipe(3, "minecraft:gold_ore", 2)),
-                    Map.entry("ic2:uranium_ore", new UuAssemblyRecipe(5, "ic2:uranium_ore", 1)),
-                    Map.entry("ic2:iridium_ore", new UuAssemblyRecipe(7, "ic2:iridium_ore", 1)),
-                    Map.entry(
-                            "minecraft:diamond", new UuAssemblyRecipe(9, "minecraft:diamond", 1)));
-
     private WorkshopPlans() {}
 
     static boolean acceptsUuTemplate(ItemStack item) {
-        return !item.isEmpty() && UU_ASSEMBLY_RECIPES.containsKey(WorkshopPlatform.itemId(item));
+        return !item.isEmpty()
+                && UuValues.assemblyRecipe(
+                                WorkshopPlatform.itemId(item),
+                                tag -> WorkshopPlatform.tagged(item, tag))
+                        != null;
     }
 
     record Input(int slot, int count) {}
@@ -98,7 +63,10 @@ final class WorkshopPlans {
         if (kind == WorkshopKind.UU_ASSEMBLY) {
             var template = node.inventory.getItem(0);
             var supply = node.inventory.getItem(1);
-            var recipe = UU_ASSEMBLY_RECIPES.get(WorkshopPlatform.itemId(template));
+            var recipe =
+                    UuValues.assemblyRecipe(
+                            WorkshopPlatform.itemId(template),
+                            tag -> WorkshopPlatform.tagged(template, tag));
             if (recipe == null
                     || !WorkshopPlatform.itemId(supply).equals("ic2:uu_matter")
                     || supply.getCount() < recipe.uuCost()) {
@@ -133,7 +101,62 @@ final class WorkshopPlans {
                 return job;
             }
         }
+        if ("canner_bottle".equals(kind.recipes(node.mode))) {
+            return dynamicFoodCanning(node);
+        }
         return null;
+    }
+
+    private static Job dynamicFoodCanning(WorkshopNode node) {
+        int slots = node.kind.inputs(node.mode);
+        if (slots < 2) {
+            return null;
+        }
+        int canSlot = -1;
+        int foodSlot = -1;
+        for (int slot = 0; slot < slots; slot++) {
+            var stack = node.inventory.getItem(slot);
+            if (stack.isEmpty()) continue;
+            if (canSlot < 0 && WorkshopPlatform.itemId(stack).equals("ic2:tin_can")) {
+                canSlot = slot;
+            } else if (foodSlot < 0 && cannedServings(stack) > 0) {
+                foodSlot = slot;
+            }
+        }
+        if (canSlot < 0 || foodSlot < 0) {
+            return null;
+        }
+        var cans = node.inventory.getItem(canSlot);
+        var food = node.inventory.getItem(foodSlot);
+        int servings = cannedServings(food);
+        if (servings <= 0 || cans.getCount() < servings) {
+            return null;
+        }
+        var output = WorkshopPlatform.stack("ic2:filled_tin_can", servings);
+        return output.isEmpty()
+                ? null
+                : new Job(
+                        "canner_bottle/food/" + WorkshopPlatform.itemId(food),
+                        List.of(new Input(canSlot, servings), new Input(foodSlot, 1)),
+                        List.of(output),
+                        Liquid.EMPTY,
+                        Liquid.EMPTY,
+                        node.kind.duration,
+                        0,
+                        0);
+    }
+
+    static int cannedServings(ItemStack item) {
+        if (item.isEmpty()) return 0;
+        String id = WorkshopPlatform.itemId(item);
+        if (id.equals("ic2:tin_can")
+                || id.equals("ic2:filled_tin_can")
+                || id.equals("ic2:terra_wart")
+                || id.endsWith("coffee_mug")) {
+            return 0;
+        }
+        int nutrition = WorkshopPlatform.foodNutrition(item);
+        return nutrition <= 0 ? 0 : Math.min(64, nutrition);
     }
 
     private static Job classicFuel(WorkshopNode node) {
@@ -261,6 +284,11 @@ final class WorkshopPlans {
                 return WorkshopCells.canDrain(item, kind.outputVolume(), ignored -> true);
         }
         int ingredient = kind == WorkshopKind.SOLID_CANNER ? 1 - slot : slot;
+        if ("canner_bottle".equals(kind.recipes(mode))
+                && ingredient == 1
+                && cannedServings(item) > 0) {
+            return true;
+        }
         return WorkshopRecipes.forType(kind.recipes(mode)).stream()
                 .anyMatch(
                         recipe ->

@@ -1,6 +1,7 @@
 """Crafting data for basic and universal cells, with native content and remainder checks."""
 
 import csv
+from common_tags import common_tag_for
 
 
 WATER_CELLS = ["ic2:basic_water_cell", "ic2:water_cell", "ic2:empty_cell", "ic2:fluid_cell"]
@@ -74,6 +75,7 @@ def expand_liquid_choices(choices):
 def generate_cell_recipes(repo, forge, modern, write):
     recipe_dir = "recipes" if forge else "recipe"
     tags = "items" if forge else "item"
+    ns = "forge" if forge else "c"
     for name, values in {
         "water_cells": WATER_CELLS, "lava_cells": LAVA_CELLS,
         "universal_water_cells": ["ic2:fluid_cell", "ic2:water_cell"],
@@ -81,8 +83,13 @@ def generate_cell_recipes(repo, forge, modern, write):
     }.items():
         write(f"data/ic2/tags/{tags}/crafting/{name}", {"replace": False, "values": values})
 
+    def to_ingredient(entry):
+        if modern:
+            return entry
+        return {"tag": entry[1:]} if entry.startswith("#") else {"item": entry}
+
     def craft(name, inputs, result, use, preview_fluid=None):
-        ingredients = list(inputs) if modern else [{"item": entry} for entry in inputs]
+        ingredients = [to_ingredient(entry) for entry in inputs]
         recipe = {
             "type": "ic2:cell_shapeless", "cell_use": use, "ingredients": ingredients, "result": result,
         }
@@ -94,7 +101,8 @@ def generate_cell_recipes(repo, forge, modern, write):
         return {"item" if forge else "id": "ic2:" + path, "count": 1}
 
     for liquid in ("water", "lava"):
-        craft("basic_" + liquid, ["ic2:empty_cell", "minecraft:" + liquid + "_bucket"],
+        bucket_input = common_tag_for("minecraft:" + liquid + "_bucket", forge)
+        craft("basic_" + liquid, ["ic2:empty_cell", bucket_input],
               stack("basic_" + liquid + "_cell"), "fill")
     with (repo / "spec/registry/industrial-fluids.tsv").open(encoding="utf-8") as source:
         for definition in csv.DictReader(source, delimiter="\t"):
@@ -111,7 +119,7 @@ def generate_cell_recipes(repo, forge, modern, write):
                     preview_fluid = "ic2:" + fluid
                 else:
                     sample["components"] = {"ic2:cell_fluid": {"id": "ic2:" + fluid, "amount": 1000}}
-            craft("fill_" + fluid, ["ic2:fluid_cell", "ic2:" + fluid + "_bucket"], sample, "fill", preview_fluid)
+            craft("fill_" + fluid, ["ic2:fluid_cell", f"#{ns}:buckets/{fluid}"], sample, "fill", preview_fluid)
     for path in ("empty_cell", "basic_water_cell", "basic_lava_cell", "fluid_cell", *RECOVERABLE):
         shell = "empty_cell" if path in ("empty_cell", "basic_water_cell", "basic_lava_cell") else "fluid_cell"
         craft("recover_" + path, ["ic2:" + path], stack(shell), "recover")

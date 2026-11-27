@@ -2,6 +2,7 @@ package com.industrialage.ia2.world;
 
 import com.industrialage.ia2.access.MachineAccess;
 import com.industrialage.ia2.content.ProcessingUpgrades;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
@@ -286,13 +287,55 @@ public final class MachineAutomation {
                         String.join("|", samples)));
     }
 
+    static String tagSpec(ItemStack stack) {
+        return stack == null || stack.isEmpty()
+                ? null
+                : parseTagSpec(WorldNative.customName(stack));
+    }
+
+    static String parseTagSpec(String raw) {
+        if (raw == null) return null;
+        String trimmed = raw.trim();
+        String body;
+        if (trimmed.startsWith("#")) {
+            body = trimmed.substring(1).trim();
+        } else if (trimmed.startsWith("Tag:")) {
+            body = trimmed.substring(4).trim();
+        } else {
+            return null;
+        }
+        int colon = body.indexOf(':');
+        if (colon <= 0 || colon >= body.length() - 1) return null;
+        for (int i = 0; i < body.length(); i++) {
+            char c = body.charAt(i);
+            boolean valid =
+                    (c >= 'a' && c <= 'z')
+                            || (c >= '0' && c <= '9')
+                            || c == '_'
+                            || c == '-'
+                            || c == '.'
+                            || (i == colon && c == ':')
+                            || (i > colon && c == '/');
+            if (!valid) return null;
+        }
+        return body;
+    }
+
     record Sample(String id, int damage, double energy) {
         static Sample of(ItemStack stack) {
+            String tag = tagSpec(stack);
+            if (tag != null) {
+                return new Sample("#" + tag, 0, 0);
+            }
             return new Sample(
                     WorldNative.itemId(stack), stack.getDamageValue(), WorldNative.stored(stack));
         }
 
         boolean matches(ItemStack stack, boolean meta, boolean charge) {
+            String tag = parseTagSpec(id);
+            if (tag != null) {
+                return WorkshopPlatform.tagged(stack, tag);
+            }
             return id.equals(WorldNative.itemId(stack))
                     && (!meta || damage == stack.getDamageValue())
                     && (!charge || Double.compare(energy, WorldNative.stored(stack)) == 0);

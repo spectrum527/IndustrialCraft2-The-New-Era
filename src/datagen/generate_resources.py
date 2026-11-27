@@ -37,12 +37,57 @@ destination.parent.mkdir(parents=True, exist_ok=True)
 workspace = tempfile.TemporaryDirectory(prefix=".ic2-pack-", dir=destination.parent)
 out = Path(workspace.name)
 
+seen_recipes = set()
+blasting_emitted = set()
+REDUNDANT_DEEPSLATE_ORES = frozenset({
+    'ic2:deepslate_tin_ore', 'ic2:deepslate_lead_ore', 'ic2:deepslate_uranium_ore',
+})
+
+def _recipe_signature(value):
+    rtype = value.get('type')
+    res = value.get('result')
+    out_id = res.get('id', res.get('item')) if isinstance(res, dict) else res
+    cnt = res.get('count', 1) if isinstance(res, dict) else 1
+    if rtype == 'minecraft:crafting_shaped':
+        grid = tuple(
+            '|'.join(json.dumps(value['key'].get(ch, ''), sort_keys=True) for ch in row)
+            for row in value['pattern']
+        )
+        return (rtype, out_id, cnt, grid)
+    if rtype == 'minecraft:crafting_shapeless':
+        ings = tuple(sorted(json.dumps(x, sort_keys=True) for x in value['ingredients']))
+        return (rtype, out_id, cnt, ings)
+    if rtype in ('minecraft:smelting', 'minecraft:blasting'):
+        return (rtype, out_id, cnt, json.dumps(value['ingredient'], sort_keys=True))
+    return None
+
+def _blasting_eligible(value):
+    if value.get('type') != 'minecraft:smelting':
+        return False
+    res = value.get('result')
+    out_id = res.get('id', res.get('item')) if isinstance(res, dict) else res
+    return isinstance(out_id, str) and out_id.endswith('_ingot')
+
 def write(path, value):
-    if path.startswith(("data/ic2/recipes/", "data/ic2/recipe/")):
+    is_recipe = path.startswith(("data/ic2/recipes/", "data/ic2/recipe/"))
+    if is_recipe:
         value = cell_recipe(value, newest)
+        sig = _recipe_signature(value)
+        if sig is not None:
+            if sig in seen_recipes:
+                return
+            seen_recipes.add(sig)
     file = out / (path + '.json')
     file.parent.mkdir(parents=True, exist_ok=True)
     file.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    if is_recipe and _blasting_eligible(value):
+        blast_stem = path.rsplit('/', 1)[-1]
+        if blast_stem not in blasting_emitted:
+            blasting_emitted.add(blast_stem)
+            blast_recipe = dict(value)
+            blast_recipe['type'] = 'minecraft:blasting'
+            blast_recipe['cookingtime'] = 100
+            write(f"data/ic2/{'recipes' if forge else 'recipe'}/blasting/{blast_stem}", blast_recipe)
 
 def asset(path, value): write('assets/ic2/' + path, value)
 def data(path, value): write('data/ic2/' + path, value)
@@ -477,8 +522,10 @@ if materials_enabled:
         if source_name in current_names:
             continue
         output=entry['output']
-        if entry['kind']=='smelting' and any(entry['ingredient']==mod(source) and output==mod(product)
-                                              for source,product,_ in base_smelting):
+        if entry['kind']=='smelting' and (
+                entry['ingredient'] in REDUNDANT_DEEPSLATE_ORES
+                or any(entry['ingredient']==mod(source) and output==mod(product)
+                       for source,product,_ in base_smelting)):
             continue
         stack={('item' if forge else 'id'):output,'count':entry['count']}
         if entry['kind']=='shaped':
@@ -539,7 +586,7 @@ for name in ('tin_ore','deepslate_tin_ore'):
         {'type':'minecraft:item','name':mod(name),'conditions':[silk]},
         {'type':'minecraft:item','name':mod('raw_tin'),'functions':[{'function':'minecraft:apply_bonus',
             'enchantment':'minecraft:fortune','formula':'minecraft:ore_drops'}, {'function':'minecraft:explosion_decay'}]}]}]}]})
-shears = {'condition':'minecraft:match_tool','predicate':{'items':['minecraft:shears'] if forge else 'minecraft:shears'}}
+shears = {'condition':'minecraft:match_tool','predicate':{'tag':'forge:shears'} if forge else {'items':'#c:tools/shear'}}
 data(loot_dir + 'rubber_leaves', {'type':'minecraft:block','pools':[{'rolls':1,'entries':[{'type':'minecraft:alternatives','children':[
     {'type':'minecraft:item','name':mod('rubber_leaves'),'conditions':[{'condition':'minecraft:alternative' if forge else 'minecraft:any_of','terms':[shears,silk]}]},
     {'type':'minecraft:item','name':mod('rubber_sapling'),'conditions':[survives,{'condition':'minecraft:table_bonus',
@@ -560,14 +607,6 @@ minecraft_tag('needs_stone_tool', ('tin_ore','deepslate_tin_ore'))
 minecraft_tag('mineable/axe', ('rubber_log','wooden_storage_box'))
 minecraft_tag('logs', ('rubber_log',))
 minecraft_tag('leaves', ('rubber_leaves',))
-item_tags_dir = 'tags/items/' if forge else 'tags/item/'
-common_ns = 'forge' if forge else 'c'
-data(item_tags_dir + 'bronze_ingots',
-     {'replace': False, 'values': [mod('bronze_ingot'), {'id': f'#{common_ns}:ingots/bronze', 'required': False}]})
-data(item_tags_dir + 'alloys',
-     {'replace': False, 'values': [mod('alloy')]})
-data(item_tags_dir + 'recycler_blacklist',
-     {'replace': False, 'values': []})
 
 # Vanilla tree and ore definitions; loader biome modifier adds them to real worlds.
 ore = {'type':'minecraft:ore','config':{'size':8,'discard_chance_on_air_exposure':0.0,'targets':[
@@ -622,9 +661,9 @@ if not forge:
         write("assets/minecraft/atlases/items", {"sources":[items]})
 
 generate_world(repo, out, args.target, write)
-generate_common_tags(repo, forge, write)
 generate_advancements(repo, args.target, write)
 generate_families(repo, out, args.target, write)
+generate_common_tags(repo, out, forge, newest, write)
 
 # The original Classic game profile has distinct machine IDs that coexist with Experimental.
 classic = json.loads((repo / "spec/registry/classic-playable-recipes.json").read_text())
