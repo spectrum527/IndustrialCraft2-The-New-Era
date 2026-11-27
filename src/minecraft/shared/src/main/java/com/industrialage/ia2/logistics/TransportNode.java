@@ -58,6 +58,7 @@ public final class TransportNode extends TransportSaveBase
     long receivedItemAt = Long.MIN_VALUE;
     Direction cargoFrom;
     Direction cargoTo;
+    Direction externalIntakeFace;
     boolean cargoStalled;
     int cargoSeq;
     Direction fluidFlowDir;
@@ -160,11 +161,26 @@ public final class TransportNode extends TransportSaveBase
                     sendToNonPipe(world, side);
                 }
             }
+            if (!cargo.isEmpty()
+                    && canUseImplicitOutlet(world)
+                    && hasReadyImplicitOutlet(world, cargo, true)
+                    && !ItemPipeRouter.networkHasExplicitOutlet(world, this)) {
+                for (int i = 0; i < SIDES.length && !cargo.isEmpty(); i++) {
+                    var side = SIDES[Math.floorMod(time + i, SIDES.length)];
+                    if (!isReadyImplicitOutlet(world, side, cargo, true)) continue;
+                    if (extractionNozzles == 0 && side == output.getOpposite()) {
+                        output = redirectOutputFace(world, side);
+                    }
+                    sendToNonPipe(world, side);
+                }
+            }
             if (!cargo.isEmpty()) {
-                Direction routed = ItemPipeRouter.nextHop(world, this, cargo, time);
-                if (routed != null) {
-                    sendToRoutedPipe(world, routed, time);
-                } else if (nozzle(output) == Nozzle.NONE) {
+                var decision = ItemPipeRouter.decideHop(world, this, cargo, time);
+                if (decision.hop() != null) {
+                    sendToRoutedPipe(world, decision.hop(), time);
+                } else if (!decision.hasSink()
+                        && nozzle(output) == Nozzle.NONE
+                        && output != cargoFrom) {
                     sendToDirectedPipe(world, output, time);
                 }
             }
@@ -191,6 +207,7 @@ public final class TransportNode extends TransportSaveBase
             if (!isPipe(source) && machineOutput(source, face)) {
                 var extracted = TransportPlatform.takeItem(world, pos, face, spec.rate());
                 if (!extracted.isEmpty()) {
+                    externalIntakeFace = side;
                     cargo = extracted;
                     onCargoEntered(side, time, true);
                 }
@@ -208,23 +225,155 @@ public final class TransportNode extends TransportSaveBase
             return output;
         }
         Direction target =
-                ItemPipeRouter.preferredTarget(
-                        candidate -> nozzle(candidate) == Nozzle.EXTRACTION,
-                        candidate -> isValidNonPipeItemTarget(world, candidate));
+                cargo.isEmpty()
+                        ? null
+                        : ItemPipeRouter.preferredTarget(
+                                candidate -> nozzle(candidate) == Nozzle.EXTRACTION,
+                                candidate ->
+                                        isValidNonPipeItemTarget(world, candidate)
+                                                && TransportPlatform.canAcceptItem(
+                                                        world,
+                                                        worldPosition.relative(candidate),
+                                                        candidate.getOpposite(),
+                                                        cargo));
+        if (target == null) {
+            target =
+                    ItemPipeRouter.preferredTarget(
+                            candidate -> nozzle(candidate) == Nozzle.EXTRACTION,
+                            candidate -> isValidNonPipeItemTarget(world, candidate));
+        }
         if (target != null && target != output) {
-            world.setBlock(
-                    worldPosition,
-                    state.setValue(TransportBlock.OUT, target),
-                    Block.UPDATE_CLIENTS);
-            TransportBlock.refreshConnections(world, worldPosition);
-            if (!cargo.isEmpty()) {
-                cargoTo = target;
-                cargoStalled = false;
-                syncVisual();
-            }
-            return target;
+            return redirectOutputFace(world, target);
         }
         return output;
+    }
+
+    private Direction redirectOutputFace(ServerLevel world, Direction target) {
+        var state = getBlockState();
+        if (!state.hasProperty(TransportBlock.OUT)
+                || state.getValue(TransportBlock.OUT) == target) {
+            return target;
+        }
+        world.setBlock(
+                worldPosition, state.setValue(TransportBlock.OUT, target), Block.UPDATE_CLIENTS);
+        TransportBlock.refreshConnections(world, worldPosition);
+        if (!cargo.isEmpty()) {
+            cargoTo = target;
+            cargoStalled = false;
+            syncVisual();
+        }
+        return target;
+    }
+
+    void clearExternalIntake(Direction side) {
+        if (side == null || externalIntakeFace == side) {
+            externalIntakeFace = null;
+        }
+    }
+
+    boolean hasConfiguredExplicitOutlet(ServerLevel world, Direction side) {
+        if (spec.kind() != Kind.ITEM_PIPE || !open(side)) return false;
+        var mode = nozzle(side);
+        var state = getBlockState();
+        if (mode != Nozzle.INJECTION
+                && (mode != Nozzle.NONE
+                        || !state.hasProperty(TransportBlock.OUT)
+                        || side != state.getValue(TransportBlock.OUT))) {
+            return false;
+        }
+        var pos = worldPosition.relative(side);
+        if (!world.hasChunkAt(pos)) return false;
+        var other = world.getBlockEntity(pos);
+        if (isPipe(other)) return false;
+        var face = side.getOpposite();
+        return machineInput(other, face) && TransportPlatform.hasItemPort(world, pos, face);
+    }
+
+    boolean hasConfiguredExplicitOutlet(ServerLevel world) {
+        for (var side : SIDES) {
+            if (hasConfiguredExplicitOutlet(world, side)) return true;
+        }
+        return false;
+    }
+
+    boolean isReadyExplicitOutlet(ServerLevel world, Direction side, ItemStack stack) {
+        if (spec.kind() != Kind.ITEM_PIPE || !open(side) || stack.isEmpty()) return false;
+        var mode = nozzle(side);
+        var state = getBlockState();
+        if (mode != Nozzle.INJECTION
+                && (mode != Nozzle.NONE
+                        || !state.hasProperty(TransportBlock.OUT)
+                        || side != state.getValue(TransportBlock.OUT))) {
+            return false;
+        }
+        var pos = worldPosition.relative(side);
+        if (!world.hasChunkAt(pos)) return false;
+        var other = world.getBlockEntity(pos);
+        if (isPipe(other)) return false;
+        var face = side.getOpposite();
+        return machineInput(other, face)
+                && TransportPlatform.canAcceptItem(world, pos, face, stack);
+    }
+
+    boolean hasReadyExplicitOutlet(ServerLevel world, ItemStack stack) {
+        for (var side : SIDES) {
+            if (isReadyExplicitOutlet(world, side, stack)) return true;
+        }
+        return false;
+    }
+
+    boolean canUseImplicitOutlet(ServerLevel world) {
+        if (spec.kind() != Kind.ITEM_PIPE || injectionNozzles != 0) return false;
+        var state = getBlockState();
+        if (!state.hasProperty(TransportBlock.OUT)) return false;
+        Direction output = state.getValue(TransportBlock.OUT);
+        if (!isLinkedItemPipe(world, output) && !hasConfiguredExplicitOutlet(world, output)) {
+            return true;
+        }
+        int linkedPipes = 0;
+        for (var side : SIDES) {
+            if (isLinkedItemPipe(world, side)) linkedPipes++;
+        }
+        return linkedPipes <= 1 && isLinkedItemPipe(world, output);
+    }
+
+    boolean isImplicitOutletFace(ServerLevel world, Direction side, boolean localDelivery) {
+        if (spec.kind() != Kind.ITEM_PIPE || !open(side) || nozzle(side) != Nozzle.NONE) {
+            return false;
+        }
+        if (side == cargoFrom || side == externalIntakeFace) return false;
+        var state = getBlockState();
+        if (localDelivery
+                && extractionNozzles == 0
+                && state.hasProperty(TransportBlock.OUT)
+                && side == state.getValue(TransportBlock.OUT).getOpposite()
+                && cargoFrom == null) {
+            return false;
+        }
+        var pos = worldPosition.relative(side);
+        if (!world.hasChunkAt(pos)) return false;
+        var other = world.getBlockEntity(pos);
+        if (isPipe(other)) return false;
+        var face = side.getOpposite();
+        return machineInput(other, face) && TransportPlatform.hasItemPort(world, pos, face);
+    }
+
+    boolean isReadyImplicitOutlet(
+            ServerLevel world, Direction side, ItemStack stack, boolean localDelivery) {
+        if (stack.isEmpty() || !isImplicitOutletFace(world, side, localDelivery)) return false;
+        var pos = worldPosition.relative(side);
+        return TransportPlatform.canAcceptItem(world, pos, side.getOpposite(), stack);
+    }
+
+    boolean hasReadyImplicitOutlet(ServerLevel world, ItemStack stack) {
+        return hasReadyImplicitOutlet(world, stack, false);
+    }
+
+    boolean hasReadyImplicitOutlet(ServerLevel world, ItemStack stack, boolean localDelivery) {
+        for (var side : SIDES) {
+            if (isReadyImplicitOutlet(world, side, stack, localDelivery)) return true;
+        }
+        return false;
     }
 
     boolean isLinkedItemPipe(ServerLevel world, Direction side) {
@@ -300,16 +449,17 @@ public final class TransportNode extends TransportSaveBase
                         ? state.getValue(TransportBlock.OUT)
                         : Direction.NORTH;
         for (var side : SIDES) {
-            var mode = nozzle(side);
-            if (mode != Nozzle.INJECTION && (mode != Nozzle.NONE || side != output)) continue;
-            var pos = worldPosition.relative(side);
-            if (!world.hasChunkAt(pos)) continue;
-            var other = world.getBlockEntity(pos);
-            if (isPipe(other)) continue;
-            var face = side.getOpposite();
-            if (machineInput(other, face)
-                    && TransportPlatform.canAcceptItem(world, pos, face, cargo)) {
+            if (isReadyExplicitOutlet(world, side, cargo)) {
                 return side;
+            }
+        }
+        if (canUseImplicitOutlet(world)
+                && hasReadyImplicitOutlet(world, cargo, true)
+                && !ItemPipeRouter.networkHasExplicitOutlet(world, this)) {
+            for (var side : SIDES) {
+                if (isReadyImplicitOutlet(world, side, cargo, true)) {
+                    return side;
+                }
             }
         }
         Direction routed = ItemPipeRouter.previewHop(world, this, cargo, time);
@@ -498,7 +648,10 @@ public final class TransportNode extends TransportSaveBase
         if (!(world.getBlockEntity(pos) instanceof TransportNode next) || !linksTo(side, next)) {
             return;
         }
-        int sent = next.insertItem(side.getOpposite(), cargo, false, time);
+        int sent = next.insertItem(side.getOpposite(), cargo, false, time, false);
+        if (sent > 0) {
+            next.flushCommittedVisualSync();
+        }
         consumeSent(sent);
     }
 
@@ -629,6 +782,11 @@ public final class TransportNode extends TransportSaveBase
     }
 
     int insertItem(Direction side, ItemStack incoming, boolean simulate, long time) {
+        return insertItem(side, incoming, simulate, time, true);
+    }
+
+    int insertItem(
+            Direction side, ItemStack incoming, boolean simulate, long time, boolean external) {
         if (spec.kind() != Kind.ITEM_PIPE
                 || incoming.isEmpty()
                 || !permitsInbound(side)
@@ -636,6 +794,9 @@ public final class TransportNode extends TransportSaveBase
         int space = Math.min(spec.capacity(), incoming.getMaxStackSize()) - cargo.getCount();
         int accepted = Math.min(incoming.getCount(), Math.max(0, space));
         if (!simulate && accepted > 0) {
+            if (external && side != null) {
+                externalIntakeFace = side;
+            }
             boolean wasEmpty = cargo.isEmpty();
             if (wasEmpty) {
                 cargo = incoming.copy();
