@@ -115,6 +115,9 @@ abstract class TransportSaveBase extends BlockEntity {
             tag.putInt("nozzle_extraction", node.extractionNozzles);
             tag.putInt("nozzle_injection", node.injectionNozzles);
         }
+        if (node.spec.kind() == Kind.ITEM_PIPE && node.externalIntakeFace != null) {
+            tag.putByte("external_intake", encodeDirection(node.externalIntakeFace));
+        }
     }
 
     @Override
@@ -144,6 +147,10 @@ abstract class TransportSaveBase extends BlockEntity {
         node.lv = tag.getInt("ic2_pump_lv") & SIDE_MASK;
         node.mv = tag.getInt("ic2_pump_mv") & SIDE_MASK & ~node.lv;
         node.restoreNozzles(tag.getInt("nozzle_extraction"), tag.getInt("nozzle_injection"));
+        node.externalIntakeFace =
+                node.spec.kind() == Kind.ITEM_PIPE && tag.contains("external_intake")
+                        ? decodeDirection(tag.getByte("external_intake"))
+                        : null;
     }
 
     @Override

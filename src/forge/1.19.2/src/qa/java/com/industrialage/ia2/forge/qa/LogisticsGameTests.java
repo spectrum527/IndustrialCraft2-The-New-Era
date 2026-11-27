@@ -7,14 +7,18 @@ import static com.industrialage.ia2.forge.qa.PlayableGameTests.player;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.stack;
 import static com.industrialage.ia2.forge.qa.PlayableGameTests.useOn;
 
+import com.industrialage.ia2.logistics.TransportNode;
 import com.industrialage.ia2.wrenchtest.WrenchHits;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.CraftingMenu;
@@ -797,6 +801,416 @@ public final class LogisticsGameTests {
                         helper.succeed();
                     }
                 });
+    }
+
+    /**
+     * Verifies auto-routing upward vertical climbs (straight up placement against overhead sink,
+     * opposing OUT, top-down opposing chain), horizontal->UP->horizontal, and DOWN->side->UP.
+     */
+    @GameTest(template = "smoke", batch = "pipeRouting", timeoutTicks = 120)
+    public static void itemPipeVerticalUpwardAutoRouting(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var pipeBlock = PlayableGameTests.block("bronze_item_pipe_small");
+        var base = helper.absolutePos(new BlockPos(1, 30, 1));
+        var player = player(helper, base);
+
+        // 1. Straight UP placed via real BlockPlaceContext against overhead barrel bottom.
+        var upSrc = base;
+        var upDst = upSrc.above(4);
+        level.setBlockAndUpdate(upSrc, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(upDst, Blocks.BARREL.defaultBlockState());
+        placePipeAgainst(helper, player, pipeBlock, upSrc, Direction.UP);
+        placePipeAgainst(helper, player, pipeBlock, upSrc.above(), Direction.UP);
+        placePipeAgainst(helper, player, pipeBlock, upDst, Direction.DOWN);
+        check(
+                helper,
+                level.getBlockState(upSrc.above(3)).getValue(BlockStateProperties.FACING)
+                        == Direction.UP,
+                "Vertical UP pipe placed against overhead sink faces UP into the barrel");
+        ((Container) level.getBlockEntity(upSrc)).setItem(0, new ItemStack(Items.DIAMOND, 12));
+
+        // 2. Straight UP where top pipe OUT points DOWN (opposing lower pipe).
+        var oppSrc = base.east(3);
+        var oppDst = oppSrc.above(4);
+        level.setBlockAndUpdate(oppSrc, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(oppDst, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, oppSrc.above(1), Direction.UP);
+        setPipe(level, pipeBlock, oppSrc.above(2), Direction.UP);
+        setPipe(level, pipeBlock, oppSrc.above(3), Direction.DOWN);
+        ((Container) level.getBlockEntity(oppSrc)).setItem(0, new ItemStack(Items.EMERALD, 12));
+
+        // 3. Top-down opposing chain: P1(UP) -> P2(DOWN) -> P3(DOWN) -> overhead barrel.
+        var topDownSrc = base.east(6);
+        var topDownDst = topDownSrc.above(4);
+        level.setBlockAndUpdate(topDownSrc, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(topDownDst, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, topDownSrc.above(1), Direction.UP);
+        setPipe(level, pipeBlock, topDownSrc.above(2), Direction.DOWN);
+        setPipe(level, pipeBlock, topDownSrc.above(3), Direction.DOWN);
+        ((Container) level.getBlockEntity(topDownSrc))
+                .setItem(0, new ItemStack(Items.PRISMARINE_SHARD, 12));
+
+        // 4. Horizontal -> UP -> horizontal (terminal pipe OUT=UP into air, sink on EAST).
+        var climbSrc = base.south(4);
+        var climbDst = climbSrc.east(3).above();
+        level.setBlockAndUpdate(climbSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, climbSrc.east(), Direction.EAST);
+        setPipe(level, pipeBlock, climbSrc.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, climbSrc.east(2).above(), Direction.UP);
+        level.setBlockAndUpdate(climbDst, Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(climbSrc))
+                .setItem(0, new ItemStack(Items.IRON_INGOT, 16));
+
+        // 5. DOWN -> side -> UP (unrotated terminal OUT=UP into air).
+        var dipSrc = base.offset(5, 2, 4);
+        var dipDst = dipSrc.below().east(2);
+        level.setBlockAndUpdate(dipSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, dipSrc.below(), Direction.DOWN);
+        setPipe(level, pipeBlock, dipSrc.below(2), Direction.DOWN);
+        setPipe(level, pipeBlock, dipSrc.below(2).east(), Direction.EAST);
+        setPipe(level, pipeBlock, dipSrc.below().east(), Direction.UP);
+        level.setBlockAndUpdate(dipDst, Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(dipSrc))
+                .setItem(0, new ItemStack(Items.COPPER_INGOT, 12));
+
+        helper.onEachTick(
+                () -> {
+                    var upBox = (Container) level.getBlockEntity(upDst);
+                    var oppBox = (Container) level.getBlockEntity(oppDst);
+                    var topDownBox = (Container) level.getBlockEntity(topDownDst);
+                    var climbBox = (Container) level.getBlockEntity(climbDst);
+                    var dipBox = (Container) level.getBlockEntity(dipDst);
+                    if (upBox.countItem(Items.DIAMOND) == 12
+                            && ((Container) level.getBlockEntity(upSrc)).isEmpty()
+                            && oppBox.countItem(Items.EMERALD) == 12
+                            && ((Container) level.getBlockEntity(oppSrc)).isEmpty()
+                            && level.getBlockState(oppSrc.above(3))
+                                            .getValue(BlockStateProperties.FACING)
+                                    == Direction.UP
+                            && topDownBox.countItem(Items.PRISMARINE_SHARD) == 12
+                            && ((Container) level.getBlockEntity(topDownSrc)).isEmpty()
+                            && level.getBlockState(topDownSrc.above(3))
+                                            .getValue(BlockStateProperties.FACING)
+                                    == Direction.UP
+                            && climbBox.countItem(Items.IRON_INGOT) == 16
+                            && ((Container) level.getBlockEntity(climbSrc)).isEmpty()
+                            && dipBox.countItem(Items.COPPER_INGOT) == 12
+                            && ((Container) level.getBlockEntity(dipSrc)).isEmpty()) {
+                        helper.succeed();
+                    }
+                });
+    }
+
+    /**
+     * Verifies L/Z/U corners, T-junction backpressure failover, and decoy isolation when an
+     * explicit outlet is full.
+     */
+    @GameTest(template = "smoke", batch = "pipeRouting", timeoutTicks = 120)
+    public static void itemPipeCornersTeeFailoverAndDecoyIsolation(GameTestHelper helper) {
+        var level = helper.getLevel();
+        var pipeBlock = PlayableGameTests.block("bronze_item_pipe_small");
+        var base = helper.absolutePos(new BlockPos(1, 55, 1));
+
+        // 1. Horizontal L/Z-turn (zero nozzles).
+        var zSrc = base.south(2);
+        var zDst = zSrc.east(3).north(2);
+        level.setBlockAndUpdate(zSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, zSrc.east(), Direction.EAST);
+        setPipe(level, pipeBlock, zSrc.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, zSrc.east(2).north(), Direction.NORTH);
+        setPipe(level, pipeBlock, zSrc.east(3).north(), Direction.EAST);
+        level.setBlockAndUpdate(zDst, Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(zSrc)).setItem(0, new ItemStack(Items.GOLD_INGOT, 12));
+
+        // 2. Horizontal U-turn (zero nozzles, 1-block gap).
+        var uSrc = base.south(5);
+        var uDst = uSrc.south(2);
+        level.setBlockAndUpdate(uSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, uSrc.east(), Direction.EAST);
+        setPipe(level, pipeBlock, uSrc.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, uSrc.east(2).south(), Direction.SOUTH);
+        setPipe(level, pipeBlock, uSrc.east(2).south(2), Direction.SOUTH);
+        setPipe(level, pipeBlock, uSrc.east().south(2), Direction.SOUTH);
+        level.setBlockAndUpdate(uDst, Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(uSrc)).setItem(0, new ItemStack(Items.QUARTZ, 12));
+
+        // 3. T-junction failover under backpressure (north barrel only fits 6 more coal).
+        var teeSrc = base.offset(6, 0, 2);
+        var teeNorthDst = teeSrc.east(3).north();
+        var teeSouthDst = teeSrc.east(3).south();
+        level.setBlockAndUpdate(teeSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, teeSrc.east(), Direction.EAST);
+        setPipe(level, pipeBlock, teeSrc.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, teeSrc.east(2).north(), Direction.NORTH);
+        setPipe(level, pipeBlock, teeSrc.east(2).south(), Direction.SOUTH);
+        level.setBlockAndUpdate(teeNorthDst, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(teeSouthDst, Blocks.BARREL.defaultBlockState());
+        var teeNorthBox = (Container) level.getBlockEntity(teeNorthDst);
+        teeNorthBox.setItem(0, new ItemStack(Items.COAL, 58));
+        for (int slot = 1; slot < teeNorthBox.getContainerSize(); slot++) {
+            teeNorthBox.setItem(slot, new ItemStack(Items.STICK, 1));
+        }
+        ((Container) level.getBlockEntity(teeSrc)).setItem(0, new ItemStack(Items.COAL, 16));
+
+        // 4. Explicit-outlet decoy isolation even when explicit outlet is full.
+        var decoySrc = base.offset(6, 0, 6);
+        var decoyPipe2 = decoySrc.east(2);
+        var decoyPos = decoyPipe2.north();
+        var explicitDst = decoySrc.east(4);
+        level.setBlockAndUpdate(decoySrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, decoySrc.east(), Direction.EAST);
+        setPipe(level, pipeBlock, decoyPipe2, Direction.EAST);
+        setPipe(level, pipeBlock, decoySrc.east(3), Direction.EAST);
+        level.setBlockAndUpdate(decoyPos, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(explicitDst, Blocks.BARREL.defaultBlockState());
+        var explicitBox = (Container) level.getBlockEntity(explicitDst);
+        for (int slot = 0; slot < explicitBox.getContainerSize(); slot++) {
+            explicitBox.setItem(slot, new ItemStack(Items.STICK, 1));
+        }
+        ((Container) level.getBlockEntity(decoySrc)).setItem(0, new ItemStack(Items.REDSTONE, 8));
+
+        int[] waitTicks = {0};
+        boolean[] openedExplicit = {false};
+        helper.onEachTick(
+                () -> {
+                    var decoyBox = (Container) level.getBlockEntity(decoyPos);
+                    if (!decoyBox.isEmpty()) {
+                        helper.fail("Decoy barrel leaked items while explicit outlet existed");
+                    }
+                    if (!openedExplicit[0]) {
+                        waitTicks[0]++;
+                        if (waitTicks[0] >= 25
+                                && ((Container) level.getBlockEntity(decoySrc))
+                                                .countItem(Items.REDSTONE)
+                                        < 8) {
+                            explicitBox.setItem(0, ItemStack.EMPTY);
+                            openedExplicit[0] = true;
+                        }
+                        return;
+                    }
+                    var zBox = (Container) level.getBlockEntity(zDst);
+                    var uBox = (Container) level.getBlockEntity(uDst);
+                    var teeSouthBox = (Container) level.getBlockEntity(teeSouthDst);
+                    int teeDelivered =
+                            (teeNorthBox.countItem(Items.COAL) - 58)
+                                    + teeSouthBox.countItem(Items.COAL);
+                    if (zBox.countItem(Items.GOLD_INGOT) == 12
+                            && ((Container) level.getBlockEntity(zSrc)).isEmpty()
+                            && uBox.countItem(Items.QUARTZ) == 12
+                            && ((Container) level.getBlockEntity(uSrc)).isEmpty()
+                            && teeDelivered == 16
+                            && teeNorthBox.countItem(Items.COAL) <= 64
+                            && teeSouthBox.countItem(Items.COAL) >= 10
+                            && ((Container) level.getBlockEntity(teeSrc)).isEmpty()
+                            && explicitBox.countItem(Items.REDSTONE) == 8
+                            && ((Container) level.getBlockEntity(decoySrc)).isEmpty()
+                            && decoyBox.isEmpty()) {
+                        helper.succeed();
+                    }
+                });
+    }
+
+    /**
+     * Verifies extraction+injection vertical/corner climb with backward OUT & continuous flow,
+     * pipe-to-pipe nozzle install rejection, extraction-only climb+corner, and NBT persistence of
+     * external_intake across simulated cold reload.
+     */
+    @GameTest(template = "smoke", batch = "pipeRouting", timeoutTicks = 140)
+    public static void itemPipeNozzleClimbContinuousFlowAndExternalIntakeReload(
+            GameTestHelper helper) {
+        var level = helper.getLevel();
+        var pipeBlock = PlayableGameTests.block("bronze_item_pipe_small");
+        var base = helper.absolutePos(new BlockPos(1, 80, 1));
+        var player = player(helper, base);
+
+        // 1. Extraction + injection across corner + UP climb + backward OUT + 24-item continuous
+        // flow + pipe-face nozzle install rejection.
+        var nozzleSrc = base;
+        var nP1 = nozzleSrc.east();
+        var nP2 = nozzleSrc.east(2);
+        var nP3 = nP2.above();
+        var nP4 = nP3.south();
+        var nDst = nP4.east();
+        level.setBlockAndUpdate(nozzleSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, nP1, Direction.WEST);
+        setPipe(level, pipeBlock, nP2, Direction.WEST);
+        setPipe(level, pipeBlock, nP3, Direction.DOWN);
+        setPipe(level, pipeBlock, nP4, Direction.NORTH);
+        level.setBlockAndUpdate(nDst, Blocks.BARREL.defaultBlockState());
+        interact(helper, player, nP1, Direction.WEST, stack("pipe_extraction_nozzle"));
+        interact(helper, player, nP4, Direction.EAST, stack("pipe_injection_nozzle"));
+        check(
+                helper,
+                level.getBlockState(nP4).getValue(BlockStateProperties.FACING) == Direction.EAST,
+                "Injection nozzle realigned backward pipe OUT toward injection face");
+        var rejectedPipeNozzle = stack("pipe_injection_nozzle");
+        var pipeFaceResult = useOnPipeFace(helper, player, nP2, Direction.WEST, rejectedPipeNozzle);
+        check(
+                helper,
+                !pipeFaceResult.consumesAction()
+                        && player.getItemInHand(InteractionHand.MAIN_HAND).getCount() == 1,
+                "Nozzle installation onto a pipe-to-pipe face was rejected without consuming item");
+        ((Container) level.getBlockEntity(nozzleSrc))
+                .setItem(0, new ItemStack(Items.LAPIS_LAZULI, 24));
+
+        // 2. Extraction nozzle ONLY (no injection nozzle) across horizontal -> UP -> corner.
+        var extSrc = base.south(4);
+        var eP1 = extSrc.east();
+        var eP2 = extSrc.east(2);
+        var eP3 = eP2.above();
+        var eDst = eP3.south();
+        level.setBlockAndUpdate(extSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, eP1, Direction.NORTH);
+        setPipe(level, pipeBlock, eP2, Direction.EAST);
+        setPipe(level, pipeBlock, eP3, Direction.UP);
+        level.setBlockAndUpdate(eDst, Blocks.BARREL.defaultBlockState());
+        interact(helper, player, eP1, Direction.WEST, stack("pipe_extraction_nozzle"));
+        ((Container) level.getBlockEntity(extSrc)).setItem(0, new ItemStack(Items.REDSTONE, 16));
+
+        // 3. Auto-routed corner source pipe NBT persistence of external_intake across reload.
+        var coldSrc = base.offset(5, 0, 2);
+        var cP1 = coldSrc.east();
+        var cP2 = cP1.above();
+        var coldDst = cP2.east();
+        level.setBlockAndUpdate(coldSrc, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, cP1, Direction.EAST);
+        setPipe(level, pipeBlock, cP2, Direction.UP);
+        ((Container) level.getBlockEntity(coldSrc))
+                .setItem(0, new ItemStack(Items.AMETHYST_SHARD, 8));
+
+        // Stage: 0 = wait for cP1 pull, 1 = wait 5 ticks post-reload without dest, 2 = dest placed
+        int[] coldStage = {0, 0};
+        helper.onEachTick(
+                () -> {
+                    if (coldStage[0] == 0) {
+                        var held =
+                                machine(helper, cP1)
+                                        .getCapability(
+                                                ForgeCapabilities.ITEM_HANDLER, Direction.EAST)
+                                        .map(h -> h.getStackInSlot(0))
+                                        .orElse(ItemStack.EMPTY);
+                        if (held.getCount() == 4) {
+                            CompoundTag saved = machine(helper, cP1).saveWithoutMetadata();
+                            check(
+                                    helper,
+                                    saved.contains("external_intake")
+                                            && saved.getByte("external_intake")
+                                                    == (byte) Direction.WEST.ordinal(),
+                                    "Saved item pipe NBT persisted external_intake=WEST");
+                            var reloaded = new TransportNode(cP1, level.getBlockState(cP1));
+                            reloaded.load(saved);
+                            level.setBlockEntity(reloaded);
+                            reloaded.setChanged();
+                            coldStage[0] = 1;
+                        }
+                        return;
+                    }
+                    if (coldStage[0] == 1) {
+                        coldStage[1]++;
+                        if (coldStage[1] >= 5) {
+                            var retained =
+                                    machine(helper, cP1)
+                                            .getCapability(
+                                                    ForgeCapabilities.ITEM_HANDLER, Direction.EAST)
+                                            .map(h -> h.getStackInSlot(0))
+                                            .orElse(ItemStack.EMPTY);
+                            check(
+                                    helper,
+                                    retained.getCount() == 4
+                                            && ((Container) level.getBlockEntity(coldSrc))
+                                                            .countItem(Items.AMETHYST_SHARD)
+                                                    == 4
+                                            && level.getBlockState(cP1)
+                                                            .getValue(BlockStateProperties.FACING)
+                                                    == Direction.EAST,
+                                    "Reloaded corner source pipe kept cargo and OUT without"
+                                            + " dumping back into source");
+                            level.setBlockAndUpdate(coldDst, Blocks.BARREL.defaultBlockState());
+                            coldStage[0] = 2;
+                        }
+                        return;
+                    }
+                    var nozzleBox = (Container) level.getBlockEntity(nDst);
+                    var extBox = (Container) level.getBlockEntity(eDst);
+                    var coldBox = (Container) level.getBlockEntity(coldDst);
+                    if (nozzleBox.countItem(Items.LAPIS_LAZULI) == 24
+                            && ((Container) level.getBlockEntity(nozzleSrc)).isEmpty()
+                            && extBox.countItem(Items.REDSTONE) == 16
+                            && ((Container) level.getBlockEntity(extSrc)).isEmpty()
+                            && coldBox.countItem(Items.AMETHYST_SHARD) == 8
+                            && ((Container) level.getBlockEntity(coldSrc)).isEmpty()
+                            && level.getBlockState(cP1).getValue(BlockStateProperties.FACING)
+                                    == Direction.EAST) {
+                        helper.succeed();
+                    }
+                });
+    }
+
+    private static void setPipe(
+            net.minecraft.server.level.ServerLevel level,
+            Block pipeBlock,
+            BlockPos pos,
+            Direction out) {
+        level.setBlockAndUpdate(
+                pos, pipeBlock.defaultBlockState().setValue(BlockStateProperties.FACING, out));
+    }
+
+    private static void placePipeAgainst(
+            GameTestHelper helper,
+            ServerPlayer player,
+            Block pipeBlock,
+            BlockPos target,
+            Direction clickedFace) {
+        var stack = new ItemStack(pipeBlock);
+        player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        player.setPos(
+                target.getX() + 0.5 + clickedFace.getStepX() * 2.0,
+                target.getY() + 0.5 + clickedFace.getStepY() * 2.0,
+                target.getZ() + 0.5 + clickedFace.getStepZ() * 2.0);
+        var hit =
+                new BlockHitResult(
+                        Vec3.atCenterOf(target)
+                                .add(
+                                        clickedFace.getStepX() * 0.5,
+                                        clickedFace.getStepY() * 0.5,
+                                        clickedFace.getStepZ() * 0.5),
+                        clickedFace,
+                        target,
+                        false);
+        var placed =
+                ((BlockItem) stack.getItem())
+                        .place(
+                                new BlockPlaceContext(
+                                        player, InteractionHand.MAIN_HAND, stack, hit));
+        check(
+                helper,
+                placed.consumesAction(),
+                "Failed to place pipe against " + target + " on " + clickedFace);
+    }
+
+    private static InteractionResult useOnPipeFace(
+            GameTestHelper helper,
+            ServerPlayer player,
+            BlockPos pos,
+            Direction side,
+            ItemStack stack) {
+        player.setPos(
+                pos.getX() + 0.5 + side.getStepX() * 2.0,
+                pos.getY() + 0.5 + side.getStepY() * 2.0,
+                pos.getZ() + 0.5 + side.getStepZ() * 2.0);
+        player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        var hit =
+                new BlockHitResult(
+                        Vec3.atCenterOf(pos)
+                                .add(
+                                        side.getStepX() * 0.5,
+                                        side.getStepY() * 0.5,
+                                        side.getStepZ() * 0.5),
+                        side,
+                        pos,
+                        false);
+        return player.gameMode.useItemOn(
+                player, helper.getLevel(), stack, InteractionHand.MAIN_HAND, hit);
     }
 
     private static void verifyWaterloggedPlacementAndToggle(

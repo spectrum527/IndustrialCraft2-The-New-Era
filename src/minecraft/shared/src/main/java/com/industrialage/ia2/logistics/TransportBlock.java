@@ -137,10 +137,17 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
         if (!player.mayBuild()
                 || !world.mayInteract(player, pos)
                 || !player.mayUseItemAt(pos, side, item)) return false;
+        if (mode != Nozzle.NONE
+                && world.hasChunkAt(pos.relative(side))
+                && world.getBlockEntity(pos.relative(side)) instanceof TransportNode neighborPipe
+                && neighborPipe.spec.kind() == spec.kind()) {
+            return false;
+        }
         if (!(world instanceof ServerLevel level)) return true;
         if (crowbar) {
             var removed = node.removeNozzle(side);
             if (removed != Nozzle.NONE) {
+                node.clearExternalIntake(side);
                 Block.popResource(level, pos, TransportPlatform.nozzleItem(removed));
                 configurationChanged(level, pos, true);
             } else {
@@ -152,6 +159,9 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
             }
         } else if (pumpRate > 0 ? node.cover(side, pumpRate) : node.installNozzle(side, mode)) {
             if (!player.getAbilities().instabuild) item.shrink(1);
+            if (mode != Nozzle.NONE) {
+                node.clearExternalIntake(side);
+            }
             if (mode == Nozzle.EXTRACTION && spec.kind() == Kind.ITEM_PIPE) {
                 var state = level.getBlockState(pos);
                 if (state.hasProperty(OUT)) {
@@ -167,6 +177,7 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
                         redirected =
                                 ItemPipeRouter.redirectedOutput(
                                         side,
+                                        candidate -> node.nozzle(candidate) == Nozzle.EXTRACTION,
                                         candidate -> node.isLinkedItemPipe(level, candidate),
                                         candidate ->
                                                 node.isValidNonPipeItemTarget(level, candidate));
@@ -186,6 +197,20 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
                                                                 level, candidate));
                     }
                     if (redirected != null && redirected != currentOut) {
+                        level.setBlock(pos, state.setValue(OUT, redirected), Block.UPDATE_CLIENTS);
+                    }
+                }
+            } else if (mode == Nozzle.INJECTION && spec.kind() == Kind.ITEM_PIPE) {
+                var state = level.getBlockState(pos);
+                if (state.hasProperty(OUT)) {
+                    Direction currentOut = state.getValue(OUT);
+                    Direction redirected =
+                            ItemPipeRouter.resolvedInjectionOutput(
+                                    side,
+                                    currentOut,
+                                    node.isLinkedItemPipe(level, currentOut),
+                                    node.isValidNonPipeItemTarget(level, currentOut));
+                    if (redirected != currentOut) {
                         level.setBlock(pos, state.setValue(OUT, redirected), Block.UPDATE_CLIENTS);
                     }
                 }
@@ -245,6 +270,9 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
     public boolean wrenchTurn(ServerLevel level, BlockPos pos, BlockState state, Direction side) {
         if (spec.kind() == Kind.ITEM_PIPE) {
             if (!WrenchTarget.super.wrenchTurn(level, pos, state, side)) return false;
+            if (level.getBlockEntity(pos) instanceof TransportNode node) {
+                node.clearExternalIntake(null);
+            }
         } else if (!(level.getBlockEntity(pos) instanceof TransportNode node)
                 || !node.toggle(side)) {
             return false;
@@ -323,12 +351,40 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
             boolean allowed =
                     (intake && TransportNode.machineOutput(target, face))
                             || (outlet && TransportNode.machineInput(target, face));
+            if (!allowed
+                    && spec.kind() == Kind.ITEM_PIPE
+                    && node != null
+                    && node.nozzle(side) == Nozzle.NONE
+                    && TransportNode.machineInput(target, face)
+                    && node.canUseImplicitOutlet(level)
+                    && side != node.externalIntakeFace
+                    && !ItemPipeRouter.networkHasExplicitOutlet(level, node)) {
+                allowed = true;
+            }
             boolean connected =
                     allowed
                             && (spec.kind() == Kind.ITEM_PIPE
                                     ? TransportPlatform.hasItemPort(level, adjacent, face)
                                     : TransportPlatform.hasFluidPort(level, adjacent, face));
+            if (!connected && node != null && spec.kind() == Kind.ITEM_PIPE) {
+                node.clearExternalIntake(side);
+            }
             return state.setValue(arm, connected);
+        }
+
+        private static boolean hasAdjacentItemPipe(Level level, BlockPos pos, Direction exclude) {
+            for (var side : TransportNode.SIDES) {
+                if (side == exclude) continue;
+                var adjacent = pos.relative(side);
+                if (!level.hasChunkAt(adjacent)) continue;
+                if (level.getBlockState(adjacent).getBlock() instanceof Pipe pipe
+                        && pipe.spec.kind() == Kind.ITEM_PIPE
+                        && (!(level.getBlockEntity(adjacent) instanceof TransportNode other)
+                                || other.exposesPipeFace(side.getOpposite()))) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override
@@ -352,8 +408,13 @@ public class TransportBlock extends TransportBlockBase implements EntityBlock, W
                     boolean againstPort =
                             level instanceof ServerLevel server
                                     && TransportPlatform.hasItemPort(server, against, clicked);
-                    if (againstItemPipe || againstPort) {
+                    if (againstItemPipe) {
                         facing = clicked;
+                    } else if (againstPort) {
+                        facing =
+                                hasAdjacentItemPipe(level, pos, clicked.getOpposite())
+                                        ? clicked.getOpposite()
+                                        : clicked;
                     }
                 }
                 state = state.setValue(OUT, facing);

@@ -13,10 +13,13 @@ import net.minecraft.world.item.ItemStack;
 /**
  * Shortest-path router across a connected network of loaded item pipes.
  *
- * <p>Preserves explicit outlet rules: only faces configured as {@link
- * TransportNode.Nozzle#INJECTION} or unmodified {@link TransportBlock#OUT} faces facing a non-pipe
- * container that can accept the cargo act as sinks. Intermediate connected pipes forward cargo
- * toward the nearest ready sink even across bends or unrotated segments.
+ * <p>Uses a two-tier sink rule: when any pipe in the connected network has an {@link
+ * TransportNode.Nozzle#INJECTION} nozzle or an {@link TransportBlock#OUT}-aligned non-pipe
+ * container (even if currently full), only those explicit outlets act as sinks, preserving decoy
+ * isolation and backpressure. Only when the connected network has no explicit outlets or injection
+ * nozzles do terminal or unproductive-{@code OUT} pipes auto-route to eligible adjacent containers.
+ * Intermediate connected pipes forward cargo toward the nearest ready sink across bends and
+ * vertical climbs.
  */
 final class ItemPipeRouter {
     private static final int MAX_NETWORK_NODES = 4096;
@@ -24,6 +27,12 @@ final class ItemPipeRouter {
     private ItemPipeRouter() {}
 
     record Edge<N>(N pipe, Direction side) {}
+
+    /** Routing decision distinguishing an active blocked route from a sinkless network. */
+    record RouteResult(Direction hop, boolean hasSink) {
+        static final RouteResult NO_SINK = new RouteResult(null, false);
+        static final RouteResult BLOCKED = new RouteResult(null, true);
+    }
 
     interface Graph<N> {
         List<Edge<N>> links(N node);
@@ -33,6 +42,22 @@ final class ItemPipeRouter {
         boolean isCompatible(N node);
 
         boolean canReceive(N node, Direction entryFace);
+
+        /**
+         * Whether {@code node} has any explicitly configured outlet (an injection nozzle or an
+         * {@code OUT}-aligned non-pipe container, even if currently full).
+         */
+        default boolean hasExplicitOutlet(N node) {
+            return false;
+        }
+
+        /**
+         * Whether {@code node} can serve as an implicit auto-routed sink when no pipe in the
+         * connected network has an explicitly configured outlet.
+         */
+        default boolean isReadyImplicitSink(N node) {
+            return false;
+        }
     }
 
     /**
@@ -41,8 +66,17 @@ final class ItemPipeRouter {
      * exists in the loaded connected pipe network.
      */
     static Direction nextHop(ServerLevel world, TransportNode source, ItemStack cargo, long time) {
-        if (cargo.isEmpty() || source.spec.kind() != Kind.ITEM_PIPE) return null;
-        return route(source, worldGraph(world, source, cargo), time);
+        return decideHop(world, source, cargo, time).hop();
+    }
+
+    /**
+     * Computes both the next hop and whether any ready downstream sink exists in the connected pipe
+     * network so callers do not fall back to directed pushes during transient backpressure.
+     */
+    static RouteResult decideHop(
+            ServerLevel world, TransportNode source, ItemStack cargo, long time) {
+        if (cargo.isEmpty() || source.spec.kind() != Kind.ITEM_PIPE) return RouteResult.NO_SINK;
+        return routeDecision(source, worldGraph(world, source, cargo), time);
     }
 
     /**
@@ -53,6 +87,38 @@ final class ItemPipeRouter {
             ServerLevel world, TransportNode source, ItemStack cargo, long time) {
         if (cargo.isEmpty() || source.spec.kind() != Kind.ITEM_PIPE) return null;
         return routePreview(source, worldGraph(world, source, cargo), time);
+    }
+
+    /**
+     * Whether any loaded item pipe in the connected network containing {@code start} has an
+     * injection nozzle or an {@code OUT}-aligned non-pipe container.
+     */
+    static boolean networkHasExplicitOutlet(ServerLevel world, TransportNode start) {
+        if (start.spec.kind() != Kind.ITEM_PIPE) return false;
+        var nodes = new ArrayList<TransportNode>();
+        var seen = new java.util.HashSet<TransportNode>();
+        nodes.add(start);
+        seen.add(start);
+        for (int index = 0; index < nodes.size(); index++) {
+            var pipe = nodes.get(index);
+            if (pipe.injectionNozzles != 0 || pipe.hasConfiguredExplicitOutlet(world)) {
+                return true;
+            }
+            for (var side : TransportNode.SIDES) {
+                var pos = pipe.getBlockPos().relative(side);
+                if (!world.hasChunkAt(pos)) continue;
+                var other = world.getBlockEntity(pos);
+                if (TransportNode.isPipe(other)) {
+                    var next = (TransportNode) other;
+                    if (pipe.linksTo(side, next)
+                            && nodes.size() < MAX_NETWORK_NODES
+                            && seen.add(next)) {
+                        nodes.add(next);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private static Graph<TransportNode> worldGraph(
@@ -77,22 +143,18 @@ final class ItemPipeRouter {
 
             @Override
             public boolean isReadySink(TransportNode pipe) {
-                var output = pipe.getBlockState().getValue(TransportBlock.OUT);
-                for (var side : TransportNode.SIDES) {
-                    var pos = pipe.getBlockPos().relative(side);
-                    if (!world.hasChunkAt(pos)) continue;
-                    var other = world.getBlockEntity(pos);
-                    if (TransportNode.isPipe(other)) continue;
-                    var face = side.getOpposite();
-                    var mode = pipe.nozzle(side);
-                    if ((mode == TransportNode.Nozzle.INJECTION
-                                    || (mode == TransportNode.Nozzle.NONE && side == output))
-                            && TransportNode.machineInput(other, face)
-                            && TransportPlatform.canAcceptItem(world, pos, face, cargo)) {
-                        return true;
-                    }
-                }
-                return false;
+                return pipe.hasReadyExplicitOutlet(world, cargo);
+            }
+
+            @Override
+            public boolean hasExplicitOutlet(TransportNode pipe) {
+                return pipe.injectionNozzles != 0 || pipe.hasConfiguredExplicitOutlet(world);
+            }
+
+            @Override
+            public boolean isReadyImplicitSink(TransportNode pipe) {
+                return pipe.canUseImplicitOutlet(world)
+                        && pipe.hasReadyImplicitOutlet(world, cargo);
             }
 
             @Override
@@ -109,6 +171,14 @@ final class ItemPipeRouter {
 
     /** Computes the next hop on an abstract connected pipe graph for unit testing and runtime. */
     static <N> Direction route(N source, Graph<N> graph, long time) {
+        return routeDecision(source, graph, time).hop();
+    }
+
+    /**
+     * Computes the next hop together with whether the connected graph currently contains a ready
+     * sink, distinguishing transient blockage from a sinkless directed network.
+     */
+    static <N> RouteResult routeDecision(N source, Graph<N> graph, long time) {
         return routeInternal(source, graph, time, true);
     }
 
@@ -117,14 +187,16 @@ final class ItemPipeRouter {
      * distance when the immediate neighbor is transiently full or occupied by another item.
      */
     static <N> Direction routePreview(N source, Graph<N> graph, long time) {
-        return routeInternal(source, graph, time, false);
+        return routeInternal(source, graph, time, false).hop();
     }
 
-    private static <N> Direction routeInternal(
+    private static <N> RouteResult routeInternal(
             N source, Graph<N> graph, long time, boolean requireImmediateReceive) {
         var nodes = new ArrayList<N>();
         var visited = new HashMap<N, List<Edge<N>>>();
-        var sinks = new ArrayList<N>();
+        var explicitSinks = new ArrayList<N>();
+        var implicitSinks = new ArrayList<N>();
+        boolean anyExplicitOutlet = false;
 
         nodes.add(source);
         visited.put(source, new ArrayList<>());
@@ -141,18 +213,30 @@ final class ItemPipeRouter {
                 }
                 links.add(edge);
             }
-            if (!pipe.equals(source) && graph.isReadySink(pipe)) {
-                sinks.add(pipe);
+            if (graph.hasExplicitOutlet(pipe)) {
+                anyExplicitOutlet = true;
+            }
+            if (!pipe.equals(source)) {
+                if (graph.isReadySink(pipe)) {
+                    explicitSinks.add(pipe);
+                } else if (!anyExplicitOutlet && graph.isReadyImplicitSink(pipe)) {
+                    implicitSinks.add(pipe);
+                }
             }
         }
 
-        if (sinks.isEmpty()) return null;
+        List<N> sinks =
+                !explicitSinks.isEmpty()
+                        ? explicitSinks
+                        : (anyExplicitOutlet ? List.of() : implicitSinks);
+        if (sinks.isEmpty()) return RouteResult.NO_SINK;
 
         Direction clearHop = routePass(source, graph, visited, sinks, time, true, true);
-        if (clearHop != null) return clearHop;
+        if (clearHop != null) return new RouteResult(clearHop, true);
         Direction queuedHop = routePass(source, graph, visited, sinks, time, false, true);
-        if (queuedHop != null || requireImmediateReceive) return queuedHop;
-        return routePass(source, graph, visited, sinks, time, false, false);
+        if (queuedHop != null) return new RouteResult(queuedHop, true);
+        if (requireImmediateReceive) return RouteResult.BLOCKED;
+        return new RouteResult(routePass(source, graph, visited, sinks, time, false, false), true);
     }
 
     private static <N> Direction routePass(
@@ -192,18 +276,16 @@ final class ItemPipeRouter {
 
         if (bestSourceDist == Integer.MAX_VALUE) return null;
 
-        var sourceLinks = visited.get(source);
-        int count = sourceLinks.size();
-        for (int i = 0; i < count; i++) {
-            var link = sourceLinks.get(Math.floorMod(time + i, count));
+        var bestLinks = new ArrayList<Direction>();
+        for (var link : visited.get(source)) {
             int dist = distance.getOrDefault(link.pipe(), Integer.MAX_VALUE);
             if (dist < bestSourceDist
                     && (!requireImmediateReceive
                             || graph.canReceive(link.pipe(), link.side().getOpposite()))) {
-                return link.side();
+                bestLinks.add(link.side());
             }
         }
-        return null;
+        return bestLinks.isEmpty() ? null : bestLinks.get(Math.floorMod(time, bestLinks.size()));
     }
 
     /**
@@ -217,17 +299,55 @@ final class ItemPipeRouter {
     /**
      * Picks an output face when an extraction nozzle is installed on {@code extractionFace},
      * preferring a linked neighboring item pipe, then an adjacent non-pipe target container
-     * (checking the opposite face first in each category), and falling back to the opposite face.
+     * (checking the opposite face first in each category), and falling back to a non-extraction
+     * face (preferring the opposite face).
      */
     static Direction redirectedOutput(
             Direction extractionFace,
             java.util.function.Predicate<Direction> linksToPipe,
             java.util.function.Predicate<Direction> linksToTarget) {
-        Direction pipe = preferredTarget(side -> side == extractionFace, linksToPipe);
+        return redirectedOutput(
+                extractionFace, side -> side == extractionFace, linksToPipe, linksToTarget);
+    }
+
+    /**
+     * Picks an output face excluding all currently installed extraction nozzles, preferring a
+     * linked neighboring item pipe, then an adjacent non-pipe target container, then the opposite
+     * face if free of an extraction nozzle, then any remaining non-extraction face.
+     */
+    static Direction redirectedOutput(
+            Direction extractionFace,
+            java.util.function.Predicate<Direction> isExtraction,
+            java.util.function.Predicate<Direction> linksToPipe,
+            java.util.function.Predicate<Direction> linksToTarget) {
+        Direction pipe = preferredTarget(isExtraction, linksToPipe);
         if (pipe != null) return pipe;
-        Direction target = preferredTarget(side -> side == extractionFace, linksToTarget);
+        Direction target = preferredTarget(isExtraction, linksToTarget);
         if (target != null) return target;
-        return extractionFace.getOpposite();
+        Direction opposite = extractionFace.getOpposite();
+        if (!isExtraction.test(opposite)) return opposite;
+        for (var candidate : Direction.values()) {
+            if (!isExtraction.test(candidate)) return candidate;
+        }
+        return opposite;
+    }
+
+    /**
+     * Resolves whether installing an injection nozzle on {@code injectionFace} should align {@code
+     * OUT} to {@code injectionFace} to prevent backward directed pushes into a linked upstream pipe
+     * or loopback delivery into the opposite source container.
+     */
+    static Direction resolvedInjectionOutput(
+            Direction injectionFace,
+            Direction currentOut,
+            boolean outLinksToPipe,
+            boolean outIsOppositeTarget) {
+        if (currentOut != injectionFace
+                && (outLinksToPipe
+                        || (currentOut == injectionFace.getOpposite() && outIsOppositeTarget))) {
+            return injectionFace;
+        }
+        return currentOut;
     }
 
     /**
