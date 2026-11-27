@@ -349,10 +349,13 @@ class ItemPipeRouterContractTest {
         graph.setExplicitOutlet("p2", true);
 
         // Even while explicit sink p2 is full (isReadySink=false), decoy p1 must never receive
-        // cargo.
+        // cargo, and directed fallback must remain suppressed to prevent cyclic spinning or
+        // dead-end shoving.
         var blockedByFullExplicit = ItemPipeRouter.routeDecision("p0", graph, 0);
         assertNull(blockedByFullExplicit.hop());
         assertFalse(blockedByFullExplicit.hasSink());
+        assertTrue(blockedByFullExplicit.hasConfiguredOutlet());
+        assertFalse(blockedByFullExplicit.allowDirectedFallback());
 
         // When explicit sink p2 has room, routing goes past p1 straight toward p2.
         graph.setReadySink("p2", true);
@@ -386,12 +389,23 @@ class ItemPipeRouterContractTest {
         assertTrue(blocked.hasSink());
         assertEquals(Direction.EAST, ItemPipeRouter.routePreview("p0", graph, 1));
 
-        // Sink itself full (no ready sink anywhere): hasSink becomes false.
+        // Sink itself full (no ready sink anywhere): hasSink becomes false, but because p3 is a
+        // configured explicit outlet, directed fallback stays disabled so loops stall cleanly.
         graph.setFull("p1", false);
         graph.setReadySink("p3", false);
         var noSink = ItemPipeRouter.routeDecision("p0", graph, 2);
         assertNull(noSink.hop());
         assertFalse(noSink.hasSink());
+        assertTrue(noSink.hasConfiguredOutlet());
+        assertFalse(noSink.allowDirectedFallback());
+
+        // Removing the explicit outlet altogether yields a truly sinkless directed network.
+        graph.setExplicitOutlet("p3", false);
+        var sinkless = ItemPipeRouter.routeDecision("p0", graph, 3);
+        assertNull(sinkless.hop());
+        assertFalse(sinkless.hasSink());
+        assertFalse(sinkless.hasConfiguredOutlet());
+        assertTrue(sinkless.allowDirectedFallback());
     }
 
     @Test

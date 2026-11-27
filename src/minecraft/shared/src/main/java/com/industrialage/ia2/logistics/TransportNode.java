@@ -154,10 +154,12 @@ public final class TransportNode extends TransportSaveBase
             syncVisual();
         }
         if (!cargo.isEmpty() && itemReadyToAdvance(time, receivedItemAt)) {
+            boolean allowDefaultPush = injectionNozzles == 0;
             for (int i = 0; i < SIDES.length && !cargo.isEmpty(); i++) {
                 var side = SIDES[Math.floorMod(time + i, SIDES.length)];
                 var mode = nozzle(side);
-                if (mode == Nozzle.INJECTION || (mode == Nozzle.NONE && side == output)) {
+                if (mode == Nozzle.INJECTION
+                        || (allowDefaultPush && mode == Nozzle.NONE && side == output)) {
                     sendToNonPipe(world, side);
                 }
             }
@@ -178,7 +180,7 @@ public final class TransportNode extends TransportSaveBase
                 var decision = ItemPipeRouter.decideHop(world, this, cargo, time);
                 if (decision.hop() != null) {
                     sendToRoutedPipe(world, decision.hop(), time);
-                } else if (!decision.hasSink()
+                } else if (decision.allowDirectedFallback()
                         && nozzle(output) == Nozzle.NONE
                         && output != cargoFrom) {
                     sendToDirectedPipe(world, output, time);
@@ -276,7 +278,8 @@ public final class TransportNode extends TransportSaveBase
         var mode = nozzle(side);
         var state = getBlockState();
         if (mode != Nozzle.INJECTION
-                && (mode != Nozzle.NONE
+                && (injectionNozzles != 0
+                        || mode != Nozzle.NONE
                         || !state.hasProperty(TransportBlock.OUT)
                         || side != state.getValue(TransportBlock.OUT))) {
             return false;
@@ -301,7 +304,8 @@ public final class TransportNode extends TransportSaveBase
         var mode = nozzle(side);
         var state = getBlockState();
         if (mode != Nozzle.INJECTION
-                && (mode != Nozzle.NONE
+                && (injectionNozzles != 0
+                        || mode != Nozzle.NONE
                         || !state.hasProperty(TransportBlock.OUT)
                         || side != state.getValue(TransportBlock.OUT))) {
             return false;
@@ -326,15 +330,20 @@ public final class TransportNode extends TransportSaveBase
         if (spec.kind() != Kind.ITEM_PIPE || injectionNozzles != 0) return false;
         var state = getBlockState();
         if (!state.hasProperty(TransportBlock.OUT)) return false;
-        Direction output = state.getValue(TransportBlock.OUT);
-        if (!isLinkedItemPipe(world, output) && !hasConfiguredExplicitOutlet(world, output)) {
-            return true;
-        }
         int linkedPipes = 0;
         for (var side : SIDES) {
             if (isLinkedItemPipe(world, side)) linkedPipes++;
         }
-        return linkedPipes <= 1 && isLinkedItemPipe(world, output);
+        if (linkedPipes > 1) return false;
+        Direction output = state.getValue(TransportBlock.OUT);
+        return !hasConfiguredExplicitOutlet(world, output);
+    }
+
+    boolean hasConfiguredImplicitOutlet(ServerLevel world) {
+        for (var side : SIDES) {
+            if (isImplicitOutletFace(world, side, false)) return true;
+        }
+        return false;
     }
 
     boolean isImplicitOutletFace(ServerLevel world, Direction side, boolean localDelivery) {
@@ -485,7 +494,8 @@ public final class TransportNode extends TransportSaveBase
             return linksTo(side, next);
         }
         var mode = nozzle(side);
-        return (mode == Nozzle.INJECTION || (mode == Nozzle.NONE && side == output))
+        return (mode == Nozzle.INJECTION
+                        || (injectionNozzles == 0 && mode == Nozzle.NONE && side == output))
                 && TransportBlock.connected(state, side);
     }
 
@@ -724,7 +734,9 @@ public final class TransportNode extends TransportSaveBase
         return switch (nozzle(side)) {
             case EXTRACTION -> false;
             case INJECTION -> true;
-            case NONE -> acceptsDefaultOutput(getBlockState(), side);
+            case NONE ->
+                    (spec.kind() != Kind.ITEM_PIPE || injectionNozzles == 0)
+                            && acceptsDefaultOutput(getBlockState(), side);
         };
     }
 

@@ -68,6 +68,7 @@ level-name=world
 level-seed=20261120
 generate-structures=false
 spawn-protection=0
+pause-when-empty-seconds=0
 view-distance=2
 simulation-distance=2
 '''

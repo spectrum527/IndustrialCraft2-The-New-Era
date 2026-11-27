@@ -861,14 +861,16 @@ public final class LogisticsGameTests {
         ((Container) level.getBlockEntity(climbSrc))
                 .setItem(0, new ItemStack(Items.IRON_INGOT, 16));
 
-        // 5. DOWN -> side -> UP (unrotated terminal OUT=UP into air).
+        // 5. DOWN -> side -> UP (1-block gap so the rising leg is a true terminal pipe, unrotated
+        // terminal OUT=UP into air).
         var dipSrc = base.offset(5, 2, 4);
-        var dipDst = dipSrc.below().east(2);
+        var dipDst = dipSrc.below().east(3);
         level.setBlockAndUpdate(dipSrc, Blocks.BARREL.defaultBlockState());
         setPipe(level, pipeBlock, dipSrc.below(), Direction.DOWN);
         setPipe(level, pipeBlock, dipSrc.below(2), Direction.DOWN);
         setPipe(level, pipeBlock, dipSrc.below(2).east(), Direction.EAST);
-        setPipe(level, pipeBlock, dipSrc.below().east(), Direction.UP);
+        setPipe(level, pipeBlock, dipSrc.below(2).east(2), Direction.EAST);
+        setPipe(level, pipeBlock, dipSrc.below().east(2), Direction.UP);
         level.setBlockAndUpdate(dipDst, Blocks.BARREL.defaultBlockState());
         ((Container) level.getBlockEntity(dipSrc))
                 .setItem(0, new ItemStack(Items.COPPER_INGOT, 12));
