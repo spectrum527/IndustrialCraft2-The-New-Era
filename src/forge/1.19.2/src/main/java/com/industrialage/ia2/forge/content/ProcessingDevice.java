@@ -186,12 +186,18 @@ final class ProcessingDevice extends InventoryDevice {
             input.shrink(work.recipe.inputCount() * operations);
             inventory.set(Slot.INPUT, input.isEmpty() ? ItemStack.EMPTY : input);
         }
+        int producedCount =
+                work.recipe.weightedCounts().isEmpty()
+                        ? work.result.getCount() * operations
+                        : work.recipe.rollOutputCount(
+                                operations,
+                                bound -> level == null ? 0 : level.getRandom().nextInt(bound));
         if (output.isEmpty()) {
             var produced = work.result.copy();
-            produced.setCount(work.result.getCount() * operations);
+            produced.setCount(producedCount);
             inventory.set(Slot.OUTPUT, produced);
         } else {
-            output.grow(work.result.getCount() * operations);
+            output.grow(producedCount);
             inventory.set(Slot.OUTPUT, output);
         }
     }

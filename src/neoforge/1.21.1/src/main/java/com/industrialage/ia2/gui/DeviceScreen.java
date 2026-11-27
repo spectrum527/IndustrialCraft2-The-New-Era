@@ -50,8 +50,10 @@ public abstract class DeviceScreen<M extends AbstractContainerMenu>
         return PanelViewport.fit(width - AccessPanel.ENTRY_GUTTER, height, imageWidth, imageHeight);
     }
 
-    private void moveAccess() {
-        access.move(width, height, leftPos + getXSize(), topPos, getYSize());
+    protected final void moveAccess() {
+        if (access != null) {
+            access.move(width, height, leftPos + getXSize(), topPos, getYSize());
+        }
     }
 
     @Override
@@ -62,7 +64,11 @@ public abstract class DeviceScreen<M extends AbstractContainerMenu>
         moveAccess();
         var entry = access.entry();
         boolean entryHovered = !modal && entry.isMouseOver(x, y);
-        boolean entryFocused = !modal && getFocused() == entry;
+        boolean entryFocused =
+                !modal
+                        && getFocused() == entry
+                        && minecraft != null
+                        && minecraft.getLastInputType().isKeyboard();
         access.draw(PanelGraphics.at(graphics, font, 0, 0), entryHovered, entryFocused);
         for (var button : access.buttons()) {
             button.render(graphics, x, y, tick);
@@ -88,13 +94,21 @@ public abstract class DeviceScreen<M extends AbstractContainerMenu>
                 boolean wasOpen = access.isOpen();
                 if (widget.mouseClicked(x, y, button) || wasOpen) {
                     accessPress = true;
-                    if (wasOpen && !access.isOpen()) setFocused(access.entry());
+                    if (wasOpen && !access.isOpen()) {
+                        setFocused(
+                                minecraft != null && minecraft.getLastInputType().isKeyboard()
+                                        ? access.entry()
+                                        : null);
+                    }
                     return true;
                 }
             }
             if (access.isOpen()) {
                 accessPress = true;
                 return true;
+            }
+            if (getFocused() == access.entry()) {
+                setFocused(null);
             }
         }
         return panelMouseClicked(x, y, button);

@@ -3,26 +3,26 @@ package com.industrialage.ia2.forge.client;
 import com.industrialage.ia2.client.MachineArtwork;
 import com.industrialage.ia2.content.MachineLayout;
 import com.industrialage.ia2.forge.content.MachineMenu;
-import com.industrialage.ia2.gui.DeviceScreen;
+import com.industrialage.ia2.gui.AuthoredScreen;
 import com.industrialage.ia2.gui.PanelButton;
+import com.industrialage.ia2.gui.PanelCanvas;
 import com.industrialage.ia2.gui.PanelGraphics;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Native interaction and authored machine art for Minecraft 1.19.2. */
-final class MachineScreen extends DeviceScreen<MachineMenu> {
+final class MachineScreen extends AuthoredScreen<MachineMenu> {
     private PanelButton redstone;
 
     MachineScreen(MachineMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
-        imageWidth = MachineLayout.WIDTH;
-        imageHeight = menu.layout().height();
+        super(menu, inventory, title, MachineLayout.WIDTH, menu.layout().height());
     }
 
     @Override
     protected void init() {
         super.init();
+        redstone = null;
         if (menu.storageControl()) {
             redstone =
                     addRenderableWidget(
@@ -49,30 +49,7 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
     }
 
     @Override
-    protected void renderPanel(PoseStack graphics, int mouseX, int mouseY, float tick) {
-        renderBackground(graphics);
-        super.renderPanel(graphics, mouseX, mouseY, tick);
-        renderTooltip(graphics, mouseX, mouseY);
-        if (redstone != null && redstone.isHoveredOrFocused()) {
-            renderTooltip(graphics, redstoneMode(), mouseX, mouseY);
-        } else if (menu.getCarried().isEmpty()) {
-            Component tip =
-                    hoveredSlot != null && !hoveredSlot.hasItem()
-                            ? menu.slotLabel(hoveredSlot.index)
-                            : MachineArtwork.gaugeTip(
-                                    menu.layout(),
-                                    mouseX - leftPos,
-                                    mouseY - topPos,
-                                    menu.energy(),
-                                    menu.capacity(),
-                                    menu.progress(),
-                                    menu.duration());
-            if (tip != null) renderTooltip(graphics, tip, mouseX, mouseY);
-        }
-    }
-
-    @Override
-    protected void renderBg(PoseStack graphics, float tick, int mouseX, int mouseY) {
+    protected void paint(PanelCanvas canvas) {
         double energy = menu.capacity() > 0 ? (double) menu.energy() / menu.capacity() : 0;
         MachineArtwork.draw(
                 menu.layout(),
@@ -81,7 +58,7 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
                 energy,
                 menu.progressRatio(),
                 menu.fuelRatio(),
-                PanelGraphics.at(graphics, font, leftPos, topPos));
+                canvas);
     }
 
     @Override
@@ -92,5 +69,22 @@ final class MachineScreen extends DeviceScreen<MachineMenu> {
                 playerInventoryTitle,
                 menu.redstoneMode(),
                 PanelGraphics.at(graphics, font, 0, 0));
+    }
+
+    @Override
+    protected Component tooltipAt(int x, int y) {
+        if (redstone != null && x >= 151 && x < 172 && y >= 3 && y < 25) {
+            return redstoneMode();
+        }
+        return hoveredSlot != null && !hoveredSlot.hasItem()
+                ? menu.slotLabel(hoveredSlot.index)
+                : MachineArtwork.gaugeTip(
+                        menu.layout(),
+                        x,
+                        y,
+                        menu.energy(),
+                        menu.capacity(),
+                        menu.progress(),
+                        menu.duration());
     }
 }

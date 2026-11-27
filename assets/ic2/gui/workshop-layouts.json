@@ -111,23 +111,6 @@
       "meters": [{"value": "progress","rect": [71,36,13,13],"direction": "up","sprite": ["common",112,80]},
                  {"value": "outlet","rect": [126,36,16,16],"direction": "up"}]
     },
-    "coke_kiln_grate": {
-      "atlas": "common",
-      "panel": [176,166],
-      "inventory": [8,84,142],
-      "inventoryTitle": true,
-      "source": "Published repair 1.2.4 guidef coke_kiln_grate.xml single fluid cell on authored Common frame",
-      "slots": {},
-      "meters": [{"value": "outlet","rect": [80,36,16,16],"direction": "up"}]
-    },
-    "coke_kiln_hatch": {
-      "atlas": "common",
-      "panel": [176,166],
-      "inventory": [8,84,142],
-      "inventoryTitle": true,
-      "source": "Published repair 1.2.4 guidef coke_kiln_hatch.xml on authored Common frame",
-      "slots": {"0": [80,36]}
-    },
     "uu_assembly_bench": {
       "atlas": "common",
       "panel": [176,166],

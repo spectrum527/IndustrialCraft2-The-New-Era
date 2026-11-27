@@ -477,13 +477,15 @@ final class TransportChecks {
         ((Container) level.getBlockEntity(AUTO_CLIMB_SRC))
                 .setItem(0, new ItemStack(Items.IRON_INGOT, 16));
 
-        // 4. Auto-routing DOWN -> side -> UP (zero nozzles, unrotated terminal OUT=UP into air).
+        // 4. Auto-routing DOWN -> side -> UP (with a 1-block gap so the rising leg is a true
+        // terminal pipe, zero nozzles, unrotated terminal OUT=UP into air).
         level.setBlockAndUpdate(AUTO_DIP_UP_SRC, Blocks.BARREL.defaultBlockState());
         setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below(), Direction.DOWN);
         setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below(2), Direction.DOWN);
         setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below(2).east(), Direction.EAST);
-        setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below().east(), Direction.UP);
-        level.setBlockAndUpdate(AUTO_DIP_UP_SRC.below().east(2), Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below(2).east(2), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below().east(2), Direction.UP);
+        level.setBlockAndUpdate(AUTO_DIP_UP_SRC.below().east(3), Blocks.BARREL.defaultBlockState());
         ((Container) level.getBlockEntity(AUTO_DIP_UP_SRC))
                 .setItem(0, new ItemStack(Items.COPPER_INGOT, 12));
 
@@ -586,7 +588,7 @@ final class TransportChecks {
         var topDownDst = (Container) level.getBlockEntity(AUTO_UP_TOPDOWN_SRC.above(4));
         var coldCornerDst = (Container) level.getBlockEntity(COLD_CORNER_SRC.east(2).above());
         var climbDst = (Container) level.getBlockEntity(AUTO_CLIMB_SRC.east(3).above());
-        var dipUpDst = (Container) level.getBlockEntity(AUTO_DIP_UP_SRC.below().east(2));
+        var dipUpDst = (Container) level.getBlockEntity(AUTO_DIP_UP_SRC.below().east(3));
         var zDst = (Container) level.getBlockEntity(AUTO_Z_SRC.east(3).north(2));
         var teeNorthDst = (Container) level.getBlockEntity(AUTO_TEE_SRC.east(3).north());
         var teeSouthDst = (Container) level.getBlockEntity(AUTO_TEE_SRC.east(3).south());

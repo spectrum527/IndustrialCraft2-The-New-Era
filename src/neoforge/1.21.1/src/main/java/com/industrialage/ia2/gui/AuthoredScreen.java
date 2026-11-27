@@ -21,6 +21,17 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends De
         viewport = fitNativePanel();
         leftPos = viewport.left();
         topPos = viewport.top();
+        moveAccess();
+    }
+
+    /** Converts a logical screen X coordinate to panel-local authored pixels. */
+    protected final int panelLocalX(int screenX) {
+        return (int) Math.floor(viewport.unscaleX(screenX) - leftPos);
+    }
+
+    /** Converts a logical screen Y coordinate to panel-local authored pixels. */
+    protected final int panelLocalY(int screenY) {
+        return (int) Math.floor(viewport.unscaleY(screenY) - topPos);
     }
 
     /** Factor from authored coordinates to the current logical screen. */

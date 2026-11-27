@@ -20,6 +20,17 @@ public abstract class AuthoredScreen<M extends AbstractContainerMenu> extends De
         viewport = fitNativePanel();
         leftPos = viewport.left();
         topPos = viewport.top();
+        moveAccess();
+    }
+
+    /** Maps a panel-space X coordinate to logical screen space for deferred tooltips. */
+    protected final int panelScreenX(int x) {
+        return viewport.screenX(x);
+    }
+
+    /** Maps a panel-space Y coordinate to logical screen space for deferred tooltips. */
+    protected final int panelScreenY(int y) {
+        return viewport.screenY(y);
     }
 
     /** Factor from authored coordinates to the current logical screen. */

@@ -80,7 +80,7 @@ public final class WorkshopPlatform {
             ITEMS.registerSimpleBlockItem(block);
         }
         for (String blade : new String[] {"iron", "steel", "diamond"}) {
-            ITEMS.registerSimpleItem(blade + "_cutting_blade");
+            WorkshopNative.unstackable(ITEMS, blade + "_cutting_blade");
         }
         registerCans();
         ITEMS.registerSimpleItem("electrolyzed_water_cell");
@@ -296,6 +296,26 @@ public final class WorkshopPlatform {
      */
     public static boolean tagged(ItemStack item, String tag) {
         return WorkshopNative.tagged(item, tag);
+    }
+
+    /**
+     * Checks whether the fluid identified by {@code fluidId} belongs to {@code tag} (supporting
+     * {@code c:} and {@code forge:} aliases).
+     */
+    public static boolean fluidTagged(String fluidId, String tag) {
+        return WorkshopNative.fluidTagged(fluidId, tag);
+    }
+
+    /**
+     * Checks whether {@code fluidId} equals {@code canonicalId} or belongs to any of {@code tags}.
+     */
+    public static boolean fluidMatches(String fluidId, String canonicalId, String... tags) {
+        if (fluidId == null || fluidId.isEmpty()) return false;
+        if (fluidId.equals(canonicalId)) return true;
+        for (String tag : tags) {
+            if (fluidTagged(fluidId, tag)) return true;
+        }
+        return false;
     }
 
     static boolean excludedFromRecycling(ItemStack item) {

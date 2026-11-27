@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
  * TransportNode.Nozzle#INJECTION} nozzle or an {@link TransportBlock#OUT}-aligned non-pipe
  * container (even if currently full), only those explicit outlets act as sinks, preserving decoy
  * isolation and backpressure. Only when the connected network has no explicit outlets or injection
- * nozzles do terminal or unproductive-{@code OUT} pipes auto-route to eligible adjacent containers.
+ * nozzles do terminal ({@code linkedPipes <= 1}) pipes auto-route to eligible adjacent containers.
  * Intermediate connected pipes forward cargo toward the nearest ready sink across bends and
  * vertical climbs.
  */
@@ -28,10 +28,19 @@ final class ItemPipeRouter {
 
     record Edge<N>(N pipe, Direction side) {}
 
-    /** Routing decision distinguishing an active blocked route from a sinkless network. */
-    record RouteResult(Direction hop, boolean hasSink) {
-        static final RouteResult NO_SINK = new RouteResult(null, false);
-        static final RouteResult BLOCKED = new RouteResult(null, true);
+    /**
+     * Routing decision distinguishing an active blocked route, a full-sink backpressured network,
+     * and a truly sinkless directed network.
+     */
+    record RouteResult(Direction hop, boolean hasSink, boolean hasConfiguredOutlet) {
+        static final RouteResult NO_SINK = new RouteResult(null, false, false);
+        static final RouteResult BACKPRESSURED = new RouteResult(null, false, true);
+        static final RouteResult BLOCKED = new RouteResult(null, true, true);
+
+        /** Whether the caller may fall back to a sinkless directed push along {@code OUT}. */
+        boolean allowDirectedFallback() {
+            return !hasSink && !hasConfiguredOutlet;
+        }
     }
 
     interface Graph<N> {
@@ -57,6 +66,14 @@ final class ItemPipeRouter {
          */
         default boolean isReadyImplicitSink(N node) {
             return false;
+        }
+
+        /**
+         * Whether {@code node} has any eligible implicit auto-routed outlet (even if currently
+         * full), used to hold backpressure instead of falling back to cyclic directed pushes.
+         */
+        default boolean hasImplicitOutlet(N node) {
+            return isReadyImplicitSink(node);
         }
     }
 
@@ -158,6 +175,11 @@ final class ItemPipeRouter {
             }
 
             @Override
+            public boolean hasImplicitOutlet(TransportNode pipe) {
+                return pipe.canUseImplicitOutlet(world) && pipe.hasConfiguredImplicitOutlet(world);
+            }
+
+            @Override
             public boolean isCompatible(TransportNode candidate) {
                 return compatible(source, candidate, cargo);
             }
@@ -197,6 +219,7 @@ final class ItemPipeRouter {
         var explicitSinks = new ArrayList<N>();
         var implicitSinks = new ArrayList<N>();
         boolean anyExplicitOutlet = false;
+        boolean anyImplicitOutlet = false;
 
         nodes.add(source);
         visited.put(source, new ArrayList<>());
@@ -215,6 +238,8 @@ final class ItemPipeRouter {
             }
             if (graph.hasExplicitOutlet(pipe)) {
                 anyExplicitOutlet = true;
+            } else if (!anyExplicitOutlet && graph.hasImplicitOutlet(pipe)) {
+                anyImplicitOutlet = true;
             }
             if (!pipe.equals(source)) {
                 if (graph.isReadySink(pipe)) {
@@ -229,14 +254,19 @@ final class ItemPipeRouter {
                 !explicitSinks.isEmpty()
                         ? explicitSinks
                         : (anyExplicitOutlet ? List.of() : implicitSinks);
-        if (sinks.isEmpty()) return RouteResult.NO_SINK;
+        if (sinks.isEmpty()) {
+            return (anyExplicitOutlet || anyImplicitOutlet)
+                    ? RouteResult.BACKPRESSURED
+                    : RouteResult.NO_SINK;
+        }
 
         Direction clearHop = routePass(source, graph, visited, sinks, time, true, true);
-        if (clearHop != null) return new RouteResult(clearHop, true);
+        if (clearHop != null) return new RouteResult(clearHop, true, true);
         Direction queuedHop = routePass(source, graph, visited, sinks, time, false, true);
-        if (queuedHop != null) return new RouteResult(queuedHop, true);
+        if (queuedHop != null) return new RouteResult(queuedHop, true, true);
         if (requireImmediateReceive) return RouteResult.BLOCKED;
-        return new RouteResult(routePass(source, graph, visited, sinks, time, false, false), true);
+        return new RouteResult(
+                routePass(source, graph, visited, sinks, time, false, false), true, true);
     }
 
     private static <N> Direction routePass(

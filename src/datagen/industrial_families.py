@@ -1,5 +1,6 @@
 """Emit resources for registered industrial families using the artist's face and icon inventory."""
 from cell_recipes import expand_liquid_choices
+from common_tags import common_tag_for, common_tag_for_set
 
 import csv
 import json
@@ -203,15 +204,23 @@ def _crafting(repo, registered, eligible, forge, modern, write):
                 symbols.append(" ")
                 continue
             if len(available) > 1:
-                tag = "book/ingredient_" + str(i)
-                write("data/ic2/tags/" + tags + "/" + tag, {"replace":False,
-                      "values":[{"id":id,"required":False} for id in available]})
-                ingredient = "#ic2:" + tag if modern else {"tag":"ic2:" + tag}
+                standard_tag = common_tag_for_set(available, forge)
+                if standard_tag:
+                    ingredient = standard_tag if modern else {"tag": standard_tag[1:]}
+                else:
+                    tag = "book/ingredient_" + str(i)
+                    write("data/ic2/tags/" + tags + "/" + tag, {"replace": False,
+                          "values": [{"id": id, "required": False} for id in available]})
+                    ingredient = "#ic2:" + tag if modern else {"tag": "ic2:" + tag}
             else:
                 id = available[0]
                 if not forge:
-                    id = {"minecraft:grass":"minecraft:short_grass", "minecraft:scute":"minecraft:turtle_scute"}.get(id,id)
-                ingredient = id if modern else {"item":id}
+                    id = {"minecraft:grass": "minecraft:short_grass", "minecraft:scute": "minecraft:turtle_scute"}.get(id, id)
+                mapped = common_tag_for(id, forge)
+                if mapped.startswith("#"):
+                    ingredient = mapped if modern else {"tag": mapped[1:]}
+                else:
+                    ingredient = mapped if modern else {"item": mapped}
             if i not in named:
                 named[i] = (chr(ord("A") + len(named)), ingredient)
             symbols.append(named[i][0])

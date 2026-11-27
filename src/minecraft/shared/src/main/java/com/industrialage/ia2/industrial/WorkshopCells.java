@@ -21,11 +21,15 @@ final class WorkshopCells {
     }
 
     static WorkshopPlans.ContainerResult measure(ItemStack stack, String fluid) {
+        return measure(stack, fluid::equals);
+    }
+
+    static WorkshopPlans.ContainerResult measure(ItemStack stack, Predicate<String> accepts) {
         if (stack.isEmpty()) return null;
         var result = WorkshopPlatform.drainWholeContainer(new WorkshopNode.Tank(VOLUME), stack);
         return result != null
                         && result.liquid().amount() == VOLUME
-                        && result.liquid().id().equals(fluid)
+                        && accepts.test(result.liquid().id())
                 ? result
                 : null;
     }

@@ -1,8 +1,8 @@
 package com.industrialage.ia2.forge.equipment;
 
 import com.industrialage.ia2.forge.content.ForgeContent;
+import com.industrialage.ia2.industrial.WorkshopPlatform;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,11 +16,16 @@ import net.minecraftforge.registries.ForgeRegistries;
 /** The wearable 30-bucket biogas tank. */
 final class FuelJetpack extends Item {
     private static final int CAPACITY = 30_000;
-    private static final ResourceLocation BIOGAS =
-            ResourceLocation.fromNamespaceAndPath("ic2", "biogas");
 
     FuelJetpack() {
         super(ForgeContent.itemProperties("jetpack").stacksTo(1));
+    }
+
+    private static boolean accepts(FluidStack fluid) {
+        if (fluid.isEmpty()) return false;
+        var key = ForgeRegistries.FLUIDS.getKey(fluid.getFluid());
+        return key != null
+                && WorkshopPlatform.fluidMatches(key.toString(), "ic2:biogas", "c:biogas");
     }
 
     @Override
@@ -28,8 +33,7 @@ final class FuelJetpack extends Item {
         return new FluidHandlerItemStack(stack, CAPACITY) {
             @Override
             public boolean canFillFluidType(FluidStack fluid) {
-                return super.canFillFluidType(fluid)
-                        && BIOGAS.equals(ForgeRegistries.FLUIDS.getKey(fluid.getFluid()));
+                return super.canFillFluidType(fluid) && accepts(fluid);
             }
         };
     }
@@ -38,12 +42,11 @@ final class FuelJetpack extends Item {
         var holder = pack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).resolve();
         if (holder.isEmpty()) return false;
         var tank = holder.orElseThrow();
-        var biogas = ForgeRegistries.FLUIDS.getValue(BIOGAS);
-        if (biogas == null) return false;
+        var stored = tank.getFluidInTank(0);
+        if (!accepts(stored)) return false;
         int demand = hover ? 1 : 2;
-        var cost = new FluidStack(biogas, demand);
-        if (tank.drain(cost, FluidAction.SIMULATE).getAmount() != demand) return false;
-        return creative || tank.drain(cost, FluidAction.EXECUTE).getAmount() == demand;
+        if (tank.drain(demand, FluidAction.SIMULATE).getAmount() != demand) return false;
+        return creative || tank.drain(demand, FluidAction.EXECUTE).getAmount() == demand;
     }
 
     @Override

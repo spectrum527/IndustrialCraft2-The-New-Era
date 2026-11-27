@@ -39,16 +39,67 @@ final class WorkshopThermal {
         return true;
     }
 
+    static boolean isWater(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, WATER, "minecraft:water", "c:water");
+    }
+
+    static boolean isDistilledWater(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, DISTILLED, "c:distilled_water");
+    }
+
+    static boolean isSteam(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, STEAM, "c:steam");
+    }
+
+    static boolean isSuperheatedSteam(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, SUPERHEATED, "c:superheated_steam");
+    }
+
+    static boolean isBiogas(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, BIOGAS, "c:biogas");
+    }
+
+    static boolean isCreosote(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "ic2:creosote", "c:creosote");
+    }
+
+    static boolean isLava(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "minecraft:lava", "minecraft:lava", "c:lava");
+    }
+
+    static boolean isPahoehoeLava(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "ic2:pahoehoe_lava", "c:pahoehoe_lava");
+    }
+
+    static boolean isBiomass(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "ic2:biomass", "c:biomass");
+    }
+
+    static boolean isCoolant(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "ic2:coolant", "c:coolant");
+    }
+
+    static boolean isHotCoolant(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "ic2:hot_coolant", "c:hot_coolant");
+    }
+
+    static boolean isAir(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "ic2:air", "c:air");
+    }
+
+    static boolean isUuMatter(String fluid) {
+        return WorkshopPlatform.fluidMatches(fluid, "ic2:uu_matter", "c:uu_matter");
+    }
+
     static boolean validFuel(WorkshopKind kind, String fluid) {
-        return fluid.equals(BIOGAS)
-                || fluid.equals("ic2:creosote")
-                || kind == WorkshopKind.FLUID_HEAT
-                        && (fluid.equals("minecraft:lava") || fluid.equals("ic2:pahoehoe_lava"));
+        return isBiogas(fluid)
+                || isCreosote(fluid)
+                || kind == WorkshopKind.FLUID_HEAT && (isLava(fluid) || isPahoehoeLava(fluid));
     }
 
     private static boolean semifluid(WorkshopNode node) {
         node.refillContainers(0, WorkshopInventory.OUTPUT_START);
-        int produced = node.inlet.id.equals(BIOGAS) ? 16 : 8;
+        int produced = isBiogas(node.inlet.id) ? 16 : 8;
         if (node.inlet.amount == 0 || node.energy + produced > node.kind.capacity) {
             return false;
         }
@@ -87,7 +138,7 @@ final class WorkshopThermal {
                         default -> 0;
                     };
         } else {
-            nativeHeat = node.inlet.amount == 0 ? 0 : node.inlet.id.equals(BIOGAS) ? 40 : 20;
+            nativeHeat = node.inlet.amount == 0 ? 0 : isBiogas(node.inlet.id) ? 40 : 20;
         }
         int offered = Math.max(0, Math.min(maximum, nativeHeat - node.auxiliaryUnits));
         if (offered > 0) {
@@ -102,7 +153,9 @@ final class WorkshopThermal {
 
     private static boolean ferment(WorkshopNode node, ServerLevel level, Direction facing) {
         WorkshopDevices.push(node, node.outlet, level, facing.getOpposite(), 400);
-        if (!node.inlet.has("ic2:biomass", 20) || node.outlet.fill(BIOGAS, 400, true) != 400) {
+        if (node.inlet.amount < 20
+                || !isBiomass(node.inlet.id)
+                || node.outlet.fill(BIOGAS, 400, true) != 400) {
             return false;
         }
         boolean fertilize = node.cycles == 24;
@@ -142,7 +195,7 @@ final class WorkshopThermal {
                         && node.cycles < 10_000;
         int boilCost = node.mode == 0 ? 110 : 300;
         if (producing) {
-            if (node.inlet.id.equals(WATER)) {
+            if (isWater(node.inlet.id) && !isDistilledWater(node.inlet.id)) {
                 node.cycles++;
             }
             node.inlet.drain(1, false);
@@ -202,7 +255,7 @@ final class WorkshopThermal {
     private static boolean repressurize(WorkshopNode node, ServerLevel level, Direction facing) {
         WorkshopDevices.push(node, node.outlet, level, facing, 1000);
         int batch = Math.min(node.inlet.amount, 100);
-        int ratio = node.inlet.id.equals(SUPERHEATED) ? 2 : 1;
+        int ratio = isSuperheatedSteam(node.inlet.id) ? 2 : 1;
         if (batch <= 0
                 || node.energy < node.kind.workingEu
                 || node.outlet.fill(STEAM, batch * ratio, true) != batch * ratio) {

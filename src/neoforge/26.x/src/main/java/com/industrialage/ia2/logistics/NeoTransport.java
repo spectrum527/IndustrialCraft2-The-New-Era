@@ -241,7 +241,10 @@ final class NeoTransport {
 
         @Override
         public long getCapacityAsLong(int slot, ItemResource resource) {
-            return slot == 0 ? Math.min(node.spec.capacity(), resource.getMaxStackSize()) : 0;
+            if (slot != 0) return 0;
+            return resource.isEmpty()
+                    ? node.spec.capacity()
+                    : Math.min(node.spec.capacity(), resource.getMaxStackSize());
         }
 
         @Override

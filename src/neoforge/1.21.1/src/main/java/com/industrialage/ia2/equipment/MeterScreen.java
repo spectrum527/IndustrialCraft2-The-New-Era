@@ -1,20 +1,19 @@
 package com.industrialage.ia2.equipment;
 
+import com.industrialage.ia2.gui.AuthoredScreen;
 import com.industrialage.ia2.gui.PanelButton;
+import com.industrialage.ia2.gui.PanelCanvas;
 import com.industrialage.ia2.gui.PanelGraphics;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Author-drawn EU reader and native inventory on Minecraft 1.21.1. */
-final class MeterScreen extends AbstractContainerScreen<MeterMenu> {
+final class MeterScreen extends AuthoredScreen<MeterMenu> {
     private PanelButton mode;
 
     MeterScreen(MeterMenu menu, Inventory inventory, Component title) {
-        super(menu, inventory, title);
-        imageWidth = MeterPanel.WIDTH;
-        imageHeight = MeterPanel.HEIGHT;
+        super(menu, inventory, title, MeterPanel.WIDTH, MeterPanel.HEIGHT);
     }
 
     @Override
@@ -50,18 +49,12 @@ final class MeterScreen extends AbstractContainerScreen<MeterMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics graphics, float tick, int mouseX, int mouseY) {
-        MeterPanel.draw(menu, PanelGraphics.at(graphics, font, leftPos, topPos));
+    protected void paint(PanelCanvas canvas) {
+        MeterPanel.draw(menu, canvas);
     }
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
         MeterPanel.labels(menu, title, PanelGraphics.at(graphics, font, 0, 0));
-    }
-
-    @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float tick) {
-        super.render(graphics, mouseX, mouseY, tick);
-        renderTooltip(graphics, mouseX, mouseY);
     }
 }

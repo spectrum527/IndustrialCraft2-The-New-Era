@@ -387,6 +387,39 @@ public final class WorkshopPlatform {
         return location != null && item.is(TagKey.create(Registry.ITEM_REGISTRY, location));
     }
 
+    /**
+     * Checks whether the fluid identified by {@code fluidId} belongs to {@code tag} (supporting
+     * {@code forge:} and {@code c:} aliases).
+     */
+    public static boolean fluidTagged(String fluidId, String tag) {
+        if (fluidId == null || fluidId.isEmpty() || tag == null || tag.isEmpty()) return false;
+        var key = ResourceLocation.tryParse(fluidId);
+        if (key == null) return false;
+        var fluid = ForgeRegistries.FLUIDS.getValue(key);
+        if (fluid == null) return false;
+        return com.industrialage.ia2.content.ProcessingMachine.matchesTagAlias(
+                tag, candidate -> matchesRawFluidTag(fluid, candidate));
+    }
+
+    private static boolean matchesRawFluidTag(Fluid fluid, String tag) {
+        var location = ResourceLocation.tryParse(tag);
+        return location != null
+                && fluid.builtInRegistryHolder()
+                        .is(TagKey.create(Registry.FLUID_REGISTRY, location));
+    }
+
+    /**
+     * Checks whether {@code fluidId} equals {@code canonicalId} or belongs to any of {@code tags}.
+     */
+    public static boolean fluidMatches(String fluidId, String canonicalId, String... tags) {
+        if (fluidId == null || fluidId.isEmpty()) return false;
+        if (fluidId.equals(canonicalId)) return true;
+        for (String tag : tags) {
+            if (fluidTagged(fluidId, tag)) return true;
+        }
+        return false;
+    }
+
     static boolean excludedFromRecycling(ItemStack item) {
         return item.is(Items.SNOWBALL)
                 || item.is(Items.STICK)

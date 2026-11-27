@@ -486,16 +486,16 @@ public final class WorkshopNode extends WorkshopSaveBase
 
     boolean canReceiveFluid(String id) {
         return switch (kind) {
-            case ORE_WASHER, ELECTROLYZER, SOLAR_DISTILLER -> id.equals("minecraft:water");
-            case BLAST_FURNACE -> id.equals("ic2:air");
-            case FERMENTER -> id.equals("ic2:biomass");
-            case HEAT_EXCHANGER -> id.equals("ic2:hot_coolant");
-            case REPLICATOR -> id.equals("ic2:uu_matter");
+            case ORE_WASHER, ELECTROLYZER, SOLAR_DISTILLER -> WorkshopThermal.isWater(id);
+            case BLAST_FURNACE -> WorkshopThermal.isAir(id);
+            case FERMENTER -> WorkshopThermal.isBiomass(id);
+            case HEAT_EXCHANGER -> WorkshopThermal.isHotCoolant(id);
+            case REPLICATOR -> WorkshopThermal.isUuMatter(id);
             case SEMIFLUID, FLUID_HEAT -> WorkshopThermal.validFuel(kind, id);
             case STEAM_BOILER, STIRLING_KINETIC ->
-                    id.equals("minecraft:water") || id.equals("ic2:distilled_water");
+                    WorkshopThermal.isWater(id) || WorkshopThermal.isDistilledWater(id);
             case STEAM_REPRESSURIZER, STEAM_TURBINE, CONDENSER ->
-                    id.equals("ic2:steam") || id.equals("ic2:superheated_steam");
+                    WorkshopThermal.isSteam(id) || WorkshopThermal.isSuperheatedSteam(id);
             default -> WorkshopPlatform.fluidExists(id);
         };
     }

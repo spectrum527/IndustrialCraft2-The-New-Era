@@ -1,14 +1,15 @@
 package com.industrialage.ia2.equipment;
 
+import com.industrialage.ia2.gui.AuthoredScreen;
 import com.industrialage.ia2.gui.PanelButton;
+import com.industrialage.ia2.gui.PanelCanvas;
 import com.industrialage.ia2.gui.PanelGraphics;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 /** Author-drawn EU reader and native inventory on Minecraft 26.x. */
-final class MeterScreen extends AbstractContainerScreen<MeterMenu> {
+final class MeterScreen extends AuthoredScreen<MeterMenu> {
     private PanelButton mode;
 
     MeterScreen(MeterMenu menu, Inventory inventory, Component title) {
@@ -48,9 +49,8 @@ final class MeterScreen extends AbstractContainerScreen<MeterMenu> {
     }
 
     @Override
-    public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tick) {
-        MeterPanel.draw(menu, PanelGraphics.at(graphics, font, leftPos, topPos));
-        super.extractContents(graphics, mouseX, mouseY, tick);
+    protected void paint(PanelCanvas canvas) {
+        MeterPanel.draw(menu, canvas);
     }
 
     @Override

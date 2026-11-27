@@ -162,7 +162,24 @@ final class WorkshopNative {
     }
 
     private static boolean matchesRawTag(ItemStack item, String tag) {
-        return item.is(TagKey.create(Registries.ITEM, ResourceLocation.parse(tag)));
+        var location = ResourceLocation.tryParse(tag);
+        return location != null && item.is(TagKey.create(Registries.ITEM, location));
+    }
+
+    static boolean fluidTagged(String fluidId, String tag) {
+        if (fluidId == null || fluidId.isEmpty() || tag == null || tag.isEmpty()) return false;
+        var key = ResourceLocation.tryParse(fluidId);
+        if (key == null) return false;
+        var fluid = BuiltInRegistries.FLUID.getOptional(key).orElse(null);
+        if (fluid == null) return false;
+        return com.industrialage.ia2.content.ProcessingMachine.matchesTagAlias(
+                tag,
+                candidate -> {
+                    var loc = ResourceLocation.tryParse(candidate);
+                    return loc != null
+                            && fluid.builtInRegistryHolder()
+                                    .is(TagKey.create(Registries.FLUID, loc));
+                });
     }
 
     static ItemStack fuelRemainder(ItemStack item) {

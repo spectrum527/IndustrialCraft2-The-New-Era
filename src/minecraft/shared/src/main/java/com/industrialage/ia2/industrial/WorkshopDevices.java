@@ -164,7 +164,8 @@ final class WorkshopDevices {
         boolean legacy = node.cycleDuration == 0;
         int debit = node.kind.workingEu - (legacy ? (node.progress % 2) * 16 : 0);
         if (node.energy < debit
-                || !node.inlet.has(WATER, ELECTROLYSIS_WATER)
+                || node.inlet.amount < ELECTROLYSIS_WATER
+                || !WorkshopThermal.isWater(node.inlet.id)
                 || node.outlet.fill(HYDROGEN, ELECTROLYSIS_HYDROGEN, true) != ELECTROLYSIS_HYDROGEN
                 || node.byproduct.fill(OXYGEN, ELECTROLYSIS_OXYGEN, true) != ELECTROLYSIS_OXYGEN) {
             return false;

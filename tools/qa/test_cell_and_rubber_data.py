@@ -32,10 +32,14 @@ class CellAndRubberDataTest(unittest.TestCase):
                     return json.loads((folder / (name + ".json")).read_text(encoding="utf-8"))
                 def item(ingredient):
                     return ingredient if isinstance(ingredient, str) else ingredient.get("item")
+                def tag(ingredient):
+                    if isinstance(ingredient, str):
+                        return ingredient[1:] if ingredient.startswith("#") else None
+                    return ingredient.get("tag")
                 basic = read(recipes, "empty_cell")
                 self.assertEqual(basic["pattern"], ["TGT"])
                 self.assertEqual(item(basic["key"]["T"]), "ic2:tin_casing")
-                self.assertEqual(item(basic["key"]["G"]), "minecraft:glass_pane")
+                self.assertEqual(tag(basic["key"]["G"]), ("forge" if forge else "c") + ":glass_panes")
                 self.assertEqual(basic["result"], {field: "ic2:empty_cell", "count": 4})
                 for liquid in ("water", "lava"):
                     for recipe, shell, result in [
