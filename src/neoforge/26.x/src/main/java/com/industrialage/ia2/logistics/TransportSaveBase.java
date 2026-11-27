@@ -32,6 +32,7 @@ abstract class TransportSaveBase extends BlockEntity {
                             node.receivedItemAt,
                             node.cargoFrom,
                             node.cargoTo,
+                            node.externalIntakeFace,
                             node.cargoStalled,
                             node.cargoSeq,
                             node.fluidFlowDir,
@@ -48,6 +49,7 @@ abstract class TransportSaveBase extends BlockEntity {
                     node.receivedItemAt = snapshot.receivedAt();
                     node.cargoFrom = snapshot.cargoFrom();
                     node.cargoTo = snapshot.cargoTo();
+                    node.externalIntakeFace = snapshot.externalIntakeFace();
                     node.cargoStalled = snapshot.cargoStalled();
                     node.cargoSeq = snapshot.cargoSeq();
                     node.fluidFlowDir = snapshot.fluidFlowDir();
@@ -145,6 +147,9 @@ abstract class TransportSaveBase extends BlockEntity {
             output.putInt("nozzle_extraction", node.extractionNozzles);
             output.putInt("nozzle_injection", node.injectionNozzles);
         }
+        if (node.spec.kind() == Kind.ITEM_PIPE && node.externalIntakeFace != null) {
+            output.putInt("external_intake", encodeDirection(node.externalIntakeFace));
+        }
     }
 
     @Override
@@ -164,6 +169,10 @@ abstract class TransportSaveBase extends BlockEntity {
                 input.getIntOr("mv", 0));
         tank.restoreNozzles(
                 input.getIntOr("nozzle_extraction", 0), input.getIntOr("nozzle_injection", 0));
+        tank.externalIntakeFace =
+                tank.spec.kind() == Kind.ITEM_PIPE
+                        ? decodeDirection(input.getIntOr("external_intake", -1))
+                        : null;
     }
 
     @Override
@@ -181,6 +190,7 @@ abstract class TransportSaveBase extends BlockEntity {
             long receivedAt,
             Direction cargoFrom,
             Direction cargoTo,
+            Direction externalIntakeFace,
             boolean cargoStalled,
             int cargoSeq,
             Direction fluidFlowDir,

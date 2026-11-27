@@ -45,6 +45,17 @@ final class TransportChecks {
     private static final BlockPos SOLO_STRAIGHT_PIPE = new BlockPos(19, 98, 19);
     private static final BlockPos SOLO_BEND_PIPE = new BlockPos(24, 98, 19);
     private static final BlockPos SOLO_LATE_PIPE = new BlockPos(29, 98, 19);
+    private static final BlockPos AUTO_UP_SRC = new BlockPos(18, 140, 18);
+    private static final BlockPos AUTO_UP_OPPOSING_SRC = new BlockPos(21, 140, 18);
+    private static final BlockPos AUTO_UP_TOPDOWN_SRC = new BlockPos(29, 140, 22);
+    private static final BlockPos AUTO_CLIMB_SRC = new BlockPos(24, 140, 18);
+    private static final BlockPos AUTO_DIP_UP_SRC = new BlockPos(18, 142, 22);
+    private static final BlockPos AUTO_Z_SRC = new BlockPos(23, 140, 22);
+    private static final BlockPos AUTO_TEE_SRC = new BlockPos(18, 140, 26);
+    private static final BlockPos AUTO_U_SRC = new BlockPos(18, 145, 25);
+    private static final BlockPos NOZZLE_CLIMB_SRC = new BlockPos(24, 140, 26);
+    private static final BlockPos NOZZLE_EXT_ONLY_SRC = new BlockPos(24, 144, 22);
+    private static final BlockPos COLD_CORNER_SRC = new BlockPos(27, 144, 18);
     private final PipeNozzleChecks nozzles =
             new PipeNozzleChecks(
                     new BlockPos(3, 132, 3),
@@ -97,8 +108,10 @@ final class TransportChecks {
     private boolean finishedFluid;
     private boolean finishedItems;
     private boolean finishedSingleSegment;
+    private boolean finishedCornerAndVertical;
     private boolean placedLateTarget;
     private boolean checkedWaterlogging;
+    private boolean seededColdCorner;
 
     void writeStart(ServerLevel level, BiConsumer<String, Boolean> check) {
         var player = FakePlayerFactory.getMinecraft(level);
@@ -169,9 +182,25 @@ final class TransportChecks {
                 NativeTransferAccess.fill(level, FLUID_PIPE, Direction.SOUTH, water(1), false)
                         == 0);
         setupWaterlogChecks(level, player, check);
+        setupColdCornerSourceCheck(level);
+    }
+
+    private static void setupColdCornerSourceCheck(ServerLevel level) {
+        var pipeBlock = NativeGameplayFixture.block("bronze_item_pipe_small");
+        level.setBlockAndUpdate(COLD_CORNER_SRC, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, COLD_CORNER_SRC.east(), Direction.EAST);
+        setPipe(level, pipeBlock, COLD_CORNER_SRC.east().above(), Direction.UP);
+        ((Container) level.getBlockEntity(COLD_CORNER_SRC))
+                .setItem(0, new ItemStack(Items.AMETHYST_SHARD, 8));
     }
 
     boolean writeTick(ServerLevel level, BiConsumer<String, Boolean> check) {
+        if (!seededColdCorner
+                && NativeTransferAccess.cargo(level, COLD_CORNER_SRC.east(), Direction.EAST)
+                                .getCount()
+                        == 4) {
+            seededColdCorner = true;
+        }
         if (!checkedWaterlogging
                 && !level.getFluidState(WET_ITEM_PIPE.east()).isEmpty()
                 && !level.getFluidState(WET_FLUID_PIPE.east()).isEmpty()
@@ -198,7 +227,8 @@ final class TransportChecks {
         }
         return nozzles.waitForBackpressure(level, check)
                 && slotRules.tick(level, check)
-                && checkedWaterlogging;
+                && checkedWaterlogging
+                && seededColdCorner;
     }
 
     void readStart(ServerLevel level, BiConsumer<String, Boolean> check) {
@@ -232,6 +262,7 @@ final class TransportChecks {
                 "tank-seeded",
                 NativeTransferAccess.fill(level, SUPPLY, Direction.UP, water(512), false) == 512);
         setupSingleSegmentExtractionChecks(level, check);
+        setupCornerAndVerticalRoutingChecks(level, player, check);
     }
 
     boolean tick(ServerLevel level, BiConsumer<String, Boolean> check) {
@@ -252,12 +283,16 @@ final class TransportChecks {
         if (!finishedSingleSegment) {
             tickSingleSegmentExtractionChecks(level, check);
         }
+        if (!finishedCornerAndVertical) {
+            tickCornerAndVerticalRoutingChecks(level, check);
+        }
         if (!finishedFluid) {
             tickFluid(level, check);
         }
         return nozzles.delivered(level, check)
                 && finishedItems
                 && finishedSingleSegment
+                && finishedCornerAndVertical
                 && finishedFluid;
     }
 
@@ -275,7 +310,9 @@ final class TransportChecks {
                 + ", items done="
                 + finishedItems
                 + ", single-segment done="
-                + finishedSingleSegment;
+                + finishedSingleSegment
+                + ", corner-vertical done="
+                + finishedCornerAndVertical;
     }
 
     private void setupSingleSegmentExtractionChecks(
@@ -376,6 +413,277 @@ final class TransportChecks {
                         && level.getBlockState(SOLO_LATE_PIPE).getValue(BlockStateProperties.FACING)
                                 == Direction.SOUTH);
         finishedSingleSegment = true;
+    }
+
+    private void setupCornerAndVerticalRoutingChecks(
+            ServerLevel level,
+            net.minecraft.server.level.ServerPlayer player,
+            BiConsumer<String, Boolean> check) {
+        var pipeBlock = NativeGameplayFixture.block("bronze_item_pipe_small");
+
+        // 1. Auto-routing straight UP placed via real BlockPlaceContext (top pipe clicked onto
+        // overhead barrel bottom must face UP into the barrel, not DOWN into the pipe).
+        level.setBlockAndUpdate(AUTO_UP_SRC, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(AUTO_UP_SRC.above(4), Blocks.BARREL.defaultBlockState());
+        placePipeAgainst(level, player, pipeBlock, AUTO_UP_SRC, Direction.UP);
+        placePipeAgainst(level, player, pipeBlock, AUTO_UP_SRC.above(), Direction.UP);
+        placePipeAgainst(level, player, pipeBlock, AUTO_UP_SRC.above(4), Direction.DOWN);
+        check.accept(
+                "vertical-up-placed-against-overhead-sink-faces-up",
+                level.getBlockState(AUTO_UP_SRC.above(3)).getValue(BlockStateProperties.FACING)
+                        == Direction.UP);
+        ((Container) level.getBlockEntity(AUTO_UP_SRC))
+                .setItem(0, new ItemStack(Items.DIAMOND, 12));
+
+        // 2. Auto-routing straight UP where top pipe was placed BEFORE lower pipe (OUT=DOWN
+        // opposing lower pipe): must auto-align OUT=UP on delivery and never pull items back.
+        level.setBlockAndUpdate(AUTO_UP_OPPOSING_SRC, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(AUTO_UP_OPPOSING_SRC.above(4), Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_UP_OPPOSING_SRC.above(1), Direction.UP);
+        setPipe(level, pipeBlock, AUTO_UP_OPPOSING_SRC.above(2), Direction.UP);
+        setPipe(level, pipeBlock, AUTO_UP_OPPOSING_SRC.above(3), Direction.DOWN);
+        ((Container) level.getBlockEntity(AUTO_UP_OPPOSING_SRC))
+                .setItem(0, new ItemStack(Items.EMERALD, 12));
+
+        // 2b. Top-down opposing chain: P1(UP) -> P2(DOWN) -> P3(DOWN) -> Sink (placed P3 under
+        // Sink then P2 under P3).
+        level.setBlockAndUpdate(AUTO_UP_TOPDOWN_SRC, Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(AUTO_UP_TOPDOWN_SRC.above(4), Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_UP_TOPDOWN_SRC.above(1), Direction.UP);
+        setPipe(level, pipeBlock, AUTO_UP_TOPDOWN_SRC.above(2), Direction.DOWN);
+        setPipe(level, pipeBlock, AUTO_UP_TOPDOWN_SRC.above(3), Direction.DOWN);
+        ((Container) level.getBlockEntity(AUTO_UP_TOPDOWN_SRC))
+                .setItem(0, new ItemStack(Items.PRISMARINE_SHARD, 12));
+
+        // Cold-reload corner source check: P1 held 4 shards + external_intake=WEST across save/load
+        // with OUT=EAST (air). Attaching destination barrel at P2.east() must deliver all 8 shards
+        // without flipping P1.OUT back into COLD_CORNER_SRC.
+        check.accept(
+                "cold-corner-source-retained-cargo-and-out",
+                NativeTransferAccess.cargo(level, COLD_CORNER_SRC.east(), Direction.EAST).getCount()
+                                == 4
+                        && level.getBlockState(COLD_CORNER_SRC.east())
+                                        .getValue(BlockStateProperties.FACING)
+                                == Direction.EAST);
+        level.setBlockAndUpdate(COLD_CORNER_SRC.east(2).above(), Blocks.BARREL.defaultBlockState());
+
+        // 3. Auto-routing horizontal -> UP -> horizontal (terminal pipe OUT=UP into air, sink on
+        // EAST).
+        level.setBlockAndUpdate(AUTO_CLIMB_SRC, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_CLIMB_SRC.east(), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_CLIMB_SRC.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_CLIMB_SRC.east(2).above(), Direction.UP);
+        level.setBlockAndUpdate(AUTO_CLIMB_SRC.east(3).above(), Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(AUTO_CLIMB_SRC))
+                .setItem(0, new ItemStack(Items.IRON_INGOT, 16));
+
+        // 4. Auto-routing DOWN -> side -> UP (zero nozzles, unrotated terminal OUT=UP into air).
+        level.setBlockAndUpdate(AUTO_DIP_UP_SRC, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below(), Direction.DOWN);
+        setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below(2), Direction.DOWN);
+        setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below(2).east(), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_DIP_UP_SRC.below().east(), Direction.UP);
+        level.setBlockAndUpdate(AUTO_DIP_UP_SRC.below().east(2), Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(AUTO_DIP_UP_SRC))
+                .setItem(0, new ItemStack(Items.COPPER_INGOT, 12));
+
+        // 5. Auto-routing horizontal Z-turn + L-turn (zero nozzles).
+        level.setBlockAndUpdate(AUTO_Z_SRC, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_Z_SRC.east(), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_Z_SRC.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_Z_SRC.east(2).north(), Direction.NORTH);
+        setPipe(level, pipeBlock, AUTO_Z_SRC.east(3).north(), Direction.EAST);
+        level.setBlockAndUpdate(AUTO_Z_SRC.east(3).north(2), Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(AUTO_Z_SRC))
+                .setItem(0, new ItemStack(Items.GOLD_INGOT, 12));
+
+        // 6. Auto-routing T-junction splitting to two terminal barrels with backpressure failover
+        // (zero nozzles): north barrel only has room for 6 coal so overflow must route south.
+        level.setBlockAndUpdate(AUTO_TEE_SRC, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_TEE_SRC.east(), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_TEE_SRC.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_TEE_SRC.east(2).north(), Direction.NORTH);
+        setPipe(level, pipeBlock, AUTO_TEE_SRC.east(2).south(), Direction.SOUTH);
+        level.setBlockAndUpdate(AUTO_TEE_SRC.east(3).north(), Blocks.BARREL.defaultBlockState());
+        level.setBlockAndUpdate(AUTO_TEE_SRC.east(3).south(), Blocks.BARREL.defaultBlockState());
+        var teeNorthBarrel = (Container) level.getBlockEntity(AUTO_TEE_SRC.east(3).north());
+        teeNorthBarrel.setItem(0, new ItemStack(Items.COAL, 58));
+        for (int slot = 1; slot < teeNorthBarrel.getContainerSize(); slot++) {
+            teeNorthBarrel.setItem(slot, new ItemStack(Items.STICK, 1));
+        }
+        ((Container) level.getBlockEntity(AUTO_TEE_SRC)).setItem(0, new ItemStack(Items.COAL, 16));
+
+        // 6b. Auto-routing horizontal U-turn (EAST -> SOUTH -> WEST with a 1-block gap so there is
+        // no shortcut, terminal OUT=SOUTH into air, zero nozzles).
+        level.setBlockAndUpdate(AUTO_U_SRC, Blocks.BARREL.defaultBlockState());
+        setPipe(level, pipeBlock, AUTO_U_SRC.east(), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_U_SRC.east(2), Direction.EAST);
+        setPipe(level, pipeBlock, AUTO_U_SRC.east(2).south(), Direction.SOUTH);
+        setPipe(level, pipeBlock, AUTO_U_SRC.east(2).south(2), Direction.SOUTH);
+        setPipe(level, pipeBlock, AUTO_U_SRC.east().south(2), Direction.SOUTH);
+        level.setBlockAndUpdate(AUTO_U_SRC.south(2), Blocks.BARREL.defaultBlockState());
+        ((Container) level.getBlockEntity(AUTO_U_SRC)).setItem(0, new ItemStack(Items.QUARTZ, 12));
+
+        // 7. With extraction + injection nozzles across corner + UP climb + backward OUT faces +
+        // continuous multi-batch flow.
+        level.setBlockAndUpdate(NOZZLE_CLIMB_SRC, Blocks.BARREL.defaultBlockState());
+        var nP1 = NOZZLE_CLIMB_SRC.east();
+        var nP2 = NOZZLE_CLIMB_SRC.east(2);
+        var nP3 = nP2.above();
+        var nP4 = nP3.south();
+        var nDst = nP4.east();
+        setPipe(level, pipeBlock, nP1, Direction.WEST);
+        setPipe(level, pipeBlock, nP2, Direction.WEST);
+        setPipe(level, pipeBlock, nP3, Direction.DOWN);
+        setPipe(level, pipeBlock, nP4, Direction.NORTH);
+        level.setBlockAndUpdate(nDst, Blocks.BARREL.defaultBlockState());
+        click(
+                level,
+                nP1,
+                Direction.WEST,
+                new ItemStack(NativeGameplayFixture.item("pipe_extraction_nozzle")));
+        click(
+                level,
+                nP4,
+                Direction.EAST,
+                new ItemStack(NativeGameplayFixture.item("pipe_injection_nozzle")));
+        check.accept(
+                "injection-nozzle-clears-backward-pipe-out",
+                level.getBlockState(nP4).getValue(BlockStateProperties.FACING) == Direction.EAST);
+        // Attempting to install a nozzle onto a pipe-to-pipe face must be ignored and keep the
+        // nozzle item.
+        var rejectedPipeNozzle = new ItemStack(NativeGameplayFixture.item("pipe_injection_nozzle"));
+        var pipeFaceResult = useItemOnPipe(level, player, nP2, Direction.WEST, rejectedPipeNozzle);
+        check.accept(
+                "nozzle-rejected-on-pipe-to-pipe-face",
+                !pipeFaceResult.consumesAction() && player.getMainHandItem().getCount() == 1);
+        ((Container) level.getBlockEntity(NOZZLE_CLIMB_SRC))
+                .setItem(0, new ItemStack(Items.LAPIS_LAZULI, 24));
+
+        // 8. Extraction nozzle ONLY (no injection nozzle) across horizontal -> UP -> corner.
+        level.setBlockAndUpdate(NOZZLE_EXT_ONLY_SRC, Blocks.BARREL.defaultBlockState());
+        var eP1 = NOZZLE_EXT_ONLY_SRC.east();
+        var eP2 = NOZZLE_EXT_ONLY_SRC.east(2);
+        var eP3 = eP2.above();
+        var eDst = eP3.south();
+        setPipe(level, pipeBlock, eP1, Direction.NORTH);
+        setPipe(level, pipeBlock, eP2, Direction.EAST);
+        setPipe(level, pipeBlock, eP3, Direction.UP);
+        level.setBlockAndUpdate(eDst, Blocks.BARREL.defaultBlockState());
+        click(
+                level,
+                eP1,
+                Direction.WEST,
+                new ItemStack(NativeGameplayFixture.item("pipe_extraction_nozzle")));
+        ((Container) level.getBlockEntity(NOZZLE_EXT_ONLY_SRC))
+                .setItem(0, new ItemStack(Items.REDSTONE, 16));
+    }
+
+    private void tickCornerAndVerticalRoutingChecks(
+            ServerLevel level, BiConsumer<String, Boolean> check) {
+        var upDst = (Container) level.getBlockEntity(AUTO_UP_SRC.above(4));
+        var oppDst = (Container) level.getBlockEntity(AUTO_UP_OPPOSING_SRC.above(4));
+        var topDownDst = (Container) level.getBlockEntity(AUTO_UP_TOPDOWN_SRC.above(4));
+        var coldCornerDst = (Container) level.getBlockEntity(COLD_CORNER_SRC.east(2).above());
+        var climbDst = (Container) level.getBlockEntity(AUTO_CLIMB_SRC.east(3).above());
+        var dipUpDst = (Container) level.getBlockEntity(AUTO_DIP_UP_SRC.below().east(2));
+        var zDst = (Container) level.getBlockEntity(AUTO_Z_SRC.east(3).north(2));
+        var teeNorthDst = (Container) level.getBlockEntity(AUTO_TEE_SRC.east(3).north());
+        var teeSouthDst = (Container) level.getBlockEntity(AUTO_TEE_SRC.east(3).south());
+        var uDst = (Container) level.getBlockEntity(AUTO_U_SRC.south(2));
+        var nozzleDst = (Container) level.getBlockEntity(NOZZLE_CLIMB_SRC.east(3).above().south());
+        var extOnlyDst =
+                (Container) level.getBlockEntity(NOZZLE_EXT_ONLY_SRC.east(2).above().south());
+
+        int teeDelivered =
+                (teeNorthDst.countItem(Items.COAL) - 58) + teeSouthDst.countItem(Items.COAL);
+        if (upDst.countItem(Items.DIAMOND) < 12
+                || oppDst.countItem(Items.EMERALD) < 12
+                || topDownDst.countItem(Items.PRISMARINE_SHARD) < 12
+                || coldCornerDst.countItem(Items.AMETHYST_SHARD) < 8
+                || climbDst.countItem(Items.IRON_INGOT) < 16
+                || dipUpDst.countItem(Items.COPPER_INGOT) < 12
+                || zDst.countItem(Items.GOLD_INGOT) < 12
+                || teeDelivered < 16
+                || uDst.countItem(Items.QUARTZ) < 12
+                || nozzleDst.countItem(Items.LAPIS_LAZULI) < 24
+                || extOnlyDst.countItem(Items.REDSTONE) < 16) {
+            return;
+        }
+        check.accept(
+                "corner-and-vertical-up-routing-auto-and-nozzles",
+                upDst.countItem(Items.DIAMOND) == 12
+                        && ((Container) level.getBlockEntity(AUTO_UP_SRC)).isEmpty()
+                        && oppDst.countItem(Items.EMERALD) == 12
+                        && ((Container) level.getBlockEntity(AUTO_UP_OPPOSING_SRC)).isEmpty()
+                        && level.getBlockState(AUTO_UP_OPPOSING_SRC.above(3))
+                                        .getValue(BlockStateProperties.FACING)
+                                == Direction.UP
+                        && topDownDst.countItem(Items.PRISMARINE_SHARD) == 12
+                        && ((Container) level.getBlockEntity(AUTO_UP_TOPDOWN_SRC)).isEmpty()
+                        && level.getBlockState(AUTO_UP_TOPDOWN_SRC.above(3))
+                                        .getValue(BlockStateProperties.FACING)
+                                == Direction.UP
+                        && coldCornerDst.countItem(Items.AMETHYST_SHARD) == 8
+                        && ((Container) level.getBlockEntity(COLD_CORNER_SRC)).isEmpty()
+                        && level.getBlockState(COLD_CORNER_SRC.east())
+                                        .getValue(BlockStateProperties.FACING)
+                                == Direction.EAST
+                        && climbDst.countItem(Items.IRON_INGOT) == 16
+                        && ((Container) level.getBlockEntity(AUTO_CLIMB_SRC)).isEmpty()
+                        && dipUpDst.countItem(Items.COPPER_INGOT) == 12
+                        && ((Container) level.getBlockEntity(AUTO_DIP_UP_SRC)).isEmpty()
+                        && zDst.countItem(Items.GOLD_INGOT) == 12
+                        && ((Container) level.getBlockEntity(AUTO_Z_SRC)).isEmpty()
+                        && teeDelivered == 16
+                        && teeNorthDst.countItem(Items.COAL) <= 64
+                        && teeSouthDst.countItem(Items.COAL) >= 10
+                        && ((Container) level.getBlockEntity(AUTO_TEE_SRC)).isEmpty()
+                        && uDst.countItem(Items.QUARTZ) == 12
+                        && ((Container) level.getBlockEntity(AUTO_U_SRC)).isEmpty()
+                        && nozzleDst.countItem(Items.LAPIS_LAZULI) == 24
+                        && ((Container) level.getBlockEntity(NOZZLE_CLIMB_SRC)).isEmpty()
+                        && extOnlyDst.countItem(Items.REDSTONE) == 16
+                        && ((Container) level.getBlockEntity(NOZZLE_EXT_ONLY_SRC)).isEmpty());
+        finishedCornerAndVertical = true;
+    }
+
+    private static void setPipe(ServerLevel level, Block pipeBlock, BlockPos pos, Direction out) {
+        level.setBlockAndUpdate(
+                pos, pipeBlock.defaultBlockState().setValue(BlockStateProperties.FACING, out));
+    }
+
+    private static void placePipeAgainst(
+            ServerLevel level,
+            net.minecraft.server.level.ServerPlayer player,
+            Block pipeBlock,
+            BlockPos target,
+            Direction clickedFace) {
+        var stack = new ItemStack(pipeBlock);
+        player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        player.setPos(
+                target.getX() + 0.5 + clickedFace.getStepX() * 2.0,
+                target.getY() + 0.5 + clickedFace.getStepY() * 2.0,
+                target.getZ() + 0.5 + clickedFace.getStepZ() * 2.0);
+        var hit =
+                new BlockHitResult(
+                        Vec3.atCenterOf(target)
+                                .add(
+                                        clickedFace.getStepX() * 0.5,
+                                        clickedFace.getStepY() * 0.5,
+                                        clickedFace.getStepZ() * 0.5),
+                        clickedFace,
+                        target,
+                        false);
+        var placed =
+                ((BlockItem) stack.getItem())
+                        .place(
+                                new BlockPlaceContext(
+                                        player, InteractionHand.MAIN_HAND, stack, hit));
+        if (!placed.consumesAction()) {
+            throw new AssertionError(
+                    "Failed to place pipe against " + target + " on " + clickedFace);
+        }
     }
 
     private void tickFluid(ServerLevel level, BiConsumer<String, Boolean> check) {
