@@ -32,16 +32,22 @@ def spawn(directory, side, port, manifest, rejecting=None):
     env = {key: value for key, value in os.environ.items() if key in keep or key.startswith(("LC_", "MESA_"))}
     env.update(launch["env"])
     classpath = launch["classpath"]
+    jvm = [arg for arg in launch["jvm"] if not arg.startswith("-Dic2.qa.clientPort=")]
     if rejecting:
         original, variant = (manifest[key] for key in ("productionClasses", "mismatchClasses"))
         ids = env["MOD_CLASSES"].split(os.pathsep)
         if ids.count("ic2%%" + original) != 1:
             raise AssertionError("Cannot locate the production Forge registrar in the client mod list")
-        env["MOD_CLASSES"] = os.pathsep.join(
+        swapped = os.pathsep.join(
             "ic2%%" + variant if entry == "ic2%%" + original else entry for entry in ids)
+        env["MOD_CLASSES"] = swapped
+        prefix = "-Dfml.modFolders="
+        jvm = [prefix + os.pathsep.join(
+            "ic2%%" + variant if entry == "ic2%%" + original else entry
+            for entry in arg[len(prefix):].split(os.pathsep))
+            if arg.startswith(prefix) else arg for arg in jvm]
         classpath = os.pathsep.join(variant if entry == original else entry
                                      for entry in classpath.split(os.pathsep))
-    jvm = [arg for arg in launch["jvm"] if not arg.startswith("-Dic2.qa.clientPort=")]
     if rejecting == "server":
         jvm.append("-Dic2.qa.acceptOlderServer=true")
     args = [launch["java"], *jvm, f"-Dic2.qa.clientPort={port}", "-cp", classpath,
