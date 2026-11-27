@@ -1,0 +1,173 @@
+plugins {
+    id 'net.neoforged.moddev.legacyforge'
+}
+
+def mcVersion = '1.19.2'
+def forgeVer = providers.gradleProperty('forge_1192').get()
+ext.minecraftVersion = mcVersion
+ext.forgeVersion = forgeVer
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+base.archivesName = "ic2-forge-${mcVersion}"
+
+sourceSets {
+    main {
+        java.srcDir rootProject.file('src/minecraft/shared/src/main/java')
+    }
+    qa {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+
+// Explicit false overrides MDG's CI=true default: with disableRecompilation=true, NFRT retains
+// META-INF/FORGE.{SF,RSA} on the remapped Forge 1.19.2 jar, breaking JUnit with SecurityException.
+def disableRecomp = providers.gradleProperty('ic2.legacyforge.disableRecompilation')
+        .map { it.toBoolean() }.getOrElse(false)
+
+legacyForge {
+    enable {
+        forgeVersion = "${mcVersion}-${forgeVer}"
+        disableRecompilation = disableRecomp
+    }
+    addModdingDependenciesTo(sourceSets.qa)
+    addModdingDependenciesTo(sourceSets.test)
+    mods {
+        ic2 {
+            sourceSet sourceSets.main
+            sourceSet project(':common').sourceSets.main
+        }
+        ic2_qa {
+            sourceSet sourceSets.qa
+        }
+    }
+    runs {
+        configureEach {
+            gameDirectory = providers.gradleProperty('qaDir').map { layout.projectDirectory.dir(it) }
+                    .orElse(layout.buildDirectory.dir("run/$name"))
+            systemProperty 'forge.logging.console.level', 'info'
+            loadedMods = [mods.ic2]
+        }
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+        }
+        qaWorld {
+            server()
+            sourceSet = sourceSets.qa
+            loadedMods = [mods.ic2, mods.ic2_qa]
+            programArgument '--nogui'
+            systemProperty 'ic2.qa.worldPhase', providers.gradleProperty('qaPhase').getOrElse('write')
+        }
+        qaPlayServer {
+            server()
+            sourceSet = sourceSets.qa
+            loadedMods = [mods.ic2, mods.ic2_qa]
+            logLevel = org.slf4j.event.Level.DEBUG
+            programArgument '--nogui'
+            systemProperty 'ic2.qa.clientAcceptance', 'true'
+        }
+        qaPlayClient {
+            client()
+            sourceSet = sourceSets.qa
+            loadedMods = [mods.ic2, mods.ic2_qa]
+            logLevel = org.slf4j.event.Level.DEBUG
+            systemProperty 'ic2.qa.clientAcceptance', 'true'
+            systemProperty 'ic2.qa.clientPort', providers.gradleProperty('qaPort').getOrElse('25565')
+            programArguments.addAll '--username', 'P2Tester'
+        }
+        qaGameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.qa
+            loadedMods = [mods.ic2, mods.ic2_qa]
+            systemProperty 'forge.enabledGameTestNamespaces',
+                    providers.gradleProperty('qaGameTestNamespaces').getOrElse('ic2_qa,ic2_storage')
+        }
+    }
+}
+
+mixin {
+    config 'ic2.mixins.json'
+}
+
+dependencies {
+    implementation project(':common')
+    qaImplementation project(':common')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+}
+
+tasks.named('test', Test) { useJUnitPlatform() }
+
+apply from: rootProject.file('gradle/optional-mods.gradle')
+
+tasks.named('processQaResources') {
+    from(rootProject.file('spec/registry/classic-playable-recipes.json')) { rename { 'classic-recipes.json' } }
+}
+
+def generatedResources = layout.buildDirectory.dir('generated/ic2-resources')
+def generateResources = tasks.register('generatePlayableResources', Exec) {
+    def generator = rootProject.file('src/datagen/generate_resources.py')
+    inputs.files(rootProject.fileTree('src/datagen') { include '*.py', '*.tsv', '*.json', 'families/*.json' })
+    inputs.files(rootProject.fileTree('spec/registry') { include '*.tsv', 'repair-recipe-book.json', 'classic-playable-recipes.json', 'gameplay-advancements.json' })
+    inputs.file(rootProject.file('assets/REGISTRY-ART-CATALOG.csv'))
+    inputs.dir(rootProject.file('assets/ic2'))
+    outputs.dir(generatedResources)
+    commandLine providers.gradleProperty('ic2.python').getOrElse('python3'), generator,
+            '--target', 'forge-1.19.2', '--logistics', '--output',
+            generatedResources.get().asFile
+}
+
+def legacy = providers.gradleProperty('ic2.legacyAssetsDir')
+        .orElse(providers.gradleProperty('ia2.legacyAssetsDir')).map { rootProject.file(it) }
+if (legacy.isPresent() && (!legacy.get().isDirectory()
+        || legacy.get().canonicalFile == rootProject.projectDir.canonicalFile
+        || legacy.get().canonicalPath.startsWith(rootProject.projectDir.canonicalPath + File.separator))) {
+    throw new GradleException('ic2.legacyAssetsDir must name an existing directory outside this repository')
+}
+
+tasks.named('processResources') {
+    filteringCharset = 'UTF-8'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    includeEmptyDirs = false
+    // Removed generated models must also disappear from the processed pack on incremental builds.
+    doFirst { delete destinationDir }
+    dependsOn generateResources
+    from(rootProject.file('assets')) {
+        exclude 'qa/**', 'brand/**', 'ic2/equipment/**', 'ic2/textures/entity/equipment/**'
+        into 'assets'
+        exclude '**/*.md', '**/*.csv', '**/.git*', '**/.DS_Store'
+        includeEmptyDirs = false
+    }
+    from(generatedResources) { exclude '.ic2-generated-output' }
+    if (legacy.isPresent()) {
+        from(legacy) {
+            exclude '**/.git*/**', '**/*.md', '**/.DS_Store'
+            exclude 'assets/ia2/**', 'data/ia2/**'
+            // Private models and sounds can still be previewed; package only newly authored sprites.
+            exclude '**/*.png', '**/*.png.mcmeta'
+        }
+    }
+    inputs.properties(version: project.version, minecraftVersion: minecraftVersion, forgeVersion: forgeVersion)
+    filesMatching('META-INF/mods.toml') {
+        expand version: project.version, minecraftVersion: minecraftVersion, forgeVersion: forgeVersion
+    }
+}
+
+tasks.named('jar', Jar) {
+    from project(':common').sourceSets.main.output
+    manifest { attributes 'MixinConfigs': 'ic2.mixins.json' }
+    inputs.file(rootProject.file('NOTICE.md'))
+    from rootProject.files('LICENSE', 'COPYING', 'LICENSE-ASSETS', 'NOTICE.md')
+}
+
+ext.remapJarClass = net.neoforged.moddevgradle.legacyforge.tasks.RemapJar
+apply from: 'qa/play.gradle'
+apply from: 'qa/machine.gradle'
+apply from: 'qa/optional-compat.gradle'

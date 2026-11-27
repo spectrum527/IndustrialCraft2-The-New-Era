@@ -1,0 +1,14 @@
+# Forge 1.19.2 平台契约
+
+Forge 1.19.2 目标现已并入统一 `main` 主仓库的 `:forge:1.19.2` 模块，在单 Gradle 9.2.1 工程中由 ModDevGradle `2.0.148` 的 `net.neoforged.moddev.legacyforge` 插件构建（显式设置 `disableRecompilation = false`），使用 Minecraft 1.19.2、Forge 43.5.0 和 Java 17。共同层（`:common`、Java 17）维持 P2 的六项服务契约。测试夹具从普通模组的加载入口取得同一平台实例。[共同服务](services.md)
+
+| 服务 | Forge 1.19.2 的可观察结果 |
+|---|---|
+| 注册 | 方块和同名的 BlockItem 可分别登记。注册阶段前读取句柄失败，绑定后得到宿主注册表中的同一个对象。用物品实际放置的方块须能破坏、保存并跨进程读回。 |
+| 事件与生命周期 | 只在逻辑服务端转发开始、维度加载、刻结束、维度卸载和关闭。集成服再次开档时创建新会话。回调顺序及重入遵循共同服务契约。 |
+| 方位能力 | 六个面及无指定面都按查询时的世界与方块状态解析。原生能力失效或世界卸载后释放旧对象，查询未加载的位置保持区块卸载状态。 |
+| 存档配置 | 每个存档独立生成 `serverconfig/ic2-server.toml`。管理员重载完整的 58 键候选，成功后发布不可变快照。缺项、坏类型、非法范围或无权限的请求保持原快照。 |
+| 消息 | Forge 使用两条必需的 SimpleChannel 承载 `ic2:echo_request` 和 `ic2:echo_reply`。协议版本为 `1`，内容是大端 64 位序号。校验方向、连接和长度后，在接收方主线程处理。回执只发送给原连接。 |
+| 客户端 | 初始未绑定的状态按键可在控制设置重新绑定。玩家可从状态屏发起 echo，换服后清除上一连接的回执。客户端能响应资源包重载，专服能独立启动。 |
+
+配置值域、报文边界与资源加载的期望值沿用重建仓库的行为规格。Forge 43 的宿主调用以 `:forge:1.19.2` 模块构建和实际运行验证。[配置契约](../config/runtime.md) · [网络契约](network.md) · [客户端契约](client.md) · [机器宿主契约](../machines/forge-1.19.2.md) · [Forge SimpleImpl](https://docs.minecraftforge.net/en/1.19.x/networking/simpleimpl/)

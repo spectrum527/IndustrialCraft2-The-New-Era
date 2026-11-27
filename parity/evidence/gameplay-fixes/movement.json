@@ -1,6 +1,40 @@
 {
   "stage": "Clean production JARs installed on both server and client, at normal game speed.",
   "versions": {
+    "1.19.2": {
+      "jarSha256": "17f9ab9c5811b5d3391da0439dd92982e25cc6fc25b054d13a37a4f4bd85c633",
+      "startY": 151,
+      "initialEU": 500,
+      "controls": {
+        "bare": {
+          "clientY": 151.0,
+          "serverY": 151.0,
+          "eu": 500.0
+        },
+        "unpowered": {
+          "clientY": 151.0,
+          "serverY": 151.0,
+          "eu": 0.0
+        }
+      },
+      "samples": [
+        {
+          "clientY": 151.0,
+          "serverY": 151.07725,
+          "eu": 492.0
+        },
+        {
+          "clientY": 151.771875,
+          "serverY": 152.62099999999998,
+          "eu": 484.0
+        },
+        {
+          "clientY": 153.76124999999996,
+          "serverY": 154.96124999999995,
+          "eu": 476.0
+        }
+      ]
+    },
     "1.21.1": {
       "jarSha256": "042f4307410110da6e0bff6d4c81a9a4515a2b95fa752b9c29e428d3f9699ede",
       "startY": 151,

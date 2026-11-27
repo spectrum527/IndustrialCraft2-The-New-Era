@@ -27,47 +27,94 @@ import org.junit.jupiter.api.Test;
 
 class BuildContractTest {
     private static final Pattern DEPENDENCY_FIELD =
-            Pattern.compile("\\s*(modId|versionRange|type)\\s*=\\s*\"([^\"]*)\"\\s*(?:#.*)?");
+            Pattern.compile(
+                    "\\s*(modId|versionRange|type|mandatory)\\s*=\\s*(?:\"([^\"]*)\"|(true|false))\\s*(?:#.*)?");
 
     @Test
     void jarsContainEntrypointMetadataAndCorrectBytecode() throws Exception {
         for (var platform : platformJars()) {
             try (var jar = new JarFile(platform.path().toFile())) {
-                var entry = jar.getJarEntry("com/industrialage/ia2/IndustrialAge2.class");
-                assertNotNull(entry, platform.target());
-                try (var bytes = new DataInputStream(jar.getInputStream(entry))) {
-                    assertEquals(0xCAFEBABE, bytes.readInt(), platform.target());
-                    bytes.readUnsignedShort();
-                    assertEquals(
-                            platform.bytecodeVersion(),
-                            bytes.readUnsignedShort(),
-                            platform.target());
-                }
-                var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
-                assertNotNull(metadata, platform.target());
+                assertBytecodeVersion(
+                        jar,
+                        "com/industrialage/ia2/IndustrialAge2.class",
+                        platform.bytecodeVersion(),
+                        platform.target());
+                assertBytecodeVersion(
+                        jar,
+                        "com/industrialage/ia2/energy/graph/EnergyGraph.class",
+                        61,
+                        platform.target() + " (common)");
+
+                var metadataPath =
+                        platform.isForge() ? "META-INF/mods.toml" : "META-INF/neoforge.mods.toml";
+                var metadata = jar.getJarEntry(metadataPath);
+                assertNotNull(metadata, platform.target() + ": " + metadataPath);
                 String text;
                 try (var stream = jar.getInputStream(metadata)) {
                     text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
                 }
-                assertTrue(text.contains("modId=\"ic2\""));
-                assertTrue(text.contains("version=\"" + requiredProperty("ic2.modVersion") + "\""));
-                assertTrue(text.contains("displayName=\"IndustrialCraft²: The New Era\""));
+                assertTrue(text.contains("modId=\"ic2\""), platform.target());
+                assertTrue(
+                        text.contains("version=\"" + requiredProperty("ic2.modVersion") + "\""),
+                        platform.target());
+                assertTrue(
+                        text.contains("displayName=\"IndustrialCraft²: The New Era\""),
+                        platform.target());
                 assertTrue(
                         text.contains(
-                                "displayURL=\"https://github.com/spectrum527/IndustrialCraft2-The-New-Era\""));
-                assertTrue(text.contains("[[dependencies.ic2]]"));
-                assertFalse(text.contains("modId=\"ia2\""));
+                                "displayURL=\"https://github.com/spectrum527/IndustrialCraft2-The-New-Era\""),
+                        platform.target());
+                assertTrue(text.contains("[[dependencies.ic2]]"), platform.target());
+                assertFalse(text.contains("modId=\"ia2\""), platform.target());
+                assertFalse(text.contains("${"), platform.target());
+
                 var dependencies = dependencies(text, platform.target());
                 assertDependency(
                         dependencies,
                         "minecraft",
                         "[" + platform.target() + "]",
-                        platform.target());
-                assertDependency(
-                        dependencies,
-                        "neoforge",
-                        "[" + platform.neoForgeVersion() + ",)",
-                        platform.target());
+                        platform.target(),
+                        platform.isForge());
+                if (platform.isForge()) {
+                    assertTrue(text.contains("modLoader=\"javafml\""), platform.target());
+                    assertDependency(
+                            dependencies,
+                            "forge",
+                            "[" + platform.loaderVersion() + ",44)",
+                            platform.target(),
+                            true);
+                    var manifest = jar.getManifest();
+                    assertNotNull(manifest, platform.target() + ": MANIFEST.MF");
+                    assertEquals(
+                            "ic2.mixins.json",
+                            manifest.getMainAttributes().getValue("MixinConfigs"),
+                            platform.target() + ": MixinConfigs manifest attribute");
+                    assertNotNull(
+                            jar.getJarEntry("com/industrialage/ia2/config/active-keys.tsv"),
+                            platform.target());
+                    assertNotNull(
+                            jar.getJarEntry("assets/ic2/status/client.json"), platform.target());
+                    for (String type :
+                            Set.of(
+                                    "energy/graph/EnergyGraph",
+                                    "energy/graph/PacketBudget",
+                                    "machine/BlockEntityBase",
+                                    "machine/FuelGenerator",
+                                    "machine/ForgeMachineBlockEntity",
+                                    "machine/FuelGeneratorBlockEntity")) {
+                        assertNotNull(
+                                jar.getJarEntry("com/industrialage/ia2/" + type + ".class"),
+                                platform.target() + ": " + type);
+                    }
+                } else {
+                    assertDependency(
+                            dependencies,
+                            "neoforge",
+                            "[" + platform.loaderVersion() + ",)",
+                            platform.target(),
+                            false);
+                }
+
                 var mixins = jar.getJarEntry("ic2.mixins.json");
                 assertNotNull(mixins, platform.target() + ": ic2.mixins.json");
                 try (var stream = jar.getInputStream(mixins)) {
@@ -76,15 +123,15 @@ class BuildContractTest {
                             mixinText.contains("\"minVersion\""),
                             platform.target() + ": ic2.mixins.json must declare minVersion");
                 }
+                String recipeDir = platform.isForge() ? "data/ic2/recipes/" : "data/ic2/recipe/";
                 assertNull(
                         jar.getJarEntry(
-                                "data/ic2/recipe/industry/shaped/heat_exchanger_from_gold.json"),
+                                recipeDir + "industry/shaped/heat_exchanger_from_gold.json"),
                         platform.target() + ": conflicting heat_exchanger_from_gold recipe");
                 assertNotNull(
                         jar.getJarEntry(
-                                "data/ic2/recipe/industry/shaped/component_heat_exchanger.json"),
+                                recipeDir + "industry/shaped/component_heat_exchanger.json"),
                         platform.target() + ": component_heat_exchanger recipe");
-                assertFalse(text.contains("${"));
                 assertNotNull(jar.getJarEntry("LICENSE"));
                 assertNotNull(jar.getJarEntry("COPYING"));
                 assertNotNull(jar.getJarEntry("LICENSE-ASSETS"));
@@ -147,6 +194,10 @@ class BuildContractTest {
                                 .filter(
                                         name ->
                                                 name.startsWith("com/industrialage/ia2/gametest/")
+                                                        || name.startsWith(
+                                                                "com/industrialage/ia2/forge/qa/")
+                                                        || name.startsWith("data/ic2_qa/")
+                                                        || name.startsWith("assets/ic2_qa/")
                                                         || name.startsWith("data/ic2_gametest/")
                                                         || name.startsWith("data/ia2_gametest/")
                                                         || name.startsWith("assets/ia2/")
@@ -156,7 +207,12 @@ class BuildContractTest {
                                                         || name.startsWith("org/junit/")
                                                         || name.startsWith("org/opentest4j/")
                                                         || name.endsWith(".csv")
-                                                        || name.startsWith("org/apiguardian/"))
+                                                        || name.startsWith("org/apiguardian/")
+                                                        || (platform.isForge()
+                                                                && (name.startsWith(
+                                                                                "assets/ic2/equipment/")
+                                                                        || name.startsWith(
+                                                                                "assets/ic2/textures/entity/equipment/"))))
                                 .toList();
                 assertTrue(
                         unexpectedEntries.isEmpty(),
@@ -164,26 +220,40 @@ class BuildContractTest {
                                 platform.path()
                                         + " contains unexpected entries: "
                                         + unexpectedEntries);
-                var metadata = jar.getJarEntry("META-INF/neoforge.mods.toml");
+                var metadataPath =
+                        platform.isForge() ? "META-INF/mods.toml" : "META-INF/neoforge.mods.toml";
+                var metadata = jar.getJarEntry(metadataPath);
                 assertNotNull(metadata);
                 try (var stream = jar.getInputStream(metadata)) {
+                    var content = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
                     assertFalse(
-                            new String(stream.readAllBytes(), StandardCharsets.UTF_8)
-                                    .contains("ic2_gametest"),
+                            content.contains(platform.isForge() ? "ic2_qa" : "ic2_gametest"),
                             platform.path().toString());
                 }
             }
         }
     }
 
+    private static void assertBytecodeVersion(
+            JarFile jar, String classEntry, int expectedMajor, String label) throws IOException {
+        var entry = jar.getJarEntry(classEntry);
+        assertNotNull(entry, label + ": " + classEntry);
+        try (var bytes = new DataInputStream(jar.getInputStream(entry))) {
+            assertEquals(0xCAFEBABE, bytes.readInt(), label);
+            bytes.readUnsignedShort();
+            assertEquals(expectedMajor, bytes.readUnsignedShort(), label + ": " + classEntry);
+        }
+    }
+
     private static List<PlatformJar> platformJars() {
         var names = List.of(requiredProperty("ia2.targets").split(",", -1));
-        assertEquals(names.size(), new HashSet<>(names).size(), "Duplicate NeoForge test targets");
+        assertEquals(names.size(), new HashSet<>(names).size(), "Duplicate test targets");
         return names.stream()
                 .map(
                         name -> {
                             var bytecodeVersion =
                                     switch (name) {
+                                        case "1.19.2" -> 61;
                                         case "1.21.1" -> 65;
                                         case "26.1.2", "26.2" -> 69;
                                         default ->
@@ -191,10 +261,16 @@ class BuildContractTest {
                                                         "Unexpected target: " + name);
                                     };
                             var prefix = "ia2.target." + name + ".";
+                            var loader = System.getProperty(prefix + "loader", "neoforge");
+                            var loaderVersion = System.getProperty(prefix + "loaderVersion");
+                            if (loaderVersion == null || loaderVersion.isBlank()) {
+                                loaderVersion = requiredProperty(prefix + "neoForgeVersion");
+                            }
                             return new PlatformJar(
                                     name,
+                                    loader,
                                     Path.of(requiredProperty(prefix + "jar")),
-                                    requiredProperty(prefix + "neoForgeVersion"),
+                                    loaderVersion,
                                     bytecodeVersion);
                         })
                 .toList();
@@ -220,8 +296,9 @@ class BuildContractTest {
             } else if (current != null) {
                 var field = DEPENDENCY_FIELD.matcher(line);
                 if (field.matches()) {
+                    var value = field.group(2) != null ? field.group(2) : field.group(3);
                     assertNull(
-                            current.put(field.group(1), field.group(2)),
+                            current.put(field.group(1), value),
                             target + ": duplicate dependency field");
                 }
             }
@@ -237,16 +314,26 @@ class BuildContractTest {
             List<Map<String, String>> dependencies,
             String modId,
             String expectedRange,
-            String target) {
+            String target,
+            boolean forge) {
         var matches =
                 dependencies.stream().filter(entry -> modId.equals(entry.get("modId"))).toList();
         assertEquals(1, matches.size(), target + ": expected exactly one " + modId + " dependency");
-        assertEquals("required", matches.getFirst().get("type"), target + ": " + modId);
-        assertEquals(expectedRange, matches.getFirst().get("versionRange"), target + ": " + modId);
+        var matched = matches.get(0);
+        if (forge) {
+            assertEquals("true", matched.get("mandatory"), target + ": " + modId);
+        } else {
+            assertEquals("required", matched.get("type"), target + ": " + modId);
+        }
+        assertEquals(expectedRange, matched.get("versionRange"), target + ": " + modId);
     }
 
     private record PlatformJar(
-            String target, Path path, String neoForgeVersion, int bytecodeVersion) {}
+            String target, String loader, Path path, String loaderVersion, int bytecodeVersion) {
+        boolean isForge() {
+            return "forge".equals(loader);
+        }
+    }
 
     private static Set<String> compiledTestEntries() throws IOException {
         var classDirectories = System.getProperty("ia2.testClassesDirs");

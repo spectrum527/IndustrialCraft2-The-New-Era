@@ -1,0 +1,76 @@
+import groovy.json.JsonOutput
+
+def output = layout.buildDirectory.dir('qa-machine')
+def qaFixtureJar = tasks.register('qaFixtureJar', Jar) {
+    group = 'verification'
+    description = 'Assemble only the independent fixtures for an installed Forge server.'
+    from sourceSets.qa.output
+    archiveClassifier = 'qa'
+    destinationDirectory = output.map { it.dir('fixtures-dev') }
+}
+
+// Note: obfuscation.reobfuscate(qaFixtureJar, sourceSets.qa) requires qaRuntimeElements/qaApiElements
+// (only present for published feature variants). Register RemapJar directly with the public
+// obfuscation.configureNamedToSrgOperation API instead.
+def namedTypes = tasks.register('qaRemapTypes', Jar) {
+    from sourceSets.main.output.classesDirs
+    archiveFileName = 'named-production-types.jar'
+    destinationDirectory = output.map { it.dir('mapping') }
+}
+
+tasks.register('reobfQaFixtureJar', remapJarClass) {
+    group = 'verification'
+    description = 'Remaps the QA fixture JAR from Mojang to SRG names for an installed Forge server.'
+    dependsOn qaFixtureJar, namedTypes
+    input.set(qaFixtureJar.flatMap { it.archiveFile })
+    archiveBaseName.set(qaFixtureJar.flatMap { it.archiveBaseName })
+    archiveVersion.set(qaFixtureJar.flatMap { it.archiveVersion })
+    archiveClassifier.set(qaFixtureJar.flatMap { it.archiveClassifier })
+    destinationDirectory.set(output.map { it.dir('fixtures') })
+    libraries.from(sourceSets.qa.compileClasspath, namedTypes.flatMap { it.archiveFile })
+    obfuscation.configureNamedToSrgOperation(remapOperation)
+}
+
+tasks.register('prepareQaWorld') {
+    group = 'verification'
+    description = 'Export standalone Forge GameTest and dedicated server commands without starting a JVM.'
+    dependsOn 'qaClasses', 'reobfJar'
+    def runs = [world: 'runQaWorld', smoke: 'runQaGameTestServer']
+    dependsOn {
+        runs.values().collectMany { name ->
+            def run = tasks.getByName(name)
+            run.taskDependencies.getDependencies(run).toList()
+        }
+    }
+    def target = output.map { it.file('server-launch.json') }
+    outputs.file(target)
+    outputs.upToDateWhen { false }
+    doLast {
+        def manifest = runs.collectEntries { key, name -> [(key): qaHostLaunch(tasks.getByName(name), 'server')] }
+        manifest.jar = tasks.named('reobfJar', Jar).get().archiveFile.get().asFile.absolutePath
+        def file = target.get().asFile
+        file.parentFile.mkdirs()
+        file.text = JsonOutput.prettyPrint(JsonOutput.toJson(manifest)) + '\n'
+    }
+}
+
+tasks.register('runPackagedWater', Exec) {
+    group = 'verification'
+    description = 'Checks turbine output, natural water connections and a saved world in installed Forge.'
+    dependsOn 'reobfJar', 'reobfQaFixtureJar'
+    def server = providers.gradleProperty('ic2.compat.forgeServer')
+    def runRoot = layout.buildDirectory.dir('run/packaged-water')
+    def production = tasks.named('reobfJar', Jar).flatMap { it.archiveFile }
+    def fixture = tasks.named('reobfQaFixtureJar', Jar).flatMap { it.archiveFile }
+    def java = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+    doFirst {
+        if (!server.isPresent()) {
+            throw new GradleException('Set -Pic2.compat.forgeServer to your installed Forge 43.5.0 server.')
+        }
+        commandLine providers.gradleProperty('ic2.python').getOrElse('python3'),
+                rootProject.file('src/forge/1.19.2/qa/packaged_water.py'),
+                '--server', rootProject.file(server.get()), '--output', runRoot.get().asFile,
+                '--java', java.get().executablePath.asFile,
+                '--jar', production.get().asFile, '--fixture', fixture.get().asFile
+    }
+}

@@ -48,7 +48,7 @@ class ConfigSnapshotContractTest {
         inner.clear();
         outer.clear();
         assertThrows(UnsupportedOperationException.class, () -> old.get(GROUPS).clear());
-        assertThrows(UnsupportedOperationException.class, () -> old.get(GROUPS).getFirst().clear());
+        assertThrows(UnsupportedOperationException.class, () -> old.get(GROUPS).get(0).clear());
         var copied = new Key<>("count", COUNT.type());
         var absent = new Key<>("absent", COUNT.type());
         var wrongType = new Key<>("count", Type.scalar(String.class));

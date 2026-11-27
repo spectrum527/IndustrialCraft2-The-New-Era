@@ -63,12 +63,12 @@ class MessageChannelContractTest {
                 new long[] {0x0102030405060708L, -53, 0, Long.MIN_VALUE, Long.MAX_VALUE}) {
             var peer = sequence < 0 ? first : second;
             echo.request(sequence);
-            var request = sent.removeFirst();
+            var request = sent.remove(0);
             assertEquals(REQUEST, request.id());
             assertNull(request.recipient());
             assertArrayEquals(ByteBuffer.allocate(8).putLong(sequence).array(), request.body());
             channel.receive(REQUEST, CLIENT_TO_SERVER, request.body(), peer);
-            var reply = sent.removeFirst();
+            var reply = sent.remove(0);
             assertEquals(REPLY, reply.id());
             assertSame(peer, reply.recipient());
             assertArrayEquals(request.body(), reply.body());

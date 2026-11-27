@@ -156,7 +156,7 @@ class EcosystemAuditRegressionTest {
                         "steel/item_pipe_core.png",
                         "steel/item_pipe_end.png",
                         "steel/item_pipe_outlet.png");
-        var requiredCommonTags =
+        var neoCommonTags =
                 List.of(
                         "data/c/tags/item/ingots/tin.json",
                         "data/c/tags/item/raw_materials/tin.json",
@@ -168,8 +168,26 @@ class EcosystemAuditRegressionTest {
                         "data/c/tags/fluid/biogas.json",
                         "data/forge/tags/fluid/steam.json",
                         "data/forge/tags/fluid/biogas.json");
+        var forgeCommonTags =
+                List.of(
+                        "data/forge/tags/items/ingots/tin.json",
+                        "data/forge/tags/items/dusts/copper.json",
+                        "data/forge/tags/items/plates/bronze.json",
+                        "data/forge/tags/items/raw_ores/tin.json",
+                        "data/forge/tags/items/raw_materials/tin.json",
+                        "data/forge/tags/blocks/ores/tin.json",
+                        "data/forge/tags/blocks/storage_blocks/steel.json",
+                        "data/forge/tags/blocks/blocks/steel.json",
+                        "data/forge/tags/fluids/steam.json",
+                        "data/forge/tags/fluids/biogas.json",
+                        "data/c/tags/fluids/steam.json",
+                        "data/c/tags/fluids/biogas.json");
         var compatClasses =
                 List.of(
+                        "com/industrialage/ia2/logistics/ItemPipeRouter.class",
+                        "com/industrialage/ia2/compat/ProbeNbt.class",
+                        "com/industrialage/ia2/compat/Ic2ProbeData.class",
+                        "com/industrialage/ia2/compat/Ic2RecipeCatalog.class",
                         "com/industrialage/ia2/compat/Ic2JeiPlugin.class",
                         "com/industrialage/ia2/compat/Ic2EmiPlugin.class",
                         "com/industrialage/ia2/compat/Ic2JadePlugin.class",
@@ -178,24 +196,25 @@ class EcosystemAuditRegressionTest {
                         "wthit_plugins.json");
 
         for (String target : targets) {
+            boolean forge = target.equals("1.19.2");
+            String recipeDir = forge ? "data/ic2/recipes/" : "data/ic2/recipe/";
             Path jarPath = Path.of(requiredProperty("ia2.target." + target + ".jar"));
             try (var jar = new JarFile(jarPath.toFile())) {
                 // ic2:copper_ingot removed
                 assertNull(jar.getJarEntry("assets/ic2/models/item/copper_ingot.json"), target);
                 assertNull(jar.getJarEntry("assets/ic2/items/copper_ingot.json"), target);
-                assertNull(jar.getJarEntry("data/ic2/recipe/classic/copper_ingot.json"), target);
+                assertNull(jar.getJarEntry(recipeDir + "classic/copper_ingot.json"), target);
 
                 // ic2:biogas_cell present
                 assertNotNull(jar.getJarEntry("assets/ic2/models/item/biogas_cell.json"), target);
                 assertNotNull(
                         jar.getJarEntry("assets/ic2/textures/items/cell/biogas_cell.png"), target);
-                if (!target.equals("1.21.1")) {
+                if (!forge && !target.equals("1.21.1")) {
                     assertNotNull(jar.getJarEntry("assets/ic2/items/biogas_cell.json"), target);
                 }
-                String fillBiogas = readEntry(jar, "data/ic2/recipe/cells/fill_biogas.json");
+                String fillBiogas = readEntry(jar, recipeDir + "cells/fill_biogas.json");
                 assertTrue(fillBiogas.contains("\"ic2:biogas_cell\""), target + ": fill_biogas");
-                String recoverBiogas =
-                        readEntry(jar, "data/ic2/recipe/cells/recover_biogas_cell.json");
+                String recoverBiogas = readEntry(jar, recipeDir + "cells/recover_biogas_cell.json");
                 assertTrue(
                         recoverBiogas.contains("\"ic2:fluid_cell\""), target + ": recover_biogas");
 
@@ -214,9 +233,13 @@ class EcosystemAuditRegressionTest {
                     assertTrue(text.contains("\"emi.category.ic2.macerator\""), target + lang);
                     assertTrue(text.contains("\"config.jade.plugin_ic2.device\""), target + lang);
                     assertTrue(text.contains("\"config.waila.plugin_ic2\""), target + lang);
+                    String sortLabel = lang.equals("zh_cn") ? "自动整理" : "Sort";
+                    assertTrue(
+                            text.contains("\"gui.ic2.box.sort\": \"" + sortLabel + "\""),
+                            target + " " + lang);
                 }
 
-                // 14 transparent cutout pipe textures + culled cutout pipe model
+                // 14 transparent cutout pipe textures + culled cutout pipe models
                 for (String rel : pipeTextures) {
                     var entry = jar.getJarEntry("assets/ic2/textures/blocks/transport/" + rel);
                     assertNotNull(entry, target + ": missing " + rel);
@@ -231,9 +254,36 @@ class EcosystemAuditRegressionTest {
                                 jar,
                                 "assets/ic2/models/block/transport/bronze_item_small_east.json");
                 assertTrue(pipeModel.contains("\"minecraft:cutout\""), target + ": cutout model");
+                String northArmModel =
+                        readEntry(
+                                jar,
+                                "assets/ic2/models/block/transport/bronze_item_small_north.json");
+                assertTrue(
+                        northArmModel.contains("\"minecraft:cutout\""),
+                        target + ": north arm cutout");
+                assertFalse(
+                        northArmModel.contains("\"south\""),
+                        target + ": north pipe arm must cull its inner south face");
+                String coreModel =
+                        readEntry(
+                                jar,
+                                "assets/ic2/models/block/transport/bronze_item_small_core_north.json");
+                assertTrue(coreModel.contains("\"minecraft:cutout\""), target + ": core cutout");
+
+                // Waterlogged mining pipe blockstates
+                for (String miningPipe : List.of("mining_pipe", "mining_pipe_tip")) {
+                    String stateJson =
+                            readEntry(jar, "assets/ic2/blockstates/" + miningPipe + ".json");
+                    assertTrue(
+                            stateJson.contains("\"waterlogged=false\""),
+                            target + ": " + miningPipe + " missing waterlogged=false");
+                    assertTrue(
+                            stateJson.contains("\"waterlogged=true\""),
+                            target + ": " + miningPipe + " missing waterlogged=true");
+                }
 
                 // Standard c:/forge: tags
-                for (String tagPath : requiredCommonTags) {
+                for (String tagPath : (forge ? forgeCommonTags : neoCommonTags)) {
                     assertNotNull(jar.getJarEntry(tagPath), target + ": missing " + tagPath);
                 }
 
@@ -241,6 +291,9 @@ class EcosystemAuditRegressionTest {
                 for (String compat : compatClasses) {
                     assertNotNull(jar.getJarEntry(compat), target + ": missing " + compat);
                 }
+                String wthit = readEntry(jar, "wthit_plugins.json");
+                assertTrue(wthit.contains("Ic2WthitCommonPlugin"), target);
+                assertTrue(wthit.contains("Ic2WthitClientPlugin"), target);
             }
         }
     }

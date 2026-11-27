@@ -14,9 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 class CellAndRubberDataTest(unittest.TestCase):
     def test_shipped_cell_recipes_and_rubber_biomes(self):
-        targets = ["forge-1.19.2"] if (ROOT / "src/forge/1.19.2").is_dir() else [
-            "neoforge-1.21.1", "neoforge-26.1.2", "neoforge-26.2"
-        ]
+        targets = ["forge-1.19.2", "neoforge-1.21.1", "neoforge-26.1.2", "neoforge-26.2"]
         with (ROOT / "spec/registry/industrial-fluids.tsv").open(encoding="utf-8") as source:
             fluids = [definition["path"] for definition in csv.DictReader(source, delimiter="\t")]
         for target in targets:

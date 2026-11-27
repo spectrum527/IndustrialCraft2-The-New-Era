@@ -4,7 +4,7 @@
 
 ## 裸线放电回归
 
-Gradle 用 Java 21 运行 1.21.1，用 Java 25 运行 26.1.2 和 26.2。三个任务各自安装相应版本生成的 JAR，并从临时世界启动独立专服。
+Gradle 用 Java 21 运行 1.21.1，用 Java 25 运行 26.1.2 和 26.2。三个 NeoForge 任务各自安装相应版本生成的 JAR，并从临时世界启动独立专服。
 
 ```bash
 ./gradlew :neoforge:1.21.1:runNativeGameplayCableShock \
@@ -15,6 +15,17 @@ Gradle 用 Java 21 运行 1.21.1，用 Java 25 运行 26.1.2 和 26.2。三个�
 
 断言结果写入 `build/qa/bare-cable/<版本>/run/native-cable-shock/cableShock.properties`。试验放置并接通真实电缆，检查储能箱的实际收发、固定位置铁傀儡的生命值及原生魔法伤害源。场景覆盖无负载、满接收端、无用支路、绝缘和泡沫覆盖、部分接收、多段、多源、各电流档位的碰撞距离、不同线路交叠及防化套装。
 
+Forge 1.19.2 在同一根 Gradle 工程下以 Java 17 运行原生 GameTest（输出目录需为新目录）：
+
+```bash
+./gradlew :forge:1.19.2:prepareQaWorld
+python3 -B src/forge/1.19.2/qa/verify.py smoke --prepared \
+  --server-launch src/forge/1.19.2/build/qa-machine/server-launch.json \
+  --output build/qa/bare-cable-forge-1.19.2
+```
+
+`smoke/game-test.xml` 记录 `barecabledamageusesdeliveredenergy`，覆盖与 NeoForge 相同的电缆放电和防护场景；同一命令同时执行手持流体单元（`normalheldcelluse`）和风力动能（`playerassembledwindline`）用例。
+
 ## 手持流体单元回归
 
 ```bash
@@ -24,7 +35,7 @@ Gradle 用 Java 21 运行 1.21.1，用 Java 25 运行 26.1.2 和 26.2。三个�
   -Pic2.native.runRoot=build/qa/held-cell
 ```
 
-`build/qa/held-cell/<版本>/run/native-held-cell/heldFluidCell.properties` 写入专服断言。两个单元家族通过原生手持和方块交互入口检验水和熔岩源、流动液、混液、余量不足、生存堆叠与满背包掉落、创造物品栏去重，地面拒放，以及对储罐和兼容机器灌注时的液量与容器守恒。
+`build/qa/held-cell/<版本>/run/native-held-cell/heldFluidCell.properties` 写入专服断言。两个单元家族通过原生手持和方块交互入口检验水和熔岩源、流动液、混液、余量不足、生存堆叠与满背包掉落、创造物品栏去重，地面拒放，以及对储罐和兼容机器灌注时的液量与容器守恒。Forge 1.19.2 由上节的 `verify.py smoke` 命令通过 `normalheldcelluse` 覆盖同等交互。
 
 ## 场景数据与相似度
 
@@ -85,4 +96,4 @@ python3 -m json.tool parity/schema/scenario.schema.json > /dev/null
 ./gradlew :neoforge:26.2:runNativeGameplayWindRead
 ```
 
-各目标的 `build/run/native-wind/windWrite.properties` 与 `windRead.properties` 记录正反接、可用 KU、实际换电、扫掠遮挡和冷启动恢复的结果。26.x 的 `runModernServerSmoke` 还会把服务器已加载的工作台配方写入原生配方同步包并解码，检查喷气背包挂载配方能到达接收端。[风机规格](../spec/energy/wind-kinetic.md) · [联机规格](../spec/platform/network.md)
+各目标的 `build/run/native-wind/windWrite.properties` 与 `windRead.properties` 记录正反接、可用 KU、实际换电、扫掠遮挡和冷启动恢复的结果。26.x 的 `runModernServerSmoke` 还会把服务器已加载的工作台配方写入原生配方同步包并解码，检查喷气背包挂载配方能到达接收端。Forge 1.19.2 由上文 `./gradlew :forge:1.19.2:prepareQaWorld` 配合 `verify.py smoke` 执行 `playerassembledwindline`，用生存玩家放置风机、动能发电机和储电箱，核对转子装卸、空载可供 KU、正确接线时的 4 KU 换 1 EU，以及挡风停机与恢复，结果记录在 `smoke/game-test.xml`。[风机规格](../spec/energy/wind-kinetic.md) · [联机规格](../spec/platform/network.md)

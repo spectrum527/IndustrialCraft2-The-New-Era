@@ -278,7 +278,7 @@ final class WorldBlocks {
         }
     }
 
-    private static final class MiningPipe extends WorldNative.MiningPipeBase {
+    static final class MiningPipe extends WorldNative.MiningPipeBase {
         private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE =
                 box(5, 0, 5, 11, 16, 11);
 

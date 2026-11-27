@@ -26,7 +26,7 @@
 
 ## 1. 项目一句话
 
-把一个停更的工业模组按**行为规格净室重写**为 **IndustrialCraft 2**（mod id `ic2`），主基线 **NeoForge 1.21.1 / Java 21**，同步 **NeoForge 26.1.2 与 26.2 / Java 25**，作为开源项目发布。目标是核心行为一致（同样的输入、能耗、产出），**不要求 1:1 复刻**。
+把一个停更的工业模组按**行为规格净室重写**为 **IndustrialCraft 2**（mod id `ic2`），在同一 `main` 仓库中统一维护 **Forge 1.19.2 / Java 17**、主基线 **NeoForge 1.21.1 / Java 21** 以及 **NeoForge 26.1.2 与 26.2 / Java 25**，作为开源项目发布。目标是核心行为一致（同样的输入、能耗、产出），**不要求 1:1 复刻**。
 
 ### 1.1 工作规则
 
@@ -35,48 +35,50 @@
 | 1 | 实现角色只依据 `spec/` 工作，不读、不引用、不索要参考源码 | PR 拒收 |
 | 2 | 注册、网络和资源使用 `ic2`，路径核对 2.9.40 基线 | 核对 A3 与注册规格 |
 | 3 | 没有 spec 的行为不实现；spec 缺失或含糊 → 报 Spec Lead，不要猜 | 返工 |
-| 4 | `common` 层不得 import `net.neoforged.*` 或任何版本专属 API | CI 失败 |
+| 4 | `common` 层不得 import `net.minecraft.*`、`net.neoforged.*`、`net.minecraftforge.*`、`net.fabricmc.*` 或任何版本专属 API | CI 失败 |
 | 5 | 网络层不用反射序列化，不从网络数据加载类 | 安全门禁失败 |
 | 6 | 只写自己所有权内的目录；跨目录先找 Orchestrator | PR 拒收 |
 | 7 | 新逻辑必须有单测或 parity 场景；挂在本任务下的 decisions.md B 表修复项必须有回归测试 | PR 拒收 |
 | 8 | 原版素材文件（贴图/模型/音效/GUI）**永不提交进本仓库**，只能放私有仓库 `ic2-legacy-assets`（decisions.md A22） | PR 拒收，需清洗历史 |
 | 9 | 已定范围由 Orchestrator 直接推进，按既有门禁评审（A16） | 补齐交接或验收记录 |
 
-### 1.2 已定案的项目事实（2026-11-20 更新）
+### 1.2 已定案的项目事实（2026-11-27 更新）
 
 | 项 | 结论 |
 |---|---|
 | 路线 | 净室重写，三角色隔离（A2） |
-| 平台 | NeoForge 1.21.1 主基线；26.1.2 与 26.2 同步编译，各自运行验收从 P6 开始（A5） |
+| 平台 | 统一 `main` 分支维护四目标：Forge 1.19.2、NeoForge 1.21.1（主基线）、26.1.2 与 26.2，各自编译打包并运行验收（A5） |
 | 包名 / group | `com.industrialage.ia2` 为既有内部坐标（A3） |
 | 协议 | 代码 LGPL-3.0-only，游戏美术 CC BY-SA 4.0，标识另依品牌条款（A11、A21） |
 | 可见性 | 主仓库公开，独立参考与计划仓库私有（A12） |
 | 发布 | 正式版本通过 GitHub Releases 公开分发（A13） |
 | 对外表述 | IndustrialCraft²: The New Era，见 A15 |
-| 构建 | ModDevGradle（A19）；CI 为 GitHub Actions，看板为 GitHub Projects（A18） |
+| 构建 | 单一 Gradle `9.2.1` + ModDevGradle `2.0.148`（`net.neoforged.moddev` + `net.neoforged.moddev.legacyforge`，A19）；CI 为 GitHub Actions（A18） |
 | 配置 | 只建 58 个活键，无旧键兼容层；只出迁移文档（A10） |
 | 版本基线 | 修复正式版的玩家行为与修正优先；2.9.40 补未覆盖行为，2.8.222 用于交叉核对（A23）。实现只读独立行为规格。 |
 | 首发范围 | 依修复版的生存路线交付，包含两类管各 8 种、两档泵盖、四档充电电池及八条实际产线。G5 是内部切片，G10 验整版（A27）。 |
-| 工具链 | 主线与 common 用 JDK 21，26.1.2 / 26.2 模块用 JDK 25；NeoForge / ModDevGradle / Gradle 版本以 `docs/02-platform.md` 锁定值为准 |
+| 工具链 | `:common` 与 `:forge:1.19.2`（及 `src/minecraft/shared/`）用 JDK 17，`:neoforge:1.21.1` 用 JDK 21，`:neoforge:26.1.2` / `:neoforge:26.2` 用 JDK 25；锁定版本以 `docs/02-platform.md` 为准 |
 
 ---
 
 ## 2. 目录约定（规范解释）
 
 ```
-rebuild/                     ← 未来的开源仓库根
+rebuild/                     ← 开源仓库根
 ├── AGENTS.md / decisions.md / AGENT-GUIDE.md
-├── docs/                    ← 章程、平台、法律存档、balance 等（P0 起建）
+├── docs/                    ← 章程、平台、法律存档、门禁记录等
 ├── spec/                    ← 行为规格（实现者唯一信息源）
 │   ├── _schema/             ← 模板
-│   └── <子系统>/            ← energy/ machines/ recipes/ registry/ heat/ ...
-├── src/                     ← Gradle 多模块根
-│   ├── common/              ← 加载器无关核心 + 内容定义
+│   └── <子系统>/            ← energy/ machines/ recipes/ registry/ platform/ ...
+├── src/                     ← 单一 Gradle 9.2.1 多模块根
+│   ├── common/              ← Java 17 加载器无关核心 + 内容定义
 │   │   └── src/main/java/com/industrialage/ia2/{energy,machine,recipe,fluid,crop,reactor,worldgen,network,config,content,api,platform,lifecycle}/
-│   ├── neoforge/            ← 平台适配（1.21.1、26.1.2、26.2 版本子模块及 26.x 共用 Java）
-│   ├── datagen/             ← 数据生成
-│   └── test/                ← JUnit + GameTest
-├── parity/                  ← 场景脚本、期望值与对比报告（QA）
+│   ├── minecraft/shared/    ← 四目标共用且保持 Java 17 兼容的 Minecraft 玩法层
+│   ├── forge/1.19.2/        ← Forge 43.5.0 / Java 17 适配（legacyforge）、SRG 重混淆与 QA 夹具/脚本
+│   ├── neoforge/            ← NeoForge 平台适配（shared、1.21.1、26.1.2、26.2、26.x、pre-26.2）
+│   ├── datagen/             ← 数据生成（支持 forge-1.19.2 与 neoforge-*）
+│   └── test/                ← 面向四目标的 JUnit 契约与 1.21.1 GameTest / 宿主测试
+├── parity/                  ← 场景脚本、期望值与四目标实测记录（QA）
 └── assets/                  ← 新作素材 + SOURCES.md 登记（原版素材不在这里）
 ```
 
@@ -149,18 +151,20 @@ P?-T?
 | 内容 | 能用定义文件生成就不写类（机器/方块/掉落/语言键/JEI 分类） | 每台机器一个手写类 |
 | 测试 | JUnit（公式、库存、配方、能量）+ NeoForge GameTest（方块/机器） | 只"看起来正确"的验收 |
 | 日志 | SLF4J | `System.out` |
-| 风格 | common / 1.21.1 用 Java 21，26.1.2 / 26.2 用 Java 25；4 空格、`final`/`record`/`sealed` 按宜使用、公开 API 有 javadoc、spotless | 无说明的 `@SuppressWarnings("unchecked")` |
+| 风格 | `:common` / Forge 1.19.2 用 Java 17（`src/minecraft/shared/` 保持 Java 17 兼容），NeoForge 1.21.1 用 Java 21，26.1.2 / 26.2 用 Java 25；4 空格、`final`/`record`/`sealed` 按宜使用、公开 API 有 javadoc、spotless | 无说明的 `@SuppressWarnings("unchecked")` |
 
-常用命令（P2 骨架落地后可用）：
+常用命令（统一四目标 Gradle 9.2.1 工程）：
 
 ```bash
-./gradlew build
+./gradlew build check
+./gradlew :common:build checkCommonImports checkAssetIsolation spotlessCheck
+./gradlew :forge:1.19.2:build :forge:1.19.2:test :test:test -Pic2.testTarget=1.19.2
+./gradlew :forge:1.19.2:prepareQaWorld :forge:1.19.2:reobfQaFixtureJar
+./gradlew :neoforge:1.21.1:build :test:test -Pic2.testTarget=1.21.1
 ./gradlew :neoforge:1.21.1:runClient
 ./gradlew :neoforge:1.21.1:runServer
-./gradlew :datagen:runData
 ./gradlew :test:test
 ./gradlew :test:runGameTest
-./gradlew spotlessCheck
 ```
 
 ---
@@ -186,11 +190,11 @@ P?-T?
 - 核心层纯 Java + Minecraft 公共类型；平台能力通过 Facade 注入。
 - 优先顺序：平台接口（P2-T2）→ 生命周期（P2-T4）→ 网络 payload（P2-T6）→ 能量网（P3）→ 机器框架（P4）。
 
-### Platform Agent（`src/neoforge/`）
+### Platform Agent（`src/forge/1.19.2/src/main/`、`src/neoforge/`）
 
-- P0-T4/P2-T1：**ModDevGradle** 多模块（A19），锁定 NeoForge 版本号写进 `gradle.properties`；支持可选属性 `ic2.legacyAssetsDir` 作为额外资源目录（缺省时跳过，A22），`rebuild/assets/` 同路径优先。
-- 版本差异收敛于 neoforge 层；26.x 共用 Java 位于 `src/neoforge/26.x/src/main/java`；1.21.1 与 26.1.2 共用屏幕访问位于 `src/neoforge/pre-26.2/src/main/java`，26.2 屏幕访问与其他专属差异留在对应版本目录。`26.1.2` 分支的 PR 分别编译 1.21.1 与 26.1.2；`26.2` 集成分支的 PR 分别编译三个目标。26.1.2 与 26.2 分别从 P6 起运行验收。
-- CI（GitHub Actions）加两条检查：`common` 下 grep `import net.neoforged` 必须为空；仓库内不得出现 legacy 素材（对照 `assets/SOURCES.md`）。
+- P0-T4/P2-T1：**ModDevGradle `2.0.148`** 统一多模块（A19），以 `net.neoforged.moddev` 构建 NeoForge 三目标，以 `net.neoforged.moddev.legacyforge`（`disableRecompilation = false`）构建 Forge 1.19.2，锁定版本号写进 `gradle.properties`；各目标支持可选属性 `ic2.legacyAssetsDir` 作为额外资源目录（缺省时跳过，A22），`rebuild/assets/` 同路径优先。
+- 版本差异收敛于各自平台层；`src/minecraft/shared/` 保持 Java 17 兼容；26.x 共用 Java 位于 `src/neoforge/26.x/src/main/java`；1.21.1 与 26.1.2 共用屏幕访问位于 `src/neoforge/pre-26.2/src/main/java`，26.2 屏幕访问与其他专属差异留在对应版本目录；Forge 1.19.2 通过 `reobfJar` / `reobfQaFixtureJar` 输出 SRG 包并在 `processResources` 排除 1.21+ 专属 `equipment/` 资产。
+- CI（GitHub Actions）在 `governance` 作业中执行 `checkCommonImports`（严禁 `common` 导入 `net.minecraft.*`、`net.neoforged.*`、`net.minecraftforge.*`、`net.fabricmc.*`）、`checkAssetIsolation`（对照 `assets/SOURCES.md` 防止未登记/原版素材入仓）与 `spotlessCheck`。
 - 仓库根放 `LICENSE`（LGPL-3.0）与 `LICENSE-ASSETS`（CC BY-SA 4.0）。
 
 ### Content Agent（`src/common/content/`）
@@ -203,7 +207,7 @@ P?-T?
 - GUI 走数据驱动布局；槽位坐标照 spec（布局属于功能需求，可照写）。
 - JEI 分类随机器定义生成。
 
-### QA Agent（`parity/`、`src/test/`）
+### QA Agent（`parity/`、`src/test/`、`src/forge/1.19.2/src/qa/`、`src/forge/1.19.2/qa/`）
 
 - P1：parity 场景格式 + 采集脚本；相似度检查脚本（5-gram Jaccard：单文件 > 25% 失败、> 15% 警告、连续 8 行相同失败）。
 - 容差：能量 ±1%；机器 ±1 tick / ±1%；配方精确；反应堆 ±2%；作物用统计检验；GUI 结构一致。

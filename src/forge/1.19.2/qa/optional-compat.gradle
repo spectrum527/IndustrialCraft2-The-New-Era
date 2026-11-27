@@ -1,0 +1,22 @@
+tasks.register('runOptionalCompat', Exec) {
+    group = 'verification'
+    description = 'Runs the packaged Forge mod with one combination of the official optional mods.'
+    dependsOn 'reobfJar', 'reobfQaFixtureJar'
+    def install = providers.gradleProperty('ic2.compat.forgeServer')
+    def output = layout.buildDirectory.dir("run/optional-compat-${compatMode}")
+    def productionJar = tasks.named('reobfJar', Jar).flatMap { it.archiveFile }
+    def fixtureJar = tasks.named('reobfQaFixtureJar', Jar).flatMap { it.archiveFile }
+    def java = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+    doFirst {
+        if (!install.isPresent()) {
+            throw new GradleException('Set -Pic2.compat.forgeServer to a Forge 1.19.2-43.5.0 server installation.')
+        }
+        commandLine providers.gradleProperty('ic2.python').getOrElse('python3'),
+                rootProject.file('src/test/optional_compat_forge.py'),
+                '--java', java.get().executablePath.asFile,
+                '--server', rootProject.file(install.get()),
+                '--output', output.get().asFile,
+                '--mode', compatMode, productionJar.get().asFile, fixtureJar.get().asFile
+        args compatModFiles(minecraftVersion)
+    }
+}

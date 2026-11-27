@@ -2,6 +2,7 @@
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
 
@@ -15,25 +16,35 @@ PRIVATE_TEXTURES = [
     "blocks/wiring/cable/build/p0-test.png", "items/build/p0-test.png.mcmeta",
     "gui/build/p0-test.png",
 ]
-TARGETS = sorted(path.parent.name for path in (ROOT / "src/neoforge").glob("*/build.gradle"))
+TARGETS = sorted(
+    (loader, path.parent.name)
+    for loader in ("forge", "neoforge")
+    for path in (ROOT / "src" / loader).glob("*/build.gradle")
+)
 MOD_VERSION = next(
     line.partition("=")[2].strip()
     for line in (ROOT / "gradle.properties").read_text(encoding="utf-8").splitlines()
     if line.partition("=")[0].strip() == "mod_version"
 )
 if not TARGETS:
-    raise RuntimeError("No NeoForge target build files found")
+    raise RuntimeError("No platform target build files found")
+
+EXTRA_GRADLE_ARGS = sys.argv[1:]
 
 
 def gradle(*arguments):
-    subprocess.run([str(ROOT / "gradlew"), *arguments, "--console=plain"], cwd=ROOT, check=True)
+    subprocess.run(
+        [str(ROOT / "gradlew"), *arguments, *EXTRA_GRADLE_ARGS, "--console=plain"],
+        cwd=ROOT,
+        check=True,
+    )
 
 
 def verify(expected):
-    for target in TARGETS:
-        path = (ROOT / "src/neoforge" / target / "build/libs"
-                / f"ic2-neoforge-{target}-{MOD_VERSION}.jar")
-        assert path.is_file(), f"Missing JAR for {target}: {path}"
+    for loader, target in TARGETS:
+        path = (ROOT / "src" / loader / target / "build/libs"
+                / f"ic2-{loader}-{target}-{MOD_VERSION}.jar")
+        assert path.is_file(), f"Missing JAR for {loader}-{target}: {path}"
         with zipfile.ZipFile(path) as jar:
             names = set(jar.namelist())
             assert OLD_MODEL not in names, path
@@ -84,4 +95,8 @@ finally:
         parent.rmdir()
     gradle("build")
     verify(absent)
-print("A22 verified: absent, empty, external-only, new-only, new wins, private PNG/animation excluded, no stale fixtures")
+print(
+    f"A22 verified across {len(TARGETS)} targets "
+    f"({', '.join(f'{l}-{t}' for l, t in TARGETS)}): "
+    "absent, empty, external-only, new-only, new wins, private PNG/animation excluded, no stale fixtures"
+)

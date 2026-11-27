@@ -1,19 +1,20 @@
-# 三目标构建与测试框架（P2-T1 / P2-T8）
+# 四目标统一构建与测试框架（P2-T1 / P2-T8）
 
 ## §1 构建范围与产物（P2-T1）
 
-**输入**为同一提交、仓库锁定的 Gradle Wrapper、ModDevGradle 和 NeoForge 版本，以及对应 JDK（A5、A19）。构建不要求外部素材目录（A22）。Platform 负责模块及版本构建，QA 负责测试用例、运行证据和 CI 测试门禁。
+**输入**为同一提交、仓库锁定的 Gradle Wrapper（`9.2.1`）、ModDevGradle（`2.0.148`，含 `net.neoforged.moddev` 与 `net.neoforged.moddev.legacyforge`）、Forge / NeoForge 版本，以及对应 JDK（A5、A19）。构建不要求外部素材目录（A22）。Platform 负责模块及版本构建，QA 负责测试用例、运行证据和 CI 测试门禁。
 
 | Gradle 项目 | 职责及输出 |
 | --- | --- |
-| `:common` | Java 21 的核心、内容定义及中立接口；不依赖版本适配模块。 |
-| `:neoforge:1.21.1` | JDK 21；编译并生成 1.21.1 生产 JAR，承载 MVP 运行验收。 |
-| `:neoforge:26.1.2` | JDK 25；编译并生成 26.1.2 生产 JAR；运行验收自 P6 起。 |
-| `:neoforge:26.2` | JDK 25；编译并生成 26.2 生产 JAR；运行验收自 P6 起。 |
+| `:common` | Java 17 的核心、内容定义及中立接口；不依赖任一版本适配模块，也不得导入 Minecraft 或加载器类。 |
+| `:forge:1.19.2` | JDK 17（`net.neoforged.moddev.legacyforge`，`disableRecompilation = false`）；编译并重混淆生成 1.19.2 生产 JAR（`reobfJar`）与独立 QA 夹具 JAR（`reobfQaFixtureJar`），承载 Forge 1.19.2 单元测试与专服/客户端运行验收。 |
+| `:neoforge:1.21.1` | JDK 21（`net.neoforged.moddev`）；编译并生成 1.21.1 生产 JAR，承载 MVP 与主基线运行验收。 |
+| `:neoforge:26.1.2` | JDK 25（`net.neoforged.moddev`）；编译并生成 26.1.2 生产 JAR；运行验收自 P6 起。 |
+| `:neoforge:26.2` | JDK 25（`net.neoforged.moddev`）；编译并生成 26.2 生产 JAR；运行验收自 P6 起。 |
 | `:datagen` | 数据生成入口，按目标连接适配层。 |
-| `:test` | JUnit 及 1.21.1 开发专服 GameTest 入口与测试内容。 |
+| `:test` | 面向全部四个目标（支持 `-Pic2.testTarget=<1.19.2|1.21.1|26.1.2|26.2>`）的 JUnit 契约测试，以及 1.21.1 开发专服 GameTest / 宿主测试入口。 |
 
-**验收**：在 `26.2` 集成分支，`./gradlew build` 须构建三个目标；`26.1.2` 分支先构建 1.21.1 与 26.1.2。CI 可用分别构建各目标的作业取证。所在分支任一目标编译、打包失败或未执行均不能通过。各目标生产 JAR 均不得包含仅测试使用的依赖、JUnit 或 GameTest 用例、结构模板、其他夹具或 mod 元数据。
+**验收**：在统一 `main` 分支，`./gradlew build` 须构建全部四个目标（Forge 1.19.2、NeoForge 1.21.1 / 26.1.2 / 26.2）。CI 通过并行的治理作业、NeoForge 三目标矩阵作业与 Forge 1.19.2 作业分别取证。任一目标编译、打包失败或未执行均不能通过。各目标生产 JAR 均不得包含仅测试使用的依赖、JUnit 或 GameTest 用例、结构模板、其他夹具或测试 mod 元数据（1.19.2 亦不得打包 `ic2_qa` 或 1.21+ 专属 `equipment/` 资源）。
 
 ## §2 JUnit（P2-T8）
 
@@ -30,8 +31,8 @@
 
 ## §4 CI 与证据（P2-T8）
 
-`26.2` 集成分支的每个 PR 以当前提交执行三个目标的构建、JUnit 和 1.21.1 GameTest；`26.1.2` 分支先执行其两个目标的构建及同样的主基线测试。26.1.2 与 26.2 构建作业不运行 1.21.1 专服；可单设专服作业。测试输出须来自本次运行；缓存、空任务或上次日志不能充当执行证据。
-通过和失败都保存所在分支各目标的构建结果、JUnit 报告、专服日志及 GameTest 结果（smoke 标识、实际执行数、通过数、失败数和进程退出状态）。结果可由测试框架或运行入口生成。
+统一 `main` 分支的每个 PR 与推送以当前提交并行执行三类作业：治理与通用检查（`governance`：`checkCommonImports`、`checkAssetIsolation`、`spotlessCheck`、`:common:build`、Python 套件及相似度门禁）、NeoForge 三目标矩阵（`1.21.1`、`26.1.2`、`26.2` 构建、`-Pic2.testTarget` 契约与对应运行检查）以及 Forge `1.19.2`（`:forge:1.19.2:build`、`:forge:1.19.2:test`、`:test:test -Pic2.testTarget=1.19.2`、`verify.py` `smoke`/`world`/`play`/`mismatch`、`runPackagedWater` 与四组合 `runOptionalCompat`）。测试输出须来自本次运行；缓存、空任务或上次日志不能充当执行证据。
+通过和失败都保存全部四个目标的构建结果、JUnit 报告、专服/客户端日志及 GameTest 结果（smoke 标识、实际执行数、通过数、失败数和进程退出状态）。结果可由测试框架或运行入口生成。
 
 | 用例状态 | 判据 |
 | --- | --- |
@@ -39,4 +40,4 @@
 | 失败 | 已执行的用例断言失败或用例超时，保存失败详情。 |
 | 未执行 | 启动失败、未发现、跳过或无法取得本次用例执行证据，保存已有日志及原因。 |
 
-失败和未执行都阻断相应门禁；基础设施失败另记，不冒充用例断言失败。QA 交接须有所在分支各目标的编译结果，集成分支须覆盖三个目标；另须有JUnit 计数、指定 smoke 的实测结果及生产 JAR 隔离检查。
+失败和未执行都阻断相应门禁；基础设施失败另记，不冒充用例断言失败。QA 交接须覆盖全部四个目标的编译结果、JUnit 计数、指定 smoke / 运行验收实测结果及生产 JAR 隔离检查。

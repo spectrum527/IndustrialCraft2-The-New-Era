@@ -225,7 +225,7 @@ def leave(client, label):
     client.check(label, lambda s: s["screen"] == "TitleScreen" and not s["world"] and not s["overlay"])
 
 
-def integrated_checks(client):
+def integrated_checks(client, accept_experimental=False):
     run = client.run
     run.command("stop")
     if run.server.wait(timeout=90) != 0:
@@ -237,7 +237,16 @@ def integrated_checks(client):
         destination = client.directory / "saves" / name
         shutil.copytree(world, destination, ignore=shutil.ignore_patterns("session.lock"))
         change_config(destination / "serverconfig/ic2-server.toml", ratio, heat)
-        client.enter(name, name + "-joined")
+        if accept_experimental:
+            client.act(name)
+            state = client.check(name + "-world-open", lambda s: (s["world"] and not s["screen"])
+                                 or (s["screen"] == "ConfirmScreen"
+                                     and s["title"] == "Worlds using Experimental Settings are not supported"), 150)
+            if state["screen"] == "ConfirmScreen":
+                client.act("accept-experimental-world")
+            client.check(name + "-joined", lambda s: s["world"] and not s["screen"] and not s["overlay"], 150)
+        else:
+            client.enter(name, name + "-joined")
         client.check(name + "-config", lambda s: s["integrated"] and s.get("integratedRatio") == ratio
                      and s.get("integratedHeat") == heat)
         client.act("press")
