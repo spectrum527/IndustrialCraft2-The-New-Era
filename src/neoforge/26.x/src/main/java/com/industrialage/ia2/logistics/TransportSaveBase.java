@@ -35,7 +35,9 @@ abstract class TransportSaveBase extends BlockEntity {
                             node.externalIntakeFace,
                             node.cargoStalled,
                             node.cargoSeq,
-                            node.fluidFlowDir,
+                            node.fluidFlowMask,
+                            node.fluidFlow.snapshot(),
+                            node.lastTrackedFluid,
                             node.pendingItemVisualSync,
                             node.pendingFluidVisualSync);
                 }
@@ -52,7 +54,9 @@ abstract class TransportSaveBase extends BlockEntity {
                     node.externalIntakeFace = snapshot.externalIntakeFace();
                     node.cargoStalled = snapshot.cargoStalled();
                     node.cargoSeq = snapshot.cargoSeq();
-                    node.fluidFlowDir = snapshot.fluidFlowDir();
+                    node.fluidFlowMask = snapshot.fluidFlowMask();
+                    node.fluidFlow.restore(snapshot.fluidFlowSnapshot());
+                    node.lastTrackedFluid = snapshot.lastTrackedFluid();
                     node.pendingItemVisualSync = snapshot.pendingItemVisualSync();
                     node.pendingFluidVisualSync = snapshot.pendingFluidVisualSync();
                 }
@@ -95,7 +99,7 @@ abstract class TransportSaveBase extends BlockEntity {
                     .encodeStart(ops, TransportPlatform.fluid(node))
                     .result()
                     .ifPresent(encoded -> tag.put("fluid", encoded));
-            tag.putInt("flow_dir", encodeDirection(node.fluidFlowDir));
+            tag.putInt("flow_mask", node.fluidFlowMask);
         }
         return tag;
     }
@@ -115,7 +119,7 @@ abstract class TransportSaveBase extends BlockEntity {
                 input.getBooleanOr("cargo_stalled", false),
                 syncedFluid.isEmpty() ? null : new FluidKey(syncedFluid),
                 syncedFluid.getAmount(),
-                decodeDirection(input.getIntOr("flow_dir", -1)));
+                input.getIntOr("flow_mask", 0) & PipeVisuals.FLOW_MASK_ALL);
     }
 
     private static int encodeDirection(Direction direction) {
@@ -193,7 +197,9 @@ abstract class TransportSaveBase extends BlockEntity {
             Direction externalIntakeFace,
             boolean cargoStalled,
             int cargoSeq,
-            Direction fluidFlowDir,
+            int fluidFlowMask,
+            FluidFlowTracker.Snapshot fluidFlowSnapshot,
+            FluidKey lastTrackedFluid,
             boolean pendingItemVisualSync,
             boolean pendingFluidVisualSync) {}
 }

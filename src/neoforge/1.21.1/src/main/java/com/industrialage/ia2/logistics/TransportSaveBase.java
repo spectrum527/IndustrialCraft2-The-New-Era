@@ -40,7 +40,7 @@ abstract class TransportSaveBase extends BlockEntity {
             tag.putBoolean("cargo_stalled", node.cargoStalled);
         } else if (node.spec.kind() == Kind.FLUID_PIPE && node.liquid != null && node.amount > 0) {
             tag.put("fluid", TransportPlatform.fluid(node).saveOptional(registries));
-            tag.putByte("flow_dir", encodeDirection(node.fluidFlowDir));
+            tag.putShort("flow_mask", (short) node.fluidFlowMask);
         }
         return tag;
     }
@@ -56,6 +56,10 @@ abstract class TransportSaveBase extends BlockEntity {
                 tag.contains("fluid")
                         ? FluidStack.parseOptional(registries, tag.getCompound("fluid"))
                         : FluidStack.EMPTY;
+        int flowMask =
+                tag.contains("flow_mask")
+                        ? tag.getShort("flow_mask") & PipeVisuals.FLOW_MASK_ALL
+                        : 0;
         node.applyClientSync(
                 tag.getInt("nozzle_extraction"),
                 tag.getInt("nozzle_injection"),
@@ -66,7 +70,7 @@ abstract class TransportSaveBase extends BlockEntity {
                 tag.getBoolean("cargo_stalled"),
                 syncedFluid.isEmpty() ? null : new FluidKey(syncedFluid),
                 syncedFluid.getAmount(),
-                decodeDirection(tag.contains("flow_dir") ? tag.getByte("flow_dir") : -1));
+                flowMask);
     }
 
     private static byte encodeDirection(Direction direction) {
