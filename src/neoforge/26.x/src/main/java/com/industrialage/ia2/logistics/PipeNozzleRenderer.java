@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -41,7 +40,7 @@ public final class PipeNozzleRenderer
     private static final RenderType BRONZE = layer("bronze");
     private static final RenderType STEEL = layer("steel");
     private static final RenderType FLUID_LAYER =
-            RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS);
+            RenderTypes.entityTranslucentCullItemTarget(TextureAtlas.LOCATION_BLOCKS);
     private final PipeNozzleModel model = new PipeNozzleModel();
     private final ItemModelResolver itemModelResolver;
     private final float[] itemPos = new float[3];
@@ -89,7 +88,8 @@ public final class PipeNozzleRenderer
         state.hasItem = false;
         state.hasFluid = false;
         state.itemState.clear();
-        state.fluidSprite = null;
+        state.fluidFlowingSprite = null;
+        state.fluidStillSprite = null;
 
         if (state.hasNozzles) {
             for (var face : TransportNode.SIDES) {
@@ -128,19 +128,25 @@ public final class PipeNozzleRenderer
                                     .getModelManager()
                                     .getFluidStateModelSet()
                                     .get(fluidState);
-                    var material =
-                            fluidModel.flowingMaterial() != null
-                                    ? fluidModel.flowingMaterial()
-                                    : fluidModel.stillMaterial();
-                    if (material != null) {
-                        state.fluidSprite = material.sprite();
+                    var flowingMat = fluidModel.flowingMaterial();
+                    var stillMat = fluidModel.stillMaterial();
+                    if (flowingMat == null) flowingMat = stillMat;
+                    if (stillMat == null) stillMat = flowingMat;
+                    if (flowingMat != null) {
+                        state.fluidFlowingSprite = flowingMat.sprite();
+                        state.fluidStillSprite = stillMat.sprite();
+                        state.fluidFlowUvScale =
+                                state.fluidFlowingSprite.contents().width()
+                                                > state.fluidStillSprite.contents().width()
+                                        ? 0.5F
+                                        : 1.0F;
                         int tint = resolveTint(node, fluid, fluidState, fluidModel);
                         boolean gas = fluid.getFluidType().isLighterThanAir();
                         int alpha = (tint >>> 24) & 0xFF;
                         if (alpha == 0) alpha = 0xFF;
                         state.fluidFill = fill;
                         state.fluidGas = gas;
-                        state.fluidFlowDir = node.fluidFlowDir;
+                        state.fluidFlowMask = node.fluidFlowMask;
                         state.fluidR = (tint >>> 16) & 0xFF;
                         state.fluidG = (tint >>> 8) & 0xFF;
                         state.fluidB = tint & 0xFF;
@@ -221,13 +227,15 @@ public final class PipeNozzleRenderer
                     pose, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             pose.popPose();
         }
-        if (state.hasFluid && state.fluidSprite != null) {
+        if (state.hasFluid && state.fluidFlowingSprite != null && state.fluidStillSprite != null) {
             final BlockState pipeState = state.pipeState;
             final int size = state.size;
             final float fill = state.fluidFill;
             final boolean gas = state.fluidGas;
-            final Direction flowDir = state.fluidFlowDir;
-            final TextureAtlasSprite sprite = state.fluidSprite;
+            final int flowMask = state.fluidFlowMask;
+            final TextureAtlasSprite flowingSprite = state.fluidFlowingSprite;
+            final TextureAtlasSprite stillSprite = state.fluidStillSprite;
+            final float flowUvScale = state.fluidFlowUvScale;
             final int r = state.fluidR;
             final int g = state.fluidG;
             final int b = state.fluidB;
@@ -238,8 +246,21 @@ public final class PipeNozzleRenderer
                     FLUID_LAYER,
                     (entry, consumer) ->
                             emitFluidQuads(
-                                    entry, consumer, pipeState, size, fill, gas, flowDir, sprite, r,
-                                    g, b, a, light));
+                                    entry,
+                                    consumer,
+                                    pipeState,
+                                    size,
+                                    fill,
+                                    gas,
+                                    flowMask,
+                                    flowingSprite,
+                                    stillSprite,
+                                    flowUvScale,
+                                    r,
+                                    g,
+                                    b,
+                                    a,
+                                    light));
         }
     }
 
@@ -250,8 +271,10 @@ public final class PipeNozzleRenderer
             int size,
             float fill,
             boolean gas,
-            Direction flowDir,
-            TextureAtlasSprite sprite,
+            int flowMask,
+            TextureAtlasSprite flowingSprite,
+            TextureAtlasSprite stillSprite,
+            float flowUvScale,
             int r,
             int g,
             int b,
@@ -259,18 +282,20 @@ public final class PipeNozzleRenderer
             int light) {
         float[] quadPos = new float[12];
         float[] quadUv = new float[8];
-        float u0 = sprite.getU0();
-        float uSpan = sprite.getU1() - u0;
-        float v0 = sprite.getV0();
-        float vSpan = sprite.getV1() - v0;
         PipeVisuals.emitFluidGeometry(
                 pipeState,
                 size,
                 fill,
                 gas,
-                flowDir,
+                flowMask,
                 (face, x0, y0, z0, x1, y1, z1, dir) -> {
                     PipeVisuals.buildQuad(face, x0, y0, z0, x1, y1, z1, dir, quadPos, quadUv);
+                    TextureAtlasSprite sprite = dir == null ? stillSprite : flowingSprite;
+                    float uvScale = dir == null ? 1.0F : flowUvScale;
+                    float u0 = sprite.getU0();
+                    float uSpan = (sprite.getU1() - u0) * uvScale;
+                    float v0 = sprite.getV0();
+                    float vSpan = (sprite.getV1() - v0) * uvScale;
                     float nx = face.getStepX();
                     float ny = face.getStepY();
                     float nz = face.getStepZ();
@@ -303,10 +328,12 @@ public final class PipeNozzleRenderer
         float itemScale;
         float itemSpin;
         boolean hasFluid;
-        TextureAtlasSprite fluidSprite;
+        TextureAtlasSprite fluidFlowingSprite;
+        TextureAtlasSprite fluidStillSprite;
+        float fluidFlowUvScale;
         float fluidFill;
         boolean fluidGas;
-        Direction fluidFlowDir;
+        int fluidFlowMask;
         int fluidR;
         int fluidG;
         int fluidB;

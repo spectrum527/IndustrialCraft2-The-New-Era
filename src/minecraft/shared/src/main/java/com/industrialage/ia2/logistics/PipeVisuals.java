@@ -13,9 +13,66 @@ final class PipeVisuals {
     private static final float[] ITEM_SCALES = {0.24F, 0.34F, 0.44F, 0.54F};
     private static final float WALL_INSET = 0.72F / 16.0F;
 
+    /** No active directional fluid movement on a pipe arm. */
+    static final int FLOW_NONE = 0;
+
+    /** Fluid entering the pipe block through this arm (flows toward the core). */
+    static final int FLOW_IN = 1;
+
+    /** Fluid leaving the pipe block through this arm (flows away from the core). */
+    static final int FLOW_OUT = 2;
+
+    /** Bitmask covering all 6 faces encoded at 2 bits per face. */
+    static final int FLOW_MASK_ALL = (1 << (TransportNode.SIDES.length * 2)) - 1;
+
     private PipeVisuals() {}
 
-    /** Sink receiving one outward-oriented fluid quad in block-local [0, 1] coordinates. */
+    /** Returns the 2-bit flow state ({@link #FLOW_NONE}, {@link #FLOW_IN}, {@link #FLOW_OUT}). */
+    static int flowOf(int flowMask, Direction side) {
+        if (side == null) return FLOW_NONE;
+        int state = (flowMask >>> (side.ordinal() * 2)) & 0b11;
+        return state == FLOW_IN || state == FLOW_OUT ? state : FLOW_NONE;
+    }
+
+    /** Returns {@code flowMask} with {@code side} updated to {@code state}. */
+    static int withFlow(int flowMask, Direction side, int state) {
+        if (side == null) return flowMask & FLOW_MASK_ALL;
+        int shift = side.ordinal() * 2;
+        int clamped = (state == FLOW_IN || state == FLOW_OUT) ? state : FLOW_NONE;
+        return ((flowMask & ~(0b11 << shift)) | (clamped << shift)) & FLOW_MASK_ALL;
+    }
+
+    /** Returns the world flow direction along {@code arm}, or {@code null} when stagnant. */
+    static Direction armFlowDir(int flowMask, Direction arm) {
+        return switch (flowOf(flowMask, arm)) {
+            case FLOW_IN -> arm.getOpposite();
+            case FLOW_OUT -> arm;
+            default -> null;
+        };
+    }
+
+    /**
+     * Returns the unique world flow direction for the central core when all active arms align on a
+     * single straight direction, or {@code null} for forks, merges, bends, and stagnant pipes.
+     */
+    static Direction coreFlowDir(int flowMask) {
+        Direction unique = null;
+        for (Direction side : TransportNode.SIDES) {
+            Direction dir = armFlowDir(flowMask, side);
+            if (dir == null) continue;
+            if (unique == null) {
+                unique = dir;
+            } else if (unique != dir) {
+                return null;
+            }
+        }
+        return unique;
+    }
+
+    /**
+     * Sink receiving one outward-oriented fluid quad in block-local [0, 1] coordinates. A {@code
+     * null} {@code flowDir} indicates an isotropic still texture rather than a directional stream.
+     */
     interface FluidQuadSink {
         void emit(
                 Direction face,
@@ -110,11 +167,33 @@ final class PipeVisuals {
 
     /** Emits seamless core and connected-arm fluid quads strictly inside the transparent bore. */
     static void emitFluidGeometry(
-            BlockState state,
+            BlockState state, int size, float fill, boolean gas, int flowMask, FluidQuadSink sink) {
+        emitFluidGeometry(
+                TransportBlock.connected(state, Direction.UP),
+                TransportBlock.connected(state, Direction.DOWN),
+                TransportBlock.connected(state, Direction.NORTH),
+                TransportBlock.connected(state, Direction.SOUTH),
+                TransportBlock.connected(state, Direction.WEST),
+                TransportBlock.connected(state, Direction.EAST),
+                size,
+                fill,
+                gas,
+                flowMask,
+                sink);
+    }
+
+    /** Emits seamless core and connected-arm fluid quads from explicit arm connection flags. */
+    static void emitFluidGeometry(
+            boolean up,
+            boolean down,
+            boolean north,
+            boolean south,
+            boolean west,
+            boolean east,
             int size,
             float fill,
             boolean gas,
-            Direction flowDir,
+            int flowMask,
             FluidQuadSink sink) {
         if (fill <= 0.004F) return;
         float c0 = (6 - size) / 16.0F + WALL_INSET;
@@ -122,15 +201,12 @@ final class PipeVisuals {
         float bore = c1 - c0;
         if (bore <= 0.005F) return;
 
-        boolean up = TransportBlock.connected(state, Direction.UP);
-        boolean down = TransportBlock.connected(state, Direction.DOWN);
-        boolean north = TransportBlock.connected(state, Direction.NORTH);
-        boolean south = TransportBlock.connected(state, Direction.SOUTH);
-        boolean west = TransportBlock.connected(state, Direction.WEST);
-        boolean east = TransportBlock.connected(state, Direction.EAST);
+        boolean upActive = flowOf(flowMask, Direction.UP) != FLOW_NONE;
+        boolean downActive = flowOf(flowMask, Direction.DOWN) != FLOW_NONE;
+        Direction coreDir = coreFlowDir(flowMask);
 
         float visualFill = Mth.clamp(0.18F + fill * 0.82F, 0.18F, 1.0F);
-        boolean verticalFull = (up && (fill > 0.45F || gas || flowDir == Direction.UP));
+        boolean verticalFull = up && (fill > 0.45F || gas || upActive);
         float y0;
         float y1;
         if (gas) {
@@ -142,36 +218,106 @@ final class PipeVisuals {
         }
         boolean fullTop = y1 >= c1 - 0.001F;
         boolean fullBottom = y0 <= c0 + 0.001F;
-        boolean renderUpArm = up && (fullTop || gas || flowDir == Direction.UP);
-        boolean renderDownArm = down && (fullBottom || !gas || flowDir == Direction.DOWN);
+        boolean renderUpArm = up && (fullTop || gas || upActive);
+        boolean renderDownArm = down && (fullBottom || !gas || downActive);
 
         // Central core prism: skip faces joined to a rendered arm to avoid internal seams.
-        if (!renderUpArm) sink.emit(Direction.UP, c0, y0, c0, c1, y1, c1, flowDir);
-        if (!renderDownArm) sink.emit(Direction.DOWN, c0, y0, c0, c1, y1, c1, flowDir);
-        if (!north) sink.emit(Direction.NORTH, c0, y0, c0, c1, y1, c1, flowDir);
-        if (!south) sink.emit(Direction.SOUTH, c0, y0, c0, c1, y1, c1, flowDir);
-        if (!west) sink.emit(Direction.WEST, c0, y0, c0, c1, y1, c1, flowDir);
-        if (!east) sink.emit(Direction.EAST, c0, y0, c0, c1, y1, c1, flowDir);
+        if (!renderUpArm) emitFace(Direction.UP, c0, y0, c0, c1, y1, c1, coreDir, sink);
+        if (!renderDownArm) emitFace(Direction.DOWN, c0, y0, c0, c1, y1, c1, coreDir, sink);
+        if (!north) emitFace(Direction.NORTH, c0, y0, c0, c1, y1, c1, coreDir, sink);
+        if (!south) emitFace(Direction.SOUTH, c0, y0, c0, c1, y1, c1, coreDir, sink);
+        if (!west) emitFace(Direction.WEST, c0, y0, c0, c1, y1, c1, coreDir, sink);
+        if (!east) emitFace(Direction.EAST, c0, y0, c0, c1, y1, c1, coreDir, sink);
 
-        // Horizontal arms: omit both inner core seam and outer block-boundary cap.
+        // Connected arms: each arm flows strictly along its own axis (or still when idle).
         if (north) {
-            emitArmSides(Direction.NORTH, c0, y0, 0.0F, c1, y1, c0, flowDir, sink);
+            emitArmSides(
+                    Direction.NORTH,
+                    c0,
+                    y0,
+                    0.0F,
+                    c1,
+                    y1,
+                    c0,
+                    armFlowDir(flowMask, Direction.NORTH),
+                    sink);
         }
         if (south) {
-            emitArmSides(Direction.SOUTH, c0, y0, c1, c1, y1, 1.0F, flowDir, sink);
+            emitArmSides(
+                    Direction.SOUTH,
+                    c0,
+                    y0,
+                    c1,
+                    c1,
+                    y1,
+                    1.0F,
+                    armFlowDir(flowMask, Direction.SOUTH),
+                    sink);
         }
         if (west) {
-            emitArmSides(Direction.WEST, 0.0F, y0, c0, c0, y1, c1, flowDir, sink);
+            emitArmSides(
+                    Direction.WEST,
+                    0.0F,
+                    y0,
+                    c0,
+                    c0,
+                    y1,
+                    c1,
+                    armFlowDir(flowMask, Direction.WEST),
+                    sink);
         }
         if (east) {
-            emitArmSides(Direction.EAST, c1, y0, c0, 1.0F, y1, c1, flowDir, sink);
+            emitArmSides(
+                    Direction.EAST,
+                    c1,
+                    y0,
+                    c0,
+                    1.0F,
+                    y1,
+                    c1,
+                    armFlowDir(flowMask, Direction.EAST),
+                    sink);
         }
         if (renderDownArm) {
-            emitArmSides(Direction.DOWN, c0, 0.0F, c0, c1, y0, c1, flowDir, sink);
+            emitArmSides(
+                    Direction.DOWN,
+                    c0,
+                    0.0F,
+                    c0,
+                    c1,
+                    y0,
+                    c1,
+                    armFlowDir(flowMask, Direction.DOWN),
+                    sink);
         }
         if (renderUpArm) {
-            emitArmSides(Direction.UP, c0, y1, c0, c1, 1.0F, c1, flowDir, sink);
+            emitArmSides(
+                    Direction.UP,
+                    c0,
+                    y1,
+                    c0,
+                    c1,
+                    1.0F,
+                    c1,
+                    armFlowDir(flowMask, Direction.UP),
+                    sink);
         }
+    }
+
+    private static void emitFace(
+            Direction face,
+            float x0,
+            float y0,
+            float z0,
+            float x1,
+            float y1,
+            float z1,
+            Direction flowDir,
+            FluidQuadSink sink) {
+        // Flow normal to a face (e.g. a dead-end cap) renders as isotropic still fluid.
+        Direction tangentFlow =
+                (flowDir != null && flowDir.getAxis() != face.getAxis()) ? flowDir : null;
+        sink.emit(face, x0, y0, z0, x1, y1, z1, tangentFlow);
     }
 
     private static void emitArmSides(
@@ -186,7 +332,7 @@ final class PipeVisuals {
             FluidQuadSink sink) {
         for (Direction face : TransportNode.SIDES) {
             if (face == arm || face == arm.getOpposite()) continue;
-            sink.emit(face, x0, y0, z0, x1, y1, z1, flowDir);
+            emitFace(face, x0, y0, z0, x1, y1, z1, flowDir, sink);
         }
     }
 
@@ -266,16 +412,18 @@ final class PipeVisuals {
 
     private static void setHorizontalCapUv(
             float[] uv, float dx, float dz, Direction flowDir, boolean top) {
-        float uSpan = Math.min(1.0F, Math.max(0.12F, dx));
-        float vSpan = Math.min(1.0F, Math.max(0.12F, dz));
+        float xSpan = Math.min(1.0F, Math.max(0.12F, dx));
+        float zSpan = Math.min(1.0F, Math.max(0.12F, dz));
         if (flowDir == Direction.EAST) {
-            setUv(uv, 0, 0, uSpan, 0, uSpan, vSpan, 0, vSpan);
+            // Vertex 0->1 spans Z (U), vertex 1->2 spans X (+V toward EAST).
+            setUv(uv, 0, 0, zSpan, 0, zSpan, xSpan, 0, xSpan);
         } else if (flowDir == Direction.WEST) {
-            setUv(uv, uSpan, vSpan, 0, vSpan, 0, 0, uSpan, 0);
+            // Vertex 0->1 spans Z (U), vertex 2->1 spans X (+V toward WEST).
+            setUv(uv, zSpan, xSpan, 0, xSpan, 0, 0, zSpan, 0);
         } else if (flowDir == (top ? Direction.NORTH : Direction.SOUTH)) {
-            setUv(uv, 0, vSpan, 0, 0, uSpan, 0, uSpan, vSpan);
+            setUv(uv, 0, zSpan, 0, 0, xSpan, 0, xSpan, zSpan);
         } else {
-            setUv(uv, 0, 0, 0, vSpan, uSpan, vSpan, uSpan, 0);
+            setUv(uv, 0, 0, 0, zSpan, xSpan, zSpan, xSpan, 0);
         }
     }
 
@@ -286,18 +434,18 @@ final class PipeVisuals {
             Direction flowDir,
             Direction rightDir,
             Direction leftDir) {
-        float uSpan = Math.min(1.0F, Math.max(0.12F, horiz));
+        float hSpan = Math.min(1.0F, Math.max(0.12F, horiz));
         float vSpan = Math.min(1.0F, Math.max(0.12F, vert));
         if (flowDir == rightDir) {
-            // Rotate UV so animated +V flows toward rightDir.
-            setUv(uv, 0, 0, uSpan, 0, uSpan, vSpan, 0, vSpan);
+            // Vertex 0->1 spans vertical (U), vertex 1->2 spans horizontal (+V toward rightDir).
+            setUv(uv, 0, 0, vSpan, 0, vSpan, hSpan, 0, hSpan);
         } else if (flowDir == leftDir) {
-            // Rotate UV so animated +V flows toward leftDir.
-            setUv(uv, uSpan, vSpan, 0, vSpan, 0, 0, uSpan, 0);
+            // Vertex 0->1 spans vertical (U), vertex 2->1 spans horizontal (+V toward leftDir).
+            setUv(uv, vSpan, hSpan, 0, hSpan, 0, 0, vSpan, 0);
         } else if (flowDir == Direction.UP) {
-            setUv(uv, 0, vSpan, 0, 0, uSpan, 0, uSpan, vSpan);
+            setUv(uv, 0, vSpan, 0, 0, hSpan, 0, hSpan, vSpan);
         } else {
-            setUv(uv, 0, 0, 0, vSpan, uSpan, vSpan, uSpan, 0);
+            setUv(uv, 0, 0, 0, vSpan, hSpan, vSpan, hSpan, 0);
         }
     }
 

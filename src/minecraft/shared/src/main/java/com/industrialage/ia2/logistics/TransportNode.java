@@ -61,12 +61,14 @@ public final class TransportNode extends TransportSaveBase
     Direction externalIntakeFace;
     boolean cargoStalled;
     int cargoSeq;
-    Direction fluidFlowDir;
+    int fluidFlowMask;
+    final FluidFlowTracker fluidFlow = new FluidFlowTracker();
+    FluidKey lastTrackedFluid;
     boolean pendingItemVisualSync;
     boolean pendingFluidVisualSync;
     private FluidKey syncedFluid;
     private int syncedFluidBucket = -1;
-    private Direction syncedFlowDir;
+    private int syncedFlowMask;
     int clientCargoSeq = -1;
     long clientCargoStartTick;
     Direction clientCargoFrom;
@@ -522,25 +524,27 @@ public final class TransportNode extends TransportSaveBase
         }
     }
 
-    void noteFluidFlow(Direction direction) {
-        fluidFlowDir = direction;
+    void noteFluidFaceFlow(Direction face, int flow, long tick, int moved) {
+        if (spec.kind() != Kind.FLUID_PIPE) return;
+        fluidFlow.record(face, flow, tick, moved);
     }
 
     void syncFluidVisualIfNeeded() {
-        if (spec.kind() != Kind.FLUID_PIPE || !(level instanceof ServerLevel)) return;
+        if (spec.kind() != Kind.FLUID_PIPE || !(level instanceof ServerLevel world)) return;
         int bucket =
                 (liquid == null || amount <= 0)
                         ? 0
                         : (amount >= spec.capacity()
                                 ? 12
                                 : Math.max(1, (amount * 11) / spec.capacity()));
-        Direction dir = (liquid == null || amount <= 0) ? null : fluidFlowDir;
+        int mask = (liquid == null || amount <= 0) ? 0 : fluidFlow.sampleMask(world.getGameTime());
+        fluidFlowMask = mask;
         if (!java.util.Objects.equals(liquid, syncedFluid)
                 || bucket != syncedFluidBucket
-                || dir != syncedFlowDir) {
+                || mask != syncedFlowMask) {
             syncedFluid = liquid;
             syncedFluidBucket = bucket;
-            syncedFlowDir = dir;
+            syncedFlowMask = mask;
             syncVisual();
         }
     }
@@ -555,7 +559,7 @@ public final class TransportNode extends TransportSaveBase
             boolean stalled,
             FluidKey syncedLiquid,
             int syncedAmount,
-            Direction flowDir) {
+            int flowMask) {
         restoreNozzles(extraction, injection);
         if (spec.kind() == Kind.ITEM_PIPE) {
             if (syncedCargo.isEmpty()) {
@@ -576,7 +580,7 @@ public final class TransportNode extends TransportSaveBase
         } else if (spec.kind() == Kind.FLUID_PIPE) {
             liquid = syncedLiquid;
             amount = syncedAmount;
-            fluidFlowDir = flowDir;
+            fluidFlowMask = flowMask & PipeVisuals.FLOW_MASK_ALL;
         }
     }
 
@@ -626,9 +630,17 @@ public final class TransportNode extends TransportSaveBase
         return Math.min(1F, (float) amount / Math.max(1, spec.capacity()));
     }
 
-    /** Dominant synced fluid flow direction, if known. */
+    /**
+     * Unique dominant synced fluid flow direction for straight runs, or {@code null} at forks,
+     * merges, bends, or stagnant pipes.
+     */
     public Direction clientFluidFlowDirection() {
-        return fluidFlowDir;
+        return PipeVisuals.coreFlowDir(fluidFlowMask);
+    }
+
+    /** Packed 12-bit per-face fluid flow mask synced to the client (2 bits per face). */
+    public int clientFluidFlowMask() {
+        return fluidFlowMask;
     }
 
     private void sendToNonPipe(ServerLevel world, Direction side) {
@@ -861,16 +873,32 @@ public final class TransportNode extends TransportSaveBase
     }
 
     int fill(Direction side, FluidKey key, int offered, boolean simulate) {
+        return fillInternal(side, key, offered, simulate, true);
+    }
+
+    int fillInternal(
+            Direction side, FluidKey key, int offered, boolean simulate, boolean recordFlow) {
         if (offered <= 0
                 || spec.kind() == Kind.ITEM_PIPE
                 || !open(side)
                 || (liquid != null && !liquid.equals(key))) return 0;
         int accepted = Math.min(offered, spec.capacity() - amount);
         if (!simulate && accepted > 0) {
+            if (spec.kind() == Kind.FLUID_PIPE
+                    && lastTrackedFluid != null
+                    && !lastTrackedFluid.equals(key)) {
+                fluidFlow.clear();
+            }
             liquid = key;
+            if (spec.kind() == Kind.FLUID_PIPE) {
+                lastTrackedFluid = key;
+            }
             amount += accepted;
             if (side != null) {
-                noteFluidFlow(side.getOpposite());
+                if (recordFlow) {
+                    long tick = level != null ? level.getGameTime() : 0L;
+                    noteFluidFaceFlow(side, FluidFlowTracker.IN, tick, accepted);
+                }
                 pendingFluidVisualSync = true;
             }
             setChanged();
@@ -887,7 +915,8 @@ public final class TransportNode extends TransportSaveBase
         int drained = Math.min(amount, requested);
         if (!simulate && drained > 0) {
             if (side != null) {
-                noteFluidFlow(side);
+                long tick = level != null ? level.getGameTime() : 0L;
+                noteFluidFaceFlow(side, FluidFlowTracker.OUT, tick, drained);
                 pendingFluidVisualSync = true;
             }
             debit(drained);
@@ -900,7 +929,6 @@ public final class TransportNode extends TransportSaveBase
         amount -= transferred;
         if (amount == 0) {
             liquid = null;
-            fluidFlowDir = null;
         }
         setChanged();
     }

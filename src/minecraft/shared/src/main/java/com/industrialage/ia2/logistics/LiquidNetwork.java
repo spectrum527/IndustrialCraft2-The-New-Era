@@ -61,7 +61,7 @@ final class LiquidNetwork {
                 if (legacyRate > 0 || nozzle == TransportNode.Nozzle.EXTRACTION) {
                     if (!TransportNode.machineOutput(other, face)) continue;
                     int rate = legacyRate > 0 ? legacyRate : extractionBudget;
-                    int drawn = pump(world, node, pos, face, tank, rate);
+                    int drawn = pump(world, node, pos, side, face, tank, rate, tick);
                     if (legacyRate == 0) extractionBudget -= drawn;
                 } else if (TransportNode.machineInput(other, face)
                         && (tank != null || TransportPlatform.hasFluidPort(world, pos, face))) {
@@ -79,22 +79,29 @@ final class LiquidNetwork {
             ServerLevel world,
             TransportNode node,
             BlockPos pos,
+            Direction pipeSide,
             Direction face,
             TransportNode tank,
-            int rate) {
+            int rate,
+            long tick) {
         int room = Math.min(rate, node.spec.capacity() - node.amount);
         if (room <= 0) return 0;
         if (tank != null) {
             FluidKey key = tank.liquid;
             if (key == null) return 0;
-            int amount = node.fill(null, key, room, true);
-            int drawn = node.fill(null, key, tank.drain(face, key, amount, false), false);
-            if (drawn > 0) node.noteFluidFlow(face);
+            int amount = node.fillInternal(null, key, room, true, false);
+            int drawn =
+                    node.fillInternal(
+                            null, key, tank.drain(face, key, amount, false), false, false);
+            if (drawn > 0) node.noteFluidFaceFlow(pipeSide, FluidFlowTracker.IN, tick, drawn);
             return drawn;
         }
         var liquid = TransportPlatform.takeFluid(world, pos, face, node.liquid, room);
-        int drawn = liquid == null ? 0 : node.fill(null, liquid.key(), liquid.amount(), false);
-        if (drawn > 0) node.noteFluidFlow(face);
+        int drawn =
+                liquid == null
+                        ? 0
+                        : node.fillInternal(null, liquid.key(), liquid.amount(), false, false);
+        if (drawn > 0) node.noteFluidFaceFlow(pipeSide, FluidFlowTracker.IN, tick, drawn);
         return drawn;
     }
 
@@ -149,7 +156,10 @@ final class LiquidNetwork {
                     int index = Math.floorMod(tick + i, edges.ends.size());
                     var end = edges.ends.get(index);
                     int sent = deliver(world, end, key, budget, false);
-                    if (sent > 0) pipe.noteFluidFlow(end.side.getOpposite());
+                    if (sent > 0) {
+                        pipe.noteFluidFaceFlow(
+                                end.side.getOpposite(), FluidFlowTracker.OUT, tick, sent);
+                    }
                     budget -= sent;
                     pipe.debit(sent);
                 }
@@ -157,7 +167,8 @@ final class LiquidNetwork {
             for (int i = 0; i < edges.links.size() && budget > 0; i++) {
                 var link = edges.links.get(Math.floorMod(tick + i, edges.links.size()));
                 int amount = budget;
-                if (ownDistance == Integer.MAX_VALUE) {
+                boolean equalizing = ownDistance == Integer.MAX_VALUE;
+                if (equalizing) {
                     // Equalize filled fractions while every available outlet is blocked.
                     long difference =
                             (long) pipe.amount * link.pipe.spec.capacity()
@@ -174,10 +185,12 @@ final class LiquidNetwork {
                 } else if (distance.getOrDefault(link.pipe, Integer.MAX_VALUE) >= ownDistance) {
                     continue;
                 }
-                int sent = link.pipe.fill(link.side.getOpposite(), key, amount, false);
-                if (sent > 0) {
-                    pipe.noteFluidFlow(link.side);
-                    link.pipe.noteFluidFlow(link.side);
+                int sent =
+                        link.pipe.fillInternal(link.side.getOpposite(), key, amount, false, false);
+                if (sent > 0 && (!equalizing || sent >= 2)) {
+                    pipe.noteFluidFaceFlow(link.side, FluidFlowTracker.OUT, tick, sent);
+                    link.pipe.noteFluidFaceFlow(
+                            link.side.getOpposite(), FluidFlowTracker.IN, tick, sent);
                 }
                 budget -= sent;
                 pipe.debit(sent);

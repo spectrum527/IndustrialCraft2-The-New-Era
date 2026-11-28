@@ -138,13 +138,16 @@ public final class PipeNozzleRenderer implements BlockEntityRenderer<TransportNo
         if (stack.isEmpty()) return;
         var fluid = stack.getFluid();
         var ext = IClientFluidTypeExtensions.of(fluid);
-        ResourceLocation texture = ext.getFlowingTexture(stack);
-        if (texture == null) texture = ext.getStillTexture(stack);
-        if (texture == null) return;
-        TextureAtlasSprite sprite =
-                Minecraft.getInstance()
-                        .getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
-                        .apply(texture);
+        ResourceLocation flowingTexture = ext.getFlowingTexture(stack);
+        ResourceLocation stillTexture = ext.getStillTexture(stack);
+        if (flowingTexture == null) flowingTexture = stillTexture;
+        if (stillTexture == null) stillTexture = flowingTexture;
+        if (flowingTexture == null) return;
+        var atlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+        TextureAtlasSprite flowingSprite = atlas.apply(flowingTexture);
+        TextureAtlasSprite stillSprite =
+                stillTexture.equals(flowingTexture) ? flowingSprite : atlas.apply(stillTexture);
+        float flowingUvScale = flowingSprite.getWidth() > stillSprite.getWidth() ? 0.5F : 1.0F;
         boolean gas = fluid.getFluidType().isLighterThanAir();
         int tint =
                 node.getLevel() != null
@@ -160,19 +163,20 @@ public final class PipeNozzleRenderer implements BlockEntityRenderer<TransportNo
         int blue = tint & 0xFF;
         int fluidLight = Math.max(light, fluid.getFluidType().getLightLevel(stack) << 4);
         VertexConsumer consumer =
-                buffers.getBuffer(RenderType.entityTranslucent(TextureAtlas.LOCATION_BLOCKS));
+                buffers.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
         PoseStack.Pose entry = pose.last();
         PipeVisuals.emitFluidGeometry(
                 node.getBlockState(),
                 node.spec.size(),
                 fill,
                 gas,
-                node.fluidFlowDir,
+                node.fluidFlowMask,
                 (face, x0, y0, z0, x1, y1, z1, flowDir) ->
                         emitQuad(
                                 entry,
                                 consumer,
-                                sprite,
+                                flowDir == null ? stillSprite : flowingSprite,
+                                flowDir == null ? 1.0F : flowingUvScale,
                                 face,
                                 x0,
                                 y0,
@@ -193,6 +197,7 @@ public final class PipeNozzleRenderer implements BlockEntityRenderer<TransportNo
             PoseStack.Pose entry,
             VertexConsumer consumer,
             TextureAtlasSprite sprite,
+            float uvScale,
             Direction face,
             float x0,
             float y0,
@@ -209,9 +214,9 @@ public final class PipeNozzleRenderer implements BlockEntityRenderer<TransportNo
             int overlay) {
         PipeVisuals.buildQuad(face, x0, y0, z0, x1, y1, z1, flowDir, quadPos, quadUv);
         float u0 = sprite.getU0();
-        float uSpan = sprite.getU1() - u0;
+        float uSpan = (sprite.getU1() - u0) * uvScale;
         float v0 = sprite.getV0();
-        float vSpan = sprite.getV1() - v0;
+        float vSpan = (sprite.getV1() - v0) * uvScale;
         float nx = face.getStepX();
         float ny = face.getStepY();
         float nz = face.getStepZ();
